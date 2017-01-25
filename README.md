@@ -4,7 +4,7 @@
 
 This is the backend part of the FoodCoach platform (the amazing server).
 
-This is an applikation that respondes to HTTP requests that is sent to it. These requests can come
+This is an application that responds to HTTP requests that is sent to it. These requests can come
 from a number of different sources, a web browser or a mobile app for example.
 
 ## SBT
@@ -57,9 +57,9 @@ libraryDependencies += "org.jsoup" % "jsoup" % "1.10.2"
 All packages that are available on [Maven Central](https://search.maven.org/) can be added
 to the application in this way.
 
-#### Currently installed dependencies:
+### Currently installed dependencies:
 
-######[jsoup](https://jsoup.org/)  
+#### [jsoup](https://jsoup.org/)  
 A parser for HTML. We use this to find and extract text on a webpage,
 a list of ingredients for example.
 
