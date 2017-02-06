@@ -29,4 +29,7 @@ public class FoodItem extends Model {
 	@Column(name = "alcohol_g") public Float alcohol;
 	@Column(name = "ash_g") public Float ash;
 	@Column(name = "waste_percent") public Float waste;
+
+	@Column(name = "sugars") @Embedded public Sugars sugars;
+	@Column(name = "fats") @Embedded public Fats fats;
 }
