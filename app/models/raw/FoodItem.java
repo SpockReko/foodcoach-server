@@ -3,7 +3,6 @@ package models.raw;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 /**
  * Created by fredrikkindstrom on 2017-02-06.
@@ -12,9 +11,12 @@ import javax.validation.constraints.*;
 @Table(name = "FoodItems")
 public class FoodItem extends Model {
 
-	@Id @Column(name = "_id") public int id;
+	@Id @Column(name = "_id") public Long id;
 
-	@NotNull public String name;
+	@Column(name = "name", nullable = false) public String name;
+	@Column(name = "scientific_name") public String scientificName;
+	@Column(name = "lmv_food_number", unique = true) public Long lmvFoodNumber;
+	@Column(name = "lmv_project") public String lmvProject;
 
 	@Column(name = "energy_kcal") public Float energyKcal;
 	@Column(name = "energy_kj") public Float energyKj;
@@ -26,7 +28,5 @@ public class FoodItem extends Model {
 	@Column(name = "water_g") public Float water;
 	@Column(name = "alcohol_g") public Float alcohol;
 	@Column(name = "ash_g") public Float ash;
-	@Column(name = "waste_procent") public Float waste;
-
-	@Column(name = "project") public String project;
+	@Column(name = "waste_percent") public Float waste;
 }
