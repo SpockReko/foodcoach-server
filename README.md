@@ -18,7 +18,7 @@ local server (see below).
 The backend is written in Java and uses a web application framework called
 [Java Play](https://github.com/playframework/playframework). It is actually called just
 _"Play framework"_ but the Java implementation is called Java Play. The framework is written in a
-different programming language called _Scala_ but we dont need to worry about that since we are
+different programming language called _Scala_ but we don't need to worry about that since we are
 only going to use the Java API that it provides.
 
 This framework contains all sorts of fancy stuff. It can be used as a _full-stack_ framework for
@@ -27,7 +27,7 @@ all our business-logic as well as talk our database. All of the stuff that actua
 webpage (frontend client) is instead written in a separate application that communicates with this
 application via HTTP requests.
 
-Besides the classes and the structure that belongs to the framwork the applicaion will consist of
+Besides the classes and the structure that belongs to the framework the application will consist of
 just plain old Java code.
 
 ## Setup
@@ -39,7 +39,7 @@ Open up a window, navigate to the correct folder and type this:
 sbt run
 ```
 
-This will trigger SBT to startup a server at localhost:9000. This is like a webpage but it
+This will trigger SBT to startup a server at _localhost:9000_. This is like a webpage but it
 runs locally on your machine. You can now open up a web browser and
 navigate to _localhost:9000_ to see what the server has to say!
 
@@ -67,5 +67,5 @@ a list of ingredients for example.
 
 Too keep the Java code nice and consistent we use
 [Google's style guide for Java](https://google.github.io/styleguide/javaguide.html).
-If you use IntelliJ _(it's just the best)_ here is a [repo](https://github.com/feggak/GoogleStyle)
+If you use IntelliJ _(it's just the best)_ here is a [repo](https://github.com/frellan/GoogleStyle)
 with a settings file that you can use to make IntelliJ format the code automatically for you.
