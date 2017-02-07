@@ -6,7 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
- * Created by fredrikkindstrom on 2017-02-06.
+ * This class gets embedded into the {@link FoodItem} class and its corresponding database table.
+ * Contains more meta information about a food items fats.
+ * @author Fredrik Kindstrom
  */
 @Embeddable
 public class Fats extends Model {

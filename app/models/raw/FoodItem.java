@@ -5,13 +5,19 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 
 /**
- * Created by fredrikkindstrom on 2017-02-06.
+ * This class represents a raw material that is present in Livsmedelsdatabasen by Livsmedelsverket.
+ * This contains embeddable classes that represents more nutritional
+ * information (like sugars, fats etc). This is just to make the code less cluttered with
+ * too much methods. The underlying database tables contain all
+ * these fields as columns in a single table.
+ * @author Fredrik Kindstrom
  */
 @Entity
 @Table(name = "FoodItems")
 public class FoodItem extends Model {
 
-	@Id @Column(name = "_id") public Long id;
+	@Id
+	@Column(name = "_id") public Long id;
 
 	@Column(name = "name", nullable = false) public String name;
 	@Column(name = "scientific_name") public String scientificName;
@@ -32,4 +38,6 @@ public class FoodItem extends Model {
 
 	@Column(name = "sugars") @Embedded public Sugars sugars;
 	@Column(name = "fats") @Embedded public Fats fats;
+	@Column(name = "vitamins") @Embedded public Vitamins vitamins;
+	@Column(name = "minerals") @Embedded public Minerals minerals;
 }
