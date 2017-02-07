@@ -14,6 +14,7 @@ public class Vitamins {
 	@Column(name = "retinol_ug") public Float retinol;
 	@Column(name = "beta_karoten_ug") public Float betaKaroten;
 	@Column(name = "vitamin_a_ug") public Float vitaminA;
+	@Column(name = "vitamin_b6_ug") public Float vitaminB6;
 	@Column(name = "vitamin_b12_ug") public Float vitaminB12;
 	@Column(name = "vitamin_c_mg") public Float vitaminC;
 	@Column(name = "vitamin_d_ug") public Float vitaminD;
