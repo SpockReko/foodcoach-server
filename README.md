@@ -51,13 +51,16 @@ like parse HTML for example) we can add this to the **build.sbt** file in the ro
 The syntax looks like this:
 
 ```scala
-libraryDependencies += "org.jsoup" % "jsoup" % "1.10.2"
+libraryDependencies += "org.plugin" % "plugin" % "1.0.0"
 ```
 
 All packages that are available on [Maven Central](https://search.maven.org/) can be added
 to the application in this way.
 
 ### Currently installed dependencies:
+
+#### [MySQL Connector](https://dev.mysql.com/downloads/connector/j/)
+JDBC driver for MySQL. We use this to connect to the database through our Java code.
 
 #### [jsoup](https://jsoup.org/)  
 A parser for HTML. We use this to find and extract text on a webpage,
@@ -67,5 +70,5 @@ a list of ingredients for example.
 
 Too keep the Java code nice and consistent we use
 [Google's style guide for Java](https://google.github.io/styleguide/javaguide.html).
-If you use IntelliJ _(it's just the best)_ here is a [repo](https://github.com/frellan/GoogleStyle)
-with a settings file that you can use to make IntelliJ format the code automatically for you.
+If you use IntelliJ you can use this [repo](https://github.com/frellan/GoogleStyle)
+with a settings file. Follow the instructions there, this makes IntelliJ format the code automatically for you.
