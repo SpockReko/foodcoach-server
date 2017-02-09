@@ -1,7 +1,5 @@
 package models.food;
 
-import com.avaje.ebean.Model;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -11,7 +9,7 @@ import javax.persistence.Embeddable;
  * @author Fredrik Kindstrom
  */
 @Embeddable
-public class Fats extends Model {
+public class Fats {
 
 	@Column(name = "fat_g") public Float fat;
 	@Column(name = "sum_saturated_fats_g") public Float sumSaturatedFats;
