@@ -5,7 +5,7 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 
 /**
- * This class represents a raw material that is present in Livsmedelsdatabasen by Livsmedelsverket.
+ * This class represents a food item that is present in Livsmedelsdatabasen by Livsmedelsverket.
  * This contains embeddable classes that represents more nutritional
  * information (like sugars, fats etc). This is just to make the code less cluttered with
  * too much methods. The underlying database tables contain all
@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class FoodItem extends Model {
 
 	@Id
-	@Column(name = "_id") public Long id;
+	@Column(name = "_id") public long id;
 
 	@Column(name = "name", nullable = false) public String name;
 	@Column(name = "scientific_name") public String scientificName;
