@@ -1,4 +1,4 @@
-package models.raw;
+package models.food;
 
 import com.avaje.ebean.Model;
 

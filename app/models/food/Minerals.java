@@ -1,4 +1,4 @@
-package models.raw;
+package models.food;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
