@@ -1,6 +1,7 @@
 package models.food;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 
 /**
@@ -11,8 +12,12 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Sugars {
 
+	@Convert(converter = FoodItem.GramConverter.class)
 	@Column(name = "sugars_g") public Float sugars;
+	@Convert(converter = FoodItem.GramConverter.class)
 	@Column(name = "monosaccharides_g") public Float monosaccharides;
+	@Convert(converter = FoodItem.GramConverter.class)
 	@Column(name = "disaccharides_g") public Float disaccharides;
+	@Convert(converter = FoodItem.GramConverter.class)
 	@Column(name = "sucrose_g") public Float sucrose;
 }

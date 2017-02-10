@@ -1,6 +1,6 @@
 package controllers;
 
-import helpers.LMVExcelLoader;
+import parsers.LMVParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -13,7 +13,7 @@ public class ApplicationController extends Controller {
 
     public Result parseCSV() {
 
-		LMVExcelLoader loader = new LMVExcelLoader();
+		LMVParser loader = new LMVParser();
 
 		return ok(loader.getSql());
 	}

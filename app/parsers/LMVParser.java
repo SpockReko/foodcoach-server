@@ -1,17 +1,15 @@
-package helpers;
+package parsers;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 /**
  * Created by fredrikkindstrom on 2017-02-07.
  */
-public class LMVExcelLoader {
+public class LMVParser {
 
 	private static final String TABLE_NAME = "FoodItems";
 	private static final String csvFile = "resources/LivsmedelsDB_201702061629.csv";
@@ -20,85 +18,25 @@ public class LMVExcelLoader {
 	public String getSql() {
 
 		sql = "";
+		int index = 0;
 		String line;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 
 			while ((line = br.readLine()) != null) {
 
-				String[] row = line.split(";");
+				System.out.println(index);
 
-				for (int i = 2; i < row.length; i++) {
-					row[i] = row[i].replace(',', '.');
-				}
-
-				Map<String, String> text = readRowText(row);
-				long lmvFoodNumber = readRowLmvNumber(row);
-				Map<String, Float> numbers = readRowNumbers(row);
-
+				String[] cells = line.split(";");
 				generateInsertStatement();
 
-				System.out.println(text.get("name"));
-
-				sql += text.get("name") + ", ";
-				sql += lmvFoodNumber + ", ";
-				sql += numbers.get("energyKcal") + ", ";
-				sql += numbers.get("energyKj") + ", ";
-				sql += numbers.get("carbohydrates") + ", ";
-				sql += numbers.get("protein") + ", ";
-				sql += numbers.get("fibre") + ", ";
-				sql += numbers.get("wholeGrain") + ", ";
-				sql += numbers.get("cholesterol") + ", ";
-				sql += numbers.get("water") + ", ";
-				sql += numbers.get("alcohol") + ", ";
-				sql += numbers.get("ash") + ", ";
-				sql += numbers.get("wastePercent") + ", ";
-				sql += numbers.get("sugars") + ", ";
-				sql += numbers.get("monosaccharides") + ", ";
-				sql += numbers.get("disaccharides") + ", ";
-				sql += numbers.get("sucrose") + ", ";
-				sql += numbers.get("fat") + ", ";
-				sql += numbers.get("fattyAcid120") + ", ";
-				sql += numbers.get("fattyAcid140") + ", ";
-				sql += numbers.get("fattyAcid160") + ", ";
-				sql += numbers.get("fattyAcid180") + ", ";
-				sql += numbers.get("fattyAcid200") + ", ";
-				sql += numbers.get("sumMonounsaturatedFats") + ", ";
-				sql += numbers.get("fattyAcid161") + ", ";
-				sql += numbers.get("fattyAcid181") + ", ";
-				sql += numbers.get("sumPolyunsaturatedFats") + ", ";
-				sql += numbers.get("fattyAcid182") + ", ";
-				sql += numbers.get("fattyAcid183") + ", ";
-				sql += numbers.get("fattyAcid204") + ", ";
-				sql += numbers.get("epaFattyAcid205") + ", ";
-				sql += numbers.get("dpaFattyAcid225") + ", ";
-				sql += numbers.get("dhaFattyAcid226") + ", ";
-				sql += numbers.get("retinol") + ", ";
-				sql += numbers.get("betaKaroten") + ", ";
-				sql += numbers.get("vitaminA") + ", ";
-				sql += numbers.get("vitaminB6") + ", ";
-				sql += numbers.get("vitaminB12") + ", ";
-				sql += numbers.get("vitaminC") + ", ";
-				sql += numbers.get("vitaminD") + ", ";
-				sql += numbers.get("vitaminE") + ", ";
-				sql += numbers.get("vitaminK") + ", ";
-				sql += numbers.get("thiamine") + ", ";
-				sql += numbers.get("riboflavin") + ", ";
-				sql += numbers.get("niacin") + ", ";
-				sql += numbers.get("niacinEquivalents") + ", ";
-				sql += numbers.get("folate") + ", ";
-				sql += numbers.get("folate") + ", ";
-				sql += numbers.get("phosphorus") + ", ";
-				sql += numbers.get("iodine") + ", ";
-				sql += numbers.get("iron") + ", ";
-				sql += numbers.get("calcium") + ", ";
-				sql += numbers.get("potassium") + ", ";
-				sql += numbers.get("magnesium") + ", ";
-				sql += numbers.get("sodium") + ", ";
-				sql += numbers.get("salt") + ", ";
-				sql += numbers.get("selenium") + ", ";
-				sql += numbers.get("zink") + ", ";
+				for (int i = 0; i < cells.length-1; i++) {
+					sql += "'" + cells[i] + "', ";
+				}
+				sql += "'" + cells[cells.length-1] + "'";
 				sql += ");\n";
+
+				index++;
 			}
 
 		} catch (IOException e) {
@@ -122,12 +60,6 @@ public class LMVExcelLoader {
 
 	private Map<String, Float> readRowNumbers(String[] row) {
 		Map<String, Float> numbers = new HashMap<>();
-
-		for (int i = 2; i < row.length; i++) {
-			if (row[i].equals("")) {
-				row[i] = "0";
-			}
-		}
 
 		numbers.put("energyKcal", Float.parseFloat(row[2]));
 		numbers.put("energyKj", Float.parseFloat(row[3]));
@@ -185,9 +117,7 @@ public class LMVExcelLoader {
 		numbers.put("salt", Float.parseFloat(row[55]));
 		numbers.put("selenium", Float.parseFloat(row[56]));
 		numbers.put("zink", Float.parseFloat(row[57]));
-		if (row.length > 58) {
-			numbers.put("wastePercent", Float.parseFloat(row[58]));
-		}
+		numbers.put("wastePercent", Float.parseFloat(row[58]));
 
 		return numbers;
 	}
@@ -195,20 +125,23 @@ public class LMVExcelLoader {
 	private void generateInsertStatement() {
 		sql += "INSERT INTO " + TABLE_NAME + " (";
 		sql += "name, lmv_food_number, energy_kcal, energy_kj, ";
-		sql += "carbohydrates_g, protein_g, fibre_g, whole_grain_g, ";
-		sql += "cholesterol_mg, water_g, alcohol_g, ash_g, waste_percent";
-		sql += "sugars_g, monosaccharides_g, disaccharides_g, sucrose_g, fat_g";
+		sql += "carbohydrates_g, fat_g, protein_g, fibre_g, water_g, ";
+		sql += "alcohol_g, ash_g, monosaccharides_g, disaccharides_g, ";
+		sql += "sucrose_g, whole_grain_g, sugars_g, ";
 		sql += "sum_saturated_fats_g, fatty_acid_40_100_g, fatty_acid_120_g, ";
 		sql += "fatty_acid_140_g, fatty_acid_160_g, fatty_acid_180_g, ";
 		sql += "fatty_acid_200_g, sum_monounsaturated_fats_g, fatty_acid_161_g, ";
 		sql += "fatty_acid_181_g, sum_polyunsaturated_fats_g, fatty_acid_182_g, ";
 		sql += "fatty_acid_183_g, fatty_acid_204_g, epa_fatty_acid_205_g, ";
 		sql += "dpa_fatty_acid_225_g, dha_fatty_acid_226_g, ";
-		sql += "retinol_ug, beta_karoten_ug, vitamin_a_ug, vitamin_b6_ug, vitamin_b12_ug";
-		sql += "vitamin_c_mg, vitamin_d_ug, vitamin_e_mg, vitamin_k_ug, thiamine_mg";
-		sql += "riboflavin_mg, niacin_mg, niacin_equivalents_mg, folate_ug, phosphorus_mg";
-		sql += "iodine_ug, iron_mg, calcium_mg, potassium_mg, magnesium_mg";
-		sql += "sodium_mg, salt_g, selenium_ug, zink_mg";
+		sql += "cholesterol_g, ";
+		sql += "retinol_ug, vitamin_a_ug, beta_karoten_ug, vitamin_d_ug, ";
+		sql += "vitamin_e_mg, vitamin_e_ug, vitamin_k_ug, thiamine_mg, ";
+		sql += "riboflavin_mg, niacin_mg, niacin_equivalents_mg, ";
+		sql += "vitamin_b6_ug, vitamin_b12_ug, ";
+		sql += "folate_ug, phosphorus_mg, ";
+		sql += "iodine_ug, iron_mg, calcium_mg, potassium_mg, magnesium_mg, ";
+		sql += "sodium_mg, salt_g, selenium_ug, zink_mg, waste_percent";
 		sql += ")\n";
 		sql += "VALUES (";
 	}
