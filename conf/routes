@@ -5,8 +5,10 @@
 # Home page
 GET     /                               controllers.ApplicationController.index
 
-# Parse CSV
-GET     /parse                          controllers.ApplicationController.parseCSV
+GET     /food/:id                       controllers.ApplicationController.foodItem(id: Int)
+
+# Parse Csv
+GET     /parse                          controllers.ApplicationController.parseCsv
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                   controllers.Assets.at(path="/public", file)
