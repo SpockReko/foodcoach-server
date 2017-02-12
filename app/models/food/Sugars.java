@@ -12,12 +12,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Sugars {
 
-	@Convert(converter = FoodItem.GramConverter.class)
-	@Column(name = "sugars_g") public Nutrient sugars;
-	@Convert(converter = FoodItem.GramConverter.class)
-	@Column(name = "monosaccharides_g") public Nutrient monosaccharides;
-	@Convert(converter = FoodItem.GramConverter.class)
-	@Column(name = "disaccharides_g") public Nutrient disaccharides;
-	@Convert(converter = FoodItem.GramConverter.class)
-	@Column(name = "sucrose_g") public Nutrient sucrose;
+	@Column(name = "sugars_g") public Float sugars;
+	@Column(name = "monosaccharides_g") public Float monosaccharides;
+	@Column(name = "disaccharides_g") public Float disaccharides;
+	@Column(name = "sucrose_g") public Float sucrose;
 }

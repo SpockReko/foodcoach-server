@@ -27,24 +27,15 @@ public class FoodItem extends Model {
 
 	@Column(name = "energy_kcal") public Float energyKcal;
 	@Column(name = "energy_kj") public Float energyKj;
-	@Convert(converter = GramConverter.class)
-	@Column(name = "carbohydrates_g") public Nutrient carbohydrates;
-	@Convert(converter = GramConverter.class)
-	@Column(name = "protein_g") public Nutrient protein;
-	@Convert(converter = GramConverter.class)
-	@Column(name = "fibre_g") public Nutrient fibre;
-	@Convert(converter = GramConverter.class)
-	@Column(name = "whole_grain_g") public Nutrient wholeGrain;
-	@Convert(converter = MilligramsConverter.class)
-	@Column(name = "cholesterol_mg") public Nutrient cholesterol;
-	@Convert(converter = GramConverter.class)
-	@Column(name = "water_g") public Nutrient water;
-	@Convert(converter = GramConverter.class)
-	@Column(name = "alcohol_g") public Nutrient alcohol;
-	@Convert(converter = GramConverter.class)
-	@Column(name = "ash_g") public Nutrient ash;
-	@Convert(converter = PercentConverter.class)
-	@Column(name = "waste_percent") public Nutrient waste;
+	@Column(name = "carbohydrates_g") public Float carbohydrates;
+	@Column(name = "protein_g") public Float protein;
+	@Column(name = "fibre_g") public Float fibre;
+	@Column(name = "whole_grain_g") public Float wholeGrain;
+	@Column(name = "cholesterol_mg") public Float cholesterol;
+	@Column(name = "water_g") public Float water;
+	@Column(name = "alcohol_g") public Float alcohol;
+	@Column(name = "ash_g") public Float ash;
+	@Column(name = "waste_percent") public Float waste;
 
 	@Column(name = "sugars") @Embedded public Sugars sugars;
 	@Column(name = "fats") @Embedded public Fats fats;
@@ -52,52 +43,4 @@ public class FoodItem extends Model {
 	@Column(name = "minerals") @Embedded public Minerals minerals;
 
 	public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
-
-	@Converter
-	public static class GramConverter implements AttributeConverter<Nutrient, Float> {
-
-		@Override public Float convertToDatabaseColumn(Nutrient attribute) {
-			return attribute.getValue();
-		}
-
-		@Override public Nutrient convertToEntityAttribute(Float dbData) {
-			return new Nutrient(dbData, Nutrient.Unit.GRAMS);
-		}
-	}
-
-	@Converter
-	public static class MilligramsConverter implements AttributeConverter<Nutrient, Float> {
-
-		@Override public Float convertToDatabaseColumn(Nutrient attribute) {
-			return attribute.getValue();
-		}
-
-		@Override public Nutrient convertToEntityAttribute(Float dbData) {
-			return new Nutrient(dbData, Nutrient.Unit.MILLIGRAMS);
-		}
-	}
-
-	@Converter
-	public static class MicrogramsConverter implements AttributeConverter<Nutrient, Float> {
-
-		@Override public Float convertToDatabaseColumn(Nutrient attribute) {
-			return attribute.getValue();
-		}
-
-		@Override public Nutrient convertToEntityAttribute(Float dbData) {
-			return new Nutrient(dbData, Nutrient.Unit.MICROGRAMS);
-		}
-	}
-
-	@Converter
-	public static class PercentConverter implements AttributeConverter<Nutrient, Float> {
-
-		@Override public Float convertToDatabaseColumn(Nutrient attribute) {
-			return attribute.getValue();
-		}
-
-		@Override public Nutrient convertToEntityAttribute(Float dbData) {
-			return new Nutrient(dbData, Nutrient.Unit.PERCENT);
-		}
-	}
 }

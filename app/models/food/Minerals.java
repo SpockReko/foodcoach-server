@@ -12,26 +12,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Minerals {
 
-	@Convert(converter = FoodItem.MicrogramsConverter.class)
-	@Column(name = "folate_ug") public Nutrient folate;
-	@Convert(converter = FoodItem.MilligramsConverter.class)
-	@Column(name = "phosphorus_mg") public Nutrient phosphorus;
-	@Convert(converter = FoodItem.MicrogramsConverter.class)
-	@Column(name = "iodine_ug") public Nutrient iodine;
-	@Convert(converter = FoodItem.MilligramsConverter.class)
-	@Column(name = "iron_mg") public Nutrient iron;
-	@Convert(converter = FoodItem.MilligramsConverter.class)
-	@Column(name = "calcium_mg") public Nutrient calcium;
-	@Convert(converter = FoodItem.MilligramsConverter.class)
-	@Column(name = "potassium_mg") public Nutrient potassium;
-	@Convert(converter = FoodItem.MilligramsConverter.class)
-	@Column(name = "magnesium_mg") public Nutrient magnesium;
-	@Convert(converter = FoodItem.MilligramsConverter.class)
-	@Column(name = "sodium_mg") public Nutrient sodium;
-	@Convert(converter = FoodItem.GramConverter.class)
-	@Column(name = "salt_g") public Nutrient salt;
-	@Convert(converter = FoodItem.MicrogramsConverter.class)
-	@Column(name = "selenium_ug") public Nutrient selenium;
-	@Convert(converter = FoodItem.MilligramsConverter.class)
-	@Column(name = "zink_mg") public Nutrient zink;
+	@Column(name = "folate_ug") public Float folate;
+	@Column(name = "phosphorus_mg") public Float phosphorus;
+	@Column(name = "iodine_ug") public Float iodine;
+	@Column(name = "iron_mg") public Float iron;
+	@Column(name = "calcium_mg") public Float calcium;
+	@Column(name = "potassium_mg") public Float potassium;
+	@Column(name = "magnesium_mg") public Float magnesium;
+	@Column(name = "sodium_mg") public Float sodium;
+	@Column(name = "salt_g") public Float salt;
+	@Column(name = "selenium_ug") public Float selenium;
+	@Column(name = "zink_mg") public Float zink;
 }
