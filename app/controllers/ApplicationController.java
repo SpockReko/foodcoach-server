@@ -1,6 +1,6 @@
 package controllers;
 
-import parsers.Csv;
+import tools.CsvReader;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -18,7 +18,7 @@ public class ApplicationController extends Controller {
 
 	public Result parseCsv() {
 
-		List<String> lines = Csv.lmvToSql("resources/db/LivsmedelsDB_201702061629.csv");
+		List<String> lines = CsvReader.lmvToSql("resources/db/LivsmedelsDB_201702061629.csv");
 
 		try {
 			PrintStream printStream = new PrintStream(new File("resources/db/scripts/fooditems_seed.sql"));
@@ -27,6 +27,6 @@ public class ApplicationController extends Controller {
 			e.printStackTrace();
 		}
 
-		return ok("Done!");
+		return ok("Done! Parsed " + lines.size() + " records into resources/db/scripts/fooditems_seed.sql");
 	}
 }

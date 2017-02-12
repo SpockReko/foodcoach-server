@@ -9,7 +9,7 @@ GET     /                                   controllers.ApplicationController.in
 GET     /food/:id                           controllers.FoodController.get(id: Int)
 GET     /food/:attribute/:value             controllers.FoodController.search(attribute: String, value: String)
 
-# Parse Csv
+# Parse data
 GET     /parse                              controllers.ApplicationController.parseCsv
 
 # Map static resources from the /public folder to the /assets URL path
