@@ -1,6 +1,7 @@
 package controllers;
 
 import models.food.FoodGroup;
+import models.food.Part;
 import tools.CsvReader;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -29,20 +30,24 @@ public class ApplicationController extends Controller {
 				outputPath = "resources/db/scripts/1_fooditems_seed.sql";
 				break;
 			case "extract_groups":
-				lines = CsvReader.foodMetaToTxt(4);
+				lines = CsvReader.foodMetaToTxt(FoodGroup.class);
 				outputPath = "resources/db/foodgroups.txt";
 				break;
 			case "extract_parts":
-				lines = CsvReader.foodMetaToTxt(6);
+				lines = CsvReader.foodMetaToTxt(Part.class);
 				outputPath = "resources/db/foodparts.txt";
 				break;
-			case "groups":
+			case "groups_to_sql":
 				lines = TxtReader.foodMetaToSql(FoodGroup.class);
 				outputPath = "resources/db/scripts/2_foodgroups_seed.sql";
 				break;
-			case "meta":
-				lines = CsvReader.foodMetaToSql();
-				outputPath = "resources/db/scripts/4_fooditems_meta_seed.sql";
+			case "parts_to_sql":
+				lines = TxtReader.foodMetaToSql(Part.class);
+				outputPath = "resources/db/scripts/4_foodparts_seed.sql";
+				break;
+			case "all_meta_to_sql":
+				lines = TxtReader.foodAllMetaToSql();
+				outputPath = "resources/db/scripts/X_fooditems_meta_seed.sql";
 				break;
 			default:
 				badRequest("No parse operation called '" + operation + "' found on server!");

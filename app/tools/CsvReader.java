@@ -2,6 +2,9 @@ package tools;
 
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
+import models.food.FoodGroup;
+import models.food.FoodItem;
+import models.food.Part;
 
 import java.io.*;
 import java.util.*;
@@ -105,9 +108,17 @@ public class CsvReader {
 	 * Sorts them by LanguaL code.
 	 * @return All unique food metas as a text file.
 	 */
-	public static List<String> foodMetaToTxt(int attribute) {
+	public static List<String> foodMetaToTxt(Class entity) {
 
 		List<String> text = new LinkedList<>();
+		int attribute = -1;
+
+		if (entity.equals(FoodGroup.class)) {
+			attribute = 4;
+		} else if (entity.equals(Part.class)) {
+			attribute = 6;
+		}
+
 		Set<String> set = new TreeSet<>((o1, o2) -> {
 			String[] s1 = o1.split("\\(");
 			String[] s2 = o2.split("\\(");
@@ -125,8 +136,8 @@ public class CsvReader {
 
 		for (String[] cols : allRows) {
 			if (cols[attribute] != null) {
-				String[] groups = cols[attribute].split(";");
-				Collections.addAll(set, groups);
+				String[] metas = cols[attribute].split(";");
+				Collections.addAll(set, metas);
 			}
 		}
 

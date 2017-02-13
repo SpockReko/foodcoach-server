@@ -42,6 +42,7 @@ public class FoodItem extends Model {
 	@Embedded public Minerals minerals;
 
 	@ManyToMany public List<FoodGroup> groups;
+	@ManyToMany public List<Part> parts;
 
 	public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
 }

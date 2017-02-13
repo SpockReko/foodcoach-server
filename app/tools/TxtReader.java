@@ -1,6 +1,7 @@
 package tools;
 
 import models.food.FoodGroup;
+import models.food.Part;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,7 +16,8 @@ import java.util.List;
 public class TxtReader {
 
 	private static final String FOOD_GROUPS = "FoodGroups";
-	private static final String[] GROUPS_COLS = { "name", "langual_code" };
+	private static final String PARTS = "Parts";
+	private static final String[] COLS = { "name", "langual_code" };
 
 	public static List<String> foodAllMetaToSql() {
 
@@ -30,13 +32,14 @@ public class TxtReader {
 
 		List<String> text = new LinkedList<>();
 		String table = "";
-		String[] columns = {};
 		String path = "";
 
 		if (entity.equals(FoodGroup.class)) {
 			table = FOOD_GROUPS;
-			columns = GROUPS_COLS;
 			path = "resources/db/foodgroups.txt";
+		} else if (entity.equals(Part.class)) {
+			table = PARTS;
+			path = "resources/db/foodparts.txt";
 		}
 
 		try (BufferedReader br = new BufferedReader(
@@ -46,13 +49,13 @@ public class TxtReader {
 			while ((line = br.readLine()) != null) {
 				String sql = "";
 
-				String[] parts = line.split("\\(");
+				String[] nameOrCode = line.split("\\(");
 
-				parts[0] = parts[0].trim();
-				parts[1] = parts[1].substring(0, parts[1].length()-1);
+				nameOrCode[0] = nameOrCode[0].trim();
+				nameOrCode[1] = nameOrCode[1].substring(0, nameOrCode[1].length()-1);
 
-				sql += CommonTools.insertHeader(table, columns);
-				sql += "'" + parts[0] + "', '" + parts[1] + "');";
+				sql += CommonTools.insertHeader(table, COLS);
+				sql += "'" + nameOrCode[0] + "', '" + nameOrCode[1] + "');";
 
 				text.add(sql);
 			}

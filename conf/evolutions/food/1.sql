@@ -84,6 +84,19 @@ create table fooditems_foodgroups (
   constraint pk_fooditems_foodgroups primary key (food_items_id,food_groups_id)
 );
 
+create table fooditems_parts (
+  food_items_id                 bigint not null,
+  parts_id                      bigint not null,
+  constraint pk_fooditems_parts primary key (food_items_id,parts_id)
+);
+
+create table parts (
+  id                            bigint auto_increment not null,
+  name                          varchar(255) not null,
+  langual_code                  varchar(255),
+  constraint pk_parts primary key (id)
+);
+
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_foodgroups_parent_id on foodgroups (parent_id);
 
@@ -92,6 +105,12 @@ create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_ite
 
 alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_foodgroups foreign key (food_groups_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (food_groups_id);
+
+alter table fooditems_parts add constraint fk_fooditems_parts_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
+create index ix_fooditems_parts_fooditems on fooditems_parts (food_items_id);
+
+alter table fooditems_parts add constraint fk_fooditems_parts_parts foreign key (parts_id) references parts (id) on delete restrict on update restrict;
+create index ix_fooditems_parts_parts on fooditems_parts (parts_id);
 
 
 # --- !Downs
@@ -105,9 +124,19 @@ drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;
 alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_foodgroups;
 drop index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups;
 
+alter table fooditems_parts drop foreign key fk_fooditems_parts_fooditems;
+drop index ix_fooditems_parts_fooditems on fooditems_parts;
+
+alter table fooditems_parts drop foreign key fk_fooditems_parts_parts;
+drop index ix_fooditems_parts_parts on fooditems_parts;
+
 drop table if exists foodgroups;
 
 drop table if exists fooditems;
 
 drop table if exists fooditems_foodgroups;
+
+drop table if exists fooditems_parts;
+
+drop table if exists parts;
 
