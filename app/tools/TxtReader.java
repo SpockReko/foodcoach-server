@@ -19,15 +19,6 @@ public class TxtReader {
 	private static final String PARTS = "Parts";
 	private static final String[] COLS = { "name", "langual_code" };
 
-	public static List<String> foodAllMetaToSql() {
-
-		List<String> text = new LinkedList<>();
-
-		text.addAll(foodMetaToSql(FoodGroup.class));
-
-		return text;
-	}
-
 	public static List<String> foodMetaToSql(Class entity) {
 
 		List<String> text = new LinkedList<>();
@@ -49,10 +40,7 @@ public class TxtReader {
 			while ((line = br.readLine()) != null) {
 				String sql = "";
 
-				String[] nameOrCode = line.split("\\(");
-
-				nameOrCode[0] = nameOrCode[0].trim();
-				nameOrCode[1] = nameOrCode[1].substring(0, nameOrCode[1].length()-1);
+				String[] nameOrCode = CommonTools.extractNameAndCode(line);
 
 				sql += CommonTools.insertHeader(table, COLS);
 				sql += "'" + nameOrCode[0] + "', '" + nameOrCode[1] + "');";
