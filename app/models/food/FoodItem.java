@@ -1,6 +1,7 @@
 package models.food;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -41,8 +42,8 @@ public class FoodItem extends Model {
 	@Embedded public Vitamins vitamins;
 	@Embedded public Minerals minerals;
 
-	@ManyToMany public List<FoodGroup> groups;
-	@ManyToMany public List<Part> parts;
+	@ManyToMany @JsonManagedReference public List<FoodGroup> groups;
+	@ManyToMany @JsonManagedReference public List<Part> parts;
 
 	public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
 }

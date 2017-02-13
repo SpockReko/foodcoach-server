@@ -1,6 +1,7 @@
 package models.food;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -20,7 +21,7 @@ public class Part extends Model {
 	@Column(nullable = false) public String name;
 	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
-	@ManyToMany(mappedBy = "parts") public List<FoodItem> foodItems;
+	@ManyToMany(mappedBy = "parts") @JsonBackReference public List<FoodItem> foodItems;
 
 	public static Finder<Long, Part> find = new Finder<>(Part.class);
 }
