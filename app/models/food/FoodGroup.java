@@ -19,5 +19,7 @@ public class FoodGroup extends Model {
 	@Column(nullable = false) public String name;
 	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
-	@OneToOne public FoodGroup parent;
+	@ManyToOne public FoodGroup parent;
+
+	public static Finder<Long, FoodGroup> find = new Finder<>(FoodGroup.class);
 }

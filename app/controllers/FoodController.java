@@ -1,5 +1,6 @@
 package controllers;
 
+import models.food.FoodGroup;
 import models.food.FoodItem;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -27,5 +28,15 @@ public class FoodController extends Controller {
 			return badRequest("No attribute called '" + attribute + "' in table FoodItems");
 		}
 		return ok(Json.toJson(foods));
+	}
+
+	public Result group(String code) {
+		List<FoodGroup> groups;
+		try {
+			groups = FoodGroup.find.select("*").where().eq("parent.langualCode", code).findList();
+		} catch (PersistenceException e) {
+			return badRequest("No food group with code '" + code + "' in table FoodGroups");
+		}
+		return ok(Json.toJson(groups));
 	}
 }

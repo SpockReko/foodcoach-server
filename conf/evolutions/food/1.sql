@@ -8,7 +8,6 @@ create table foodgroups (
   name                          varchar(255) not null,
   langual_code                  varchar(255),
   parent_id                     bigint,
-  constraint uq_foodgroups_parent_id unique (parent_id),
   constraint pk_foodgroups primary key (id)
 );
 
@@ -86,6 +85,7 @@ create table fooditems_foodgroups (
 );
 
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
+create index ix_foodgroups_parent_id on foodgroups (parent_id);
 
 alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
 create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_items_id);
@@ -97,6 +97,7 @@ create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (food_gr
 # --- !Downs
 
 alter table foodgroups drop foreign key fk_foodgroups_parent_id;
+drop index ix_foodgroups_parent_id on foodgroups;
 
 alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_fooditems;
 drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;

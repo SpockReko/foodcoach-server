@@ -28,7 +28,7 @@ public class CsvReader {
 			"vitamin_b6_ug", "vitamin_b12_ug", "folate_ug", "phosphorus_mg", "iodine_ug", "iron_mg",
 			"calcium_mg", "potassium_mg", "magnesium_mg", "sodium_mg", "salt_g", "selenium_ug",
 			"zink_mg", "waste_percent" };
-	private static final String[] META_FOOD_COLS = { "scientific_name", "lmv_project", "groups" };
+	private static final String[] META_FOOD_COLS = { "scientific_name", "lmv_project", };
 
 	/**
 	 * Parses Livsmedelsverkets provided Excel-sheet to SQL statements.
@@ -92,7 +92,7 @@ public class CsvReader {
 
 		for (String[] cols : allRows) {
 			String row = "";
-			String[] data = { cols[3], cols[1], cols[4] };
+			String[] data = { cols[3], cols[1] };
 			row += update(META_FOOD_COLS, data, cols[2]);
 			text.add(row);
 		}
@@ -134,7 +134,7 @@ public class CsvReader {
 		return text;
 	}
 
-	private static String insertHeader(String[] tableColumns) {
+	static String insertHeader(String[] tableColumns) {
 		String statement = "";
 		statement += "INSERT INTO " + FOOD_ITEMS + " (";
 		for (int i = 0; i < tableColumns.length - 1; i++) {
