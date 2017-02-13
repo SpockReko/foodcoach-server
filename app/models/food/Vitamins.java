@@ -5,7 +5,7 @@ import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 
 /**
- * This class gets embedded into the {@link FoodItem} class and its corresponding database table.
+ * Gets embedded into the {@link FoodItem} class and its corresponding database table.
  * Contains more meta information about a food items vitamins.
  * @author Fredrik Kindstrom
  */

@@ -3,8 +3,17 @@
 
 # --- !Ups
 
+create table foodgroups (
+  id                            bigint auto_increment not null,
+  name                          varchar(255) not null,
+  langual_code                  varchar(255),
+  parent_id                     bigint,
+  constraint uq_foodgroups_parent_id unique (parent_id),
+  constraint pk_foodgroups primary key (id)
+);
+
 create table fooditems (
-  _id                           bigint auto_increment not null,
+  id                            bigint auto_increment not null,
   name                          varchar(255) not null,
   scientific_name               varchar(255),
   lmv_food_number               bigint,
@@ -67,11 +76,37 @@ create table fooditems (
   selenium_ug                   float,
   zink_mg                       float,
   constraint uq_fooditems_lmv_food_number unique (lmv_food_number),
-  constraint pk_fooditems primary key (_id)
+  constraint pk_fooditems primary key (id)
 );
+
+create table fooditems_foodgroups (
+  food_items_id                 bigint not null,
+  food_groups_id                bigint not null,
+  constraint pk_fooditems_foodgroups primary key (food_items_id,food_groups_id)
+);
+
+alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
+
+alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
+create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_items_id);
+
+alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_foodgroups foreign key (food_groups_id) references foodgroups (id) on delete restrict on update restrict;
+create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (food_groups_id);
 
 
 # --- !Downs
 
+alter table foodgroups drop foreign key fk_foodgroups_parent_id;
+
+alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_fooditems;
+drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;
+
+alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_foodgroups;
+drop index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups;
+
+drop table if exists foodgroups;
+
 drop table if exists fooditems;
+
+drop table if exists fooditems_foodgroups;
 

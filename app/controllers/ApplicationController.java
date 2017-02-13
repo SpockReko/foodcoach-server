@@ -16,9 +16,9 @@ public class ApplicationController extends Controller {
         return ok("It works!");
     }
 
-	public Result parseCsv() {
+	public Result parseBasicFood() {
 
-		List<String> lines = CsvReader.lmvToSql("resources/db/LivsmedelsDB_201702061629.csv");
+		List<String> lines = CsvReader.basicFoodToSql("resources/db/LivsmedelsDB_201702061629.csv");
 
 		try {
 			PrintStream printStream = new PrintStream(new File("resources/db/scripts/fooditems_seed.sql"));
@@ -28,5 +28,19 @@ public class ApplicationController extends Controller {
 		}
 
 		return ok("Done! Parsed " + lines.size() + " records into resources/db/scripts/fooditems_seed.sql");
+	}
+
+	public Result parseMetaFood() {
+
+		List<String> lines = CsvReader.metaFoodToSql("resources/db/LivsmedelsDB_Meta_201702011104.csv");
+
+		try {
+			PrintStream printStream = new PrintStream(new File("resources/db/scripts/fooditems_meta_seed.sql"));
+			lines.forEach(printStream::println);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return ok("Done! Parsed " + lines.size() + " records into resources/db/scripts/fooditems_meta_seed.sql");
 	}
 }

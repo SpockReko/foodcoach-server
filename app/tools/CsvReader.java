@@ -8,14 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This class contains logic for parsing CSV (Comma Separated Values) files.
+ * Contains logic for parsing CSV (Comma Separated Values) files.
  * @author Fredrik Kindstrom
  */
 public class CsvReader {
 
-	private static final String TABLE = "FoodItems";
 	private static final String NULL = "NULL";
-	private static final String[] COLUMNS =
+	private static final String FOOD_ITEMS = "FoodItems";
+	private static final String[] BASIC_FOOD_COLS =
 		{ "name", "lmv_food_number", "energy_kcal", "energy_kj", "carbohydrates_g", "fat_g",
 			"protein_g", "fibre_g", "water_g", "alcohol_g", "ash_g", "monosaccharides_g",
 			"disaccharides_g", "sucrose_g", "whole_grain_g", "sugars_g", "sum_saturated_fats_g",
@@ -29,6 +29,7 @@ public class CsvReader {
 			"vitamin_b6_ug", "vitamin_b12_ug", "folate_ug", "phosphorus_mg", "iodine_ug", "iron_mg",
 			"calcium_mg", "potassium_mg", "magnesium_mg", "sodium_mg", "salt_g", "selenium_ug",
 			"zink_mg", "waste_percent" };
+	private static final String[] META_FOOD_COLS = { "scientific_name", "lmv_project" };
 
 	/**
 	 * Parses Livsmedelsverkets provided Excel-sheet to SQL statements.
@@ -36,7 +37,7 @@ public class CsvReader {
 	 * @return A list of all the SQL INSERT rows. Every string corresponds to
 	 * an insert statement for one record in the database.
 	 */
-	public static List<String> lmvToSql(String path) {
+	public static List<String> basicFoodToSql(String path) {
 
 		List<String> text = new LinkedList<>();
 
@@ -50,7 +51,7 @@ public class CsvReader {
 
 		for (String[] cols : allRows) {
 			String row = "";
-			row += header();
+			row += insertHeader(BASIC_FOOD_COLS);
 			for (int i = 0; i < cols.length - 1; i++) {
 				if (cols[i].equals(NULL)) {
 					row += cols[i] + ", ";
@@ -69,15 +70,49 @@ public class CsvReader {
 		return text;
 	}
 
-	private static String header() {
-		String insert = "";
-		insert += "INSERT INTO " + TABLE + " (";
-		for (int i = 0; i < COLUMNS.length - 1; i++) {
-			insert += COLUMNS[i] + ", ";
+	public static List<String> metaFoodToSql(String path) {
+
+		List<String> text = new LinkedList<>();
+
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.getFormat().setLineSeparator("\n");
+		settings.getFormat().setDelimiter(',');
+		settings.setNumberOfRowsToSkip(1);
+
+		CsvParser parser = new CsvParser(settings);
+		List<String[]> allRows = parser.parseAll(getReader(path));
+
+		for (String[] cols : allRows) {
+			String row = "";
+			String[] data = { cols[3], cols[1] };
+			row += update(META_FOOD_COLS, data, cols[2]);
+			text.add(row);
 		}
-		insert += COLUMNS[COLUMNS.length - 1];
-		insert += ") VALUES (";
-		return insert;
+
+		return text;
+	}
+
+	private static String insertHeader(String[] tableColumns) {
+		String statement = "";
+		statement += "INSERT INTO " + FOOD_ITEMS + " (";
+		for (int i = 0; i < tableColumns.length - 1; i++) {
+			statement += tableColumns[i] + ", ";
+		}
+		statement += tableColumns[tableColumns.length - 1];
+		statement += ") VALUES (";
+		return statement;
+	}
+
+	private static String update(String[] tableColumns, String[] data,
+		String lmvFoodNumber) {
+		String statement = "";
+		statement += "UPDATE " + FOOD_ITEMS + " SET ";
+		for (int i = 0; i < tableColumns.length - 1; i++) {
+			statement += tableColumns[i] + " = '" + data[i] + "', ";
+		}
+		statement += tableColumns[tableColumns.length - 1] + " = '" + data[data.length - 1] + "'";
+		statement += " WHERE lmv_food_number = " + lmvFoodNumber;
+		return statement;
 	}
 
 	private static Reader getReader(String path) {
