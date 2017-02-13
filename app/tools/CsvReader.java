@@ -4,8 +4,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contains logic for parsing CSV (Comma Separated Values) files.
@@ -29,15 +28,14 @@ public class CsvReader {
 			"vitamin_b6_ug", "vitamin_b12_ug", "folate_ug", "phosphorus_mg", "iodine_ug", "iron_mg",
 			"calcium_mg", "potassium_mg", "magnesium_mg", "sodium_mg", "salt_g", "selenium_ug",
 			"zink_mg", "waste_percent" };
-	private static final String[] META_FOOD_COLS = { "scientific_name", "lmv_project" };
+	private static final String[] META_FOOD_COLS = { "scientific_name", "lmv_project", "groups" };
 
 	/**
 	 * Parses Livsmedelsverkets provided Excel-sheet to SQL statements.
-	 * @param path The path to the data as a csv file.
 	 * @return A list of all the SQL INSERT rows. Every string corresponds to
 	 * an insert statement for one record in the database.
 	 */
-	public static List<String> basicFoodToSql(String path) {
+	public static List<String> basicFoodToSql() {
 
 		List<String> text = new LinkedList<>();
 
@@ -47,7 +45,8 @@ public class CsvReader {
 		settings.setNumberOfRowsToSkip(1);
 
 		CsvParser parser = new CsvParser(settings);
-		List<String[]> allRows = parser.parseAll(getReader(path));
+		List<String[]> allRows = parser.parseAll(getReader(
+			"resources/db/LivsmedelsDB_201702061629.csv"));
 
 		for (String[] cols : allRows) {
 			String row = "";
@@ -70,7 +69,15 @@ public class CsvReader {
 		return text;
 	}
 
-	public static List<String> metaFoodToSql(String path) {
+	/**
+	 * Parses meta information about each food not available in the Excel-sheet.
+	 * This is gathered from Livsmedelsverkets website through scraping.
+	 * The SQL this returns has to be executed on the database
+	 * after the Basic Food SQL has been executed!
+	 * @return A list of all the SQL UPDATE rows. Every string corresponds to
+	 * an update query for one record in the database.
+	 */
+	public static List<String> metaFoodToSql() {
 
 		List<String> text = new LinkedList<>();
 
@@ -80,15 +87,50 @@ public class CsvReader {
 		settings.setNumberOfRowsToSkip(1);
 
 		CsvParser parser = new CsvParser(settings);
-		List<String[]> allRows = parser.parseAll(getReader(path));
+		List<String[]> allRows = parser.parseAll(getReader(
+			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
 
 		for (String[] cols : allRows) {
 			String row = "";
-			String[] data = { cols[3], cols[1] };
+			String[] data = { cols[3], cols[1], cols[4] };
 			row += update(META_FOOD_COLS, data, cols[2]);
 			text.add(row);
 		}
 
+		return text;
+	}
+
+	/**
+	 * Extracts all unique food groups from the scraped meta information.
+	 * Sorts them by LanguaL code.
+	 * @return All unique food groups as a text file.
+	 */
+	public static List<String> foodGroupsToTxt() {
+
+		List<String> text = new LinkedList<>();
+		Set<String> set = new TreeSet<>((o1, o2) -> {
+			String[] s1 = o1.split("\\(");
+			String[] s2 = o2.split("\\(");
+			return s1[1].compareTo(s2[1]);
+		});
+
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.getFormat().setLineSeparator("\n");
+		settings.getFormat().setDelimiter(',');
+		settings.setNumberOfRowsToSkip(1);
+
+		CsvParser parser = new CsvParser(settings);
+		List<String[]> allRows = parser.parseAll(getReader(
+			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
+
+		for (String[] cols : allRows) {
+			if (cols[4] != null) {
+				String[] groups = cols[4].split(";");
+				Collections.addAll(set, groups);
+			}
+		}
+
+		text.addAll(set);
 		return text;
 	}
 
@@ -111,7 +153,7 @@ public class CsvReader {
 			statement += tableColumns[i] + " = '" + data[i] + "', ";
 		}
 		statement += tableColumns[tableColumns.length - 1] + " = '" + data[data.length - 1] + "'";
-		statement += " WHERE lmv_food_number = " + lmvFoodNumber;
+		statement += " WHERE lmv_food_number = " + lmvFoodNumber + ";";
 		return statement;
 	}
 
