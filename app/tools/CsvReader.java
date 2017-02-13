@@ -35,7 +35,7 @@ public class CsvReader {
 	 * @return A list of all the SQL INSERT rows. Every string corresponds to
 	 * an insert statement for one record in the database.
 	 */
-	public static List<String> basicFoodToSql() {
+	public static List<String> foodBasicToSql() {
 
 		List<String> text = new LinkedList<>();
 
@@ -45,12 +45,12 @@ public class CsvReader {
 		settings.setNumberOfRowsToSkip(1);
 
 		CsvParser parser = new CsvParser(settings);
-		List<String[]> allRows = parser.parseAll(getReader(
+		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
 			"resources/db/LivsmedelsDB_201702061629.csv"));
 
 		for (String[] cols : allRows) {
 			String row = "";
-			row += insertHeader(BASIC_FOOD_COLS);
+			row += CommonTools.insertHeader(FOOD_ITEMS, BASIC_FOOD_COLS);
 			for (int i = 0; i < cols.length - 1; i++) {
 				if (cols[i].equals(NULL)) {
 					row += cols[i] + ", ";
@@ -77,7 +77,7 @@ public class CsvReader {
 	 * @return A list of all the SQL UPDATE rows. Every string corresponds to
 	 * an update query for one record in the database.
 	 */
-	public static List<String> metaFoodToSql() {
+	public static List<String> foodMetaToSql() {
 
 		List<String> text = new LinkedList<>();
 
@@ -87,7 +87,7 @@ public class CsvReader {
 		settings.setNumberOfRowsToSkip(1);
 
 		CsvParser parser = new CsvParser(settings);
-		List<String[]> allRows = parser.parseAll(getReader(
+		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
 			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
 
 		for (String[] cols : allRows) {
@@ -101,11 +101,11 @@ public class CsvReader {
 	}
 
 	/**
-	 * Extracts all unique food groups from the scraped meta information.
+	 * Extracts all unique instances of one food meta from the scraped meta information.
 	 * Sorts them by LanguaL code.
-	 * @return All unique food groups as a text file.
+	 * @return All unique food metas as a text file.
 	 */
-	public static List<String> foodGroupsToTxt() {
+	public static List<String> foodMetaToTxt(int attribute) {
 
 		List<String> text = new LinkedList<>();
 		Set<String> set = new TreeSet<>((o1, o2) -> {
@@ -120,29 +120,18 @@ public class CsvReader {
 		settings.setNumberOfRowsToSkip(1);
 
 		CsvParser parser = new CsvParser(settings);
-		List<String[]> allRows = parser.parseAll(getReader(
+		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
 			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
 
 		for (String[] cols : allRows) {
-			if (cols[4] != null) {
-				String[] groups = cols[4].split(";");
+			if (cols[attribute] != null) {
+				String[] groups = cols[attribute].split(";");
 				Collections.addAll(set, groups);
 			}
 		}
 
 		text.addAll(set);
 		return text;
-	}
-
-	static String insertHeader(String[] tableColumns) {
-		String statement = "";
-		statement += "INSERT INTO " + FOOD_ITEMS + " (";
-		for (int i = 0; i < tableColumns.length - 1; i++) {
-			statement += tableColumns[i] + ", ";
-		}
-		statement += tableColumns[tableColumns.length - 1];
-		statement += ") VALUES (";
-		return statement;
 	}
 
 	private static String update(String[] tableColumns, String[] data,
@@ -155,13 +144,5 @@ public class CsvReader {
 		statement += tableColumns[tableColumns.length - 1] + " = '" + data[data.length - 1] + "'";
 		statement += " WHERE lmv_food_number = " + lmvFoodNumber + ";";
 		return statement;
-	}
-
-	private static Reader getReader(String path) {
-		try {
-			return new BufferedReader(new FileReader(path));
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("Unable to read input", e);
-		}
 	}
 }

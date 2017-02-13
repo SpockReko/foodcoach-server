@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 /**
  * Represents a food group that every {@link FoodItem} can be associated with.
@@ -20,6 +21,7 @@ public class FoodGroup extends Model {
 	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
 	@ManyToOne public FoodGroup parent;
+	@ManyToMany(mappedBy = "groups") public List<FoodItem> foodItems;
 
 	public static Finder<Long, FoodGroup> find = new Finder<>(FoodGroup.class);
 }
