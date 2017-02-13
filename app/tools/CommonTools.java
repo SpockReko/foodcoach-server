@@ -28,4 +28,13 @@ class CommonTools {
 		statement += ") VALUES (";
 		return statement;
 	}
+
+	static String[] extractNameAndCode(String line) {
+		String[] nameOrCode = line.split("\\(");
+
+		nameOrCode[0] = nameOrCode[0].trim();
+		nameOrCode[1] = nameOrCode[1].substring(0, nameOrCode[1].length()-1);
+
+		return nameOrCode;
+	}
 }

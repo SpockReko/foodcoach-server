@@ -49,6 +49,10 @@ public class ApplicationController extends Controller {
 				lines = TxtReader.foodAllMetaToSql();
 				outputPath = "resources/db/scripts/X_fooditems_meta_seed.sql";
 				break;
+			case "update_links":
+				lines = CsvReader.updateLinksFromCsv();
+				outputPath = "resources/db/scripts/X_fooditems_meta_seed.sql";
+				break;
 			default:
 				badRequest("No parse operation called '" + operation + "' found on server!");
 		}

@@ -1,10 +1,12 @@
 package tools;
 
+import com.avaje.ebean.Model;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import models.food.FoodGroup;
 import models.food.FoodItem;
 import models.food.Part;
+import play.Logger;
 
 import java.io.*;
 import java.util.*;
@@ -103,6 +105,34 @@ public class CsvReader {
 		return text;
 	}
 
+
+	public static List<String> updateLinksFromCsv() {
+
+		List<String> text = new LinkedList<>();
+
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.getFormat().setLineSeparator("\n");
+		settings.getFormat().setDelimiter(',');
+		settings.setNumberOfRowsToSkip(1);
+
+		CsvParser parser = new CsvParser(settings);
+		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
+			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
+
+		for (String[] cols : allRows) {
+			String sql = "";
+			FoodItem item = FoodItem.find.where().eq("lmvFoodNumber", cols[2]).findUnique();
+			if (cols[4] != null) {
+				String[] nameOrCode = CommonTools.extractNameAndCode(cols[4]);
+				FoodGroup group = FoodGroup.find.where().eq("langualCode", nameOrCode[1]).findUnique();
+				if (group != null) sql = insertLink(item, group);
+			}
+			text.add(sql);
+		}
+
+		return text;
+	}
+
 	/**
 	 * Extracts all unique instances of one food meta from the scraped meta information.
 	 * Sorts them by LanguaL code.
@@ -154,6 +184,22 @@ public class CsvReader {
 		}
 		statement += tableColumns[tableColumns.length - 1] + " = '" + data[data.length - 1] + "'";
 		statement += " WHERE lmv_food_number = " + lmvFoodNumber + ";";
+		return statement;
+	}
+
+	private static String insertLink(FoodItem item, Model link) {
+		String table = "fooditems_";
+		String linkName = "";
+		long linkId = 0;
+		if (link instanceof FoodGroup) {
+			linkId = ((FoodGroup) link).id;
+			table += "foodgroups";
+			linkName = "food_groups_id";
+		}
+		String statement = "";
+		statement += "INSERT INTO " + table + " (food_items_id, ";
+		statement += linkName + ") VALUES (";
+		statement += item.id + ", " + linkId + ");";
 		return statement;
 	}
 }
