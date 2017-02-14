@@ -1,14 +1,14 @@
 package tools;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.Model;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import models.food.FoodGroup;
 import models.food.FoodItem;
 import models.food.Part;
-import play.Logger;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -17,6 +17,7 @@ import java.util.*;
  */
 public class CsvReader {
 
+	private static EbeanServer db;
 	private static final String NULL = "NULL";
 	private static final String FOOD_ITEMS = "FoodItems";
 	private static final String[] BASIC_FOOD_COLS =
@@ -74,41 +75,19 @@ public class CsvReader {
 		return text;
 	}
 
-	/**
-	 * Parses meta information about each food not available in the Excel-sheet.
-	 * This is gathered from Livsmedelsverkets website through scraping.
-	 * The SQL this returns has to be executed on the database
-	 * after the Basic Food SQL has been executed!
-	 * @return A list of all the SQL UPDATE rows. Every string corresponds to
-	 * an update query for one record in the database.
-	 */
-	public static List<String> foodMetaToSql() {
+	public static List<String> linkGroups(Class<? extends Model> entity) {
 
+		db = Ebean.getDefaultServer();
 		List<String> text = new LinkedList<>();
+		int column;
 
-		CsvParserSettings settings = new CsvParserSettings();
-		settings.getFormat().setLineSeparator("\n");
-		settings.getFormat().setDelimiter(',');
-		settings.setNumberOfRowsToSkip(1);
-
-		CsvParser parser = new CsvParser(settings);
-		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
-			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
-
-		for (String[] cols : allRows) {
-			String row = "";
-			String[] data = { cols[3], cols[1] };
-			row += update(META_FOOD_COLS, data, cols[2]);
-			text.add(row);
+		if (entity.equals(FoodGroup.class)) {
+			column = 4;
+		} else if (entity.equals(Part.class)) {
+			column = 6;
+		} else {
+			throw new IllegalArgumentException("Not a valid model!");
 		}
-
-		return text;
-	}
-
-
-	public static List<String> updateLinksFromCsv() {
-
-		List<String> text = new LinkedList<>();
 
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
@@ -121,11 +100,11 @@ public class CsvReader {
 
 		for (String[] cols : allRows) {
 			String sql = "";
-			FoodItem item = FoodItem.find.where().eq("lmvFoodNumber", cols[2]).findUnique();
-			if (cols[4] != null) {
-				String[] nameOrCode = CommonTools.extractNameAndCode(cols[4]);
-				FoodGroup group = FoodGroup.find.where().eq("langualCode", nameOrCode[1]).findUnique();
-				if (group != null) sql = insertLink(item, group);
+			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", cols[2]).findUnique();
+			if (cols[column] != null) {
+				String[] nameOrCode = CommonTools.extractNameAndCode(cols[column]);
+				Model link = db.find(entity).where().eq("langualCode", nameOrCode[1]).findUnique();
+				if (link != null) sql = insertLink(item, link);
 			}
 			text.add(sql);
 		}
@@ -195,6 +174,10 @@ public class CsvReader {
 			linkId = ((FoodGroup) link).id;
 			table += "foodgroups";
 			linkName = "food_groups_id";
+		} else if (link instanceof Part) {
+			linkId = ((Part) link).id;
+			table += "parts";
+			linkName = "parts_id";
 		}
 		String statement = "";
 		statement += "INSERT INTO " + table + " (food_items_id, ";

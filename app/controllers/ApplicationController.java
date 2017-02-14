@@ -1,5 +1,7 @@
 package controllers;
 
+import models.food.FoodGroup;
+import models.food.Part;
 import play.mvc.Controller;
 import play.mvc.Result;
 import tools.CsvReader;
@@ -22,9 +24,13 @@ public class ApplicationController extends Controller {
 		String outputPath = "";
 
 		switch (operation.toLowerCase()) {
-			case "update_links":
-				lines = CsvReader.updateLinksFromCsv();
-				outputPath = "resources/db/scripts/X_fooditems_meta_seed.sql";
+			case "link_groups":
+				lines = CsvReader.linkGroups(FoodGroup.class);
+				outputPath = "resources/db/scripts/X_fooditems_foodgroups_seed.sql";
+				break;
+			case "link_parts":
+				lines = CsvReader.linkGroups(Part.class);
+				outputPath = "resources/db/scripts/X_fooditems_foodparts_seed.sql";
 				break;
 			default:
 				badRequest("No parse operation called '" + operation + "' found on server!");

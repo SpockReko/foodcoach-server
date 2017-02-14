@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by fredrikkindstrom on 2017-02-13.
@@ -30,11 +33,16 @@ class CommonTools {
 	}
 
 	static String[] extractNameAndCode(String line) {
-		String[] nameOrCode = line.split("\\(");
+		String code = "";
+		Pattern pattern = Pattern.compile("[A-Z]\\d{4}");
+		Matcher matcher = pattern.matcher(line);
+		if (matcher.find()) code = matcher.group(0);
+		String name = line.split("[A-Z]\\d{4}")[0];
+		if (name.contains("()")) {
+			name = name.substring(0, name.length()-1);
+		}
+		name = name.substring(0, name.length()-1);
 
-		nameOrCode[0] = nameOrCode[0].trim();
-		nameOrCode[1] = nameOrCode[1].substring(0, nameOrCode[1].length()-1);
-
-		return nameOrCode;
+		return new String[] { name.trim(), code };
 	}
 }

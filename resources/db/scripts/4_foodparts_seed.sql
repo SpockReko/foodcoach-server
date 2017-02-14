@@ -1,4 +1,4 @@
-INSERT INTO Parts (name, langual_code) VALUES ('Inte tillämpligt', '');
+INSERT INTO Parts (name, langual_code) VALUES ('Inte tillämpligt', NULL);
 INSERT INTO Parts (name, langual_code) VALUES ('Del av växt eller djur inte känt', 'C0001');
 INSERT INTO Parts (name, langual_code) VALUES ('Stam', 'C0101');
 INSERT INTO Parts (name, langual_code) VALUES ('Kött del', 'C0103');
@@ -79,5 +79,5 @@ INSERT INTO Parts (name, langual_code) VALUES ('Olja från skal', 'C0302');
 INSERT INTO Parts (name, langual_code) VALUES ('Rot', 'C0306');
 INSERT INTO Parts (name, langual_code) VALUES ('Olja från frön', 'C0307');
 INSERT INTO Parts (name, langual_code) VALUES ('Knöl', 'C0308');
-INSERT INTO Parts (name, langual_code) VALUES ('Mjöl, grodd och kli borttaget', 'Endosperm)');
-INSERT INTO Parts (name, langual_code) VALUES ('Del av växt eller djur inte applicerbart', 'kemiskt ämne)');
+INSERT INTO Parts (name, langual_code) VALUES ('Mjöl, grodd och kli borttaget (Endosperm)', 'C0208');
+INSERT INTO Parts (name, langual_code) VALUES ('Del av växt eller djur inte applicerbart (kemiskt ämne)', 'C0005');

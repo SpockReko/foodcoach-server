@@ -1,5 +1,6 @@
 package tools;
 
+import com.avaje.ebean.Model;
 import models.food.FoodGroup;
 import models.food.Part;
 
@@ -19,7 +20,7 @@ public class TxtReader {
 	private static final String PARTS = "Parts";
 	private static final String[] COLS = { "name", "langual_code" };
 
-	public static List<String> foodMetaToSql(Class entity) {
+	public static List<String> foodMetaToSql(Class<? extends Model> entity) {
 
 		List<String> text = new LinkedList<>();
 		String table = "";
@@ -43,7 +44,11 @@ public class TxtReader {
 				String[] nameOrCode = CommonTools.extractNameAndCode(line);
 
 				sql += CommonTools.insertHeader(table, COLS);
-				sql += "'" + nameOrCode[0] + "', '" + nameOrCode[1] + "');";
+				if (nameOrCode[1].isEmpty()) {
+					sql += "'" + nameOrCode[0] + "', NULL);";
+				} else {
+					sql += "'" + nameOrCode[0] + "', '" + nameOrCode[1] + "');";
+				}
 
 				text.add(sql);
 			}

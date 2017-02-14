@@ -40,7 +40,8 @@ public class DatabaseGenerator implements Runnable {
 		printToFile();
 		printDone();
 
-		System.out.println("Identifying unique entities");
+		System.out.println("Begin parsing meta information...");
+		System.out.println("Identifying unique entities...");
 		for (int i = 0; i < entities.length; i++) {
 			System.out.print("Identifying " + CYAN + entities[i].getSimpleName() + "s" + RESET + "... ");
 			lines = CsvReader.foodMetaToTxt(entities[i]);
