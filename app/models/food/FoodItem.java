@@ -45,5 +45,7 @@ public class FoodItem extends Model {
 	@ManyToMany @JsonManagedReference public List<FoodGroup> groups;
 	@ManyToMany @JsonManagedReference public List<Part> parts;
 
+	@ManyToOne public LangualTerm physicalForm;
+
 	public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
 }

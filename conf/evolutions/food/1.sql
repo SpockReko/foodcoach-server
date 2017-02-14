@@ -74,6 +74,7 @@ create table fooditems (
   salt_g                        float,
   selenium_ug                   float,
   zink_mg                       float,
+  physical_form_code            varchar(255),
   constraint uq_fooditems_lmv_food_number unique (lmv_food_number),
   constraint pk_fooditems primary key (id)
 );
@@ -90,6 +91,12 @@ create table fooditems_parts (
   constraint pk_fooditems_parts primary key (food_items_id,parts_id)
 );
 
+create table langualterms (
+  code                          varchar(255) not null,
+  name                          varchar(255) not null,
+  constraint pk_langualterms primary key (code)
+);
+
 create table parts (
   id                            bigint auto_increment not null,
   name                          varchar(255) not null,
@@ -99,6 +106,9 @@ create table parts (
 
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_foodgroups_parent_id on foodgroups (parent_id);
+
+alter table fooditems add constraint fk_fooditems_physical_form_code foreign key (physical_form_code) references langualterms (code) on delete restrict on update restrict;
+create index ix_fooditems_physical_form_code on fooditems (physical_form_code);
 
 alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
 create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_items_id);
@@ -117,6 +127,9 @@ create index ix_fooditems_parts_parts on fooditems_parts (parts_id);
 
 alter table foodgroups drop foreign key fk_foodgroups_parent_id;
 drop index ix_foodgroups_parent_id on foodgroups;
+
+alter table fooditems drop foreign key fk_fooditems_physical_form_code;
+drop index ix_fooditems_physical_form_code on fooditems;
 
 alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_fooditems;
 drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;
@@ -137,6 +150,8 @@ drop table if exists fooditems;
 drop table if exists fooditems_foodgroups;
 
 drop table if exists fooditems_parts;
+
+drop table if exists langualterms;
 
 drop table if exists parts;
 

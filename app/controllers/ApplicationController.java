@@ -32,6 +32,9 @@ public class ApplicationController extends Controller {
 				lines = CsvReader.linkFoods(Part.class);
 				outputPath = "resources/db/scripts/X_fooditems_foodparts_seed.sql";
 				break;
+			case "langual":
+				CsvReader.addTermToFoods();
+				break;
 			default:
 				badRequest("No parse operation called '" + operation + "' found on server!");
 		}
@@ -43,7 +46,7 @@ public class ApplicationController extends Controller {
 			e.printStackTrace();
 		}
 
-		return ok("Done! Parsed " + lines.size() + " records into " + outputPath);
+		return ok("Done! parsed into " + outputPath);
 	}
 
 }

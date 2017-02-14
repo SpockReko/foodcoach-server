@@ -7,6 +7,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import models.food.FoodGroup;
 import models.food.FoodItem;
+import models.food.LangualTerm;
 import models.food.Part;
 
 import java.util.*;
@@ -80,7 +81,7 @@ public class CsvReader {
 	 * Sorts them by LanguaL code.
 	 * @return All unique food metas as a text file.
 	 */
-	public static List<String> foodMetaToTxt(Class entity) {
+	public static List<String> uniqueTermToTxt(Class entity) {
 
 		List<String> text = new LinkedList<>();
 		int attribute = -1;
@@ -146,13 +147,45 @@ public class CsvReader {
 				String[] values = row[entityCol].split(";");
 				for (String value : values) {
 					String[] nameOrCode = CommonTools.extractNameAndCode(value);
-					Model link = db.find(entity).where().eq("langualCode", nameOrCode[1]).findUnique();
+					Model link = db.find(entity).where().eq("code", nameOrCode[1]).findUnique();
 					if (link != null) text.add(insertLink(item, link));
 				}
 			}
 		}
 
 		return text;
+	}
+
+	public static void addTermToFoods() {
+		db = Ebean.getDefaultServer();
+
+		List<String> text = new LinkedList<>();
+		int entityCol = 7;
+
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.getFormat().setLineSeparator("\n");
+		settings.getFormat().setDelimiter(',');
+		settings.setNumberOfRowsToSkip(1);
+
+		CsvParser parser = new CsvParser(settings);
+		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
+			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
+
+		for (String[] row : allRows) {
+			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
+			if (row[entityCol] != null) {
+				String[] nameOrCode = CommonTools.extractNameAndCode(row[entityCol]);
+				LangualTerm term;
+				if (db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findCount() == 0) {
+					term = new LangualTerm(nameOrCode[1], nameOrCode[0]);
+					term.save();
+				} else {
+					term = db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findUnique();
+				}
+				item.physicalForm = term;
+				item.save();
+			}
+		}
 	}
 
 	private static String update(String[] tableColumns, String[] data,

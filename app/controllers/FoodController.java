@@ -33,7 +33,7 @@ public class FoodController extends Controller {
 	public Result group(String code) {
 		List<FoodGroup> groups;
 		try {
-			groups = FoodGroup.find.select("*").where().eq("parent.langualCode", code).findList();
+			groups = FoodGroup.find.select("*").where().eq("parent.code", code).findList();
 		} catch (PersistenceException e) {
 			return badRequest("No food group with code '" + code + "' in table FoodGroups");
 		}
