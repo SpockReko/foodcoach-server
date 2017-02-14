@@ -75,43 +75,6 @@ public class CsvReader {
 		return text;
 	}
 
-	public static List<String> linkGroups(Class<? extends Model> entity) {
-
-		db = Ebean.getDefaultServer();
-		List<String> text = new LinkedList<>();
-		int column;
-
-		if (entity.equals(FoodGroup.class)) {
-			column = 4;
-		} else if (entity.equals(Part.class)) {
-			column = 6;
-		} else {
-			throw new IllegalArgumentException("Not a valid model!");
-		}
-
-		CsvParserSettings settings = new CsvParserSettings();
-		settings.getFormat().setLineSeparator("\n");
-		settings.getFormat().setDelimiter(',');
-		settings.setNumberOfRowsToSkip(1);
-
-		CsvParser parser = new CsvParser(settings);
-		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
-			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
-
-		for (String[] cols : allRows) {
-			String sql = "";
-			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", cols[2]).findUnique();
-			if (cols[column] != null) {
-				String[] nameOrCode = CommonTools.extractNameAndCode(cols[column]);
-				Model link = db.find(entity).where().eq("langualCode", nameOrCode[1]).findUnique();
-				if (link != null) sql = insertLink(item, link);
-			}
-			text.add(sql);
-		}
-
-		return text;
-	}
-
 	/**
 	 * Extracts all unique instances of one food meta from the scraped meta information.
 	 * Sorts them by LanguaL code.
@@ -151,6 +114,44 @@ public class CsvReader {
 		}
 
 		text.addAll(set);
+		return text;
+	}
+
+	public static List<String> linkFoods(Class<? extends Model> entity) {
+		db = Ebean.getDefaultServer();
+
+		List<String> text = new LinkedList<>();
+		int entityCol;
+
+		if (entity.equals(FoodGroup.class)) {
+			entityCol = 4;
+		} else if (entity.equals(Part.class)) {
+			entityCol = 6;
+		} else {
+			throw new IllegalArgumentException("Not a valid model!");
+		}
+
+		CsvParserSettings settings = new CsvParserSettings();
+		settings.getFormat().setLineSeparator("\n");
+		settings.getFormat().setDelimiter(',');
+		settings.setNumberOfRowsToSkip(1);
+
+		CsvParser parser = new CsvParser(settings);
+		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
+			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
+
+		for (String[] row : allRows) {
+			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
+			if (row[entityCol] != null) {
+				String[] values = row[entityCol].split(";");
+				for (String value : values) {
+					String[] nameOrCode = CommonTools.extractNameAndCode(value);
+					Model link = db.find(entity).where().eq("langualCode", nameOrCode[1]).findUnique();
+					if (link != null) text.add(insertLink(item, link));
+				}
+			}
+		}
+
 		return text;
 	}
 

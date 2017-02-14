@@ -25,11 +25,11 @@ public class ApplicationController extends Controller {
 
 		switch (operation.toLowerCase()) {
 			case "link_groups":
-				lines = CsvReader.linkGroups(FoodGroup.class);
+				lines = CsvReader.linkFoods(FoodGroup.class);
 				outputPath = "resources/db/scripts/X_fooditems_foodgroups_seed.sql";
 				break;
 			case "link_parts":
-				lines = CsvReader.linkGroups(Part.class);
+				lines = CsvReader.linkFoods(Part.class);
 				outputPath = "resources/db/scripts/X_fooditems_foodparts_seed.sql";
 				break;
 			default:
