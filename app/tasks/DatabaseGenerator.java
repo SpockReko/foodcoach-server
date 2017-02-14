@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by fredrikkindstrom on 2017-02-13.
  */
-public class DatabaseGenerator implements Runnable {
+public class DatabaseGenerator {
 
 	private static final String GREEN = "\u001B[32m";
 	private static final String YELLOW = "\u001B[33m";
@@ -31,7 +31,7 @@ public class DatabaseGenerator implements Runnable {
 	private static final String[] sqlPaths = {
 		"resources/db/scripts/2_foodgroups_seed.sql", "resources/db/scripts/4_foodparts_seed.sql" };
 
-	@Override public void run() {
+	public static void main(String[] args) {
 		System.out.println("\n" + PURPLE + "--- (Generating database scripts) ---\n" + RESET);
 
 		System.out.print("Parsing Livsmedelsverkets Excel into SQL... ");
@@ -44,7 +44,7 @@ public class DatabaseGenerator implements Runnable {
 		System.out.println("Identifying unique entities...");
 		for (int i = 0; i < entities.length; i++) {
 			System.out.print("Identifying " + CYAN + entities[i].getSimpleName() + "s" + RESET + "... ");
-			lines = CsvReader.foodMetaToTxt(entities[i]);
+			lines = CsvReader.uniqueTermToTxt(entities[i]);
 			outputPath = txtPaths[i];
 			printToFile();
 			printDone();
@@ -62,7 +62,7 @@ public class DatabaseGenerator implements Runnable {
 		System.out.println();
 	}
 
-	private void printToFile() {
+	private static void printToFile() {
 		try {
 			PrintStream printStream = new PrintStream(new File(outputPath));
 			if (lines != null) lines.forEach(printStream::println);
@@ -70,7 +70,7 @@ public class DatabaseGenerator implements Runnable {
 			Logger.error("ParseError: cant write to path " + outputPath);
 		}
 	}
-	private void printDone() {
+	private static void printDone() {
 		System.out.println(GREEN + "Done" + RESET);
 		//System.out.print(YELLOW + lines.size() + RESET);
 		//System.out.println(" records into " + outputPath);
