@@ -25,14 +25,14 @@ public class ApplicationController extends Controller {
 
 		switch (operation.toLowerCase()) {
 			case "link_groups":
-				lines = CsvReader.linkFoods(FoodGroup.class);
-				outputPath = "resources/db/scripts/X_fooditems_foodgroups_seed.sql";
+//				lines = CsvReader.linkFoods(FoodGroup.class);
+//				outputPath = "resources/db/scripts/X_fooditems_foodgroups_seed.sql";
 				break;
 			case "langual":
-				for (LangualTerm.Type type : LangualTerm.Type.values()) {
-					System.out.println("Building " + type.name());
-					CsvReader.addTermToFoods(type);
-				}
+//				for (LangualTerm.Type type : LangualTerm.Type.values()) {
+//					System.out.println("Building " + type.name());
+//					CsvReader.addTermToFoods(type);
+//				}
 				break;
 			default:
 				badRequest("No parse operation called '" + operation + "' found on server!");

@@ -15,8 +15,6 @@ import java.util.List;
  */
 public class TxtReader {
 
-	private static final String FOOD_GROUPS = "FoodGroups";
-	private static final String PARTS = "Parts";
 	private static final String[] COLS = { "name", "langual_code" };
 
 	public static List<String> foodMetaToSql(Class<? extends Model> entity) {
@@ -26,8 +24,8 @@ public class TxtReader {
 		String path = "";
 
 		if (entity.equals(FoodGroup.class)) {
-			table = FOOD_GROUPS;
-			path = "resources/db/foodgroups.txt";
+			table = "FoodGroups";
+			path = "resources/db/data/foodgroups.txt";
 		}
 
 		try (BufferedReader br = new BufferedReader(

@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 /**
  * Created by fredrikkindstrom on 2017-02-13.
  */
-class CommonTools {
+public class CommonTools {
 
-	static Reader getReader(String path) {
+	public static Reader getReader(String path) {
 		try {
 			return new BufferedReader(new FileReader(path));
 		} catch (FileNotFoundException e) {
@@ -21,7 +21,7 @@ class CommonTools {
 		}
 	}
 
-	static String insertHeader(String table, String[] columns) {
+	public static String insertHeader(String table, String[] columns) {
 		String statement = "";
 		statement += "INSERT INTO " + table + " (";
 		for (int i = 0; i < columns.length - 1; i++) {
@@ -32,7 +32,7 @@ class CommonTools {
 		return statement;
 	}
 
-	static String[] extractNameAndCode(String line) {
+	public static String[] extractNameAndCode(String line) {
 		String code = "";
 		Pattern pattern = Pattern.compile("[A-Z]\\d{4}");
 		Matcher matcher = pattern.matcher(line);

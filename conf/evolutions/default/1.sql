@@ -81,9 +81,9 @@ create table fooditems (
 );
 
 create table fooditems_foodgroups (
-  food_items_id                 bigint not null,
-  food_groups_id                bigint not null,
-  constraint pk_fooditems_foodgroups primary key (food_items_id,food_groups_id)
+  fooditems_id                  bigint not null,
+  foodgroups_id                 bigint not null,
+  constraint pk_fooditems_foodgroups primary key (fooditems_id,foodgroups_id)
 );
 
 create table langualterms (
@@ -103,11 +103,11 @@ create index ix_fooditems_part_of_animal_or_plant_code on fooditems (part_of_ani
 alter table fooditems add constraint fk_fooditems_physical_form_code foreign key (physical_form_code) references langualterms (code) on delete restrict on update restrict;
 create index ix_fooditems_physical_form_code on fooditems (physical_form_code);
 
-alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
-create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_items_id);
+alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_fooditems foreign key (fooditems_id) references fooditems (id) on delete restrict on update restrict;
+create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (fooditems_id);
 
-alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_foodgroups foreign key (food_groups_id) references foodgroups (id) on delete restrict on update restrict;
-create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (food_groups_id);
+alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_foodgroups foreign key (foodgroups_id) references foodgroups (id) on delete restrict on update restrict;
+create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (foodgroups_id);
 
 
 # --- !Downs
