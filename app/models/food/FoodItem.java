@@ -46,6 +46,16 @@ public class FoodItem extends Model {
 
 	@ManyToOne public LangualTerm partOfAnimalOrPlant;
 	@ManyToOne public LangualTerm physicalForm;
+	@ManyToOne public LangualTerm heatTreatment;
+	@ManyToOne public LangualTerm cookingMethod;
+	@ManyToOne public LangualTerm industrialProcess;
+	@ManyToOne public LangualTerm preservationMethod;
+	@ManyToOne public LangualTerm packingMedium;
+	@ManyToOne public LangualTerm packingType;
+	@ManyToOne public LangualTerm packingMaterial;
+	@ManyToOne public LangualTerm labelClaim;
+	@ManyToOne public LangualTerm geographicSource;
+	@ManyToOne public LangualTerm distinctiveFeatures;
 
 	public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
 }

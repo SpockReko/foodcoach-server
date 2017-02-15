@@ -1,13 +1,8 @@
 package tools;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.EbeanServer;
-import com.avaje.ebean.Model;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import models.food.FoodGroup;
-import models.food.FoodItem;
-import models.food.LangualTerm;
 
 import java.util.*;
 
@@ -17,7 +12,6 @@ import java.util.*;
  */
 public class CsvReader {
 
-	private static EbeanServer db;
 	private static final String NULL = "NULL";
 	private static final String FOOD_ITEMS = "FoodItems";
 	private static final String[] BASIC_FOOD_COLS =
@@ -34,7 +28,6 @@ public class CsvReader {
 			"vitamin_b6_ug", "vitamin_b12_ug", "folate_ug", "phosphorus_mg", "iodine_ug", "iron_mg",
 			"calcium_mg", "potassium_mg", "magnesium_mg", "sodium_mg", "salt_g", "selenium_ug",
 			"zink_mg", "waste_percent" };
-	private static final String[] META_FOOD_COLS = { "scientific_name", "lmv_project", };
 
 	/**
 	 * Parses Livsmedelsverkets provided Excel-sheet to SQL statements.
@@ -113,17 +106,5 @@ public class CsvReader {
 
 		text.addAll(set);
 		return text;
-	}
-
-	private static String update(String[] tableColumns, String[] data,
-		String lmvFoodNumber) {
-		String statement = "";
-		statement += "UPDATE " + FOOD_ITEMS + " SET ";
-		for (int i = 0; i < tableColumns.length - 1; i++) {
-			statement += tableColumns[i] + " = '" + data[i] + "', ";
-		}
-		statement += tableColumns[tableColumns.length - 1] + " = '" + data[data.length - 1] + "'";
-		statement += " WHERE lmv_food_number = " + lmvFoodNumber + ";";
-		return statement;
 	}
 }

@@ -2,24 +2,17 @@ package tasks;
 
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
-import com.avaje.ebean.Model;
 import com.avaje.ebean.config.ServerConfig;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import models.food.FoodGroup;
 import models.food.FoodItem;
 import models.food.LangualTerm;
 import org.avaje.datasource.DataSourceConfig;
 import play.Logger;
 import tools.CommonTools;
-import tools.CsvReader;
-import tools.TxtReader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by fredrikkindstrom on 2017-02-13.
@@ -34,55 +27,46 @@ public class DatabaseGenerator {
 	private static final String PURPLE = "\u001B[35m";
 	private static final String RESET = "\u001B[0m";
 
-	private static final Class[] entities = { FoodGroup.class };
-	private static final String[] txtPaths = { "resources/db/data/foodgroups.txt" };
-	private static final String[] sqlPaths = { "resources/db/scripts/2_foodgroups_seed.sql" };
-
 	public static void main(String[] args) {
 
 		db = getDatabase();
 
-		System.out.println("\n" + PURPLE + "--- (Generating database scripts) ---\n" + RESET);
+		System.out.println("\n" + PURPLE + "--- (Generating database) ---\n" + RESET);
 
-		System.out.print("Parsing Livsmedelsverkets Excel into SQL... ");
-		printToFile(CsvReader.foodBasicToSql(), "resources/db/scripts/1_fooditems_seed.sql");
-		printDone();
-
-		System.out.println("Begin parsing meta information...");
-		System.out.println("Identifying unique entities...");
-		for (int i = 0; i < entities.length; i++) {
-			System.out.print("Identifying " + CYAN + entities[i].getSimpleName() + "s" + RESET + "... ");
-			printToFile(CsvReader.uniqueTermToTxt(entities[i]), txtPaths[i]);
-			printDone();
-		}
-
-		System.out.println("Writing SQL for entities");
-		for (int i = 0; i < entities.length; i++) {
-			System.out.print("Writing " + CYAN + entities[i].getSimpleName() + "s" + RESET + "... ");
-			printToFile(TxtReader.foodMetaToSql(entities[i]), sqlPaths[i]);
-			printDone();
-		}
-
-		System.out.println("Adding LanguaL terms to food...");
+		System.out.println("Identifying unique LanguaL terms...");
 		for (LangualTerm.Type type : LangualTerm.Type.values()) {
-			System.out.print("Adding " + CYAN + type.name() + RESET + "... ");
-			addTermToFoods(type);
+			if (type == LangualTerm.Type.NONE) continue;
+			System.out.print("Identifying " + CYAN + type + RESET + "... ");
+			List<String> uniqueLangualTerms = extractUniqueLangual(type);
+			printToFile(uniqueLangualTerms, getLangualPath(type));
+			printDone();
+		}
+
+		System.out.println("Linking LanguaL terms to food...");
+		for (LangualTerm.Type type : LangualTerm.Type.values()) {
+			if (type == LangualTerm.Type.NONE) continue;
+			System.out.print("Linking " + CYAN + type.name() + RESET + "... ");
+			linkFoodLangual(type);
 			printDone();
 		}
 
 		System.out.println();
 	}
 
-	public static List<String> linkFoods(Class<? extends Model> entity) {
+	private static List<String> extractUniqueLangual(LangualTerm.Type type) {
 
 		List<String> text = new LinkedList<>();
-		int entityCol;
+		int langualCol = getLangualColumn(type);
 
-		if (entity.equals(FoodGroup.class)) {
-			entityCol = 4;
-		} else {
-			throw new IllegalArgumentException("Not a valid model!");
-		}
+		Set<String> set = new TreeSet<>((o1, o2) -> {
+			String[] s1 = o1.split("\\(");
+			String[] s2 = o2.split("\\(");
+			if (s1.length == 1 | s2.length == 1) {
+				return o1.compareTo(o2);
+			} else {
+				return s1[1].compareTo(s2[1]);
+			}
+		});
 
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
@@ -93,24 +77,21 @@ public class DatabaseGenerator {
 		List<String[]> allRows = parser.parseAll(CommonTools.getReader(
 			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
 
-		for (String[] row : allRows) {
-			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
-			if (row[entityCol] != null) {
-				String[] values = row[entityCol].split(";");
-				for (String value : values) {
-					String[] nameOrCode = CommonTools.extractNameAndCode(value);
-					Model link = db.find(entity).where().eq("code", nameOrCode[1]).findUnique();
-					if (link != null) text.add(insertLink(item, link));
-				}
+		for (String[] cols : allRows) {
+			if (cols[langualCol] != null) {
+				String[] metas = cols[langualCol].split(";");
+				Collections.addAll(set, metas);
 			}
 		}
+
+		text.addAll(set);
 
 		return text;
 	}
 
-	private static void addTermToFoods(LangualTerm.Type langualType) {
+	private static void linkFoodLangual(LangualTerm.Type type) {
 
-		int entityCol = getLangualColumn(langualType);
+		int langualCol = getLangualColumn(type);
 
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
@@ -122,30 +103,74 @@ public class DatabaseGenerator {
 			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
 
 		for (String[] row : allRows) {
+
 			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
-			if (row[entityCol] != null) {
-				String[] nameOrCode = CommonTools.extractNameAndCode(row[entityCol]);
-				if (!nameOrCode[1].isEmpty()) saveLangual(item, langualType, nameOrCode);
+			if (row[langualCol] != null) {
+				String[] nameOrCode = CommonTools.extractNameAndCode(row[langualCol]);
+				persistFoodLangual(item, type, nameOrCode);
 			}
 		}
 	}
 
-	private static String insertLink(FoodItem item, Model link) {
-		String table = "fooditems_";
-		String linkName = "";
-		long linkId = 0;
-		if (link instanceof FoodGroup) {
-			linkId = ((FoodGroup) link).id;
-			table += "foodgroups";
-			linkName = "food_groups_id";
+	private static void persistFoodLangual(FoodItem item, LangualTerm.Type type,
+		String[] nameOrCode) {
+		LangualTerm term;
+		if (db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findCount() == 0) {
+
+			if (nameOrCode[1].isEmpty()) {
+				LangualTerm existing = db.find(LangualTerm.class).where().eq("name", nameOrCode[0]).findUnique();
+				if (existing == null) {
+					term = new LangualTerm(null, nameOrCode[0], LangualTerm.Type.NONE);
+				} else {
+					term = existing;
+				}
+			} else {
+				term = new LangualTerm(nameOrCode[1], nameOrCode[0], type);
+			}
+
+			db.save(term);
+		} else {
+			term = db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findUnique();
 		}
-		String statement = "";
-		statement += "INSERT INTO " + table + " (food_items_id, ";
-		statement += linkName + ") VALUES (";
-		statement += item.id + ", " + linkId + ");";
-		return statement;
+		switch (type) {
+			case PART_OF_PLANT_OR_ANIMAL: item.partOfAnimalOrPlant = term; break;
+			case PHYSICAL_FORM: item.physicalForm = term; break;
+			case HEAT_TREATMENT: item.heatTreatment = term; break;
+			case COOKING_METHOD: item.cookingMethod = term; break;
+ 			case INDUSTRIAL_PROCESS: item.industrialProcess = term; break;
+			case PRESERVATION_METHOD: item.preservationMethod = term; break;
+			case PACKING_MEDIUM: item.packingMedium = term; break;
+			case PACKING_TYPE: item.packingType = term; break;
+			case PACKING_MATERIAL: item.packingMaterial = term; break;
+			case LABEL_CLAIM: item.labelClaim = term; break;
+			case GEOGRAPHIC_SOURCE: item.geographicSource = term; break;
+			case DISTINCTIVE_FEATURES: item.distinctiveFeatures = term; break;
+		}
+		db.save(item);
 	}
 
+	/*
+	Helper methods
+	 */
+
+	private static EbeanServer getDatabase() {
+		String username = "root";
+		String connectionString = "jdbc:mysql://localhost/foodcoach?verifyServerCertificate=false&useSSL=true";
+		String dbDriver = "com.mysql.jdbc.Driver";
+		DataSourceConfig foodDB = new DataSourceConfig();
+		ServerConfig config = new ServerConfig();
+
+		config.setName("mysql");
+		foodDB.setDriver(dbDriver);
+		foodDB.setUsername(username);
+		foodDB.setPassword("");
+		foodDB.setUrl(connectionString);
+		config.setDataSourceConfig(foodDB);
+		config.setDefaultServer(true);
+		config.setRegister(false);
+
+		return EbeanServerFactory.create(config);
+	}
 	private static int getLangualColumn(LangualTerm.Type type) {
 		switch (type) {
 			case PART_OF_PLANT_OR_ANIMAL:
@@ -175,52 +200,9 @@ public class DatabaseGenerator {
 		}
 		return -1;
 	}
-
-	private static void saveLangual(FoodItem item, LangualTerm.Type langualType,
-		String[] nameOrCode) {
-		LangualTerm term;
-		if (db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findCount() == 0) {
-			term = new LangualTerm(nameOrCode[1], nameOrCode[0], langualType);
-			db.save(term);
-		} else {
-			term = db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findUnique();
-		}
-		switch (langualType) {
-			case PART_OF_PLANT_OR_ANIMAL: item.partOfAnimalOrPlant = term; break;
-			case PHYSICAL_FORM: item.physicalForm = term; break;
-			case HEAT_TREATMENT:
-			case COOKING_METHOD:
-			case INDUSTRIAL_PROCESS:
-			case PRESERVATION_METHOD:
-			case PACKING_MEDIUM:
-			case PACKING_TYPE:
-			case PACKING_MATERIAL:
-			case LABEL_CLAIM:
-			case GEOGRAPHIC_SOURCE:
-			case DISTINCTIVE_FEATURES:
-		}
-		db.save(item);
+	private static String getLangualPath(LangualTerm.Type type) {
+		return "resources/db/data/" + type.name().toLowerCase() + ".txt";
 	}
-
-	private static EbeanServer getDatabase() {
-		String username = "root";
-		String connectionString = "jdbc:mysql://localhost/foodcoach?verifyServerCertificate=false&useSSL=true";
-		String dbDriver = "com.mysql.jdbc.Driver";
-		DataSourceConfig foodDB = new DataSourceConfig();
-		ServerConfig config = new ServerConfig();
-
-		config.setName("mysql");
-		foodDB.setDriver(dbDriver);
-		foodDB.setUsername(username);
-		foodDB.setPassword("");
-		foodDB.setUrl(connectionString);
-		config.setDataSourceConfig(foodDB);
-		config.setDefaultServer(true);
-		config.setRegister(false);
-
-		return EbeanServerFactory.create(config);
-	}
-
 	private static void printToFile(List<String> lines, String outputPath) {
 		try {
 			PrintStream printStream = new PrintStream(new File(outputPath));
@@ -231,8 +213,5 @@ public class DatabaseGenerator {
 	}
 	private static void printDone() {
 		System.out.println(GREEN + "Done" + RESET);
-		//System.out.print(YELLOW + lines.size() + RESET);
-		//System.out.println(" records into " + outputPath);
 	}
-
 }
