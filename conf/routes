@@ -10,13 +10,11 @@ GET     /food/:id                           controllers.FoodController.get(id: I
 GET     /food/name/:name                    controllers.FoodController.getByName(name: String)
 GET     /food/group/:code                   controllers.FoodController.getByGroup(code: String)
 
-
 # Recipe items
 GET     /recipe/:id                         controllers.RecipeController.get(id: Long)
 
 # Week menu options from client
 POST    /weekmenu                           controllers.WeekMenuController.weekMenu
-
 
 # Test Emma
 GET     /emmatest/:str                      controllers.ApplicationController.ingToFood(str: String)
