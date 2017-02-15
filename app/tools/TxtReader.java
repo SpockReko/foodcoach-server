@@ -2,7 +2,6 @@ package tools;
 
 import com.avaje.ebean.Model;
 import models.food.FoodGroup;
-import models.food.Part;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,9 +28,6 @@ public class TxtReader {
 		if (entity.equals(FoodGroup.class)) {
 			table = FOOD_GROUPS;
 			path = "resources/db/foodgroups.txt";
-		} else if (entity.equals(Part.class)) {
-			table = PARTS;
-			path = "resources/db/foodparts.txt";
 		}
 
 		try (BufferedReader br = new BufferedReader(

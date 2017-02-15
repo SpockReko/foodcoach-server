@@ -1,7 +1,11 @@
 package tasks;
 
+import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.EbeanServerFactory;
+import com.avaje.ebean.config.ServerConfig;
 import models.food.FoodGroup;
-import models.food.Part;
+import models.food.LangualTerm;
+import org.avaje.datasource.DataSourceConfig;
 import play.Logger;
 import tools.CsvReader;
 import tools.TxtReader;
@@ -16,6 +20,8 @@ import java.util.List;
  */
 public class DatabaseGenerator {
 
+	private static final EbeanServer db = getDatabase();
+
 	private static final String GREEN = "\u001B[32m";
 	private static final String YELLOW = "\u001B[33m";
 	private static final String CYAN = "\u001B[36m";
@@ -25,11 +31,9 @@ public class DatabaseGenerator {
 	private static List<String> lines;
 	private static String outputPath;
 
-	private static final Class[] entities = { FoodGroup.class, Part.class };
-	private static final String[] txtPaths = {
-		"resources/db/foodgroups.txt", "resources/db/foodparts.txt" };
-	private static final String[] sqlPaths = {
-		"resources/db/scripts/2_foodgroups_seed.sql", "resources/db/scripts/4_foodparts_seed.sql" };
+	private static final Class[] entities = { FoodGroup.class };
+	private static final String[] txtPaths = { "resources/db/foodgroups.txt" };
+	private static final String[] sqlPaths = { "resources/db/scripts/2_foodgroups_seed.sql" };
 
 	public static void main(String[] args) {
 		System.out.println("\n" + PURPLE + "--- (Generating database scripts) ---\n" + RESET);
@@ -60,6 +64,28 @@ public class DatabaseGenerator {
 		}
 
 		System.out.println();
+
+		CsvReader.addTermToFoods(LangualTerm.Type.PACKING_TYPE);
+	}
+
+	private static EbeanServer getDatabase() {
+		String username = "root";
+		String connectionString = "jdbc:mysql://localhost/foodcoach?verifyServerCertificate=false&useSSL=true";
+		String dbDriver = "com.mysql.jdbc.Driver";
+		// You can use ebean.properties instead of programatically configure it.
+		DataSourceConfig foodDB = new DataSourceConfig();
+		ServerConfig config = new ServerConfig();
+		config.setName("mysql");
+		foodDB.setDriver(dbDriver);
+		foodDB.setUsername(username);
+		foodDB.setPassword("");
+		foodDB.setUrl(connectionString);
+
+		config.setDataSourceConfig(foodDB);
+
+		config.setDefaultServer(false);
+		config.setRegister(false);
+		return EbeanServerFactory.create(config);
 	}
 
 	private static void printToFile() {

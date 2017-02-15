@@ -8,7 +8,6 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import models.food.FoodGroup;
 import models.food.FoodItem;
 import models.food.LangualTerm;
-import models.food.Part;
 
 import java.util.*;
 
@@ -88,8 +87,6 @@ public class CsvReader {
 
 		if (entity.equals(FoodGroup.class)) {
 			attribute = 4;
-		} else if (entity.equals(Part.class)) {
-			attribute = 6;
 		}
 
 		Set<String> set = new TreeSet<>((o1, o2) -> {
@@ -126,8 +123,6 @@ public class CsvReader {
 
 		if (entity.equals(FoodGroup.class)) {
 			entityCol = 4;
-		} else if (entity.equals(Part.class)) {
-			entityCol = 6;
 		} else {
 			throw new IllegalArgumentException("Not a valid model!");
 		}
@@ -156,11 +151,10 @@ public class CsvReader {
 		return text;
 	}
 
-	public static void addTermToFoods() {
+	public static void addTermToFoods(LangualTerm.Type langualType) {
 		db = Ebean.getDefaultServer();
 
-		List<String> text = new LinkedList<>();
-		int entityCol = 7;
+		int entityCol = getLangualColumn(langualType);
 
 		CsvParserSettings settings = new CsvParserSettings();
 		settings.getFormat().setLineSeparator("\n");
@@ -172,18 +166,10 @@ public class CsvReader {
 			"resources/db/LivsmedelsDB_Meta_201702011104.csv"));
 
 		for (String[] row : allRows) {
-			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
+			FoodItem item = FoodItem.find.where().eq("lmvFoodNumber", row[2]).findUnique();
 			if (row[entityCol] != null) {
 				String[] nameOrCode = CommonTools.extractNameAndCode(row[entityCol]);
-				LangualTerm term;
-				if (db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findCount() == 0) {
-					term = new LangualTerm(nameOrCode[1], nameOrCode[0]);
-					term.save();
-				} else {
-					term = db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findUnique();
-				}
-				item.physicalForm = term;
-				item.save();
+				if (!nameOrCode[1].isEmpty()) saveLangual(item, langualType, nameOrCode);
 			}
 		}
 	}
@@ -208,15 +194,67 @@ public class CsvReader {
 			linkId = ((FoodGroup) link).id;
 			table += "foodgroups";
 			linkName = "food_groups_id";
-		} else if (link instanceof Part) {
-			linkId = ((Part) link).id;
-			table += "parts";
-			linkName = "parts_id";
 		}
 		String statement = "";
 		statement += "INSERT INTO " + table + " (food_items_id, ";
 		statement += linkName + ") VALUES (";
 		statement += item.id + ", " + linkId + ");";
 		return statement;
+	}
+
+	private static int getLangualColumn(LangualTerm.Type type) {
+		switch (type) {
+			case PART_OF_PLANT_OR_ANIMAL:
+				return 6;
+			case PHYSICAL_FORM:
+				return 7;
+			case HEAT_TREATMENT:
+				return 8;
+			case COOKING_METHOD:
+				return 9;
+			case INDUSTRIAL_PROCESS:
+				return 10;
+			case PRESERVATION_METHOD:
+				return 11;
+			case PACKING_MEDIUM:
+				return 12;
+			case PACKING_TYPE:
+				return 13;
+			case PACKING_MATERIAL:
+				return 14;
+			case LABEL_CLAIM:
+				return 15;
+			case GEOGRAPHIC_SOURCE:
+				return 16;
+			case DISTINCTIVE_FEATURES:
+				return 17;
+		}
+		return -1;
+	}
+
+	private static void saveLangual(FoodItem item, LangualTerm.Type langualType,
+		String[] nameOrCode) {
+		LangualTerm term;
+		if (db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findCount() == 0) {
+			term = new LangualTerm(nameOrCode[1], nameOrCode[0], langualType);
+			term.save();
+		} else {
+			term = db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findUnique();
+		}
+		switch (langualType) {
+			case PART_OF_PLANT_OR_ANIMAL: item.partOfAnimalOrPlant = term; break;
+			case PHYSICAL_FORM: item.physicalForm = term; break;
+			case HEAT_TREATMENT:
+			case COOKING_METHOD:
+			case INDUSTRIAL_PROCESS:
+			case PRESERVATION_METHOD:
+			case PACKING_MEDIUM:
+			case PACKING_TYPE:
+			case PACKING_MATERIAL:
+			case LABEL_CLAIM:
+			case GEOGRAPHIC_SOURCE:
+			case DISTINCTIVE_FEATURES:
+		}
+		item.save();
 	}
 }

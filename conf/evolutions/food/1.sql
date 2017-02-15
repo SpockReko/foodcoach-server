@@ -74,6 +74,7 @@ create table fooditems (
   salt_g                        float,
   selenium_ug                   float,
   zink_mg                       float,
+  part_of_animal_or_plant_code  varchar(255),
   physical_form_code            varchar(255),
   constraint uq_fooditems_lmv_food_number unique (lmv_food_number),
   constraint pk_fooditems primary key (id)
@@ -85,27 +86,19 @@ create table fooditems_foodgroups (
   constraint pk_fooditems_foodgroups primary key (food_items_id,food_groups_id)
 );
 
-create table fooditems_parts (
-  food_items_id                 bigint not null,
-  parts_id                      bigint not null,
-  constraint pk_fooditems_parts primary key (food_items_id,parts_id)
-);
-
 create table langualterms (
   code                          varchar(255) not null,
   name                          varchar(255) not null,
+  type                          varchar(23),
+  constraint ck_langualterms_type check ( type in ('PART_OF_PLANT_OR_ANIMAL','PHYSICAL_FORM','HEAT_TREATMENT','COOKING_METHOD','INDUSTRIAL_PROCESS','PRESERVATION_METHOD','PACKING_MEDIUM','PACKING_TYPE','PACKING_MATERIAL','LABEL_CLAIM','GEOGRAPHIC_SOURCE','DISTINCTIVE_FEATURES')),
   constraint pk_langualterms primary key (code)
-);
-
-create table parts (
-  id                            bigint auto_increment not null,
-  name                          varchar(255) not null,
-  langual_code                  varchar(255),
-  constraint pk_parts primary key (id)
 );
 
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_foodgroups_parent_id on foodgroups (parent_id);
+
+alter table fooditems add constraint fk_fooditems_part_of_animal_or_plant_code foreign key (part_of_animal_or_plant_code) references langualterms (code) on delete restrict on update restrict;
+create index ix_fooditems_part_of_animal_or_plant_code on fooditems (part_of_animal_or_plant_code);
 
 alter table fooditems add constraint fk_fooditems_physical_form_code foreign key (physical_form_code) references langualterms (code) on delete restrict on update restrict;
 create index ix_fooditems_physical_form_code on fooditems (physical_form_code);
@@ -116,17 +109,14 @@ create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_ite
 alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_foodgroups foreign key (food_groups_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (food_groups_id);
 
-alter table fooditems_parts add constraint fk_fooditems_parts_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
-create index ix_fooditems_parts_fooditems on fooditems_parts (food_items_id);
-
-alter table fooditems_parts add constraint fk_fooditems_parts_parts foreign key (parts_id) references parts (id) on delete restrict on update restrict;
-create index ix_fooditems_parts_parts on fooditems_parts (parts_id);
-
 
 # --- !Downs
 
 alter table foodgroups drop foreign key fk_foodgroups_parent_id;
 drop index ix_foodgroups_parent_id on foodgroups;
+
+alter table fooditems drop foreign key fk_fooditems_part_of_animal_or_plant_code;
+drop index ix_fooditems_part_of_animal_or_plant_code on fooditems;
 
 alter table fooditems drop foreign key fk_fooditems_physical_form_code;
 drop index ix_fooditems_physical_form_code on fooditems;
@@ -137,21 +127,11 @@ drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;
 alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_foodgroups;
 drop index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups;
 
-alter table fooditems_parts drop foreign key fk_fooditems_parts_fooditems;
-drop index ix_fooditems_parts_fooditems on fooditems_parts;
-
-alter table fooditems_parts drop foreign key fk_fooditems_parts_parts;
-drop index ix_fooditems_parts_parts on fooditems_parts;
-
 drop table if exists foodgroups;
 
 drop table if exists fooditems;
 
 drop table if exists fooditems_foodgroups;
 
-drop table if exists fooditems_parts;
-
 drop table if exists langualterms;
-
-drop table if exists parts;
 

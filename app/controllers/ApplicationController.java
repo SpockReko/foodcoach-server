@@ -1,7 +1,7 @@
 package controllers;
 
 import models.food.FoodGroup;
-import models.food.Part;
+import models.food.LangualTerm;
 import play.mvc.Controller;
 import play.mvc.Result;
 import tools.CsvReader;
@@ -28,12 +28,11 @@ public class ApplicationController extends Controller {
 				lines = CsvReader.linkFoods(FoodGroup.class);
 				outputPath = "resources/db/scripts/X_fooditems_foodgroups_seed.sql";
 				break;
-			case "link_parts":
-				lines = CsvReader.linkFoods(Part.class);
-				outputPath = "resources/db/scripts/X_fooditems_foodparts_seed.sql";
-				break;
 			case "langual":
-				CsvReader.addTermToFoods();
+				for (LangualTerm.Type type : LangualTerm.Type.values()) {
+					System.out.println("Building " + type.name());
+					CsvReader.addTermToFoods(type);
+				}
 				break;
 			default:
 				badRequest("No parse operation called '" + operation + "' found on server!");
@@ -46,7 +45,7 @@ public class ApplicationController extends Controller {
 			e.printStackTrace();
 		}
 
-		return ok("Done! parsed into " + outputPath);
+		return ok("Done!");
 	}
 
 }
