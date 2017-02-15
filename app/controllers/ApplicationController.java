@@ -11,6 +11,13 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.List;
 
+import tools.IngredientToFood;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.util.List;
+
 /**
  * HTTP controller that handles all general requests to the server.
  */
@@ -25,6 +32,4 @@ public class ApplicationController extends Controller {
 		FoodItem item = IngredientToFood.IngToFood(str);
 		return ok(item.name);
 	}
-
-
 }
