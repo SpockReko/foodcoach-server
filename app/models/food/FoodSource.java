@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fredrikkindstrom on 2017-02-16.
@@ -20,7 +20,7 @@ public class FoodSource extends Model {
 	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
 	@ManyToOne @JsonBackReference public FoodSource parents;
-	@ManyToMany(mappedBy = "sources") @JsonBackReference public List<FoodItem> foodItems;
+	@ManyToMany(mappedBy = "sources") @JsonBackReference public Set<FoodItem> foodItems;
 
 	public FoodSource(String name, String langualCode) {
 		this.name = name;

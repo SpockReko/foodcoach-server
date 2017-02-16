@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a food group that every {@link FoodItem} can be associated with.
@@ -22,7 +22,7 @@ public class FoodGroup extends Model {
 	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
 	@ManyToOne @JsonBackReference public FoodGroup parent;
-	@ManyToMany(mappedBy = "groups") @JsonBackReference public List<FoodItem> foodItems;
+	@ManyToMany(mappedBy = "groups") @JsonBackReference public Set<FoodItem> foodItems;
 
 	public FoodGroup(String name, String langualCode) {
 		this.name = name;

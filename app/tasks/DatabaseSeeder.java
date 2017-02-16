@@ -224,13 +224,7 @@ public class DatabaseSeeder {
 			group = db.find(FoodGroup.class).where().eq("langualCode", nameOrCode[1]).findUnique();
 		}
 
-		for (FoodGroup existing : item.groups) {
-			if (existing.id == group.id) {
-				return;
-			} else {
-				item.groups.add(group);
-			}
-		}
+		item.groups.add(group);
 	}
 
 	private static void linkFoodSources(FoodItem item, String[] nameOrCode) {
@@ -253,13 +247,7 @@ public class DatabaseSeeder {
 			source = db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
 		}
 
-		for (FoodSource existing : item.sources) {
-			if (existing.id == source.id) {
-				return;
-			} else {
-				item.sources.add(source);
-			}
-		}
+		item.sources.add(source);
 	}
 
 	private static void linkFoodLangual(FoodItem item, LangualTerm.Type type,

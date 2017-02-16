@@ -4,7 +4,7 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a food item that is present in Livsmedelsdatabasen by Livsmedelsverket.
@@ -42,8 +42,8 @@ public class FoodItem extends Model {
 	@Embedded public Vitamins vitamins;
 	@Embedded public Minerals minerals;
 
-	@ManyToMany @JsonManagedReference public List<FoodGroup> groups;
-	@ManyToMany @JsonManagedReference public List<FoodSource> sources;
+	@ManyToMany @JsonManagedReference public Set<FoodGroup> groups;
+	@ManyToMany @JsonManagedReference public Set<FoodSource> sources;
 
 	@ManyToOne public LangualTerm partOfPlantOrAnimal;
 	@ManyToOne public LangualTerm physicalForm;
