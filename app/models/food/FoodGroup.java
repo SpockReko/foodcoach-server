@@ -25,5 +25,10 @@ public class FoodGroup extends Model {
 	@ManyToOne @JsonBackReference public FoodGroup parent;
 	@ManyToMany(mappedBy = "groups") @JsonBackReference public List<FoodItem> foodItems;
 
+	public FoodGroup(String name, String langualCode) {
+		this.name = name;
+		this.langualCode = langualCode;
+	}
+
 	public static Finder<Long, FoodGroup> find = new Finder<>(FoodGroup.class);
 }

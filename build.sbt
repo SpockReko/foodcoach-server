@@ -11,11 +11,9 @@ libraryDependencies ++= Seq(javaJdbc, cache, javaWs)
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.40"
 libraryDependencies += "org.jsoup" % "jsoup" % "1.10.2"
 libraryDependencies += "com.univocity" % "univocity-parsers" % "2.3.1"
+libraryDependencies += "me.tongfei" % "progressbar" % "0.5.3"
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
-lazy val find_foods = taskKey[Unit]("Find foods from CSV")
-fullRunTask(find_foods, Compile, "tasks.FindFoods")
-
-lazy val generate_db = taskKey[Unit]("Database generator")
-fullRunTask(generate_db, Compile, "tasks.DatabaseGenerator")
+lazy val seed = taskKey[Unit]("Database seeder")
+fullRunTask(seed, Compile, "tasks.DatabaseSeeder")

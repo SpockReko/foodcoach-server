@@ -43,8 +43,9 @@ public class FoodItem extends Model {
 	@Embedded public Minerals minerals;
 
 	@ManyToMany @JsonManagedReference public List<FoodGroup> groups;
+	@ManyToMany @JsonManagedReference public List<FoodSource> sources;
 
-	@ManyToOne public LangualTerm partOfAnimalOrPlant;
+	@ManyToOne public LangualTerm partOfPlantOrAnimal;
 	@ManyToOne public LangualTerm physicalForm;
 	@ManyToOne public LangualTerm heatTreatment;
 	@ManyToOne public LangualTerm cookingMethod;

@@ -74,7 +74,7 @@ create table fooditems (
   salt_g                        float,
   selenium_ug                   float,
   zink_mg                       float,
-  part_of_animal_or_plant_id    bigint,
+  part_of_plant_or_animal_id    bigint,
   physical_form_id              bigint,
   heat_treatment_id             bigint,
   cooking_method_id             bigint,
@@ -96,20 +96,33 @@ create table fooditems_foodgroups (
   constraint pk_fooditems_foodgroups primary key (food_items_id,food_groups_id)
 );
 
+create table fooditems_foodsources (
+  food_items_id                 bigint not null,
+  food_sources_id               bigint not null,
+  constraint pk_fooditems_foodsources primary key (food_items_id,food_sources_id)
+);
+
+create table foodsources (
+  id                            bigint auto_increment not null,
+  name                          varchar(255) not null,
+  langual_code                  varchar(255),
+  constraint pk_foodsources primary key (id)
+);
+
 create table langualterms (
   id                            bigint auto_increment not null,
   code                          varchar(255),
   name                          varchar(255) not null,
   type                          varchar(23),
-  constraint ck_langualterms_type check ( type in ('PART_OF_PLANT_OR_ANIMAL','PHYSICAL_FORM','HEAT_TREATMENT','COOKING_METHOD','INDUSTRIAL_PROCESS','PRESERVATION_METHOD','PACKING_MEDIUM','PACKING_TYPE','PACKING_MATERIAL','LABEL_CLAIM','GEOGRAPHIC_SOURCE','DISTINCTIVE_FEATURES','NONE')),
+  constraint ck_langualterms_type check ( type in ('PART_OF_PLANT_OR_ANIMAL','PHYSICAL_FORM','HEAT_TREATMENT','COOKING_METHOD','INDUSTRIAL_PROCESS','PRESERVATION_METHOD','PACKING_MEDIUM','PACKING_TYPE','PACKING_MATERIAL','LABEL_CLAIM','GEOGRAPHIC_SOURCE','DISTINCTIVE_FEATURES')),
   constraint pk_langualterms primary key (id)
 );
 
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_foodgroups_parent_id on foodgroups (parent_id);
 
-alter table fooditems add constraint fk_fooditems_part_of_animal_or_plant_id foreign key (part_of_animal_or_plant_id) references langualterms (id) on delete restrict on update restrict;
-create index ix_fooditems_part_of_animal_or_plant_id on fooditems (part_of_animal_or_plant_id);
+alter table fooditems add constraint fk_fooditems_part_of_plant_or_animal_id foreign key (part_of_plant_or_animal_id) references langualterms (id) on delete restrict on update restrict;
+create index ix_fooditems_part_of_plant_or_animal_id on fooditems (part_of_plant_or_animal_id);
 
 alter table fooditems add constraint fk_fooditems_physical_form_id foreign key (physical_form_id) references langualterms (id) on delete restrict on update restrict;
 create index ix_fooditems_physical_form_id on fooditems (physical_form_id);
@@ -150,14 +163,20 @@ create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_ite
 alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_foodgroups foreign key (food_groups_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (food_groups_id);
 
+alter table fooditems_foodsources add constraint fk_fooditems_foodsources_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
+create index ix_fooditems_foodsources_fooditems on fooditems_foodsources (food_items_id);
+
+alter table fooditems_foodsources add constraint fk_fooditems_foodsources_foodsources foreign key (food_sources_id) references foodsources (id) on delete restrict on update restrict;
+create index ix_fooditems_foodsources_foodsources on fooditems_foodsources (food_sources_id);
+
 
 # --- !Downs
 
 alter table foodgroups drop foreign key fk_foodgroups_parent_id;
 drop index ix_foodgroups_parent_id on foodgroups;
 
-alter table fooditems drop foreign key fk_fooditems_part_of_animal_or_plant_id;
-drop index ix_fooditems_part_of_animal_or_plant_id on fooditems;
+alter table fooditems drop foreign key fk_fooditems_part_of_plant_or_animal_id;
+drop index ix_fooditems_part_of_plant_or_animal_id on fooditems;
 
 alter table fooditems drop foreign key fk_fooditems_physical_form_id;
 drop index ix_fooditems_physical_form_id on fooditems;
@@ -198,11 +217,21 @@ drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;
 alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_foodgroups;
 drop index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups;
 
+alter table fooditems_foodsources drop foreign key fk_fooditems_foodsources_fooditems;
+drop index ix_fooditems_foodsources_fooditems on fooditems_foodsources;
+
+alter table fooditems_foodsources drop foreign key fk_fooditems_foodsources_foodsources;
+drop index ix_fooditems_foodsources_foodsources on fooditems_foodsources;
+
 drop table if exists foodgroups;
 
 drop table if exists fooditems;
 
 drop table if exists fooditems_foodgroups;
+
+drop table if exists fooditems_foodsources;
+
+drop table if exists foodsources;
 
 drop table if exists langualterms;
 
