@@ -106,6 +106,7 @@ create table foodsources (
   id                            bigint auto_increment not null,
   name                          varchar(255) not null,
   langual_code                  varchar(255),
+  parents_id                    bigint,
   constraint pk_foodsources primary key (id)
 );
 
@@ -169,6 +170,9 @@ create index ix_fooditems_foodsources_fooditems on fooditems_foodsources (food_i
 alter table fooditems_foodsources add constraint fk_fooditems_foodsources_foodsources foreign key (food_sources_id) references foodsources (id) on delete restrict on update restrict;
 create index ix_fooditems_foodsources_foodsources on fooditems_foodsources (food_sources_id);
 
+alter table foodsources add constraint fk_foodsources_parents_id foreign key (parents_id) references foodsources (id) on delete restrict on update restrict;
+create index ix_foodsources_parents_id on foodsources (parents_id);
+
 
 # --- !Downs
 
@@ -222,6 +226,9 @@ drop index ix_fooditems_foodsources_fooditems on fooditems_foodsources;
 
 alter table fooditems_foodsources drop foreign key fk_fooditems_foodsources_foodsources;
 drop index ix_fooditems_foodsources_foodsources on fooditems_foodsources;
+
+alter table foodsources drop foreign key fk_foodsources_parents_id;
+drop index ix_foodsources_parents_id on foodsources;
 
 drop table if exists foodgroups;
 

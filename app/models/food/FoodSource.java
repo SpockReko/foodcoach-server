@@ -12,14 +12,14 @@ import java.util.List;
  */
 @Entity
 @Table(name = "FoodSources")
-public class FoodSource {
+public class FoodSource extends Model {
 
 	@Id public long id;
 
 	@Column(nullable = false) public String name;
 	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
-	@ManyToMany @JsonBackReference public FoodSource parents;
+	@ManyToOne @JsonBackReference public FoodSource parents;
 	@ManyToMany(mappedBy = "sources") @JsonBackReference public List<FoodItem> foodItems;
 
 	public FoodSource(String name, String langualCode) {
@@ -27,5 +27,5 @@ public class FoodSource {
 		this.langualCode = langualCode;
 	}
 
-	public static Model.Finder<Long, FoodSource> find = new Model.Finder<>(FoodSource.class);
+	public static Finder<Long, FoodSource> find = new Finder<>(FoodSource.class);
 }
