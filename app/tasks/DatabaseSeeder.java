@@ -11,6 +11,7 @@ import org.avaje.datasource.DataSourceConfig;
 import play.Logger;
 import tools.CommonTools;
 
+import javax.persistence.PersistenceException;
 import java.util.*;
 
 /**
@@ -35,15 +36,28 @@ public class DatabaseSeeder {
 
 		System.out.println("\n" + PURPLE + "--- (Generating database) ---\n" + RESET);
 
-		System.out.println("Importing foods from Excel...");
+		try {
+			db.find(FoodItem.class).where().eq("id", "1").findUnique();
+		} catch (PersistenceException e) {
+			System.out.println(YELLOW
+				+ "No database tables present. Please start server and run evolution script first!\n"
+				+ RESET);
+			return;
+		}
+
+		System.out.println(CYAN + "Importing foods from Excel..." + RESET);
 		try {
 			importFoods();
 		} catch (DatabaseNotEmptyException e) {
 			System.out.println(YELLOW + "Foods already imported, moving on..." + RESET);
 		}
 
-		System.out.println("\nImporting meta food information... ");
+		System.out.println(CYAN + "\nImporting meta food information... " + RESET);
 		importFoodsMeta();
+
+		System.out.print(CYAN + "\nLinking food groups parents... " + RESET);
+		linkFoodGroupsParents();
+		printDone();
 
 		System.out.println();
 	}
@@ -152,7 +166,7 @@ public class DatabaseSeeder {
 			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
 
 			if (item == null) {
-				Logger.warn("Found food in meta table not in database!");
+				Logger.warn("Found food in meta table but not in database! lmvFoodNumber = " + row[2]);
 				continue;
 			}
 
@@ -169,14 +183,17 @@ public class DatabaseSeeder {
 							}
 							break;
 						case 5:
-							String[] species = row[i].split(";");
-							for (String s : species) {
+							String[] sources = row[i].split(";");
+							for (String s : sources) {
 								linkFoodSources(item, CommonTools.extractNameAndCode(s));
 							}
 							break;
 						default:
-							String[] nameOrCode = CommonTools.extractNameAndCode(row[i]);
-							linkFoodLangual(item, getLangualType(i), nameOrCode);
+							String[] languals = row[i].split(";");
+							for (String langual : languals) {
+								String[] nameOrCode = CommonTools.extractNameAndCode(langual);
+								linkFoodLangual(item, getLangualType(i), nameOrCode);
+							}
 					}
 				}
 			}
@@ -206,29 +223,43 @@ public class DatabaseSeeder {
 		} else {
 			group = db.find(FoodGroup.class).where().eq("langualCode", nameOrCode[1]).findUnique();
 		}
-		item.groups.add(group);
+
+		for (FoodGroup existing : item.groups) {
+			if (existing.id == group.id) {
+				return;
+			} else {
+				item.groups.add(group);
+			}
+		}
 	}
 
 	private static void linkFoodSources(FoodItem item, String[] nameOrCode) {
-		FoodSource species;
+		FoodSource source;
 		if (db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findCount() == 0) {
 
 			if (nameOrCode[1].isEmpty()) {
 				FoodSource existing = db.find(FoodSource.class).where().eq("name", nameOrCode[0]).findUnique();
 				if (existing == null) {
-					species = new FoodSource(nameOrCode[0], null);
+					source = new FoodSource(nameOrCode[0], null);
 				} else {
-					species = existing;
+					source = existing;
 				}
 			} else {
-				species = new FoodSource(nameOrCode[0], nameOrCode[1]);
+				source = new FoodSource(nameOrCode[0], nameOrCode[1]);
 			}
 
-			db.save(species);
+			db.save(source);
 		} else {
-			species = db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
+			source = db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
 		}
-		item.sources.add(species);
+
+		for (FoodSource existing : item.sources) {
+			if (existing.id == source.id) {
+				return;
+			} else {
+				item.sources.add(source);
+			}
+		}
 	}
 
 	private static void linkFoodLangual(FoodItem item, LangualTerm.Type type,
@@ -266,7 +297,93 @@ public class DatabaseSeeder {
 			case DISTINCTIVE_FEATURES: item.distinctiveFeatures = term; break;
 		}
 	}
-	
+
+	private static void linkFoodGroupsParents() {
+		db.insert(new FoodGroup("Ost", "A0784"));
+		updateGroupParent("A0310", "A0784");
+		updateGroupParent("A0311", "A0784");
+		updateGroupParent("A0312", "A0784");
+		updateGroupParent("A0314", "A0784");
+		updateGroupParent("A0780", "A0778");
+		updateGroupParent("A0781", "A0780");
+		updateGroupParent("A0782", "A0780");
+		updateGroupParent("A0783", "A0778");
+		updateGroupParent("A0784", "A0778");
+		updateGroupParent("A0786", "A0784");
+		updateGroupParent("A0787", "A0784");
+		updateGroupParent("A0788", "A0784");
+		updateGroupParent("A0789", "A0778");
+		db.insert(new FoodGroup("Ägg eller äggprodukt", "A0790"));
+		updateGroupParent("A0791", "A0790");
+		updateGroupParent("A0792", "A0790");
+		updateGroupParent("A0794", "A0793");
+		updateGroupParent("A0795", "A0793");
+		updateGroupParent("A0796", "A0793");
+		updateGroupParent("A0797", "A0793");
+		updateGroupParent("A0798", "A0793");
+		updateGroupParent("A0799", "A0793");
+		updateGroupParent("A0800", "A0793");
+		updateGroupParent("A0802", "A0801");
+		updateGroupParent("A0803", "A0801");
+		updateGroupParent("A0804", "A0801");
+		db.insert(new FoodGroup("Fett eller olja", "A0805"));
+		updateGroupParent("A0806", "A0805");
+		updateGroupParent("A0807", "A0805");
+		db.insert(new FoodGroup("Animaliska fetter", "A0808"));
+		updateGroupParent("A0808", "A0805");
+		updateGroupParent("A0809", "A0808");
+		updateGroupParent("A0810", "A0808");
+		updateGroupParent("A0813", "A0812");
+		updateGroupParent("A0814", "A0812");
+		updateGroupParent("A0815", "A0812");
+		updateGroupParent("A0816", "A0812");
+		db.insert(new FoodGroup("Bröd och liknande produkter", "A0817"));
+		updateGroupParent("A0818", "A0817");
+		updateGroupParent("A0819", "A0817");
+		updateGroupParent("A0820", "A0817");
+		updateGroupParent("A0821", "A0812");
+		FoodGroup g = db.find(FoodGroup.class).where().eq("langualCode", "A0822").findUnique();
+		g.name = "Cerealierätter t.ex. klimp, risotto, pizza";
+		db.save(g);
+		updateGroupParent("A0824", "A0823");
+		updateGroupParent("A0827", "A0826");
+		updateGroupParent("A0828", "A0826");
+		updateGroupParent("A0830", "A0829");
+		updateGroupParent("A0832", "A0831");
+		updateGroupParent("A0834", "A0833");
+		updateGroupParent("A0836", "A0835");
+		updateGroupParent("A0837", "A0835");
+		updateGroupParent("A0838", "A0835");
+		FoodGroup g2 = db.find(FoodGroup.class).where().eq("langualCode", "A0838").findUnique();
+		g2.name = "Konfekt och annan sockerprodukt dvs ej choklad";
+		db.save(g2);
+		updateGroupParent("A0839", "A0835");
+		db.insert(new FoodGroup("Dryck (ej mjölk)", "A0840"));
+		updateGroupParent("A0841", "A0840");
+		updateGroupParent("A0842", "A0840");
+		updateGroupParent("A0843", "A0842");
+		updateGroupParent("A0844", "A0842");
+		updateGroupParent("A0845", "A0842");
+		db.insert(new FoodGroup("Dryck med alkohol", "A0846"));
+		updateGroupParent("A0847", "A0846");
+		updateGroupParent("A0848", "A0846");
+		updateGroupParent("A0849", "A0846");
+		updateGroupParent("A0850", "A0846");
+		updateGroupParent("A0854", "A0853");
+		updateGroupParent("A0856", "A0853");
+		updateGroupParent("A0857", "A0853");
+		updateGroupParent("A0858", "A0853");
+		updateGroupParent("A0859", "A0853");
+		updateGroupParent("A0860", "A0853");
+		updateGroupParent("A0862", "A0861");
+		updateGroupParent("A0863", "A0861");
+		updateGroupParent("A0864", "A0861");
+		updateGroupParent("A0865", "A0861");
+		updateGroupParent("A0866", "A0861");
+		updateGroupParent("A0868", "A0861");
+		updateGroupParent("A0870", "A0869");
+	}
+
 	/*
 	Helper methods
 	 */
@@ -316,6 +433,15 @@ public class DatabaseSeeder {
 			case 17:
 				return LangualTerm.Type.DISTINCTIVE_FEATURES;
 			default: throw new IllegalArgumentException("Not a valid column!");
+		}
+	}
+	private static void updateGroupParent(String mainCode, String parentCode) {
+		try {
+			FoodGroup group = db.find(FoodGroup.class).where().eq("langualCode", mainCode).findUnique();
+			group.parent = db.find(FoodGroup.class).where().eq("langualCode", parentCode).findUnique();
+			db.save(group);
+		} catch (NullPointerException e) {
+			Logger.error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
 		}
 	}
 	private static Float toFloat(String col) {

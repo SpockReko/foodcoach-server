@@ -19,7 +19,7 @@ public class FoodSource {
 	@Column(nullable = false) public String name;
 	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
-	@ManyToMany @JsonBackReference public FoodGroup parents;
+	@ManyToMany @JsonBackReference public FoodSource parents;
 	@ManyToMany(mappedBy = "sources") @JsonBackReference public List<FoodItem> foodItems;
 
 	public FoodSource(String name, String langualCode) {
