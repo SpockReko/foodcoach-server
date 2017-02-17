@@ -15,7 +15,7 @@ public class LangualTerm extends Model {
 
 	@Id public long id;
 
-	@Pattern(regexp = "[A-Z]\\d{4}") public String code;
+	@Column(unique = true) @Pattern(regexp = "[A-Z]\\d{4}") public String code;
 	@Column(nullable = false) public String name;
 
 	@Enumerated(EnumType.STRING) public Type type;

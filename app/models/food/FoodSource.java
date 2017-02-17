@@ -17,7 +17,7 @@ public class FoodSource extends Model {
 	@Id public long id;
 
 	@Column(nullable = false) public String name;
-	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
+	@Column(unique = true) @Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
 	@ManyToOne @JsonBackReference public FoodSource parents;
 	@ManyToMany(mappedBy = "sources") @JsonBackReference public Set<FoodItem> foodItems;

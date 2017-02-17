@@ -19,7 +19,7 @@ public class FoodGroup extends Model {
 	@Id public long id;
 
 	@Column(nullable = false) public String name;
-	@Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
+	@Column(unique = true) @Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
 	@ManyToOne @JsonBackReference public FoodGroup parent;
 	@ManyToMany(mappedBy = "groups") @JsonBackReference public Set<FoodItem> foodItems;
