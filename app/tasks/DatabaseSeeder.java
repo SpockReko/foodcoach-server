@@ -20,7 +20,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by fredrikkindstrom on 2017-02-13.
+ * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
+ * basic data. Sets the correct values to the Java objects and persists them to the database using
+ * the Ebean ORM included with the application. Also parses through and insert the meta information
+ * provided by Livsmedelsverket for each food. This has been scraped from
+ * their website and put into another CSV file.
+ * TL;DR Puts all the Livsmedelsverket food data into our own database.
  */
 public class DatabaseSeeder {
 
@@ -395,6 +400,36 @@ public class DatabaseSeeder {
 	Helper methods
 	 */
 
+	private static void updateGroupParent(String mainCode, String parentCode) {
+		try {
+			FoodGroup group = db.find(FoodGroup.class).where().eq("langualCode", mainCode).findUnique();
+			group.parent = db.find(FoodGroup.class).where().eq("langualCode", parentCode).findUnique();
+			db.save(group);
+		} catch (NullPointerException e) {
+			Logger.error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
+		}
+	}
+	private static String[] extractNameAndCode(String line) {
+		String code = "";
+		Pattern pattern = Pattern.compile("[A-Z]\\d{4}");
+		Matcher matcher = pattern.matcher(line);
+		if (matcher.find()) code = matcher.group(0);
+		String name = line.split("[A-Z]\\d{4}")[0];
+		if (name.contains("()")) {
+			name = name.substring(0, name.length()-1);
+		}
+		name = name.substring(0, name.length()-1);
+
+		return new String[] { name.trim(), code };
+	}
+
+	private static Float toFloat(String col) {
+		if (!col.equals("NULL")) {
+			return Float.parseFloat(col);
+		} else {
+			return null;
+		}
+	}
 	private static EbeanServer getDatabase() {
 		String username = "root";
 		String connectionString = "jdbc:mysql://localhost/foodcoach?verifyServerCertificate=false&useSSL=true";
@@ -412,6 +447,13 @@ public class DatabaseSeeder {
 		config.setRegister(false);
 
 		return EbeanServerFactory.create(config);
+	}
+	private static Reader getReader(String path) {
+		try {
+			return new BufferedReader(new FileReader(path));
+		} catch (FileNotFoundException e) {
+			throw new IllegalStateException("Unable to read input", e);
+		}
 	}
 	private static LangualTerm.Type getLangualType(int column) {
 		switch (column) {
@@ -440,42 +482,6 @@ public class DatabaseSeeder {
 			case 17:
 				return LangualTerm.Type.DISTINCTIVE_FEATURES;
 			default: throw new IllegalArgumentException("Not a valid column!");
-		}
-	}
-	private static Reader getReader(String path) {
-		try {
-			return new BufferedReader(new FileReader(path));
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("Unable to read input", e);
-		}
-	}
-	private static void updateGroupParent(String mainCode, String parentCode) {
-		try {
-			FoodGroup group = db.find(FoodGroup.class).where().eq("langualCode", mainCode).findUnique();
-			group.parent = db.find(FoodGroup.class).where().eq("langualCode", parentCode).findUnique();
-			db.save(group);
-		} catch (NullPointerException e) {
-			Logger.error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
-		}
-	}
-	private static String[] extractNameAndCode(String line) {
-		String code = "";
-		Pattern pattern = Pattern.compile("[A-Z]\\d{4}");
-		Matcher matcher = pattern.matcher(line);
-		if (matcher.find()) code = matcher.group(0);
-		String name = line.split("[A-Z]\\d{4}")[0];
-		if (name.contains("()")) {
-			name = name.substring(0, name.length()-1);
-		}
-		name = name.substring(0, name.length()-1);
-
-		return new String[] { name.trim(), code };
-	}
-	private static Float toFloat(String col) {
-		if (!col.equals("NULL")) {
-			return Float.parseFloat(col);
-		} else {
-			return null;
 		}
 	}
 	private static void printDone() {

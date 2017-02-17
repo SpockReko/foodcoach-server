@@ -14,26 +14,33 @@ import java.util.List;
  */
 public class FoodController extends Controller {
 
+	// GET /food/:id
 	public Result get(int lmvNumber) {
-		FoodItem food =
-			FoodItem.find.where().ilike("lmv_food_number", String.valueOf(lmvNumber)).findUnique();
+		FoodItem food;
+		try {
+			food = FoodItem.find.where().eq("lmv_food_number", String.valueOf(lmvNumber)).findUnique();
+		} catch (PersistenceException e) {
+			return badRequest("No food with food number '" + lmvNumber + "' in table FoodItems");
+		}
 		return ok(Json.toJson(food));
 	}
 
-	public Result search(String attribute, String value) {
+	// GET /food/name/:name
+	public Result getByName(String name) {
 		List<FoodItem> foods;
 		try {
-			foods = FoodItem.find.where().contains(attribute, value).findList();
+			foods = FoodItem.find.where().contains("name", name).findList();
 		} catch (PersistenceException e) {
-			return badRequest("No attribute called '" + attribute + "' in table FoodItems");
+			return badRequest("No food called '" + name + "' in table FoodItems");
 		}
 		return ok(Json.toJson(foods));
 	}
 
-	public Result group(String code) {
+	// GET /food/group/:code
+	public Result getByGroup(String code) {
 		List<FoodGroup> groups;
 		try {
-			groups = FoodGroup.find.select("*").where().eq("parent.code", code).findList();
+			groups = FoodGroup.find.where().eq("langualCode", code).findList();
 		} catch (PersistenceException e) {
 			return badRequest("No food group with code '" + code + "' in table FoodGroups");
 		}

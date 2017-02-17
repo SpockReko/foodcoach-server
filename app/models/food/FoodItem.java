@@ -1,6 +1,7 @@
 package models.food;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -42,8 +43,8 @@ public class FoodItem extends Model {
 	@Embedded public Vitamins vitamins;
 	@Embedded public Minerals minerals;
 
-	@ManyToMany @JsonManagedReference public Set<FoodGroup> groups;
-	@ManyToMany @JsonManagedReference public Set<FoodSource> sources;
+	@ManyToMany @JsonBackReference public Set<FoodGroup> groups;
+	@ManyToMany @JsonBackReference public Set<FoodSource> sources;
 
 	@ManyToOne public LangualTerm partOfPlantOrAnimal;
 	@ManyToOne public LangualTerm physicalForm;

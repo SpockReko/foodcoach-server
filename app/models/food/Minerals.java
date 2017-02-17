@@ -1,7 +1,6 @@
 package models.food;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 
 /**

@@ -6,7 +6,12 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
 /**
- * Created by fredrikkindstrom on 2017-02-14.
+ * Represents a general LanguaL term that every {@link FoodItem} can be associated with.
+ * Usually contains a reference to a LanguaL code as decided by the LanguaL thesarus.
+ * The code can also be blanc and that happens when Livsmedelsverket has put in their
+ * own random data with no reference to the an actual Langual term.
+ * (<a href="http://www.langual.org/langual_Thesaurus.asp">http://www.langual.org/langual_Thesaurus.asp</a>).
+ * @author Fredrik Kindstrom
  */
 @Entity
 @Table(name = "LangualTerms")

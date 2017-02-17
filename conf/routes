@@ -7,11 +7,8 @@ GET     /                                   controllers.ApplicationController.in
 
 # Food items
 GET     /food/:id                           controllers.FoodController.get(id: Int)
-GET     /food/group/:code                   controllers.FoodController.group(code: String)
-GET     /food/:attribute/:value             controllers.FoodController.search(attribute: String, value: String)
-
-# Parse data
-GET     /parse/:operation                   controllers.ApplicationController.parse(operation: String)
+GET     /food/name/:name                    controllers.FoodController.getByName(name: String)
+GET     /food/group/:code                   controllers.FoodController.getByGroup(code: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
