@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package tasks;
 
 import com.avaje.ebean.EbeanServer;
@@ -22,6 +23,27 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
+=======
+        package tasks;
+
+        import com.avaje.ebean.EbeanServer;
+        import com.avaje.ebean.EbeanServerFactory;
+        import com.avaje.ebean.config.ServerConfig;
+        import com.typesafe.config.Config;
+        import com.typesafe.config.ConfigFactory;
+        import com.univocity.parsers.csv.CsvParser;
+        import com.univocity.parsers.csv.CsvParserSettings;
+        import me.tongfei.progressbar.ProgressBar;
+        import models.food.*;
+        import org.avaje.datasource.DataSourceConfig;
+        import play.Logger;
+
+        import javax.persistence.PersistenceException;
+        import java.io.*;
+        import java.util.*;
+        import java.util.regex.Matcher;
+        import java.util.regex.Pattern;
+>>>>>>> User branch created
 
 /**
  * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
@@ -57,8 +79,8 @@ public class DatabaseSeeder {
             db.find(FoodItem.class).where().eq("id", "1").findUnique();
         } catch (PersistenceException e) {
             System.out.println(YELLOW
-                + "No database tables present. Please start server and run evolution script first!\n"
-                + RESET);
+                    + "No database tables present. Please start server and run evolution script first!\n"
+                    + RESET);
             return;
         }
 
@@ -141,6 +163,7 @@ public class DatabaseSeeder {
             Minerals minerals =  new Minerals(folate, phosphorus, iodine, iron, calcium, potassium,
                 magnesium, sodium, salt, selenium, zink);
             FoodItem item =
+<<<<<<< HEAD
                 new FoodItem(name, scientificName, lmvFoodNumber, lmvProject, energyKcal, energyKj,
                     carbohydrates, protein, fibre, wholeGrain, cholesterol, water, alcohol, ash,
                     waste, sugars, fats, vitamins, minerals);
@@ -150,6 +173,14 @@ public class DatabaseSeeder {
                 for (String group : groups) {
                     linkFoodGroup(item, extractNameAndCode(group));
                 }
+=======
+                    db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
+
+            if (item == null) {
+                Logger.warn(
+                        "Found food in meta table but not in database! lmvFoodNumber = " + row[2]);
+                continue;
+>>>>>>> User branch created
             }
             if (cols[62] != null) {
                 linkFoodSources(item, extractNameAndCode(cols[62]));
@@ -177,7 +208,7 @@ public class DatabaseSeeder {
 
             if (nameOrCode[1].isEmpty()) {
                 FoodGroup existing =
-                    db.find(FoodGroup.class).where().eq("name", nameOrCode[0]).findUnique();
+                        db.find(FoodGroup.class).where().eq("name", nameOrCode[0]).findUnique();
                 if (existing == null) {
                     group = new FoodGroup(nameOrCode[0], null);
                 } else {
@@ -201,7 +232,7 @@ public class DatabaseSeeder {
 
             if (nameOrCode[1].isEmpty()) {
                 FoodSource existing =
-                    db.find(FoodSource.class).where().eq("name", nameOrCode[0]).findUnique();
+                        db.find(FoodSource.class).where().eq("name", nameOrCode[0]).findUnique();
                 if (existing == null) {
                     source = new FoodSource(nameOrCode[0], null);
                 } else {
@@ -214,7 +245,7 @@ public class DatabaseSeeder {
             db.save(source);
         } else {
             source =
-                db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
+                    db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
         }
 
         item.source = source;
@@ -226,7 +257,7 @@ public class DatabaseSeeder {
 
             if (nameOrCode[1].isEmpty()) {
                 LangualTerm existing =
-                    db.find(LangualTerm.class).where().eq("name", nameOrCode[0]).findUnique();
+                        db.find(LangualTerm.class).where().eq("name", nameOrCode[0]).findUnique();
                 if (existing == null) {
                     term = new LangualTerm(null, nameOrCode[0], type);
                 } else {
@@ -430,13 +461,13 @@ public class DatabaseSeeder {
     private static void updateGroupParent(String mainCode, String parentCode) {
         try {
             FoodGroup group =
-                db.find(FoodGroup.class).where().eq("langualCode", mainCode).findUnique();
+                    db.find(FoodGroup.class).where().eq("langualCode", mainCode).findUnique();
             group.parent =
-                db.find(FoodGroup.class).where().eq("langualCode", parentCode).findUnique();
+                    db.find(FoodGroup.class).where().eq("langualCode", parentCode).findUnique();
             db.save(group);
         } catch (NullPointerException e) {
             Logger
-                .error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
+                    .error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
         }
     }
 
