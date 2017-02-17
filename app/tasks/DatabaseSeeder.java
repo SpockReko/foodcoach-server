@@ -39,7 +39,7 @@ public class DatabaseSeeder {
 
 		db = getDatabase();
 
-		System.out.println("\n" + PURPLE + "--- (Generating database) ---\n" + RESET);
+		System.out.println("\n" + PURPLE + "--- (Seeding database) ---\n" + RESET);
 
 		try {
 			db.find(FoodItem.class).where().eq("id", "1").findUnique();
@@ -292,7 +292,9 @@ public class DatabaseSeeder {
 	}
 
 	private static void linkFoodGroupsParents() {
-		db.insert(new FoodGroup("Ost", "A0784"));
+		if (db.find(FoodGroup.class).where().eq("langualCode", "A0784").findCount() == 0) {
+			db.insert(new FoodGroup("Ost", "A0784"));
+		}
 		updateGroupParent("A0310", "A0784");
 		updateGroupParent("A0311", "A0784");
 		updateGroupParent("A0312", "A0784");
@@ -306,7 +308,9 @@ public class DatabaseSeeder {
 		updateGroupParent("A0787", "A0784");
 		updateGroupParent("A0788", "A0784");
 		updateGroupParent("A0789", "A0778");
-		db.insert(new FoodGroup("Ägg eller äggprodukt", "A0790"));
+		if (db.find(FoodGroup.class).where().eq("langualCode", "A0790").findCount() == 0) {
+			db.insert(new FoodGroup("Ägg eller äggprodukt", "A0790"));
+		}
 		updateGroupParent("A0791", "A0790");
 		updateGroupParent("A0792", "A0790");
 		updateGroupParent("A0794", "A0793");
@@ -319,10 +323,14 @@ public class DatabaseSeeder {
 		updateGroupParent("A0802", "A0801");
 		updateGroupParent("A0803", "A0801");
 		updateGroupParent("A0804", "A0801");
-		db.insert(new FoodGroup("Fett eller olja", "A0805"));
+		if (db.find(FoodGroup.class).where().eq("langualCode", "A0805").findCount() == 0) {
+			db.insert(new FoodGroup("Fett eller olja", "A0805"));
+		}
 		updateGroupParent("A0806", "A0805");
 		updateGroupParent("A0807", "A0805");
-		db.insert(new FoodGroup("Animaliska fetter", "A0808"));
+		if (db.find(FoodGroup.class).where().eq("langualCode", "A0808").findCount() == 0) {
+			db.insert(new FoodGroup("Animaliska fetter", "A0808"));
+		}
 		updateGroupParent("A0808", "A0805");
 		updateGroupParent("A0809", "A0808");
 		updateGroupParent("A0810", "A0808");
@@ -330,7 +338,9 @@ public class DatabaseSeeder {
 		updateGroupParent("A0814", "A0812");
 		updateGroupParent("A0815", "A0812");
 		updateGroupParent("A0816", "A0812");
-		db.insert(new FoodGroup("Bröd och liknande produkter", "A0817"));
+		if (db.find(FoodGroup.class).where().eq("langualCode", "A0817").findCount() == 0) {
+			db.insert(new FoodGroup("Bröd och liknande produkter", "A0817"));
+		}
 		updateGroupParent("A0818", "A0817");
 		updateGroupParent("A0819", "A0817");
 		updateGroupParent("A0820", "A0817");
@@ -351,13 +361,17 @@ public class DatabaseSeeder {
 		g2.name = "Konfekt och annan sockerprodukt dvs ej choklad";
 		db.save(g2);
 		updateGroupParent("A0839", "A0835");
-		db.insert(new FoodGroup("Dryck (ej mjölk)", "A0840"));
+		if (db.find(FoodGroup.class).where().eq("langualCode", "A0840").findCount() == 0) {
+			db.insert(new FoodGroup("Dryck (ej mjölk)", "A0840"));
+		}
 		updateGroupParent("A0841", "A0840");
 		updateGroupParent("A0842", "A0840");
 		updateGroupParent("A0843", "A0842");
 		updateGroupParent("A0844", "A0842");
 		updateGroupParent("A0845", "A0842");
-		db.insert(new FoodGroup("Dryck med alkohol", "A0846"));
+		if (db.find(FoodGroup.class).where().eq("langualCode", "A0846").findCount() == 0) {
+			db.insert(new FoodGroup("Dryck med alkohol", "A0846"));
+		}
 		updateGroupParent("A0847", "A0846");
 		updateGroupParent("A0848", "A0846");
 		updateGroupParent("A0849", "A0846");

@@ -8,6 +8,7 @@ create table foodgroups (
   name                          varchar(255) not null,
   langual_code                  varchar(255),
   parent_id                     bigint,
+  constraint uq_foodgroups_langual_code unique (langual_code),
   constraint pk_foodgroups primary key (id)
 );
 
@@ -107,6 +108,7 @@ create table foodsources (
   name                          varchar(255) not null,
   langual_code                  varchar(255),
   parents_id                    bigint,
+  constraint uq_foodsources_langual_code unique (langual_code),
   constraint pk_foodsources primary key (id)
 );
 
@@ -116,6 +118,7 @@ create table langualterms (
   name                          varchar(255) not null,
   type                          varchar(23),
   constraint ck_langualterms_type check ( type in ('PART_OF_PLANT_OR_ANIMAL','PHYSICAL_FORM','HEAT_TREATMENT','COOKING_METHOD','INDUSTRIAL_PROCESS','PRESERVATION_METHOD','PACKING_MEDIUM','PACKING_TYPE','PACKING_MATERIAL','LABEL_CLAIM','GEOGRAPHIC_SOURCE','DISTINCTIVE_FEATURES')),
+  constraint uq_langualterms_code unique (code),
   constraint pk_langualterms primary key (id)
 );
 

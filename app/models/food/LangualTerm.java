@@ -4,7 +4,6 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 /**
  * Created by fredrikkindstrom on 2017-02-14.
