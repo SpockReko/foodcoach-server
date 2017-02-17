@@ -53,8 +53,7 @@ quit
 
 #### Step 2: Create Tables
 
-You can now startup the server. This will prompt Play to create the database tables
-that are missing.
+You can now startup the server.
 
 ``` bash
 sbt run
@@ -77,12 +76,18 @@ sbt seed
 ```
 
 This will run a script that reads the food information from Livsmedelsverket
-and puts it into or new empty database!
+and puts it into our new empty database!
 
 #### Step 4: Enjoy
 
 You can now start the server again with **sbt run** and enjoy the
 application up and running with a complete food database!
+
+## Routes
+
+Will post more information about all the routes that are available here,
+until then you can look in the conf/**routes** file to see what URL's the server responds to!
+
 
 ## Dependencies
 
