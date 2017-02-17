@@ -10,7 +10,9 @@ import javax.persistence.PersistenceException;
 import java.util.List;
 
 /**
- * Created by fredrikkindstrom on 2017-02-12.
+ * HTTP controller handling all requests that have to do with
+ * food data and their respective components.
+ * @author Fredrik Kindstrom
  */
 public class FoodController extends Controller {
 

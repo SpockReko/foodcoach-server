@@ -46,10 +46,22 @@ Then, you type all this one row at a time to login to your MySQL and
 create a database called **foodcoach**. This is the only name the application will recognize.
 
 ``` bash
-mysql -u root
+mysql -u username -p password
 create database foodcoach;
 quit
 ```
+
+**IMPORTANT:** You have to create a new file called **dbconfig.conf** inside the
+_conf_ directory in the project structure where you also write your MySQL username
+and password. These differ from setup to setup so all of us may have different settings here.
+As a default the **dbconfig.conf** file should look like this:
+
+```
+db.default.username=root
+db.default.password=""
+```
+
+But you may have to change this depending on your setup.
 
 #### Step 2: Create Tables
 
@@ -85,9 +97,22 @@ application up and running with a complete food database!
 
 ## Routes
 
-Will post more information about all the routes that are available here,
-until then you can look in the conf/**routes** file to see what URL's the server responds to!
+The server can be called with these routes:
 
+`/food/:id`
+
+Where **:id** is the Livsmedelsverkets livsmedelsnummer _(320 for Avokado)_.  
+Returns a JSON response containing the food object.
+
+`/food/name/:name`
+
+Where **:name** is the name of the food _(Avokado, Äpple)_.  
+Returns a JSON response containing the food object.
+
+`/food/group/:code`
+
+Where **:code** is the LanguaL code of the food group _(A0831 for Baljväxter)_.  
+Returns a JSON response containing the food group object.
 
 ## Dependencies
 
