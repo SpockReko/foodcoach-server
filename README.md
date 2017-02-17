@@ -32,8 +32,29 @@ just plain old Java code.
 
 ## Setup
 
-You start the server via the terminal on your machine.
-Open up a window, navigate to the correct folder and type this:
+#### Step 1: Create Database
+
+The application needs a database, we currently use MySQL. This is how you install it.
+If you dont have [Homebrew](https://brew.sh/index_se.html) installed, install it.
+It is truly awesome. When you are done installing. Go into your terminal and type this:
+
+``` bash
+brew install mysql
+```
+
+Then, you type all this one row at a time to login to your MySQL and
+create a database called **foodcoach**. This is the only name the application will recognize.
+
+``` bash
+mysql -u root
+create database foodcoach;
+quit
+```
+
+#### Step 2: Create Tables
+
+You can now startup the server. This will prompt Play to create the database tables
+that are missing.
 
 ``` bash
 sbt run
@@ -43,6 +64,25 @@ This will trigger SBT to startup a server at _localhost:9000_. This is like a we
 runs locally on your machine. You can now open up a web browser and
 navigate to _localhost:9000_ to see what the server has to say!
 
+It will probably say that you have to apply a evolution script to your database,
+click the _apply script_ button and wait until the server is done.
+
+#### Step 3: Seed the Database
+
+You can now go back to your terminal and either stop the server with _Ctrl+C_ or open
+up a new terminal window to type this:
+
+``` bash
+sbt seed
+```
+
+This will run a script that reads the food information from Livsmedelsverket
+and puts it into or new empty database!
+
+#### Step 4: Enjoy
+
+You can now start the server again with **sbt run** and enjoy the
+application up and running with a complete food database!
 
 ## Dependencies
 
@@ -50,7 +90,7 @@ If we want to use a dependency (an external library to handle some stuff for us,
 like parse HTML for example) we can add this to the **build.sbt** file in the root folder.
 The syntax looks like this:
 
-```scala
+```sbt
 libraryDependencies += "org.plugin" % "plugin" % "1.0.0"
 ```
 
@@ -65,6 +105,13 @@ JDBC driver for MySQL. We use this to connect to the database through our Java c
 #### [jsoup](https://jsoup.org/)  
 A parser for HTML. We use this to find and extract text on a webpage,
 a list of ingredients for example.
+
+#### [uniVocity-parsers](https://github.com/uniVocity/univocity-parsers)  
+A parser for CSV and TSV. We use this to find and extract the information
+stored in Excel-sheets for example and put it into database tables.
+
+#### [progressbar](https://github.com/ctongfei/progressbar)  
+Used in the awesome seeding script to make the progressbar.
 
 ## Code Style
 
