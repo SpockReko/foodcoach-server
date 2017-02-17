@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * HTTP controller handling all requests that have to do with
  * food data and their respective components.
+ *
  * @author Fredrik Kindstrom
  */
 public class FoodController extends Controller {
@@ -20,7 +21,8 @@ public class FoodController extends Controller {
 	public Result get(int lmvNumber) {
 		FoodItem food;
 		try {
-			food = FoodItem.find.where().eq("lmv_food_number", String.valueOf(lmvNumber)).findUnique();
+			food =
+				FoodItem.find.where().eq("lmv_food_number", String.valueOf(lmvNumber)).findUnique();
 		} catch (PersistenceException e) {
 			return badRequest("No food with food number '" + lmvNumber + "' in table FoodItems");
 		}

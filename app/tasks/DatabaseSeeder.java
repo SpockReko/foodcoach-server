@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
  * provided by Livsmedelsverket for each food. This has been scraped from
  * their website and put into another CSV file.
  * TL;DR Puts all the Livsmedelsverket food data into our own database.
+ *
+ * @author Fredrik Kindstrom
  */
 public class DatabaseSeeder {
 
@@ -173,10 +175,12 @@ public class DatabaseSeeder {
 
 		for (String[] row : allRows) {
 
-			FoodItem item = db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
+			FoodItem item =
+				db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
 
 			if (item == null) {
-				Logger.warn("Found food in meta table but not in database! lmvFoodNumber = " + row[2]);
+				Logger.warn(
+					"Found food in meta table but not in database! lmvFoodNumber = " + row[2]);
 				continue;
 			}
 
@@ -219,7 +223,8 @@ public class DatabaseSeeder {
 		if (db.find(FoodGroup.class).where().eq("langualCode", nameOrCode[1]).findCount() == 0) {
 
 			if (nameOrCode[1].isEmpty()) {
-				FoodGroup existing = db.find(FoodGroup.class).where().eq("name", nameOrCode[0]).findUnique();
+				FoodGroup existing =
+					db.find(FoodGroup.class).where().eq("name", nameOrCode[0]).findUnique();
 				if (existing == null) {
 					group = new FoodGroup(nameOrCode[0], null);
 				} else {
@@ -242,7 +247,8 @@ public class DatabaseSeeder {
 		if (db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findCount() == 0) {
 
 			if (nameOrCode[1].isEmpty()) {
-				FoodSource existing = db.find(FoodSource.class).where().eq("name", nameOrCode[0]).findUnique();
+				FoodSource existing =
+					db.find(FoodSource.class).where().eq("name", nameOrCode[0]).findUnique();
 				if (existing == null) {
 					source = new FoodSource(nameOrCode[0], null);
 				} else {
@@ -254,19 +260,20 @@ public class DatabaseSeeder {
 
 			db.save(source);
 		} else {
-			source = db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
+			source =
+				db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
 		}
 
 		item.sources.add(source);
 	}
 
-	private static void linkFoodLangual(FoodItem item, LangualTerm.Type type,
-		String[] nameOrCode) {
+	private static void linkFoodLangual(FoodItem item, LangualTerm.Type type, String[] nameOrCode) {
 		LangualTerm term;
 		if (db.find(LangualTerm.class).where().eq("code", nameOrCode[1]).findCount() == 0) {
 
 			if (nameOrCode[1].isEmpty()) {
-				LangualTerm existing = db.find(LangualTerm.class).where().eq("name", nameOrCode[0]).findUnique();
+				LangualTerm existing =
+					db.find(LangualTerm.class).where().eq("name", nameOrCode[0]).findUnique();
 				if (existing == null) {
 					term = new LangualTerm(null, nameOrCode[0], type);
 				} else {
@@ -402,23 +409,27 @@ public class DatabaseSeeder {
 
 	private static void updateGroupParent(String mainCode, String parentCode) {
 		try {
-			FoodGroup group = db.find(FoodGroup.class).where().eq("langualCode", mainCode).findUnique();
-			group.parent = db.find(FoodGroup.class).where().eq("langualCode", parentCode).findUnique();
+			FoodGroup group =
+				db.find(FoodGroup.class).where().eq("langualCode", mainCode).findUnique();
+			group.parent =
+				db.find(FoodGroup.class).where().eq("langualCode", parentCode).findUnique();
 			db.save(group);
 		} catch (NullPointerException e) {
-			Logger.error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
+			Logger
+				.error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
 		}
 	}
 	private static String[] extractNameAndCode(String line) {
 		String code = "";
 		Pattern pattern = Pattern.compile("[A-Z]\\d{4}");
 		Matcher matcher = pattern.matcher(line);
-		if (matcher.find()) code = matcher.group(0);
+		if (matcher.find())
+			code = matcher.group(0);
 		String name = line.split("[A-Z]\\d{4}")[0];
 		if (name.contains("()")) {
-			name = name.substring(0, name.length()-1);
+			name = name.substring(0, name.length() - 1);
 		}
-		name = name.substring(0, name.length()-1);
+		name = name.substring(0, name.length() - 1);
 
 		return new String[] { name.trim(), code };
 	}
@@ -432,7 +443,8 @@ public class DatabaseSeeder {
 	}
 	private static EbeanServer getDatabase() {
 		String username = "root";
-		String connectionString = "jdbc:mysql://localhost/foodcoach?verifyServerCertificate=false&useSSL=true";
+		String connectionString =
+			"jdbc:mysql://localhost/foodcoach?verifyServerCertificate=false&useSSL=true";
 		String dbDriver = "com.mysql.jdbc.Driver";
 		DataSourceConfig foodDB = new DataSourceConfig();
 		ServerConfig config = new ServerConfig();
@@ -481,12 +493,14 @@ public class DatabaseSeeder {
 				return LangualTerm.Type.GEOGRAPHIC_SOURCE;
 			case 17:
 				return LangualTerm.Type.DISTINCTIVE_FEATURES;
-			default: throw new IllegalArgumentException("Not a valid column!");
+			default:
+				throw new IllegalArgumentException("Not a valid column!");
 		}
 	}
 	private static void printDone() {
 		System.out.println(GREEN + "Done" + RESET);
 	}
 
-	private static class DatabaseNotEmptyException extends Exception {}
+	private static class DatabaseNotEmptyException extends Exception {
+	}
 }

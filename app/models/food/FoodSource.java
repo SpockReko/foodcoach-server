@@ -12,6 +12,7 @@ import java.util.Set;
  * Represents a food source that every {@link FoodItem} can be associated with.
  * Usually contains a reference to a LanguaL code as decided by the LanguaL thesarus.
  * (<a href="http://www.langual.org/langual_Thesaurus.asp">http://www.langual.org/langual_Thesaurus.asp</a>).
+ *
  * @author Fredrik Kindstrom
  */
 @Entity

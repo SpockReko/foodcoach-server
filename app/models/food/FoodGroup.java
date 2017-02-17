@@ -12,6 +12,7 @@ import java.util.Set;
  * Represents a food group that every {@link FoodItem} can be associated with.
  * Usually contains a reference to a LanguaL code as decided by EuroFIR Food Classification System
  * (<a href="http://www.eurofir.org/">http://www.eurofir.org/</a>).
+ *
  * @author Fredrik Kindstrom
  */
 @Entity

@@ -12,6 +12,7 @@ import java.util.Set;
  * like sugars, fats etc. This is just to make the code less cluttered with too much methods.
  * The underlying database tables contain all these fields as columns in a single table.
  * All data is measured with 100 grams of the food item.
+ *
  * @author Fredrik Kindstrom
  */
 @Entity

@@ -11,6 +11,7 @@ import javax.validation.constraints.Pattern;
  * The code can also be blanc and that happens when Livsmedelsverket has put in their
  * own random data with no reference to the an actual Langual term.
  * (<a href="http://www.langual.org/langual_Thesaurus.asp">http://www.langual.org/langual_Thesaurus.asp</a>).
+ *
  * @author Fredrik Kindstrom
  */
 @Entity
@@ -31,8 +32,8 @@ public class LangualTerm extends Model {
 	}
 
 	public enum Type {
-		PART_OF_PLANT_OR_ANIMAL, PHYSICAL_FORM, HEAT_TREATMENT, COOKING_METHOD,
-		INDUSTRIAL_PROCESS, PRESERVATION_METHOD, PACKING_MEDIUM, PACKING_TYPE,
-		PACKING_MATERIAL, LABEL_CLAIM, GEOGRAPHIC_SOURCE, DISTINCTIVE_FEATURES
+		PART_OF_PLANT_OR_ANIMAL, PHYSICAL_FORM, HEAT_TREATMENT, COOKING_METHOD, INDUSTRIAL_PROCESS,
+		PRESERVATION_METHOD, PACKING_MEDIUM, PACKING_TYPE, PACKING_MATERIAL, LABEL_CLAIM,
+		GEOGRAPHIC_SOURCE, DISTINCTIVE_FEATURES
 	}
 }
