@@ -1,6 +1,0 @@
-Värmebehandling okänd (F0001)
-Fullständigt upphettad (F0014)
-Delvis värmebehandlad (F0018)
-Värmebehandlad (F0022)
-Värmebehandlad, flera komponenter, olika grader av behandling (F0023)
-Ej värmebehandlad (rå) (F0003)

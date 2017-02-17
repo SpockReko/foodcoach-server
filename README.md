@@ -9,17 +9,17 @@ from a number of different sources, a web browser or a mobile app for example.
 
 ## SBT
 
-SBT strands for Scala Build Tool and that is just what it is. This tool compiles and
+SBT stands for Scala Build Tool and that is just what it is. This tool compiles and
 packages our code so that it can run as a server. We need this to compile our project and host a
-local server (see below).
+local server (see below). We also run some separate tasks using this.
 
 ## Java Play
 
-The backend is written in Java and uses a web application framework called
+The code is written in Java and uses a web application framework called
 [Java Play](https://github.com/playframework/playframework). It is actually called just
-_"Play framework"_ but the Java implementation is called Java Play. The framework is written in a
-different programming language called _Scala_ but we don't need to worry about that since we are
-only going to use the Java API that it provides.
+_"Play framework"_ but the Java implementation is called Java Play. The framework core is written
+in a different programming language called _Scala_ but we don't need to worry about that
+since we are only use the Java API that it provides.
 
 This framework contains all sorts of fancy stuff. It can be used as a _full-stack_ framework for
 rendering an entire web application. We however only use it to serve a backend server that contain
@@ -29,6 +29,25 @@ application via HTTP requests.
 
 Besides the classes and the structure that belongs to the framework the application will consist of
 just plain old Java code.
+
+## Ebean and JPA
+
+[Ebean](http://ebean-orm.github.io/) is an Object Relational Mapper (ORM). Ebean converts our Java object
+to their database representation automatically.
+
+Model classes are annotated with stuff like `@Column` and `@ManyToOne`. This tells Ebean
+how to represent these Java classes in the database. Ebean takes care of everything that has to do
+with the database as long as we give it all this information on how the relations between
+Java objects would look like in the database world and not just the object-oriented world.
+
+Most of these annotations comes from JPA (Java Persistance API) which is a standard adopted by
+many different database handler like Ebean. In short this is just the Java way to handle storing
+objects to a database without having to write plain SQL for every single thing we want to do.
+
+Instead of writing something like this every time we want to update data  
+`UPDATE FoodItems SET name='Avocado', energy_kj='500.0' WHERE id=320;`  
+we can just write this if we have modified our Java object in code:  
+`avocado.save()`
 
 ## Setup
 
@@ -107,7 +126,7 @@ Returns a JSON response containing the food object.
 `/food/name/:name`
 
 Where **:name** is the name of the food _(Avokado, Äpple)_.  
-Returns a JSON response containing the food object.
+Returns a JSON Array response containing the food objects.
 
 `/food/group/:code`
 
