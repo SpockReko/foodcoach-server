@@ -3,6 +3,8 @@ package tasks;
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.avaje.ebean.config.ServerConfig;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import me.tongfei.progressbar.ProgressBar;
@@ -11,10 +13,7 @@ import org.avaje.datasource.DataSourceConfig;
 import play.Logger;
 
 import javax.persistence.PersistenceException;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,13 +90,11 @@ public class DatabaseSeeder {
 		ProgressBar pb = new ProgressBar("Importing", allRows.size()).start();
 
 		for (String[] cols : allRows) {
-			FoodItem item = new FoodItem();
+			FoodItem item = new FoodItem(cols[0], Integer.parseInt(cols[1]));
 			item.fats = new Fats();
 			item.sugars = new Sugars();
 			item.vitamins = new Vitamins();
 			item.minerals = new Minerals();
-			item.name = cols[0];
-			item.lmvFoodNumber = Long.parseLong(cols[1]);
 			item.energyKcal = toFloat(cols[2]);
 			item.energyKj = toFloat(cols[3]);
 			item.carbohydrates = toFloat(cols[4]);
@@ -442,18 +439,15 @@ public class DatabaseSeeder {
 		}
 	}
 	private static EbeanServer getDatabase() {
-		String username = "root";
-		String connectionString =
-			"jdbc:mysql://localhost/foodcoach?verifyServerCertificate=false&useSSL=true";
-		String dbDriver = "com.mysql.jdbc.Driver";
+		Config conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve();
 		DataSourceConfig foodDB = new DataSourceConfig();
 		ServerConfig config = new ServerConfig();
 
 		config.setName("mysql");
-		foodDB.setDriver(dbDriver);
-		foodDB.setUsername(username);
-		foodDB.setPassword("");
-		foodDB.setUrl(connectionString);
+		foodDB.setDriver("com.mysql.jdbc.Driver");
+		foodDB.setUsername(conf.getString("db.default.username"));
+		foodDB.setPassword(conf.getString("db.default.password"));
+		foodDB.setUrl(conf.getString("db.default.url"));
 		config.setDataSourceConfig(foodDB);
 		config.setDefaultServer(true);
 		config.setRegister(false);

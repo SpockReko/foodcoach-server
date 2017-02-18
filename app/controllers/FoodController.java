@@ -22,7 +22,7 @@ public class FoodController extends Controller {
 		FoodItem food;
 		try {
 			food =
-				FoodItem.find.where().eq("lmv_food_number", String.valueOf(lmvNumber)).findUnique();
+				FoodItem.find.where().eq("lmv_food_number", lmvNumber).findUnique();
 		} catch (PersistenceException e) {
 			return badRequest("No food with food number '" + lmvNumber + "' in table FoodItems");
 		}
