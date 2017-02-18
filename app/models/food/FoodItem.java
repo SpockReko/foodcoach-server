@@ -23,7 +23,7 @@ public class FoodItem extends Model {
 
 	@Column(nullable = false) public String name;
 	public String scientificName;
-	@Column(unique = true) public Long lmvFoodNumber;
+	@Column(unique = true) public int lmvFoodNumber;
 	public String lmvProject;
 
 	public Float energyKcal;
@@ -58,6 +58,11 @@ public class FoodItem extends Model {
 	@ManyToOne public LangualTerm labelClaim;
 	@ManyToOne public LangualTerm geographicSource;
 	@ManyToOne public LangualTerm distinctiveFeatures;
+
+	public FoodItem(String name, int lmvFoodNumber) {
+		this.name = name;
+		this.lmvFoodNumber = lmvFoodNumber;
+	}
 
 	public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
 }

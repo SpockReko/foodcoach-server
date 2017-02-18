@@ -16,7 +16,7 @@ create table fooditems (
   id                            bigint auto_increment not null,
   name                          varchar(255) not null,
   scientific_name               varchar(255),
-  lmv_food_number               bigint,
+  lmv_food_number               integer,
   lmv_project                   varchar(255),
   energy_kcal                   float,
   energy_kj                     float,
@@ -179,59 +179,59 @@ create index ix_foodsources_parents_id on foodsources (parents_id);
 
 # --- !Downs
 
-alter table foodgroups drop foreign key fk_foodgroups_parent_id;
-drop index ix_foodgroups_parent_id on foodgroups;
+alter table foodgroups drop constraint if exists fk_foodgroups_parent_id;
+drop index if exists ix_foodgroups_parent_id;
 
-alter table fooditems drop foreign key fk_fooditems_part_of_plant_or_animal_id;
-drop index ix_fooditems_part_of_plant_or_animal_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_part_of_plant_or_animal_id;
+drop index if exists ix_fooditems_part_of_plant_or_animal_id;
 
-alter table fooditems drop foreign key fk_fooditems_physical_form_id;
-drop index ix_fooditems_physical_form_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_physical_form_id;
+drop index if exists ix_fooditems_physical_form_id;
 
-alter table fooditems drop foreign key fk_fooditems_heat_treatment_id;
-drop index ix_fooditems_heat_treatment_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_heat_treatment_id;
+drop index if exists ix_fooditems_heat_treatment_id;
 
-alter table fooditems drop foreign key fk_fooditems_cooking_method_id;
-drop index ix_fooditems_cooking_method_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_cooking_method_id;
+drop index if exists ix_fooditems_cooking_method_id;
 
-alter table fooditems drop foreign key fk_fooditems_industrial_process_id;
-drop index ix_fooditems_industrial_process_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_industrial_process_id;
+drop index if exists ix_fooditems_industrial_process_id;
 
-alter table fooditems drop foreign key fk_fooditems_preservation_method_id;
-drop index ix_fooditems_preservation_method_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_preservation_method_id;
+drop index if exists ix_fooditems_preservation_method_id;
 
-alter table fooditems drop foreign key fk_fooditems_packing_medium_id;
-drop index ix_fooditems_packing_medium_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_packing_medium_id;
+drop index if exists ix_fooditems_packing_medium_id;
 
-alter table fooditems drop foreign key fk_fooditems_packing_type_id;
-drop index ix_fooditems_packing_type_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_packing_type_id;
+drop index if exists ix_fooditems_packing_type_id;
 
-alter table fooditems drop foreign key fk_fooditems_packing_material_id;
-drop index ix_fooditems_packing_material_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_packing_material_id;
+drop index if exists ix_fooditems_packing_material_id;
 
-alter table fooditems drop foreign key fk_fooditems_label_claim_id;
-drop index ix_fooditems_label_claim_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_label_claim_id;
+drop index if exists ix_fooditems_label_claim_id;
 
-alter table fooditems drop foreign key fk_fooditems_geographic_source_id;
-drop index ix_fooditems_geographic_source_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_geographic_source_id;
+drop index if exists ix_fooditems_geographic_source_id;
 
-alter table fooditems drop foreign key fk_fooditems_distinctive_features_id;
-drop index ix_fooditems_distinctive_features_id on fooditems;
+alter table fooditems drop constraint if exists fk_fooditems_distinctive_features_id;
+drop index if exists ix_fooditems_distinctive_features_id;
 
-alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_fooditems;
-drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;
+alter table fooditems_foodgroups drop constraint if exists fk_fooditems_foodgroups_fooditems;
+drop index if exists ix_fooditems_foodgroups_fooditems;
 
-alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_foodgroups;
-drop index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups;
+alter table fooditems_foodgroups drop constraint if exists fk_fooditems_foodgroups_foodgroups;
+drop index if exists ix_fooditems_foodgroups_foodgroups;
 
-alter table fooditems_foodsources drop foreign key fk_fooditems_foodsources_fooditems;
-drop index ix_fooditems_foodsources_fooditems on fooditems_foodsources;
+alter table fooditems_foodsources drop constraint if exists fk_fooditems_foodsources_fooditems;
+drop index if exists ix_fooditems_foodsources_fooditems;
 
-alter table fooditems_foodsources drop foreign key fk_fooditems_foodsources_foodsources;
-drop index ix_fooditems_foodsources_foodsources on fooditems_foodsources;
+alter table fooditems_foodsources drop constraint if exists fk_fooditems_foodsources_foodsources;
+drop index if exists ix_fooditems_foodsources_foodsources;
 
-alter table foodsources drop foreign key fk_foodsources_parents_id;
-drop index ix_foodsources_parents_id on foodsources;
+alter table foodsources drop constraint if exists fk_foodsources_parents_id;
+drop index if exists ix_foodsources_parents_id;
 
 drop table if exists foodgroups;
 
