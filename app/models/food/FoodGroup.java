@@ -19,18 +19,18 @@ import java.util.Set;
 @Table(name = "FoodGroups")
 public class FoodGroup extends Model {
 
-	@Id public long id;
+    @Id public long id;
 
-	@Column(nullable = false) public String name;
-	@Column(unique = true) @Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
+    @Column(nullable = false) public String name;
+    @Column(unique = true) @Pattern(regexp = "[A-Z]\\d{4}") public String langualCode;
 
-	@ManyToOne @JsonBackReference public FoodGroup parent;
-	@ManyToMany(mappedBy = "groups") @JsonManagedReference public Set<FoodItem> foodItems;
+    @ManyToOne @JsonBackReference public FoodGroup parent;
+    @ManyToMany(mappedBy = "groups") @JsonManagedReference public Set<FoodItem> foodItems;
 
-	public FoodGroup(String name, String langualCode) {
-		this.name = name;
-		this.langualCode = langualCode;
-	}
+    public FoodGroup(String name, String langualCode) {
+        this.name = name;
+        this.langualCode = langualCode;
+    }
 
-	public static Finder<Long, FoodGroup> find = new Finder<>(FoodGroup.class);
+    public static Finder<Long, FoodGroup> find = new Finder<>(FoodGroup.class);
 }

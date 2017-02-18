@@ -19,50 +19,50 @@ import java.util.Set;
 @Table(name = "FoodItems")
 public class FoodItem extends Model {
 
-	@Id public long id;
+    @Id public long id;
 
-	@Column(nullable = false) public String name;
-	public String scientificName;
-	@Column(unique = true) public int lmvFoodNumber;
-	public String lmvProject;
+    @Column(nullable = false) public String name;
+    public String scientificName;
+    @Column(unique = true) public int lmvFoodNumber;
+    public String lmvProject;
 
-	public Float energyKcal;
-	public Float energyKj;
-	@Column(name = "carbohydrates_g") public Float carbohydrates;
-	@Column(name = "protein_g") public Float protein;
-	@Column(name = "fibre_g") public Float fibre;
-	@Column(name = "whole_grain_g") public Float wholeGrain;
-	@Column(name = "cholesterol_mg") public Float cholesterol;
-	@Column(name = "water_g") public Float water;
-	@Column(name = "alcohol_g") public Float alcohol;
-	@Column(name = "ash_g") public Float ash;
-	@Column(name = "waste_percent") public Float waste;
+    public Float energyKcal;
+    public Float energyKj;
+    @Column(name = "carbohydrates_g") public Float carbohydrates;
+    @Column(name = "protein_g") public Float protein;
+    @Column(name = "fibre_g") public Float fibre;
+    @Column(name = "whole_grain_g") public Float wholeGrain;
+    @Column(name = "cholesterol_mg") public Float cholesterol;
+    @Column(name = "water_g") public Float water;
+    @Column(name = "alcohol_g") public Float alcohol;
+    @Column(name = "ash_g") public Float ash;
+    @Column(name = "waste_percent") public Float waste;
 
-	@Embedded public Sugars sugars;
-	@Embedded public Fats fats;
-	@Embedded public Vitamins vitamins;
-	@Embedded public Minerals minerals;
+    @Embedded public Sugars sugars;
+    @Embedded public Fats fats;
+    @Embedded public Vitamins vitamins;
+    @Embedded public Minerals minerals;
 
-	@ManyToMany @JsonBackReference public Set<FoodGroup> groups;
-	@ManyToMany @JsonBackReference public Set<FoodSource> sources;
+    @ManyToMany @JsonBackReference public Set<FoodGroup> groups;
+    @ManyToMany @JsonBackReference public Set<FoodSource> sources;
 
-	@ManyToOne public LangualTerm partOfPlantOrAnimal;
-	@ManyToOne public LangualTerm physicalForm;
-	@ManyToOne public LangualTerm heatTreatment;
-	@ManyToOne public LangualTerm cookingMethod;
-	@ManyToOne public LangualTerm industrialProcess;
-	@ManyToOne public LangualTerm preservationMethod;
-	@ManyToOne public LangualTerm packingMedium;
-	@ManyToOne public LangualTerm packingType;
-	@ManyToOne public LangualTerm packingMaterial;
-	@ManyToOne public LangualTerm labelClaim;
-	@ManyToOne public LangualTerm geographicSource;
-	@ManyToOne public LangualTerm distinctiveFeatures;
+    @ManyToOne public LangualTerm partOfPlantOrAnimal;
+    @ManyToOne public LangualTerm physicalForm;
+    @ManyToOne public LangualTerm heatTreatment;
+    @ManyToOne public LangualTerm cookingMethod;
+    @ManyToOne public LangualTerm industrialProcess;
+    @ManyToOne public LangualTerm preservationMethod;
+    @ManyToOne public LangualTerm packingMedium;
+    @ManyToOne public LangualTerm packingType;
+    @ManyToOne public LangualTerm packingMaterial;
+    @ManyToOne public LangualTerm labelClaim;
+    @ManyToOne public LangualTerm geographicSource;
+    @ManyToOne public LangualTerm distinctiveFeatures;
 
-	public FoodItem(String name, int lmvFoodNumber) {
-		this.name = name;
-		this.lmvFoodNumber = lmvFoodNumber;
-	}
+    public FoodItem(String name, int lmvFoodNumber) {
+        this.name = name;
+        this.lmvFoodNumber = lmvFoodNumber;
+    }
 
-	public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
+    public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
 }

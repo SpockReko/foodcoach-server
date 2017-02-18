@@ -12,15 +12,15 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Minerals {
 
-	@Column(name = "folate_ug") public Float folate;
-	@Column(name = "phosphorus_mg") public Float phosphorus;
-	@Column(name = "iodine_ug") public Float iodine;
-	@Column(name = "iron_mg") public Float iron;
-	@Column(name = "calcium_mg") public Float calcium;
-	@Column(name = "potassium_mg") public Float potassium;
-	@Column(name = "magnesium_mg") public Float magnesium;
-	@Column(name = "sodium_mg") public Float sodium;
-	@Column(name = "salt_g") public Float salt;
-	@Column(name = "selenium_ug") public Float selenium;
-	@Column(name = "zink_mg") public Float zink;
+    @Column(name = "folate_ug") public Float folate;
+    @Column(name = "phosphorus_mg") public Float phosphorus;
+    @Column(name = "iodine_ug") public Float iodine;
+    @Column(name = "iron_mg") public Float iron;
+    @Column(name = "calcium_mg") public Float calcium;
+    @Column(name = "potassium_mg") public Float potassium;
+    @Column(name = "magnesium_mg") public Float magnesium;
+    @Column(name = "sodium_mg") public Float sodium;
+    @Column(name = "salt_g") public Float salt;
+    @Column(name = "selenium_ug") public Float selenium;
+    @Column(name = "zink_mg") public Float zink;
 }

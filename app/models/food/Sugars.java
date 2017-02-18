@@ -12,8 +12,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Sugars {
 
-	@Column(name = "sugars_g") public Float sugars;
-	@Column(name = "monosaccharides_g") public Float monosaccharides;
-	@Column(name = "disaccharides_g") public Float disaccharides;
-	@Column(name = "sucrose_g") public Float sucrose;
+    @Column(name = "sugars_g") public Float sugars;
+    @Column(name = "monosaccharides_g") public Float monosaccharides;
+    @Column(name = "disaccharides_g") public Float disaccharides;
+    @Column(name = "sucrose_g") public Float sucrose;
 }
