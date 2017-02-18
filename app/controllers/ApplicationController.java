@@ -8,9 +8,9 @@ import play.mvc.Result;
  */
 public class ApplicationController extends Controller {
 
-	public Result index() {
+    public Result index() {
 
-		return ok("It works!");
-	}
+        return ok("It works!");
+    }
 
 }
