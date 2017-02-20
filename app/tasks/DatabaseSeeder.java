@@ -525,6 +525,5 @@ public class DatabaseSeeder {
         System.out.println(GREEN + "Done" + RESET);
     }
 
-    private static class DatabaseNotEmptyException extends Exception {
-    }
+    private static class DatabaseNotEmptyException extends Exception {}
 }
