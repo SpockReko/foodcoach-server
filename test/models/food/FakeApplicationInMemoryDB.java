@@ -6,7 +6,10 @@ import play.Application;
 
 import static play.test.Helpers.*;
 
-public class FakeApplicationInMemoryDB {
+/**
+ * Used to startup a fake application with a fake database that the tests can use.
+ */
+public abstract class FakeApplicationInMemoryDB {
 
     private static Application fakeApplication;
 

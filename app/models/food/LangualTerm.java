@@ -3,6 +3,7 @@ package models.food;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import java.util.regex.Pattern;
 
 /**
  * Represents a general LanguaL term that every {@link FoodItem} can be associated with.
@@ -31,11 +32,17 @@ public class LangualTerm extends Model {
     }
 
     public void setCode(String code) {
-        if (java.util.regex.Pattern.matches("[A-Z]\\d{4}", code)) {
+        if (code == null) {
+            this.code = null;
+        } else if (Pattern.matches("[A-Z]\\d{4}", code)) {
             this.code = code;
         } else {
-            throw new IllegalArgumentException("LanguaL code must be on the form: [A-Z]\\d{4}");
+            throw new IllegalArgumentException("LanguaL code must be on the form: [A-Z]\\d{4} or null");
         }
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public enum Type {

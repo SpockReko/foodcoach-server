@@ -2,11 +2,10 @@ package models.food;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Represents a food source that every {@link FoodItem} can be associated with.
@@ -24,8 +23,9 @@ public class FoodSource extends Model {
     @Column(nullable = false) public String name;
     @Column(unique = true) private String langualCode;
 
-    @ManyToOne @JsonBackReference public FoodSource parents;
-    @ManyToMany(mappedBy = "sources") @JsonManagedReference public Set<FoodItem> foodItems;
+    @ManyToOne(cascade = CascadeType.PERSIST) @JsonBackReference public FoodSource parent;
+    @ManyToMany(mappedBy = "sources", cascade = CascadeType.ALL) @JsonBackReference
+    public Set<FoodItem> foodItems;
 
     public FoodSource(String name, String langualCode) {
         this.name = name;
@@ -33,11 +33,15 @@ public class FoodSource extends Model {
     }
 
     public void setLangualCode(String langualCode) {
-        if (java.util.regex.Pattern.matches("[A-Z]\\d{4}", langualCode)) {
+        if (Pattern.matches("[A-Z]\\d{4}", langualCode)) {
             this.langualCode = langualCode;
         } else {
             throw new IllegalArgumentException("LanguaL code must be on the form: [A-Z]\\d{4}");
         }
+    }
+
+    public String getLangualCode() {
+        return langualCode;
     }
 
     public static Finder<Long, FoodSource> find = new Finder<>(FoodSource.class);

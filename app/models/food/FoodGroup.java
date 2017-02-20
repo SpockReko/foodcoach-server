@@ -2,7 +2,6 @@ package models.food;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -24,8 +23,9 @@ public class FoodGroup extends Model {
     @Column(nullable = false) public String name;
     @Column(unique = true) private String langualCode;
 
-    @ManyToOne @JsonBackReference public FoodGroup parent;
-    @ManyToMany(mappedBy = "groups") @JsonManagedReference public Set<FoodItem> foodItems;
+    @ManyToOne(cascade = CascadeType.PERSIST) @JsonBackReference public FoodGroup parent;
+    @ManyToMany(mappedBy = "groups", cascade = CascadeType.ALL) @JsonBackReference
+    public Set<FoodItem> foodItems;
 
     public FoodGroup(String name, String langualCode) {
         this.name = name;
@@ -38,6 +38,10 @@ public class FoodGroup extends Model {
         } else {
             throw new IllegalArgumentException("LanguaL code must be on the form: [A-Z]\\d{4}");
         }
+    }
+
+    public String getLangualCode() {
+        return langualCode;
     }
 
     public static Finder<Long, FoodGroup> find = new Finder<>(FoodGroup.class);
