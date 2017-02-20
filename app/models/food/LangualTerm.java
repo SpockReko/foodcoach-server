@@ -3,7 +3,6 @@ package models.food;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 
 /**
  * Represents a general LanguaL term that every {@link FoodItem} can be associated with.
@@ -20,15 +19,23 @@ public class LangualTerm extends Model {
 
     @Id public long id;
 
-    @Column(unique = true) @Pattern(regexp = "[A-Z]\\d{4}") public String code;
+    @Column(unique = true) private String code;
     @Column(nullable = false) public String name;
 
     @Enumerated(EnumType.STRING) public Type type;
 
     public LangualTerm(String code, String name, Type type) {
-        this.code = code;
+        setCode(code);
         this.name = name;
         this.type = type;
+    }
+
+    public void setCode(String code) {
+        if (java.util.regex.Pattern.matches("[A-Z]\\d{4}", code)) {
+            this.code = code;
+        } else {
+            throw new IllegalArgumentException("LanguaL code must be on the form: [A-Z]\\d{4}");
+        }
     }
 
     public enum Type {
