@@ -27,7 +27,7 @@ public class FoodGroupTest extends FakeApplicationInMemoryDB {
 
     @Test(expected = IllegalArgumentException.class)
     public void testIncorrectLangualCode() {
-        FoodGroup group = new FoodGroup("Candy", "34");
+        FoodGroup group = new FoodGroup("Candy", "X234");
         group.save();
     }
 

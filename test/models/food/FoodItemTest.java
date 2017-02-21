@@ -41,13 +41,13 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         food.save();
     }
 
-	@Test(expected = PersistenceException.class)
-	public void testDuplicateLmvFoodNumbers() {
+    @Test(expected = PersistenceException.class)
+    public void testDuplicateLmvFoodNumbers() {
         FoodItem food1 = new FoodItem("Banana", 123);
         FoodItem food2 = new FoodItem("Banana", 123);
         food1.save();
         food2.save();
-	}
+    }
 
     @Test
     public void testCascadePersist() {
