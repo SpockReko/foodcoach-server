@@ -19,19 +19,17 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         String scientificName = "Bananus krokus";
         String lmvProject = "Bananprojektet 2000";
 
-        food.name = name;
         food.scientificName = scientificName;
-        food.lmvFoodNumber = lmvFoodNumber;
         food.lmvProject = lmvProject;
 
         food.save();
 
-        FoodItem savedFood = FoodItem.find.byId(food.id);
+        FoodItem savedFood = FoodItem.find.byId(food.getId());
 
         assertThat(savedFood, notNullValue());
-        assertThat(savedFood.name, is(name));
+        assertThat(savedFood.getName(), is(name));
         assertThat(savedFood.scientificName, is(scientificName));
-        assertThat(savedFood.lmvFoodNumber, is(lmvFoodNumber));
+        assertThat(savedFood.getLmvFoodNumber(), is(lmvFoodNumber));
         assertThat(savedFood.lmvProject, is(lmvProject));
     }
 
@@ -74,11 +72,11 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         food.save();
         food.delete();
 
-        FoodGroup dbGroup = FoodGroup.find.byId(group.id);
+        FoodGroup dbGroup = FoodGroup.find.byId(group.getId());
         FoodSource dbSource = FoodSource.find.byId(source.id);
         assertThat(dbGroup, notNullValue());
         assertThat(dbSource, notNullValue());
-        assertThat(dbGroup.name, is("Fruit"));
+        assertThat(dbGroup.getName(), is("Fruit"));
         assertThat(dbGroup.getLangualCode(), is("A4444"));
         assertThat(dbSource.name, is("Tree"));
         assertThat(dbSource.getLangualCode(), is("A5555"));

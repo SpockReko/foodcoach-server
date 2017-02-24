@@ -18,7 +18,7 @@ public class FoodSourceTest extends FakeApplicationInMemoryDB {
         source.foodItems.add(food);
         source.save();
 
-        FoodItem dbFood = FoodItem.find.byId(food.id);
+        FoodItem dbFood = FoodItem.find.byId(food.getId());
         FoodSource dbGroup = FoodSource.find.byId(source.id);
 
         assertTrue(dbGroup.foodItems.contains(dbFood));
