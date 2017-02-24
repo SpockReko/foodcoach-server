@@ -14,7 +14,7 @@ import play.Logger;
 
 import javax.persistence.PersistenceException;
 import java.io.*;
-import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * using the Ebean ORM included with the application. Also parses through and insert the
  * meta information provided by Livsmedelsverket for each food.
  * This has been scraped from their website and put into another CSV file.
- *
+ * <p>
  * TL;DR Puts all the Livsmedelsverket food data into the database.
  *
  * @author Fredrik Kindstrom
@@ -33,8 +33,7 @@ public class DatabaseSeeder {
 
     private static EbeanServer db;
 
-    private static final String basicPath = "resources/db/LivsmedelsDB_201702061629.csv";
-    private static final String metaPath = "resources/db/LivsmedelsDB_Meta_201702011104.csv";
+    private static final String CSV_PATH = "resources/db/FoodDB_201702061629.csv";
 
     private static final String GREEN = "\u001B[32m";
     private static final String YELLOW = "\u001B[33m";
@@ -64,9 +63,6 @@ public class DatabaseSeeder {
             System.out.println(YELLOW + "Foods already imported, moving on..." + RESET);
         }
 
-        System.out.println(CYAN + "\nImporting meta food information... " + RESET);
-        importFoodsMeta();
-
         System.out.print(CYAN + "\nLinking food groups parents... " + RESET);
         linkFoodGroupsParents();
         printDone();
@@ -78,139 +74,84 @@ public class DatabaseSeeder {
 
         CsvParserSettings settings = new CsvParserSettings();
         settings.getFormat().setLineSeparator("\n");
-        settings.getFormat().setDelimiter(';');
         settings.setNumberOfRowsToSkip(1);
 
         CsvParser parser = new CsvParser(settings);
-        List<String[]> allRows = parser.parseAll(getReader(basicPath));
+        List<String[]> allRows = parser.parseAll(getReader(CSV_PATH));
 
         if (db.find(FoodItem.class).where().findCount() > 0) {
             throw new DatabaseNotEmptyException();
         }
 
-        ProgressBar pb = new ProgressBar("Importing", allRows.size()).start();
+        ProgressBar pb = new ProgressBar("Importing", allRows.size(), 50).start();
 
         for (String[] cols : allRows) {
-            FoodItem item = new FoodItem(cols[0], Integer.parseInt(cols[1]));
-            item.fats = new Fats();
-            item.sugars = new Sugars();
-            item.vitamins = new Vitamins();
-            item.minerals = new Minerals();
-            item.energyKcal = toFloat(cols[2]);
-            item.energyKj = toFloat(cols[3]);
-            item.carbohydrates = toFloat(cols[4]);
-            item.fats.fat = toFloat(cols[5]);
-            item.protein = toFloat(cols[6]);
-            item.fibre = toFloat(cols[7]);
-            item.water = toFloat(cols[8]);
-            item.alcohol = toFloat(cols[9]);
-            item.ash = toFloat(cols[10]);
-            item.sugars.monosaccharides = toFloat(cols[11]);
-            item.sugars.disaccharides = toFloat(cols[12]);
-            item.sugars.sucrose = toFloat(cols[13]);
-            item.wholeGrain = toFloat(cols[14]);
-            item.sugars.sugars = toFloat(cols[15]);
-            item.fats.sumSaturatedFats = toFloat(cols[16]);
-            item.fats.fattyAcid40100 = toFloat(cols[17]);
-            item.fats.fattyAcid120 = toFloat(cols[18]);
-            item.fats.fattyAcid140 = toFloat(cols[19]);
-            item.fats.fattyAcid160 = toFloat(cols[20]);
-            item.fats.fattyAcid180 = toFloat(cols[21]);
-            item.fats.fattyAcid200 = toFloat(cols[22]);
-            item.fats.sumMonounsaturatedFats = toFloat(cols[23]);
-            item.fats.fattyAcid161 = toFloat(cols[24]);
-            item.fats.fattyAcid181 = toFloat(cols[25]);
-            item.fats.sumPolyunsaturatedFats = toFloat(cols[26]);
-            item.fats.fattyAcid182 = toFloat(cols[27]);
-            item.fats.fattyAcid183 = toFloat(cols[28]);
-            item.fats.fattyAcid204 = toFloat(cols[29]);
-            item.fats.epaFattyAcid205 = toFloat(cols[30]);
-            item.fats.dpaFattyAcid225 = toFloat(cols[31]);
-            item.fats.dhaFattyAcid226 = toFloat(cols[32]);
-            item.cholesterol = toFloat(cols[33]);
-            item.vitamins.retinol = toFloat(cols[34]);
-            item.vitamins.vitaminA = toFloat(cols[35]);
-            item.vitamins.betaKaroten = toFloat(cols[36]);
-            item.vitamins.vitaminD = toFloat(cols[37]);
-            item.vitamins.vitaminE = toFloat(cols[38]);
-            item.vitamins.vitaminK = toFloat(cols[39]);
-            item.vitamins.thiamine = toFloat(cols[40]);
-            item.vitamins.riboflavin = toFloat(cols[41]);
-            item.vitamins.vitaminC = toFloat(cols[42]);
-            item.vitamins.niacin = toFloat(cols[43]);
-            item.vitamins.niacinEquivalents = toFloat(cols[44]);
-            item.vitamins.vitaminB6 = toFloat(cols[45]);
-            item.vitamins.vitaminB12 = toFloat(cols[46]);
-            item.minerals.folate = toFloat(cols[47]);
-            item.minerals.phosphorus = toFloat(cols[48]);
-            item.minerals.iodine = toFloat(cols[49]);
-            item.minerals.iron = toFloat(cols[50]);
-            item.minerals.calcium = toFloat(cols[51]);
-            item.minerals.potassium = toFloat(cols[52]);
-            item.minerals.magnesium = toFloat(cols[53]);
-            item.minerals.sodium = toFloat(cols[54]);
-            item.minerals.salt = toFloat(cols[55]);
-            item.minerals.selenium = toFloat(cols[56]);
-            item.minerals.zink = toFloat(cols[57]);
-            item.waste = toFloat(cols[58]);
-            db.save(item);
-            pb.step();
-        }
-        pb.stop();
-    }
+            String name = cols[0];
+            int lmvFoodNumber = Integer.parseInt(cols[1]); Float energyKcal = toFloat(cols[2]);
+            Float energyKj = toFloat(cols[3]); Float carbohydrates = toFloat(cols[4]);
+            Float fat = toFloat(cols[5]); Float protein = toFloat(cols[6]);
+            Float fibre = toFloat(cols[7]); Float water = toFloat(cols[8]);
+            Float alcohol = toFloat(cols[9]); Float ash = toFloat(cols[10]);
+            Float monosaccharides = toFloat(cols[11]); Float disaccharides = toFloat(cols[12]);
+            Float sucrose = toFloat(cols[13]); Float wholeGrain = toFloat(cols[14]);
+            Float sugar = toFloat(cols[15]); Float sumSaturatedFats = toFloat(cols[16]);
+            Float fattyAcid40100 = toFloat(cols[17]); Float fattyAcid120 = toFloat(cols[18]);
+            Float fattyAcid140 = toFloat(cols[19]); Float fattyAcid160 = toFloat(cols[20]);
+            Float fattyAcid180 = toFloat(cols[21]); Float fattyAcid200 = toFloat(cols[22]);
+            Float sumMonounsaturatedFats = toFloat(cols[23]); Float fattyAcid161 = toFloat(cols[24]);
+            Float fattyAcid181 = toFloat(cols[25]); Float sumPolyunsaturatedFats = toFloat(cols[26]);
+            Float fattyAcid182 = toFloat(cols[27]); Float fattyAcid183 = toFloat(cols[28]);
+            Float fattyAcid204 = toFloat(cols[29]); Float epaFattyAcid205 = toFloat(cols[30]);
+            Float dpaFattyAcid225 = toFloat(cols[31]); Float dhaFattyAcid226 = toFloat(cols[32]);
+            Float cholesterol = toFloat(cols[33]); Float retinol = toFloat(cols[34]);
+            Float vitaminA = toFloat(cols[35]); Float betaKaroten = toFloat(cols[36]);
+            Float vitaminD = toFloat(cols[37]); Float vitaminE = toFloat(cols[38]);
+            Float vitaminK = toFloat(cols[39]); Float thiamine = toFloat(cols[40]);
+            Float riboflavin = toFloat(cols[41]); Float vitaminC = toFloat(cols[42]);
+            Float niacin = toFloat(cols[43]); Float niacinEquivalents = toFloat(cols[44]);
+            Float vitaminB6 = toFloat(cols[45]); Float vitaminB12 = toFloat(cols[46]);
+            Float folate = toFloat(cols[47]); Float phosphorus = toFloat(cols[48]);
+            Float iodine = toFloat(cols[49]); Float iron = toFloat(cols[50]);
+            Float calcium = toFloat(cols[51]); Float potassium = toFloat(cols[52]);
+            Float magnesium = toFloat(cols[53]); Float sodium = toFloat(cols[54]);
+            Float salt = toFloat(cols[55]); Float selenium = toFloat(cols[56]);
+            Float zink = toFloat(cols[57]); Float waste = toFloat(cols[58]);
+            String scientificName = cols[60];
+            String lmvProject = cols[59];
 
-    private static void importFoodsMeta() {
-
-        CsvParserSettings settings = new CsvParserSettings();
-        settings.getFormat().setLineSeparator("\n");
-        settings.getFormat().setDelimiter(',');
-        settings.setNumberOfRowsToSkip(1);
-
-        CsvParser parser = new CsvParser(settings);
-        List<String[]> allRows = parser.parseAll(getReader(metaPath));
-
-        ProgressBar pb = new ProgressBar("Importing", allRows.size(), 100).start();
-
-        for (String[] row : allRows) {
-
+            Fats fats = new Fats(fat, sumSaturatedFats, fattyAcid40100, fattyAcid120, fattyAcid140,
+                fattyAcid160, fattyAcid180, fattyAcid200, sumMonounsaturatedFats, fattyAcid161,
+                fattyAcid181, sumPolyunsaturatedFats, fattyAcid182, fattyAcid183, fattyAcid204,
+                epaFattyAcid205, dpaFattyAcid225, dhaFattyAcid226);
+            Sugars sugars = new Sugars(sugar, monosaccharides, disaccharides, sucrose);
+            Vitamins vitamins = new Vitamins(retinol, betaKaroten, vitaminA, vitaminB6,
+                vitaminB12, vitaminC, vitaminD, vitaminE, vitaminK, thiamine,
+                riboflavin, niacin, niacinEquivalents);
+            Minerals minerals =  new Minerals(folate, phosphorus, iodine, iron, calcium, potassium,
+                magnesium, sodium, salt, selenium, zink);
             FoodItem item =
-                db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
+                new FoodItem(name, scientificName, lmvFoodNumber, lmvProject, energyKcal, energyKj,
+                    carbohydrates, protein, fibre, wholeGrain, cholesterol, water, alcohol, ash,
+                    waste, sugars, fats, vitamins, minerals);
 
-            if (item == null) {
-                Logger.warn(
-                    "Found food in meta table but not in database! lmvFoodNumber = " + row[2]);
-                continue;
+            if (cols[61] != null) {
+                String[] groups = cols[61].split(";");
+                for (String group : groups) {
+                    linkFoodGroup(item, extractNameAndCode(group));
+                }
             }
-
-            for (int i = 1; i < row.length; i++) {
-                if (row[i] != null) {
-                    switch (i) {
-                        case 1:
-                            item.lmvProject = row[i];
-                            break;
-                        case 2:
-                            break; //lmvFoodNumber
-                        case 3:
-                            item.scientificName = row[i];
-                            break;
-                        case 4:
-                            String[] groups = row[i].split(";");
-                            for (String group : groups) {
-                                linkFoodGroup(item, extractNameAndCode(group));
-                            }
-                            break;
-                        case 5:
-                            String[] sources = row[i].split(";");
-                            for (String s : sources) {
-                                linkFoodSources(item, extractNameAndCode(s));
-                            }
-                            break;
-                        default:
-                            String[] languals = row[i].split(";");
-                            for (String langual : languals) {
-                                String[] nameOrCode = extractNameAndCode(langual);
-                                linkFoodLangual(item, getLangualType(i), nameOrCode);
-                            }
+            if (cols[62] != null) {
+                String[] species = cols[62].split(";");
+                for (String specie : species) {
+                    linkFoodSources(item, extractNameAndCode(specie));
+                }
+            }
+            for (int i = 63; i < cols.length; i++) {
+                if (cols[i] != null) {
+                    String[] languals = cols[i].split(";");
+                    for (String langual : languals) {
+                        String[] nameOrCode = extractNameAndCode(langual);
+                        linkFoodLangual(item, getLangualType(i), nameOrCode);
                     }
                 }
             }
@@ -440,6 +381,7 @@ public class DatabaseSeeder {
                 .error("Failed to set FoodGroup parent '" + parentCode + "' to '" + mainCode + "'");
         }
     }
+
     private static String[] extractNameAndCode(String line) {
         String code = "";
         Pattern pattern = Pattern.compile("[A-Z]\\d{4}");
@@ -462,6 +404,7 @@ public class DatabaseSeeder {
             return null;
         }
     }
+
     private static EbeanServer getDatabase() {
         Config conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve();
         DataSourceConfig foodDB = new DataSourceConfig();
@@ -478,6 +421,7 @@ public class DatabaseSeeder {
 
         return EbeanServerFactory.create(config);
     }
+
     private static Reader getReader(String path) {
         try {
             return new BufferedReader(new FileReader(path));
@@ -485,39 +429,42 @@ public class DatabaseSeeder {
             throw new IllegalStateException("Unable to read input", e);
         }
     }
+
     private static LangualTerm.Type getLangualType(int column) {
         switch (column) {
-            case 6:
+            case 63:
                 return LangualTerm.Type.PART_OF_PLANT_OR_ANIMAL;
-            case 7:
+            case 64:
                 return LangualTerm.Type.PHYSICAL_FORM;
-            case 8:
+            case 65:
                 return LangualTerm.Type.HEAT_TREATMENT;
-            case 9:
+            case 66:
                 return LangualTerm.Type.COOKING_METHOD;
-            case 10:
+            case 67:
                 return LangualTerm.Type.INDUSTRIAL_PROCESS;
-            case 11:
+            case 68:
                 return LangualTerm.Type.PRESERVATION_METHOD;
-            case 12:
+            case 69:
                 return LangualTerm.Type.PACKING_MEDIUM;
-            case 13:
+            case 70:
                 return LangualTerm.Type.PACKING_TYPE;
-            case 14:
+            case 71:
                 return LangualTerm.Type.PACKING_MATERIAL;
-            case 15:
+            case 72:
                 return LangualTerm.Type.LABEL_CLAIM;
-            case 16:
+            case 73:
                 return LangualTerm.Type.GEOGRAPHIC_SOURCE;
-            case 17:
+            case 74:
                 return LangualTerm.Type.DISTINCTIVE_FEATURES;
             default:
                 throw new IllegalArgumentException("Not a valid column!");
         }
     }
+
     private static void printDone() {
         System.out.println(GREEN + "Done" + RESET);
     }
 
-    private static class DatabaseNotEmptyException extends Exception {}
+    private static class DatabaseNotEmptyException extends Exception {
+    }
 }

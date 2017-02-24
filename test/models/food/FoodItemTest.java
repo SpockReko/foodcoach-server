@@ -16,11 +16,6 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         String name = "Banana";
         int lmvFoodNumber = 123;
         FoodItem food = new FoodItem(name, lmvFoodNumber);
-        String scientificName = "Bananus krokus";
-        String lmvProject = "Bananprojektet 2000";
-
-        food.scientificName = scientificName;
-        food.lmvProject = lmvProject;
 
         food.save();
 
@@ -28,9 +23,7 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
 
         assertThat(savedFood, notNullValue());
         assertThat(savedFood.getName(), is(name));
-        assertThat(savedFood.scientificName, is(scientificName));
         assertThat(savedFood.getLmvFoodNumber(), is(lmvFoodNumber));
-        assertThat(savedFood.lmvProject, is(lmvProject));
     }
 
     @Test(expected = PersistenceException.class)

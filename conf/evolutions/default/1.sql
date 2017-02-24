@@ -18,6 +18,7 @@ create table fooditems (
   scientific_name               varchar(255),
   lmv_food_number               integer,
   lmv_project                   varchar(255),
+  density_constant              float,
   energy_kcal                   float,
   energy_kj                     float,
   carbohydrates_g               float,
@@ -120,6 +121,16 @@ create table langualterms (
   constraint ck_langualterms_type check ( type in ('PART_OF_PLANT_OR_ANIMAL','PHYSICAL_FORM','HEAT_TREATMENT','COOKING_METHOD','INDUSTRIAL_PROCESS','PRESERVATION_METHOD','PACKING_MEDIUM','PACKING_TYPE','PACKING_MATERIAL','LABEL_CLAIM','GEOGRAPHIC_SOURCE','DISTINCTIVE_FEATURES')),
   constraint uq_langualterms_code unique (code),
   constraint pk_langualterms primary key (id)
+);
+
+create table recipes (
+  id                            bigint auto_increment not null,
+  title                         varchar(255) not null,
+  description                   varchar(255),
+  cooking_duration              bigint,
+  portions                      integer not null,
+  source_url                    varchar(255),
+  constraint pk_recipes primary key (id)
 );
 
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
@@ -244,4 +255,6 @@ drop table if exists fooditems_foodsources;
 drop table if exists foodsources;
 
 drop table if exists langualterms;
+
+drop table if exists recipes;
 

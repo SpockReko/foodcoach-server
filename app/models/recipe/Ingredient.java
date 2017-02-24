@@ -4,8 +4,8 @@ import models.food.FoodItem;
 
 public class Ingredient {
 
-    private FoodItem foodItem;
-    private Amount amount;
+    private final FoodItem foodItem;
+    private final Amount amount;
 
     public Ingredient(FoodItem foodItem, Amount amount) {
         this.foodItem = foodItem;

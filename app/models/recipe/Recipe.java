@@ -3,30 +3,33 @@ package models.recipe;
 import com.avaje.ebean.Model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.Duration;
 import java.util.Set;
 
-/**
- * Created by fredrikkindstrom on 2017-02-17.
- */
+@Entity
+@Table(name = "Recipes")
 public class Recipe extends Model {
 
-    @Id public long id;
+    @Id private long id;
 
-    @Column(nullable = false) public String title;
+    @Column(nullable = false) private final String title;
     public String description;
     public Duration cookingDuration;
     @Column(nullable = false) public int portions;
 
     public Set<Ingredient> ingredients;
 
-    @Column(nullable = false) public String sourceUrl;
+    @Column private String sourceUrl;
 
-    public Recipe(long id, String title, Set<Ingredient> ingredients, String sourceUrl) {
-        this.id = id;
+    public Recipe(String title, String description, int portions, Set<Ingredient> ingredients) {
         this.title = title;
+        this.description = description;
+        this.portions = portions;
         this.ingredients = ingredients;
-        this.sourceUrl = sourceUrl;
     }
+
+    public static Finder<Long, Recipe> find = new Finder<>(Recipe.class);
 }

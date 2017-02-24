@@ -5,8 +5,8 @@ package models.recipe;
  */
 public class Amount {
 
-    private int amount;
-    private Unit unit;
+    private final int amount;
+    private final Unit unit;
 
     public Amount(int amount, Unit unit) {
         this.amount = amount;
@@ -35,9 +35,9 @@ public class Amount {
         TESKED(0.05, Type.VOLUME, new String[] { "tsk", "tesked" }),
         MATSKED(0.15, Type.VOLUME, new String[] { "msk", "matsked" });
 
-        private double fraction;
-        private Type type;
-        private String[] identifiers;
+        private final double fraction;
+        private final Type type;
+        private final String[] identifiers;
 
         Unit(double fraction, Type type, String[] identifiers) {
             this.fraction = fraction;

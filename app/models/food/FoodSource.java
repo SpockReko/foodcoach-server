@@ -18,10 +18,10 @@ import java.util.regex.Pattern;
 @Table(name = "FoodSources")
 public class FoodSource extends Model {
 
-    @Id public long id;
+    @Id private long id;
 
-    @Column(nullable = false) public String name;
-    @Column(unique = true) private String langualCode;
+    @Column(nullable = false) private final String name;
+    @Column(unique = true) private final String langualCode;
 
     @ManyToOne(cascade = CascadeType.PERSIST) @JsonBackReference public FoodSource parent;
     @ManyToMany(mappedBy = "sources", cascade = CascadeType.ALL) @JsonBackReference
@@ -39,6 +39,12 @@ public class FoodSource extends Model {
         }
     }
 
+    public long getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
     public String getLangualCode() {
         return langualCode;
     }
