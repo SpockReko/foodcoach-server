@@ -16,4 +16,4 @@ libraryDependencies += "me.tongfei" % "progressbar" % "0.5.3"
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
 lazy val seed = taskKey[Unit]("Database seeder")
-fullRunTask(seed, Compile, "tasks.DatabaseSeederc")
+fullRunTask(seed, Compile, "tasks.DatabaseSeeder")
