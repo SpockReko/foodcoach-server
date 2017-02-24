@@ -13,6 +13,13 @@ public class Amount {
         this.unit = unit;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+    public Unit getUnit() {
+        return unit;
+    }
+
     public enum Unit {
         // Standard SI-Volume
         LITER(10, Type.VOLUME, new String[] { "l", "liter" }),

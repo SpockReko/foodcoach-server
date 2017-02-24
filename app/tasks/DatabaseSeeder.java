@@ -384,9 +384,6 @@ public class DatabaseSeeder {
         updateGroupParent("A0819", "A0817");
         updateGroupParent("A0820", "A0817");
         updateGroupParent("A0821", "A0812");
-        FoodGroup g = db.find(FoodGroup.class).where().eq("langualCode", "A0822").findUnique();
-        g.name = "Cerealierätter t.ex. klimp, risotto, pizza";
-        db.save(g);
         updateGroupParent("A0824", "A0823");
         updateGroupParent("A0827", "A0826");
         updateGroupParent("A0828", "A0826");
@@ -396,9 +393,6 @@ public class DatabaseSeeder {
         updateGroupParent("A0836", "A0835");
         updateGroupParent("A0837", "A0835");
         updateGroupParent("A0838", "A0835");
-        FoodGroup g2 = db.find(FoodGroup.class).where().eq("langualCode", "A0838").findUnique();
-        g2.name = "Konfekt och annan sockerprodukt dvs ej choklad";
-        db.save(g2);
         updateGroupParent("A0839", "A0835");
         if (db.find(FoodGroup.class).where().eq("langualCode", "A0840").findCount() == 0) {
             db.insert(new FoodGroup("Dryck (ej mjölk)", "A0840"));

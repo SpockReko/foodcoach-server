@@ -19,11 +19,11 @@ import java.util.Set;
 @Table(name = "FoodItems")
 public class FoodItem extends Model {
 
-    @Id public long id;
+    @Id private long id;
 
-    @Column(nullable = false) public String name;
+    @Column(nullable = false) private final String name;
     public String scientificName;
-    @Column(unique = true) public int lmvFoodNumber;
+    @Column(unique = true) private final int lmvFoodNumber;
     public String lmvProject;
 
     public Float energyKcal;
@@ -65,4 +65,18 @@ public class FoodItem extends Model {
     }
 
     public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
+
+    /*
+    Getters
+     */
+
+    public long getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public int getLmvFoodNumber() {
+        return lmvFoodNumber;
+    }
 }

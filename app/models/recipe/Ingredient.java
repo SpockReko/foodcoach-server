@@ -11,4 +11,11 @@ public class Ingredient {
         this.foodItem = foodItem;
         this.amount = amount;
     }
+
+    public FoodItem getFoodItem() {
+        return foodItem;
+    }
+    public Amount getAmount() {
+        return amount;
+    }
 }

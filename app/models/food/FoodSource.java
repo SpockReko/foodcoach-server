@@ -29,11 +29,10 @@ public class FoodSource extends Model {
 
     public FoodSource(String name, String langualCode) {
         this.name = name;
-        setLangualCode(langualCode);
-    }
 
-    public void setLangualCode(String langualCode) {
-        if (Pattern.matches("[A-Z]\\d{4}", langualCode)) {
+        if (langualCode == null) {
+            this.langualCode = null;
+        } else if (Pattern.matches("[A-Z]\\d{4}", langualCode)) {
             this.langualCode = langualCode;
         } else {
             throw new IllegalArgumentException("LanguaL code must be on the form: [A-Z]\\d{4}");
