@@ -114,6 +114,109 @@ and puts it into our new empty database!
 You can now start the server again with **sbt run** and enjoy the
 application up and running with a complete food database!
 
+## Setup for Windows users
+
+#### Step 1 install mysql server
+
+First you should download mysql server some how. 
+One way to do this is to download [mysql installer for windows](https://dev.mysql.com/downloads/installer/)
+After your install you going to config the server. Here you choose a username and a password. 
+Its **important** that you remember the **username and the password**. 
+
+After this you need to set the PATH to the bin file in the sql server folder
+
+#### Step 2 Create Database
+Then the Path is set you can write:
+
+``` bash
+C:\**\foodcoach-server>mysql -u <username> -p
+password: <password>
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 63
+Server version: 5.7.17-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database foodcoach;
+Query OK, 1 row affected (0.00 sec)
+
+mysql>quit
+Bye
+
+C:\**\foodcoach-server>
+```
+
+**\<username>** and **\<password>** is what you wrote under the config step from **Step 1**. 
+
+#### step 3 Create config file
+Now you need to create a config file in **conf** folder with the name dbconfig.conf, if you have problem as med to create a config file you can copy the existing config file **application** and change the name.
+
+In the file you write following: 
+
+```
+db.default.username=<username>
+db.default.password=<password>
+```
+
+As in step 2 the username and password is from the config step in **step 1**.
+
+#### step 4 Fill the Database
+
+Now you go back to the consol and write
+
+```
+C:\**\foodcoach-server>sbt run
+ ....
+ ....
+ ....
+ 
+ --- (Running the application, auto-reloading is enabled) ---
+
+[info] p.c.s.NettyServer - Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+(Server started, use Ctrl+D to stop and go back to the console...)
+
+```
+
+This will trigger SBT to startup a server at _localhost:9000_. This is like a webpage but it
+runs locally on your machine. You can now open up a web browser and
+navigate to _localhost:9000_ to see what the server has to say!
+
+It will probably say that you have to apply a evolution script to your database,
+click the _apply script_ button and wait until the server is done.
+
+Then you go back to the console and press _Ctrl+D_.
+Then you writhe following:
+
+``
+C:\**\foodcoach-server>stb seed
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=256m; support was removed in 8.0
+[info] Loading project definition from C:\Users\stefa\Projects\foodcoach-server\project
+[info] Set current project to foodcoach (in build file:/C:/Users/stefa/Projects/foodcoach-server/)
+[info] Running tasks.DatabaseSeeder
+
+--- (Seeding database) ---
+....
+....
+....
+
+Linking food groups parents... Done
+
+[success] Total time: 4 s, completed 2017-feb-25 20:32:27
+
+C:\**\foodcoach-server>
+``
+
+You can now start the server again with **sbt run** and enjoy the
+application up and running with a complete food database!
+
+
 ## Routes
 
 The server can be called with these routes:
