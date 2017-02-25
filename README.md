@@ -194,7 +194,7 @@ click the _apply script_ button and wait until the server is done.
 Then you go back to the console and press _Ctrl+D_.
 Then you writhe following:
 
-``
+```
 C:\**\foodcoach-server>stb seed
 Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=256m; support was removed in 8.0
 [info] Loading project definition from C:\Users\stefa\Projects\foodcoach-server\project
@@ -211,7 +211,7 @@ Linking food groups parents... Done
 [success] Total time: 4 s, completed 2017-feb-25 20:32:27
 
 C:\**\foodcoach-server>
-``
+```
 
 You can now start the server again with **sbt run** and enjoy the
 application up and running with a complete food database!
