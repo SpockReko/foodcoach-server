@@ -1,5 +1,6 @@
 package models.food;
 
+import helpers.FakeApplicationInMemoryDB;
 import org.junit.Test;
 
 import javax.persistence.PersistenceException;

@@ -1,5 +1,6 @@
 package models.food;
 
+import helpers.FakeApplicationInMemoryDB;
 import org.junit.Test;
 
 import javax.persistence.PersistenceException;
@@ -66,12 +67,12 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         food.delete();
 
         FoodGroup dbGroup = FoodGroup.find.byId(group.getId());
-        FoodSource dbSource = FoodSource.find.byId(source.id);
+        FoodSource dbSource = FoodSource.find.byId(source.getId());
         assertThat(dbGroup, notNullValue());
         assertThat(dbSource, notNullValue());
         assertThat(dbGroup.getName(), is("Fruit"));
         assertThat(dbGroup.getLangualCode(), is("A4444"));
-        assertThat(dbSource.name, is("Tree"));
+        assertThat(dbSource.getName(), is("Tree"));
         assertThat(dbSource.getLangualCode(), is("A5555"));
         assertTrue(dbGroup.foodItems.isEmpty());
         assertTrue(dbSource.foodItems.isEmpty());

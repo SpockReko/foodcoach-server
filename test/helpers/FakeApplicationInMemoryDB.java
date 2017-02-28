@@ -1,4 +1,4 @@
-package models.food;
+package helpers;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
