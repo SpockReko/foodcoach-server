@@ -23,4 +23,17 @@ public class Sugars {
         this.disaccharides = disaccharides;
         this.sucrose = sucrose;
     }
+
+    public Float getSugars() {
+        return sugars;
+    }
+    public Float getMonosaccharides() {
+        return monosaccharides;
+    }
+    public Float getDisaccharides() {
+        return disaccharides;
+    }
+    public Float getSucrose() {
+        return sucrose;
+    }
 }

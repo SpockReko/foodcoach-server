@@ -43,4 +43,44 @@ public class Vitamins {
         this.niacin = niacin;
         this.niacinEquivalents = niacinEquivalents;
     }
+
+    public Float getRetinol() {
+        return retinol;
+    }
+    public Float getBetaKaroten() {
+        return betaKaroten;
+    }
+    public Float getVitaminA() {
+        return vitaminA;
+    }
+    public Float getVitaminB6() {
+        return vitaminB6;
+    }
+    public Float getVitaminB12() {
+        return vitaminB12;
+    }
+    public Float getVitaminC() {
+        return vitaminC;
+    }
+    public Float getVitaminD() {
+        return vitaminD;
+    }
+    public Float getVitaminE() {
+        return vitaminE;
+    }
+    public Float getVitaminK() {
+        return vitaminK;
+    }
+    public Float getThiamine() {
+        return thiamine;
+    }
+    public Float getRiboflavin() {
+        return riboflavin;
+    }
+    public Float getNiacin() {
+        return niacin;
+    }
+    public Float getNiacinEquivalents() {
+        return niacinEquivalents;
+    }
 }

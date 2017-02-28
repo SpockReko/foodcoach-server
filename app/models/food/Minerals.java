@@ -38,4 +38,38 @@ public class Minerals {
         this.selenium = selenium;
         this.zink = zink;
     }
+
+    public Float getFolate() {
+        return folate;
+    }
+    public Float getPhosphorus() {
+        return phosphorus;
+    }
+    public Float getIodine() {
+        return iodine;
+    }
+    public Float getIron() {
+        return iron;
+    }
+    public Float getCalcium() {
+        return calcium;
+    }
+    public Float getPotassium() {
+        return potassium;
+    }
+    public Float getMagnesium() {
+        return magnesium;
+    }
+    public Float getSodium() {
+        return sodium;
+    }
+    public Float getSalt() {
+        return salt;
+    }
+    public Float getSelenium() {
+        return selenium;
+    }
+    public Float getZink() {
+        return zink;
+    }
 }

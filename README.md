@@ -49,7 +49,7 @@ Instead of writing something like this every time we want to update data
 we can just write this if we have modified our Java object in code:  
 `avocado.save()`
 
-## Setup
+## Setup for Mac (Unix) Users
 
 #### Step 1: Create Database
 
@@ -116,7 +116,7 @@ application up and running with a complete food database!
 
 ## Setup for Windows users
 
-#### Step 1 install mysql server
+#### Step 1: Install mysql server
 
 First you should download mysql server some how. 
 One way to do this is to download [mysql installer for windows](https://dev.mysql.com/downloads/installer/)
@@ -125,7 +125,7 @@ Its **important** that you remember the **username and the password**.
 
 After this you need to set the PATH to the bin file in the sql server folder
 
-#### Step 2 Create Database
+#### Step 2: Create Database
 Then the Path is set you can write:
 
 ``` bash
@@ -154,7 +154,7 @@ C:\**\foodcoach-server>
 
 **\<username>** and **\<password>** is what you wrote under the config step from **Step 1**. 
 
-#### step 3 Create config file
+#### Step 3: Create config file
 Now you need to create a config file in **conf** folder with the name dbconfig.conf, if you have problem as med to create a config file you can copy the existing config file **application** and change the name.
 
 In the file you write following: 
@@ -166,7 +166,7 @@ db.default.password=<password>
 
 As in step 2 the username and password is from the config step in **step 1**.
 
-#### step 4 Fill the Database
+#### Step 4: Seed the Database
 
 Now you go back to the consol and write
 

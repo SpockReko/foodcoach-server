@@ -55,4 +55,59 @@ public class Fats {
         this.dpaFattyAcid225 = dpaFattyAcid225;
         this.dhaFattyAcid226 = dhaFattyAcid226;
     }
+
+    public Float getFat() {
+        return fat;
+    }
+    public Float getSumSaturatedFats() {
+        return sumSaturatedFats;
+    }
+    public Float getFattyAcid40100() {
+        return fattyAcid40100;
+    }
+    public Float getFattyAcid120() {
+        return fattyAcid120;
+    }
+    public Float getFattyAcid140() {
+        return fattyAcid140;
+    }
+    public Float getFattyAcid160() {
+        return fattyAcid160;
+    }
+    public Float getFattyAcid180() {
+        return fattyAcid180;
+    }
+    public Float getFattyAcid200() {
+        return fattyAcid200;
+    }
+    public Float getSumMonounsaturatedFats() {
+        return sumMonounsaturatedFats;
+    }
+    public Float getFattyAcid161() {
+        return fattyAcid161;
+    }
+    public Float getFattyAcid181() {
+        return fattyAcid181;
+    }
+    public Float getSumPolyunsaturatedFats() {
+        return sumPolyunsaturatedFats;
+    }
+    public Float getFattyAcid182() {
+        return fattyAcid182;
+    }
+    public Float getFattyAcid183() {
+        return fattyAcid183;
+    }
+    public Float getFattyAcid204() {
+        return fattyAcid204;
+    }
+    public Float getEpaFattyAcid205() {
+        return epaFattyAcid205;
+    }
+    public Float getDpaFattyAcid225() {
+        return dpaFattyAcid225;
+    }
+    public Float getDhaFattyAcid226() {
+        return dhaFattyAcid226;
+    }
 }
