@@ -44,10 +44,23 @@ Most of these annotations comes from JPA (Java Persistance API) which is a stand
 many different database handler like Ebean. In short this is just the Java way to handle storing
 objects to a database without having to write plain SQL for every single thing we want to do.
 
-Instead of writing something like this every time we want to update data  
-`UPDATE FoodItems SET name='Avocado', energy_kj='500.0' WHERE id=320;`  
+Instead of writing something like this every time we want to update data: 
+``` mysql
+UPDATE FoodItems SET name='Avocado', energy_kj='500.0' WHERE id=320;
+```  
 we can just write this if we have modified our Java object in code:  
-`avocado.save()`
+``` java
+avocado.save()
+```
+
+And when we want to get objects from the database we don't have to write this:
+``` mysql
+SELECT * FROM fooditems WHERE fooditems.id = 320;
+```
+We can just write this in type-safe Java:
+``` java
+FoodItem.find.byId(320L);
+```
 
 ## Setup for Mac (Unix) Users
 
