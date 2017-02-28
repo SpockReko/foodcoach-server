@@ -57,6 +57,6 @@ public class Amount {
             return identifiers;
         }
 
-        private enum Type {MASS, VOLUME}
+        public enum Type {MASS, VOLUME}
     }
 }

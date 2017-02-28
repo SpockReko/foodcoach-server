@@ -4,64 +4,60 @@ import models.food.*;
 
 public class Ingredient {
 
-    private final FoodItem foodItem;
+    private final FoodItem item;
     private final Amount amount;
 
     public Ingredient(FoodItem foodItem, Amount amount) {
-        this.foodItem = foodItem;
+        this.item = foodItem;
         this.amount = amount;
     }
 
     public FoodItem getFoodItem() {
-        return foodItem;
+        return item;
     }
     public Amount getAmount() {
         return amount;
     }
-//
-//    public Float getEnergyKcal() {
-//        return energyKcal;
-//    }
-//    public Float getEnergyKj() {
-//        return energyKj;
-//    }
-//    public Float getCarbohydrates() {
-//        return carbohydrates;
-//    }
-//    public Float getProtein() {
-//        return protein;
-//    }
-//    public Float getFibre() {
-//        return fibre;
-//    }
-//    public Float getWholeGrain() {
-//        return wholeGrain;
-//    }
-//    public Float getCholesterol() {
-//        return cholesterol;
-//    }
-//    public Float getWater() {
-//        return water;
-//    }
-//    public Float getAlcohol() {
-//        return alcohol;
-//    }
-//    public Float getAsh() {
-//        return ash;
-//    }
-//    public Float getWaste() {
-//        return waste;
-//    }
-//    public Sugars getSugars() {
-//        return sugars;
-//    }
-//    public Fats getFats() {
-//        return fats;
-//    }
-//    public Vitamins getVitamins() {
-//        return vitamins;
-//    }
-//    public Minerals getMinerals() {
-//        return minerals;
-//    }
+
+    public Double getEnergyKcal() {
+        return item.getEnergyKcal() * multiplier();
+    }
+    public Double getEnergyKj() {
+        return item.getEnergyKj() * multiplier();
+    }
+    public Double getCarbohydrates() {
+        return item.getCarbohydrates() * multiplier();
+    }
+    public Double getProtein() {
+        return item.getProtein() * multiplier();
+    }
+    public Double getFibre() {
+        return item.getFibre() * multiplier();
+    }
+    public Double getWholeGrain() {
+        return item.getWholeGrain() * multiplier();
+    }
+    public Double getCholesterol() {
+        return item.getCholesterol() * multiplier();
+    }
+    public Double getWater() {
+        return item.getWater() * multiplier();
+    }
+    public Double getAlcohol() {
+        return getAlcohol() * multiplier();
+    }
+    public Double getAsh() {
+        return item.getAsh() * multiplier();
+    }
+    public Double getWaste() {
+        return item.getWaste() * multiplier();
+    }
+
+    private double multiplier() {
+        if (amount.getUnit().getType() == Amount.Unit.Type.VOLUME) {
+            return item.densityConstant * amount.getUnit().getFraction() * amount.getAmount();
+        } else {
+            return amount.getUnit().getFraction() * amount.getAmount();
+        }
+    }
 }
