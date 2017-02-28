@@ -44,7 +44,7 @@ public class Ingredient {
         return item.getWater() * multiplier();
     }
     public Double getAlcohol() {
-        return getAlcohol() * multiplier();
+        return item.getAlcohol() * multiplier();
     }
     public Double getAsh() {
         return item.getAsh() * multiplier();
