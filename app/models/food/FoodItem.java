@@ -28,7 +28,7 @@ public class FoodItem extends Model {
     private String lmvProject;
 
     /* Used to covert between 100g and 100ml (1 dl) */
-    public Float densityConstant;
+    public Double densityConstant;
 
     private Float energyKcal;
     private Float energyKj;
