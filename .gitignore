@@ -13,3 +13,4 @@ dist
 /.settings
 /conf/dbconfig.conf
 *.DS_Store
+/conf/evolutions/default/1.sql
