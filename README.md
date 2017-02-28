@@ -155,7 +155,7 @@ C:\**\foodcoach-server>
 **\<username>** and **\<password>** is what you wrote under the config step from **Step 1**. 
 
 #### Step 3: Create config file
-Now you need to create a config file in **conf** folder with the name dbconfig.conf, if you have problem as med to create a config file you can copy the existing config file **application** and change the name.
+Now you need to create a config file in **conf** folder with the name **_dbconfig.conf_**, if you have problem as med to create a config file you can copy the existing config file **application** and change the name.
 
 In the file you write following: 
 
