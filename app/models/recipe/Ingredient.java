@@ -7,6 +7,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * Essentially a wrapper for a {@link FoodItem} that also contains
+ * information about the amount the FoodItem. This is used in the {@link Recipe} since
+ * all ingredients are a FoodItem but are also present in a given amount.
+ * Contains wrapper methods for returning all nutrient data multiplied by the amount.
+ */
 @Entity
 @Table(name = "Ingredients")
 public class Ingredient extends Model {

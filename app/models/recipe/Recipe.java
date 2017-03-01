@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * A static recipe most likely parsed and matched with ingredients from the web.
+ * Contains wrapper methods that returns the total nutrient data for all ingredients in a recipe.
+ */
 @Entity
 @Table(name = "Recipes")
 public class Recipe extends Model {

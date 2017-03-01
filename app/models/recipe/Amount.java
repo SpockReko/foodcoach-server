@@ -5,6 +5,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Represents an amount of an {@link Ingredient}. Can be of any unit either of mass or volume.
+ */
 @Embeddable
 public class Amount {
 
@@ -16,9 +19,18 @@ public class Amount {
         this.unit = unit;
     }
 
+    /**
+     * Returns the amount. "2" liters or "3.5" kilograms for example.
+     * @return The amount of the unit.
+     */
     public double getAmount() {
         return amount;
     }
+
+    /**
+     * Returns the unit. 2 "liters" or 3.5 "kilograms" for example.
+     * @return The unit of the amount.
+     */
     public Unit getUnit() {
         return unit;
     }
@@ -48,18 +60,37 @@ public class Amount {
             this.identifiers = identifiers;
         }
 
+        /**
+         * Returns the fraction between how much each unit is in the standard unit 100 grams
+         * used for all {@link models.food.FoodItem}.
+         * If the unit is liter this will return 10 for example.
+         * If the type of the unit is volume the densityConstant property will be used.
+         * @return The fraction between the unit and 100 grams.
+         */
         public double getFraction() {
             return fraction;
         }
 
+        /**
+         * Returns the type of the unit. Either mass or volume.
+         * @return The type of the unit.
+         */
         public Type getType() {
             return type;
         }
 
+        /**
+         * Returns what the units can be called in a web recipe.
+         * "krm" for kryddmått or "kg" for kilogram for example.
+         * @return The identifiers for a unit as a string array.
+         */
         public String[] getIdentifiers() {
             return identifiers;
         }
 
+        /**
+         * The type of the unit. Either mass or volume.
+         */
         public enum Type {MASS, VOLUME}
     }
 }
