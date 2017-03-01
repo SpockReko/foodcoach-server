@@ -8,10 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by fredrikkindstrom on 2017-02-28.
- */
-public class IngredientTest {
+public class IngredientConvertTest {
 
     private static final double delta = 1e-2;
 
