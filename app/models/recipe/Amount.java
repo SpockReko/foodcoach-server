@@ -1,19 +1,22 @@
 package models.recipe;
 
-/**
- * Created by fredrikkindstrom on 2017-02-21.
- */
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
+
+@Embeddable
 public class Amount {
 
-    private final int amount;
-    private final Unit unit;
+    @NotNull private final double amount;
+    @Enumerated(EnumType.STRING) @NotNull private final Unit unit;
 
-    public Amount(int amount, Unit unit) {
+    public Amount(double amount, Unit unit) {
         this.amount = amount;
         this.unit = unit;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
     public Unit getUnit() {

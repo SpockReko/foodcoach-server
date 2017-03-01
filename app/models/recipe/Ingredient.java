@@ -1,61 +1,69 @@
 package models.recipe;
 
+import com.avaje.ebean.Model;
 import models.food.*;
 
-public class Ingredient {
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-    private final FoodItem item;
-    private final Amount amount;
+@Entity
+@Table(name = "Ingredients")
+public class Ingredient extends Model {
+
+    @Id @Column(columnDefinition = "bigint unsigned") private long id;
+
+    @OneToOne @NotNull private final FoodItem foodItem;
+    @Embedded @NotNull private final Amount amount;
 
     public Ingredient(FoodItem foodItem, Amount amount) {
-        this.item = foodItem;
+        this.foodItem = foodItem;
         this.amount = amount;
     }
 
     public FoodItem getFoodItem() {
-        return item;
+        return foodItem;
     }
     public Amount getAmount() {
         return amount;
     }
 
     public Double getEnergyKcal() {
-        return item.getEnergyKcal() * multiplier();
+        return foodItem.getEnergyKcal() * multiplier();
     }
     public Double getEnergyKj() {
-        return item.getEnergyKj() * multiplier();
+        return foodItem.getEnergyKj() * multiplier();
     }
     public Double getCarbohydrates() {
-        return item.getCarbohydrates() * multiplier();
+        return foodItem.getCarbohydrates() * multiplier();
     }
     public Double getProtein() {
-        return item.getProtein() * multiplier();
+        return foodItem.getProtein() * multiplier();
     }
     public Double getFibre() {
-        return item.getFibre() * multiplier();
+        return foodItem.getFibre() * multiplier();
     }
     public Double getWholeGrain() {
-        return item.getWholeGrain() * multiplier();
+        return foodItem.getWholeGrain() * multiplier();
     }
     public Double getCholesterol() {
-        return item.getCholesterol() * multiplier();
+        return foodItem.getCholesterol() * multiplier();
     }
     public Double getWater() {
-        return item.getWater() * multiplier();
+        return foodItem.getWater() * multiplier();
     }
     public Double getAlcohol() {
-        return item.getAlcohol() * multiplier();
+        return foodItem.getAlcohol() * multiplier();
     }
     public Double getAsh() {
-        return item.getAsh() * multiplier();
+        return foodItem.getAsh() * multiplier();
     }
     public Double getWaste() {
-        return item.getWaste() * multiplier();
+        return foodItem.getWaste() * multiplier();
     }
 
     private double multiplier() {
         if (amount.getUnit().getType() == Amount.Unit.Type.VOLUME) {
-            return item.densityConstant * amount.getUnit().getFraction() * amount.getAmount();
+            return foodItem.densityConstant * amount.getUnit().getFraction() * amount.getAmount();
         } else {
             return amount.getUnit().getFraction() * amount.getAmount();
         }
