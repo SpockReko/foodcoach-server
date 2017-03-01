@@ -95,10 +95,6 @@ public class FoodItem extends Model {
 
     public static Finder<Long, FoodItem> find = new Finder<>(FoodItem.class);
 
-    /*
-    Getters
-     */
-
     public long getId() {
         return id;
     }

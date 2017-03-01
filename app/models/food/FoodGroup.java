@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ public class FoodGroup extends Model {
 
     @Id private long id;
 
-    @Column(nullable = false) private final String name;
+    @NotNull private final String name;
     @Column(unique = true) private final String langualCode;
 
     @ManyToOne(cascade = CascadeType.PERSIST) @JsonBackReference

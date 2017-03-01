@@ -3,6 +3,7 @@ package models.food;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.regex.Pattern;
 
 /**
@@ -21,7 +22,7 @@ public class LangualTerm extends Model {
     @Id private long id;
 
     @Column(unique = true) private final String code;
-    @Column(nullable = false) private final String name;
+    @NotNull private final String name;
 
     @Enumerated(EnumType.STRING) private final Type type;
 
