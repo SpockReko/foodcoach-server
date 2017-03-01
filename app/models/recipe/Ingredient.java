@@ -5,6 +5,7 @@ import models.food.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "Ingredients")
@@ -14,6 +15,8 @@ public class Ingredient extends Model {
 
     @OneToOne @NotNull private final FoodItem foodItem;
     @Embedded @NotNull private final Amount amount;
+
+    @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
 
     public Ingredient(FoodItem foodItem, Amount amount) {
         this.foodItem = foodItem;
@@ -62,10 +65,10 @@ public class Ingredient extends Model {
     }
 
     private double multiplier() {
+        double multiplier = amount.getUnit().getFraction() * amount.getAmount();
         if (amount.getUnit().getType() == Amount.Unit.Type.VOLUME) {
-            return foodItem.densityConstant * amount.getUnit().getFraction() * amount.getAmount();
-        } else {
-            return amount.getUnit().getFraction() * amount.getAmount();
+            multiplier *= foodItem.densityConstant;
         }
+        return multiplier;
     }
 }

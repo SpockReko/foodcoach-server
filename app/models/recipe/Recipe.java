@@ -2,12 +2,10 @@ package models.recipe;
 
 import com.avaje.ebean.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -19,14 +17,14 @@ public class Recipe extends Model {
 
     @NotNull private final String title;
     public String description;
-    public Duration cookingDuration;
+    public int cookingDurationMinutes;
     @NotNull private final int portions;
 
-    public Set<Ingredient> ingredients;
+    @ManyToMany(cascade = CascadeType.ALL) public List<Ingredient> ingredients;
 
     public String sourceUrl;
 
-    public Recipe(String title, String description, int portions, Set<Ingredient> ingredients) {
+    public Recipe(String title, String description, int portions, List<Ingredient> ingredients) {
         this.title = title;
         this.description = description;
         this.portions = portions;
@@ -34,6 +32,22 @@ public class Recipe extends Model {
     }
 
     public static Finder<Long, Recipe> find = new Finder<>(Recipe.class);
+
+    public String getTitle() {
+        return title;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public int getCookingDurationMinutes() {
+        return cookingDurationMinutes;
+    }
+    public int getPortions() {
+        return portions;
+    }
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
 
     public Double getEnergyKcal() {
         return ingredients.stream().mapToDouble(Ingredient::getEnergyKcal).sum();
