@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Represents an amount of an {@link Ingredient}. Can be of any unit either of mass or volume.
+ *
+ * @author Fredrik Kindstrom
  */
 @Embeddable
 public class Amount {

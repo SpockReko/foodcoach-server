@@ -12,6 +12,8 @@ import java.util.function.Function;
 /**
  * A static recipe most likely parsed and matched with ingredients from the web.
  * Contains wrapper methods that returns the total nutrient data for all ingredients in a recipe.
+ *
+ * @author Fredrik Kindstrom
  */
 @Entity
 @Table(name = "Recipes")
