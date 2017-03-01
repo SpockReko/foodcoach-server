@@ -16,14 +16,13 @@ public class FoodSourceTest extends FakeApplicationInMemoryDB {
     public void testFoodItemLink() {
         FoodItem food = new FoodItem("Banana", 123);
         FoodSource source = new FoodSource("Tree", "A1234");
-        source.foodItems.add(food);
-        source.save();
+        food.source = source;
+        food.save();
 
         FoodItem dbFood = FoodItem.find.byId(food.getId());
-        FoodSource dbGroup = FoodSource.find.byId(source.getId());
+        FoodSource dbSource = FoodSource.find.byId(source.getId());
 
-        assertTrue(dbGroup.foodItems.contains(dbFood));
-        assertTrue(dbFood.sources.contains(dbGroup));
+        assertTrue(dbFood.source.getLangualCode().equals(dbSource.getLangualCode()));
     }
 
     @Test(expected = IllegalArgumentException.class)

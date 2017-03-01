@@ -48,7 +48,8 @@ public class FoodItem extends Model {
     @Embedded private Minerals minerals;
 
     @ManyToMany(cascade = CascadeType.ALL) @JsonManagedReference public Set<FoodGroup> groups;
-    @ManyToMany(cascade = CascadeType.ALL) @JsonManagedReference public Set<FoodSource> sources;
+
+    @ManyToOne(cascade = CascadeType.PERSIST) @JsonManagedReference public FoodSource source;
 
     @ManyToOne public LangualTerm partOfPlantOrAnimal;
     @ManyToOne public LangualTerm physicalForm;

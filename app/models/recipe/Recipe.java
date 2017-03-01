@@ -19,7 +19,7 @@ public class Recipe extends Model {
     @NotNull private final String title;
     public String description;
     public Duration cookingDuration;
-    @NotNull public int portions;
+    @NotNull private final int portions;
 
     public Set<Ingredient> ingredients;
 

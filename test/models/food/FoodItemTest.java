@@ -47,7 +47,7 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         FoodGroup group = new FoodGroup("Candy", "A1002");
         FoodSource source = new FoodSource("Tree", "A1003");
         food.groups.add(group);
-        food.sources.add(source);
+        food.source = source;
         food.save();
 
         FoodGroup dbGroup = FoodGroup.find.where().eq("foodItems", food).findUnique();
@@ -62,7 +62,7 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         FoodGroup group = new FoodGroup("Fruit", "A4444");
         FoodSource source = new FoodSource("Tree", "A5555");
         food.groups.add(group);
-        food.sources.add(source);
+        food.source = source;
         food.save();
         food.delete();
 

@@ -25,7 +25,8 @@ public class FoodSource extends Model {
     @Column(unique = true) private final String langualCode;
 
     @ManyToOne(cascade = CascadeType.PERSIST) @JsonBackReference public FoodSource parent;
-    @ManyToMany(mappedBy = "sources", cascade = CascadeType.ALL) @JsonBackReference
+
+    @OneToMany(mappedBy = "source", cascade = CascadeType.ALL) @JsonBackReference
     public Set<FoodItem> foodItems;
 
     public FoodSource(String name, String langualCode) {

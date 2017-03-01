@@ -141,10 +141,7 @@ public class DatabaseSeeder {
                 }
             }
             if (cols[62] != null) {
-                String[] species = cols[62].split(";");
-                for (String specie : species) {
-                    linkFoodSources(item, extractNameAndCode(specie));
-                }
+                linkFoodSources(item, extractNameAndCode(cols[62]));
             }
             for (int i = 63; i < cols.length; i++) {
                 if (cols[i] != null) {
@@ -208,7 +205,7 @@ public class DatabaseSeeder {
                 db.find(FoodSource.class).where().eq("langualCode", nameOrCode[1]).findUnique();
         }
 
-        item.sources.add(source);
+        item.source = source;
     }
 
     private static void linkFoodLangual(FoodItem item, LangualTerm.Type type, String[] nameOrCode) {
