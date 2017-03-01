@@ -9,11 +9,15 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import me.tongfei.progressbar.ProgressBar;
 import models.food.*;
+import models.recipe.Amount;
+import models.recipe.Ingredient;
+import models.recipe.Recipe;
 import org.avaje.datasource.DataSourceConfig;
 import play.Logger;
 
 import javax.persistence.PersistenceException;
 import java.io.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,6 +69,10 @@ public class DatabaseSeeder {
 
         System.out.print(CYAN + "\nLinking food groups parents... " + RESET);
         linkFoodGroupsParents();
+        printDone();
+
+        System.out.print(CYAN + "\nAdding mocked recipes... " + RESET);
+        mockRecipes();
         printDone();
 
         System.out.println();
@@ -362,6 +370,30 @@ public class DatabaseSeeder {
         updateGroupParent("A0870", "A0869");
     }
 
+    private static void mockRecipes() {
+        FoodItem jasminris = db.find(FoodItem.class).where().eq("lmvFoodNumber", 2477).findUnique();
+        jasminris.densityConstant = 0.85;
+        db.save(jasminris);
+        FoodItem paprika = db.find(FoodItem.class).where().eq("lmvFoodNumber", 351).findUnique();
+        FoodItem linser = db.find(FoodItem.class).where().eq("lmvFoodNumber", 884).findUnique();
+        linser.densityConstant = 0.9;
+        db.save(linser);
+        FoodItem kokosmjolk = db.find(FoodItem.class).where().eq("lmvFoodNumber", 1590).findUnique();
+        kokosmjolk.densityConstant = 1.0;
+        db.save(kokosmjolk);
+        FoodItem lok = db.find(FoodItem.class).where().eq("lmvFoodNumber", 344).findUnique();
+        FoodItem tomater = db.find(FoodItem.class).where().eq("lmvFoodNumber", 422).findUnique();
+        List<Ingredient> ingredients = new LinkedList<>();
+        ingredients.add(new Ingredient(jasminris, new Amount(2, Amount.Unit.DECILITER)));
+        ingredients.add(new Ingredient(paprika, new Amount(150, Amount.Unit.GRAM)));
+        ingredients.add(new Ingredient(linser, new Amount(2, Amount.Unit.DECILITER)));
+        ingredients.add(new Ingredient(kokosmjolk, new Amount(400, Amount.Unit.MILLILITER)));
+        ingredients.add(new Ingredient(lok, new Amount(100, Amount.Unit.GRAM)));
+        ingredients.add(new Ingredient(tomater, new Amount(400, Amount.Unit.GRAM)));
+        Recipe linsgryta = new Recipe("Linsgryta", null, 4, ingredients);
+        db.save(linsgryta);
+    }
+
 	/*
     Helper methods
 	 */
@@ -462,6 +494,5 @@ public class DatabaseSeeder {
         System.out.println(GREEN + "Done" + RESET);
     }
 
-    private static class DatabaseNotEmptyException extends Exception {
-    }
+    private static class DatabaseNotEmptyException extends Exception {}
 }

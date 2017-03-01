@@ -42,17 +42,8 @@ public class Recipe extends Model {
     public String getTitle() {
         return title;
     }
-    public String getDescription() {
-        return description;
-    }
-    public int getCookingDurationMinutes() {
-        return cookingDurationMinutes;
-    }
     public int getPortions() {
         return portions;
-    }
-    public String getSourceUrl() {
-        return sourceUrl;
     }
 
     public Double getEnergyKcal() {
