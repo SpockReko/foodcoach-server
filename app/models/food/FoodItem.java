@@ -27,7 +27,7 @@ public class FoodItem extends Model {
     @Column(unique = true) private final int lmvFoodNumber;
     private String lmvProject;
 
-    /* Used to covert between 100g and 100ml (1 dl) */
+    /* Used to convert between 100g and 100ml (1 dl) */
     public Double densityConstant;
 
     private Float energyKcal;
