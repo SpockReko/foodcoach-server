@@ -15,3 +15,9 @@ GET     /recipe/:id                         controllers.RecipeController.get(id:
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
+
+# User info
+#GET     /user/:age                          controllers.UserController.get(age: int)
+
+# Front-end
+#POST
