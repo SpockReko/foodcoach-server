@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -18,28 +19,34 @@ import java.util.regex.Pattern;
 @Table(name = "FoodSources")
 public class FoodSource extends Model {
 
-    @Id public long id;
+    @Id private long id;
 
-    @Column(nullable = false) public String name;
-    @Column(unique = true) private String langualCode;
+    @NotNull private final String name;
+    @Column(unique = true) private final String langualCode;
 
     @ManyToOne(cascade = CascadeType.PERSIST) @JsonBackReference public FoodSource parent;
-    @ManyToMany(mappedBy = "sources", cascade = CascadeType.ALL) @JsonBackReference
+
+    @OneToMany(mappedBy = "source", cascade = CascadeType.ALL) @JsonBackReference
     public Set<FoodItem> foodItems;
 
     public FoodSource(String name, String langualCode) {
         this.name = name;
-        setLangualCode(langualCode);
-    }
 
-    public void setLangualCode(String langualCode) {
-        if (Pattern.matches("[A-Z]\\d{4}", langualCode)) {
+        if (langualCode == null) {
+            this.langualCode = null;
+        } else if (Pattern.matches("[A-Z]\\d{4}", langualCode)) {
             this.langualCode = langualCode;
         } else {
             throw new IllegalArgumentException("LanguaL code must be on the form: [A-Z]\\d{4}");
         }
     }
 
+    public long getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
     public String getLangualCode() {
         return langualCode;
     }

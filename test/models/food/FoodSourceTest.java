@@ -1,5 +1,6 @@
 package models.food;
 
+import helpers.FakeApplicationInMemoryDB;
 import org.junit.Test;
 
 import javax.persistence.PersistenceException;
@@ -15,14 +16,13 @@ public class FoodSourceTest extends FakeApplicationInMemoryDB {
     public void testFoodItemLink() {
         FoodItem food = new FoodItem("Banana", 123);
         FoodSource source = new FoodSource("Tree", "A1234");
-        source.foodItems.add(food);
-        source.save();
+        food.source = source;
+        food.save();
 
-        FoodItem dbFood = FoodItem.find.byId(food.id);
-        FoodSource dbGroup = FoodSource.find.byId(source.id);
+        FoodItem dbFood = FoodItem.find.byId(food.getId());
+        FoodSource dbSource = FoodSource.find.byId(source.getId());
 
-        assertTrue(dbGroup.foodItems.contains(dbFood));
-        assertTrue(dbFood.sources.contains(dbGroup));
+        assertTrue(dbFood.source.getLangualCode().equals(dbSource.getLangualCode()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -54,7 +54,7 @@ public class FoodSourceTest extends FakeApplicationInMemoryDB {
         parent.parent = grandParent;
         group.save();
 
-        FoodSource dbSource = FoodSource.find.byId(group.id);
+        FoodSource dbSource = FoodSource.find.byId(group.getId());
         assertThat(dbSource.parent.parent.getLangualCode(), is(grandParent.getLangualCode()));
     }
 
@@ -66,7 +66,7 @@ public class FoodSourceTest extends FakeApplicationInMemoryDB {
         source.save();
         source.delete();
 
-        FoodSource dbSource = FoodSource.find.byId(parent.id);
+        FoodSource dbSource = FoodSource.find.byId(parent.getId());
         assertThat(dbSource, notNullValue());
     }
 }

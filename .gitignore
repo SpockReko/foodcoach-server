@@ -12,3 +12,5 @@ dist
 /RUNNING_PID
 /.settings
 /conf/dbconfig.conf
+*.DS_Store
+/conf/evolutions/default/

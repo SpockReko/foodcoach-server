@@ -1,5 +1,6 @@
 package models.food;
 
+import helpers.FakeApplicationInMemoryDB;
 import org.junit.Test;
 
 import javax.persistence.PersistenceException;
@@ -18,8 +19,8 @@ public class FoodGroupTest extends FakeApplicationInMemoryDB {
         group.foodItems.add(food);
         group.save();
 
-        FoodItem dbFood = FoodItem.find.byId(food.id);
-        FoodGroup dbGroup = FoodGroup.find.byId(group.id);
+        FoodItem dbFood = FoodItem.find.byId(food.getId());
+        FoodGroup dbGroup = FoodGroup.find.byId(group.getId());
 
         assertTrue(dbGroup.foodItems.contains(dbFood));
         assertTrue(dbFood.groups.contains(dbGroup));
@@ -54,7 +55,7 @@ public class FoodGroupTest extends FakeApplicationInMemoryDB {
         parent.parent = grandParent;
         group.save();
 
-        FoodGroup dbGroup = FoodGroup.find.byId(group.id);
+        FoodGroup dbGroup = FoodGroup.find.byId(group.getId());
         assertThat(dbGroup.parent.parent.getLangualCode(), is(grandParent.getLangualCode()));
     }
 
@@ -66,7 +67,7 @@ public class FoodGroupTest extends FakeApplicationInMemoryDB {
         group.save();
         group.delete();
 
-        FoodGroup dbGroup = FoodGroup.find.byId(parent.id);
+        FoodGroup dbGroup = FoodGroup.find.byId(parent.getId());
         assertThat(dbGroup, notNullValue());
     }
 }

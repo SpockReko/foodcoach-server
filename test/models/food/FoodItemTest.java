@@ -1,5 +1,6 @@
 package models.food;
 
+import helpers.FakeApplicationInMemoryDB;
 import org.junit.Test;
 
 import javax.persistence.PersistenceException;
@@ -16,23 +17,14 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         String name = "Banana";
         int lmvFoodNumber = 123;
         FoodItem food = new FoodItem(name, lmvFoodNumber);
-        String scientificName = "Bananus krokus";
-        String lmvProject = "Bananprojektet 2000";
-
-        food.name = name;
-        food.scientificName = scientificName;
-        food.lmvFoodNumber = lmvFoodNumber;
-        food.lmvProject = lmvProject;
 
         food.save();
 
-        FoodItem savedFood = FoodItem.find.byId(food.id);
+        FoodItem savedFood = FoodItem.find.byId(food.getId());
 
         assertThat(savedFood, notNullValue());
-        assertThat(savedFood.name, is(name));
-        assertThat(savedFood.scientificName, is(scientificName));
-        assertThat(savedFood.lmvFoodNumber, is(lmvFoodNumber));
-        assertThat(savedFood.lmvProject, is(lmvProject));
+        assertThat(savedFood.getName(), is(name));
+        assertThat(savedFood.getLmvFoodNumber(), is(lmvFoodNumber));
     }
 
     @Test(expected = PersistenceException.class)
@@ -55,7 +47,7 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         FoodGroup group = new FoodGroup("Candy", "A1002");
         FoodSource source = new FoodSource("Tree", "A1003");
         food.groups.add(group);
-        food.sources.add(source);
+        food.source = source;
         food.save();
 
         FoodGroup dbGroup = FoodGroup.find.where().eq("foodItems", food).findUnique();
@@ -70,17 +62,17 @@ public class FoodItemTest extends FakeApplicationInMemoryDB {
         FoodGroup group = new FoodGroup("Fruit", "A4444");
         FoodSource source = new FoodSource("Tree", "A5555");
         food.groups.add(group);
-        food.sources.add(source);
+        food.source = source;
         food.save();
         food.delete();
 
-        FoodGroup dbGroup = FoodGroup.find.byId(group.id);
-        FoodSource dbSource = FoodSource.find.byId(source.id);
+        FoodGroup dbGroup = FoodGroup.find.byId(group.getId());
+        FoodSource dbSource = FoodSource.find.byId(source.getId());
         assertThat(dbGroup, notNullValue());
         assertThat(dbSource, notNullValue());
-        assertThat(dbGroup.name, is("Fruit"));
+        assertThat(dbGroup.getName(), is("Fruit"));
         assertThat(dbGroup.getLangualCode(), is("A4444"));
-        assertThat(dbSource.name, is("Tree"));
+        assertThat(dbSource.getName(), is("Tree"));
         assertThat(dbSource.getLangualCode(), is("A5555"));
         assertTrue(dbGroup.foodItems.isEmpty());
         assertTrue(dbSource.foodItems.isEmpty());

@@ -12,15 +12,64 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Minerals {
 
-    @Column(name = "folate_ug") public Float folate;
-    @Column(name = "phosphorus_mg") public Float phosphorus;
-    @Column(name = "iodine_ug") public Float iodine;
-    @Column(name = "iron_mg") public Float iron;
-    @Column(name = "calcium_mg") public Float calcium;
-    @Column(name = "potassium_mg") public Float potassium;
-    @Column(name = "magnesium_mg") public Float magnesium;
-    @Column(name = "sodium_mg") public Float sodium;
-    @Column(name = "salt_g") public Float salt;
-    @Column(name = "selenium_ug") public Float selenium;
-    @Column(name = "zink_mg") public Float zink;
+    @Column(name = "folate_ug") private final Float folate;
+    @Column(name = "phosphorus_mg") private final Float phosphorus;
+    @Column(name = "iodine_ug") private final Float iodine;
+    @Column(name = "iron_mg") private final Float iron;
+    @Column(name = "calcium_mg") private final Float calcium;
+    @Column(name = "potassium_mg") private final Float potassium;
+    @Column(name = "magnesium_mg") private final Float magnesium;
+    @Column(name = "sodium_mg") private final Float sodium;
+    @Column(name = "salt_g") private final Float salt;
+    @Column(name = "selenium_ug") private final Float selenium;
+    @Column(name = "zink_mg") private final Float zink;
+
+    public Minerals(Float folate, Float phosphorus, Float iodine, Float iron, Float calcium,
+        Float potassium, Float magnesium, Float sodium, Float salt, Float selenium, Float zink) {
+        this.folate = folate;
+        this.phosphorus = phosphorus;
+        this.iodine = iodine;
+        this.iron = iron;
+        this.calcium = calcium;
+        this.potassium = potassium;
+        this.magnesium = magnesium;
+        this.sodium = sodium;
+        this.salt = salt;
+        this.selenium = selenium;
+        this.zink = zink;
+    }
+
+    public Float getFolate() {
+        return folate;
+    }
+    public Float getPhosphorus() {
+        return phosphorus;
+    }
+    public Float getIodine() {
+        return iodine;
+    }
+    public Float getIron() {
+        return iron;
+    }
+    public Float getCalcium() {
+        return calcium;
+    }
+    public Float getPotassium() {
+        return potassium;
+    }
+    public Float getMagnesium() {
+        return magnesium;
+    }
+    public Float getSodium() {
+        return sodium;
+    }
+    public Float getSalt() {
+        return salt;
+    }
+    public Float getSelenium() {
+        return selenium;
+    }
+    public Float getZink() {
+        return zink;
+    }
 }

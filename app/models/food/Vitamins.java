@@ -12,17 +12,75 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Vitamins {
 
-    @Column(name = "retinol_ug") public Float retinol;
-    @Column(name = "beta_karoten_ug") public Float betaKaroten;
-    @Column(name = "vitamin_a_ug") public Float vitaminA;
-    @Column(name = "vitamin_b6_ug") public Float vitaminB6;
-    @Column(name = "vitamin_b12_ug") public Float vitaminB12;
-    @Column(name = "vitamin_c_mg") public Float vitaminC;
-    @Column(name = "vitamin_d_ug") public Float vitaminD;
-    @Column(name = "vitamin_e_mg") public Float vitaminE;
-    @Column(name = "vitamin_k_ug") public Float vitaminK;
-    @Column(name = "thiamine_mg") public Float thiamine;
-    @Column(name = "riboflavin_mg") public Float riboflavin;
-    @Column(name = "niacin_mg") public Float niacin;
-    @Column(name = "niacin_equivalents_mg") public Float niacinEquivalents;
+    @Column(name = "retinol_ug") private final Float retinol;
+    @Column(name = "beta_karoten_ug") private final Float betaKaroten;
+    @Column(name = "vitamin_a_ug") private final Float vitaminA;
+    @Column(name = "vitamin_b6_ug") private final Float vitaminB6;
+    @Column(name = "vitamin_b12_ug") private final Float vitaminB12;
+    @Column(name = "vitamin_c_mg") private final Float vitaminC;
+    @Column(name = "vitamin_d_ug") private final Float vitaminD;
+    @Column(name = "vitamin_e_mg") private final Float vitaminE;
+    @Column(name = "vitamin_k_ug") private final Float vitaminK;
+    @Column(name = "thiamine_mg") private final Float thiamine;
+    @Column(name = "riboflavin_mg") private final Float riboflavin;
+    @Column(name = "niacin_mg") private final Float niacin;
+    @Column(name = "niacin_equivalents_mg") private final Float niacinEquivalents;
+
+    public Vitamins(Float retinol, Float betaKaroten, Float vitaminA, Float vitaminB6,
+        Float vitaminB12, Float vitaminC, Float vitaminD, Float vitaminE, Float vitaminK,
+        Float thiamine, Float riboflavin, Float niacin, Float niacinEquivalents) {
+        this.retinol = retinol;
+        this.betaKaroten = betaKaroten;
+        this.vitaminA = vitaminA;
+        this.vitaminB6 = vitaminB6;
+        this.vitaminB12 = vitaminB12;
+        this.vitaminC = vitaminC;
+        this.vitaminD = vitaminD;
+        this.vitaminE = vitaminE;
+        this.vitaminK = vitaminK;
+        this.thiamine = thiamine;
+        this.riboflavin = riboflavin;
+        this.niacin = niacin;
+        this.niacinEquivalents = niacinEquivalents;
+    }
+
+    public Float getRetinol() {
+        return retinol;
+    }
+    public Float getBetaKaroten() {
+        return betaKaroten;
+    }
+    public Float getVitaminA() {
+        return vitaminA;
+    }
+    public Float getVitaminB6() {
+        return vitaminB6;
+    }
+    public Float getVitaminB12() {
+        return vitaminB12;
+    }
+    public Float getVitaminC() {
+        return vitaminC;
+    }
+    public Float getVitaminD() {
+        return vitaminD;
+    }
+    public Float getVitaminE() {
+        return vitaminE;
+    }
+    public Float getVitaminK() {
+        return vitaminK;
+    }
+    public Float getThiamine() {
+        return thiamine;
+    }
+    public Float getRiboflavin() {
+        return riboflavin;
+    }
+    public Float getNiacin() {
+        return niacin;
+    }
+    public Float getNiacinEquivalents() {
+        return niacinEquivalents;
+    }
 }
