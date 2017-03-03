@@ -122,6 +122,24 @@ create table langualterms (
   constraint pk_langualterms primary key (id)
 );
 
+create table users (
+  id                            bigint auto_increment not null,
+  first_name                    varchar(255) not null,
+  last_name                     varchar(255),
+  email                         varchar(255),
+  sex                           varchar(6),
+  birth_date                    datetime(6),
+  weight                        float,
+  height                        float,
+  age                           integer,
+  activity_level                float,
+  goal                          varchar(8),
+  date_entered                  datetime(6),
+  constraint ck_users_sex check ( sex in ('MALE','FEMALE')),
+  constraint ck_users_goal check ( goal in ('DECREASE','STAY','INCREASE')),
+  constraint pk_users primary key (id)
+);
+
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_foodgroups_parent_id on foodgroups (parent_id);
 
@@ -244,4 +262,6 @@ drop table if exists fooditems_foodsources;
 drop table if exists foodsources;
 
 drop table if exists langualterms;
+
+drop table if exists users;
 

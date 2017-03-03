@@ -49,7 +49,7 @@ public class User extends Model{
 
     }
 
-    public float dailyCalori () {
+   /* public float dailyCalori () {
         double dc = 0;
 
 
@@ -260,8 +260,10 @@ public class User extends Model{
 
 
             return (float) dc;
-        } */
+        }
+
     }
+    */
 }
 
 
