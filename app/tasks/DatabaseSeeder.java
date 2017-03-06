@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package tasks;
 
 import com.avaje.ebean.EbeanServer;
@@ -23,27 +22,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
-=======
-        package tasks;
-
-        import com.avaje.ebean.EbeanServer;
-        import com.avaje.ebean.EbeanServerFactory;
-        import com.avaje.ebean.config.ServerConfig;
-        import com.typesafe.config.Config;
-        import com.typesafe.config.ConfigFactory;
-        import com.univocity.parsers.csv.CsvParser;
-        import com.univocity.parsers.csv.CsvParserSettings;
-        import me.tongfei.progressbar.ProgressBar;
-        import models.food.*;
-        import org.avaje.datasource.DataSourceConfig;
-        import play.Logger;
-
-        import javax.persistence.PersistenceException;
-        import java.io.*;
-        import java.util.*;
-        import java.util.regex.Matcher;
-        import java.util.regex.Pattern;
->>>>>>> User branch created
 
 /**
  * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
@@ -153,34 +131,25 @@ public class DatabaseSeeder {
             String lmvProject = cols[59];
 
             Fats fats = new Fats(fat, sumSaturatedFats, fattyAcid40100, fattyAcid120, fattyAcid140,
-                fattyAcid160, fattyAcid180, fattyAcid200, sumMonounsaturatedFats, fattyAcid161,
-                fattyAcid181, sumPolyunsaturatedFats, fattyAcid182, fattyAcid183, fattyAcid204,
-                epaFattyAcid205, dpaFattyAcid225, dhaFattyAcid226);
+                    fattyAcid160, fattyAcid180, fattyAcid200, sumMonounsaturatedFats, fattyAcid161,
+                    fattyAcid181, sumPolyunsaturatedFats, fattyAcid182, fattyAcid183, fattyAcid204,
+                    epaFattyAcid205, dpaFattyAcid225, dhaFattyAcid226);
             Sugars sugars = new Sugars(sugar, monosaccharides, disaccharides, sucrose);
             Vitamins vitamins = new Vitamins(retinol, betaKaroten, vitaminA, vitaminB6,
-                vitaminB12, vitaminC, vitaminD, vitaminE, vitaminK, thiamine,
-                riboflavin, niacin, niacinEquivalents);
+                    vitaminB12, vitaminC, vitaminD, vitaminE, vitaminK, thiamine,
+                    riboflavin, niacin, niacinEquivalents);
             Minerals minerals =  new Minerals(folate, phosphorus, iodine, iron, calcium, potassium,
-                magnesium, sodium, salt, selenium, zink);
+                    magnesium, sodium, salt, selenium, zink);
             FoodItem item =
-<<<<<<< HEAD
-                new FoodItem(name, scientificName, lmvFoodNumber, lmvProject, energyKcal, energyKj,
-                    carbohydrates, protein, fibre, wholeGrain, cholesterol, water, alcohol, ash,
-                    waste, sugars, fats, vitamins, minerals);
+                    new FoodItem(name, scientificName, lmvFoodNumber, lmvProject, energyKcal, energyKj,
+                            carbohydrates, protein, fibre, wholeGrain, cholesterol, water, alcohol, ash,
+                            waste, sugars, fats, vitamins, minerals);
 
             if (cols[61] != null) {
                 String[] groups = cols[61].split(";");
                 for (String group : groups) {
                     linkFoodGroup(item, extractNameAndCode(group));
                 }
-=======
-                    db.find(FoodItem.class).where().eq("lmvFoodNumber", row[2]).findUnique();
-
-            if (item == null) {
-                Logger.warn(
-                        "Found food in meta table but not in database! lmvFoodNumber = " + row[2]);
-                continue;
->>>>>>> User branch created
             }
             if (cols[62] != null) {
                 linkFoodSources(item, extractNameAndCode(cols[62]));
