@@ -43,7 +43,7 @@ public class RecipeTest {
         List<Ingredient> ingredients = new LinkedList<>();
         ingredients.add(ing1);
         ingredients.add(ing2);
-        recipe = new Recipe("Paj", null, 4, ingredients);
+        recipe = new Recipe("Paj", 4, ingredients);
     }
 
     @Test

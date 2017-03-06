@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.DataFormatException;
 
 /**
  * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
@@ -37,7 +38,8 @@ public class DatabaseSeeder {
 
     private static EbeanServer db;
 
-    private static final String CSV_PATH = "resources/db/FoodDB_201702061629.csv";
+    private static final String CSV_PATH = "resources/fooditems/FoodDB_201702061629.csv";
+    private static final String MOCK_PATH = "resources/recipes/recipes.csv";
 
     private static final String GREEN = "\u001B[32m";
     private static final String YELLOW = "\u001B[33m";
@@ -91,6 +93,7 @@ public class DatabaseSeeder {
             throw new DatabaseNotEmptyException();
         }
 
+        List<FoodItem> foods = new LinkedList<>();
         ProgressBar pb = new ProgressBar("Importing", allRows.size(), 50).start();
 
         for (String[] cols : allRows) {
@@ -161,9 +164,10 @@ public class DatabaseSeeder {
                 }
             }
 
-            db.save(item);
+            foods.add(item);
             pb.step();
         }
+        db.saveAll(foods);
         pb.stop();
     }
 
@@ -371,27 +375,52 @@ public class DatabaseSeeder {
     }
 
     private static void mockRecipes() {
-        FoodItem jasminris = db.find(FoodItem.class).where().eq("lmvFoodNumber", 2477).findUnique();
-        jasminris.densityConstant = 0.85;
-        db.save(jasminris);
-        FoodItem paprika = db.find(FoodItem.class).where().eq("lmvFoodNumber", 351).findUnique();
-        FoodItem linser = db.find(FoodItem.class).where().eq("lmvFoodNumber", 884).findUnique();
-        linser.densityConstant = 0.9;
-        db.save(linser);
-        FoodItem kokosmjolk = db.find(FoodItem.class).where().eq("lmvFoodNumber", 1590).findUnique();
-        kokosmjolk.densityConstant = 1.0;
-        db.save(kokosmjolk);
-        FoodItem lok = db.find(FoodItem.class).where().eq("lmvFoodNumber", 344).findUnique();
-        FoodItem tomater = db.find(FoodItem.class).where().eq("lmvFoodNumber", 422).findUnique();
-        List<Ingredient> ingredients = new LinkedList<>();
-        ingredients.add(new Ingredient(jasminris, new Amount(2, Amount.Unit.DECILITER)));
-        ingredients.add(new Ingredient(paprika, new Amount(150, Amount.Unit.GRAM)));
-        ingredients.add(new Ingredient(linser, new Amount(2, Amount.Unit.DECILITER)));
-        ingredients.add(new Ingredient(kokosmjolk, new Amount(400, Amount.Unit.MILLILITER)));
-        ingredients.add(new Ingredient(lok, new Amount(100, Amount.Unit.GRAM)));
-        ingredients.add(new Ingredient(tomater, new Amount(400, Amount.Unit.GRAM)));
-        Recipe linsgryta = new Recipe("Linsgryta", null, 4, ingredients);
-        db.save(linsgryta);
+        CsvParserSettings settings = new CsvParserSettings();
+        settings.getFormat().setLineSeparator("\n");
+        settings.setNumberOfRowsToSkip(1);
+
+        CsvParser parser = new CsvParser(settings);
+        List<String[]> allRows = parser.parseAll(getReader(MOCK_PATH));
+
+        for (String[] row : allRows) {
+
+            String title = row[0];
+            int portions = Integer.parseInt(row[1]);
+            List<Ingredient> ingredients = new LinkedList<>();
+            String[] ingredientsCsv = row[2].split(";");
+
+            for (String ingCsv : ingredientsCsv) {
+
+                String[] part = ingCsv.split("_");
+                long lmvFoodNumber = Long.parseLong(part[0]);
+                double amount = Double.parseDouble(part[1]);
+                Amount.Unit unit = null;
+                for (Amount.Unit u : Amount.Unit.values()) {
+                    if (u.name().toLowerCase().equals(part[2])) {
+                        unit = u;
+                    }
+                }
+
+                if (unit == null) {
+                    throw new RuntimeException("Wrong unit in recipes.csv");
+                }
+
+                FoodItem food = db.find(FoodItem.class).where().eq("lmvFoodNumber", lmvFoodNumber).findUnique();
+
+                if (food == null) {
+                    throw new RuntimeException("No food with food number " + lmvFoodNumber);
+                }
+
+                ingredients.add(new Ingredient(food, new Amount(amount, unit)));
+            }
+
+            Recipe recipe = new Recipe(title, portions, ingredients);
+            if (db.find(Recipe.class).where().eq("title", title).findCount() == 0) {
+                db.save(recipe);
+            } else {
+                System.out.println("\n" + YELLOW + title + " already exists!");
+            }
+        }
     }
 
 	/*

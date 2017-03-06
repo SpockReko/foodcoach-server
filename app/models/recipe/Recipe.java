@@ -30,9 +30,8 @@ public class Recipe extends Model {
 
     public String sourceUrl;
 
-    public Recipe(String title, String description, int portions, List<Ingredient> ingredients) {
+    public Recipe(String title, int portions, List<Ingredient> ingredients) {
         this.title = title;
-        this.description = description;
         this.portions = portions;
         this.ingredients = ingredients;
     }

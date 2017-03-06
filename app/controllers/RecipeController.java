@@ -29,7 +29,6 @@ public class RecipeController extends Controller {
         json.put("water", Math.round(recipe.getWater()));
         ArrayNode array = json.putArray("ingredients");
         for (Ingredient i : recipe.ingredients) {
-            System.out.println(i.getFoodItem().getName());
             ObjectNode node = Json.newObject();
             node.put("name", i.getFoodItem().getName());
             node.put("amount", i.getAmount().getAmount() + " " + i.getAmount().getUnit().name());

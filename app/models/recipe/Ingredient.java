@@ -21,7 +21,7 @@ public class Ingredient extends Model {
 
     @Id @Column(columnDefinition = "bigint unsigned") private long id;
 
-    @OneToOne @NotNull private final FoodItem foodItem;
+    @ManyToOne @NotNull private final FoodItem foodItem;
     @Embedded @NotNull private final Amount amount;
 
     @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
