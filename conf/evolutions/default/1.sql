@@ -18,6 +18,7 @@ create table fooditems (
   scientific_name               varchar(255),
   lmv_food_number               integer,
   lmv_project                   varchar(255),
+  density_constant              double,
   energy_kcal                   float,
   energy_kj                     float,
   carbohydrates_g               float,
@@ -75,6 +76,7 @@ create table fooditems (
   salt_g                        float,
   selenium_ug                   float,
   zink_mg                       float,
+  source_id                     bigint,
   part_of_plant_or_animal_id    bigint,
   physical_form_id              bigint,
   heat_treatment_id             bigint,
@@ -97,12 +99,6 @@ create table fooditems_foodgroups (
   constraint pk_fooditems_foodgroups primary key (food_items_id,food_groups_id)
 );
 
-create table fooditems_foodsources (
-  food_items_id                 bigint not null,
-  food_sources_id               bigint not null,
-  constraint pk_fooditems_foodsources primary key (food_items_id,food_sources_id)
-);
-
 create table foodsources (
   id                            bigint auto_increment not null,
   name                          varchar(255) not null,
@@ -110,6 +106,15 @@ create table foodsources (
   parent_id                     bigint,
   constraint uq_foodsources_langual_code unique (langual_code),
   constraint pk_foodsources primary key (id)
+);
+
+create table ingredients (
+  id                            bigint unsigned auto_increment not null,
+  food_item_id                  bigint not null,
+  amount                        double not null,
+  unit                          varchar(10) not null,
+  constraint ck_ingredients_unit check ( unit in ('LITER','DECILITER','CENTILITER','MILLILITER','KILOGRAM','HECTOGRAM','GRAM','KRYDDMATT','TESKED','MATSKED')),
+  constraint pk_ingredients primary key (id)
 );
 
 create table langualterms (
@@ -122,17 +127,33 @@ create table langualterms (
   constraint pk_langualterms primary key (id)
 );
 
+create table recipes (
+  id                            bigint auto_increment not null,
+  title                         varchar(255) not null,
+  description                   varchar(255),
+  cooking_duration_minutes      integer,
+  portions                      integer not null,
+  source_url                    varchar(255),
+  constraint pk_recipes primary key (id)
+);
+
+create table recipes_ingredients (
+  recipes_id                    bigint not null,
+  ingredients_id                bigint unsigned not null,
+  constraint pk_recipes_ingredients primary key (recipes_id,ingredients_id)
+);
+
 create table users (
   id                            bigint auto_increment not null,
-  first_name                    varchar(255) not null,
+  first_name                    varchar(255),
   last_name                     varchar(255),
   email                         varchar(255),
-  sex                           varchar(6),
   birth_date                    datetime(6),
-  weight                        float,
-  height                        float,
-  age                           integer,
-  activity_level                float,
+  sex                           varchar(6) not null,
+  weight                        double not null,
+  height                        double not null,
+  age                           integer not null,
+  activity_level                double not null,
   goal                          varchar(8),
   date_entered                  datetime(6),
   constraint ck_users_sex check ( sex in ('MALE','FEMALE')),
@@ -142,6 +163,9 @@ create table users (
 
 alter table foodgroups add constraint fk_foodgroups_parent_id foreign key (parent_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_foodgroups_parent_id on foodgroups (parent_id);
+
+alter table fooditems add constraint fk_fooditems_source_id foreign key (source_id) references foodsources (id) on delete restrict on update restrict;
+create index ix_fooditems_source_id on fooditems (source_id);
 
 alter table fooditems add constraint fk_fooditems_part_of_plant_or_animal_id foreign key (part_of_plant_or_animal_id) references langualterms (id) on delete restrict on update restrict;
 create index ix_fooditems_part_of_plant_or_animal_id on fooditems (part_of_plant_or_animal_id);
@@ -185,20 +209,26 @@ create index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups (food_ite
 alter table fooditems_foodgroups add constraint fk_fooditems_foodgroups_foodgroups foreign key (food_groups_id) references foodgroups (id) on delete restrict on update restrict;
 create index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups (food_groups_id);
 
-alter table fooditems_foodsources add constraint fk_fooditems_foodsources_fooditems foreign key (food_items_id) references fooditems (id) on delete restrict on update restrict;
-create index ix_fooditems_foodsources_fooditems on fooditems_foodsources (food_items_id);
-
-alter table fooditems_foodsources add constraint fk_fooditems_foodsources_foodsources foreign key (food_sources_id) references foodsources (id) on delete restrict on update restrict;
-create index ix_fooditems_foodsources_foodsources on fooditems_foodsources (food_sources_id);
-
 alter table foodsources add constraint fk_foodsources_parent_id foreign key (parent_id) references foodsources (id) on delete restrict on update restrict;
 create index ix_foodsources_parent_id on foodsources (parent_id);
+
+alter table ingredients add constraint fk_ingredients_food_item_id foreign key (food_item_id) references fooditems (id) on delete restrict on update restrict;
+create index ix_ingredients_food_item_id on ingredients (food_item_id);
+
+alter table recipes_ingredients add constraint fk_recipes_ingredients_recipes foreign key (recipes_id) references recipes (id) on delete restrict on update restrict;
+create index ix_recipes_ingredients_recipes on recipes_ingredients (recipes_id);
+
+alter table recipes_ingredients add constraint fk_recipes_ingredients_ingredients foreign key (ingredients_id) references ingredients (id) on delete restrict on update restrict;
+create index ix_recipes_ingredients_ingredients on recipes_ingredients (ingredients_id);
 
 
 # --- !Downs
 
 alter table foodgroups drop foreign key fk_foodgroups_parent_id;
 drop index ix_foodgroups_parent_id on foodgroups;
+
+alter table fooditems drop foreign key fk_fooditems_source_id;
+drop index ix_fooditems_source_id on fooditems;
 
 alter table fooditems drop foreign key fk_fooditems_part_of_plant_or_animal_id;
 drop index ix_fooditems_part_of_plant_or_animal_id on fooditems;
@@ -242,14 +272,17 @@ drop index ix_fooditems_foodgroups_fooditems on fooditems_foodgroups;
 alter table fooditems_foodgroups drop foreign key fk_fooditems_foodgroups_foodgroups;
 drop index ix_fooditems_foodgroups_foodgroups on fooditems_foodgroups;
 
-alter table fooditems_foodsources drop foreign key fk_fooditems_foodsources_fooditems;
-drop index ix_fooditems_foodsources_fooditems on fooditems_foodsources;
-
-alter table fooditems_foodsources drop foreign key fk_fooditems_foodsources_foodsources;
-drop index ix_fooditems_foodsources_foodsources on fooditems_foodsources;
-
 alter table foodsources drop foreign key fk_foodsources_parent_id;
 drop index ix_foodsources_parent_id on foodsources;
+
+alter table ingredients drop foreign key fk_ingredients_food_item_id;
+drop index ix_ingredients_food_item_id on ingredients;
+
+alter table recipes_ingredients drop foreign key fk_recipes_ingredients_recipes;
+drop index ix_recipes_ingredients_recipes on recipes_ingredients;
+
+alter table recipes_ingredients drop foreign key fk_recipes_ingredients_ingredients;
+drop index ix_recipes_ingredients_ingredients on recipes_ingredients;
 
 drop table if exists foodgroups;
 
@@ -257,11 +290,15 @@ drop table if exists fooditems;
 
 drop table if exists fooditems_foodgroups;
 
-drop table if exists fooditems_foodsources;
-
 drop table if exists foodsources;
 
+drop table if exists ingredients;
+
 drop table if exists langualterms;
+
+drop table if exists recipes;
+
+drop table if exists recipes_ingredients;
 
 drop table if exists users;
 
