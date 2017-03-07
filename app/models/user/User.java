@@ -58,17 +58,19 @@ public class User extends Model {
         }
     }
 
-    // ArrayList<String> allergier
-    public User(Sex sex, double activityLevel, double weight, double height, int age, Goal goal){
+
+
+    public User(Sex sex, double activityLevel, double weight, double height, int age, Goal goal, ArrayList<String> allergier){
         this.sex = sex;
         this.activityLevel = activityLevel;
         this.weight = weight;
         this.height = height;
         this.age = age;
         this.goal = goal;
+        this.allergier = allergier;
     }
 
-    public HashMap<String, Double> hmap = new HashMap<String, Double>();
+    public HashMap<String, Double> hmap = new HashMap<>();
 
     public void dailyCalori() {
         double dc;
@@ -115,7 +117,7 @@ public class User extends Model {
 
     }
 
-    public void getChildRDI(int age) {
+    private void getChildRDI(int age) {
 
         if (age < 1) {
             hmap.put("vitaminANeedug", 300D);
@@ -213,7 +215,7 @@ public class User extends Model {
     }
 
 
-    public void getMaleRDI(int age) {
+    private void getMaleRDI(int age) {
 
         if (age >= 10 && age < 13) {
 
@@ -357,7 +359,7 @@ public class User extends Model {
 
     }
 
-    public void getFemaleRDI(int age) {
+    private void getFemaleRDI(int age) {
 
         if (age >= 10 && age < 13) {
 
