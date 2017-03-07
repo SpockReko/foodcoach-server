@@ -17,7 +17,7 @@ GET     /recipe/:id                         controllers.RecipeController.get(id:
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
 
 # User info
-#GET     /user/:age                          controllers.UserController.get(age: int)
+GET     /user/:age                         controllers.UserController.getRDI(age: int)
 
 # Front-end
 #POST

@@ -52,7 +52,6 @@ public class User extends Model{
     public void dailyCalori () {
         double dc = 0;
 
-
         HashMap<String, Double> hmap = new HashMap<String, Double>();
 
         double proteinNeed = 0.15 * dc / 4;
@@ -63,35 +62,14 @@ public class User extends Model{
             dc = (activityLevel * (655.0955 + (9.5634 * weight) + (1.8496 * height) - (4.6756 * age))
                     + goal.getGoal());
 
-
-            if (age < 10) {
-
-                hmap.put("vitaminANeedug", 400D);
-                hmap.put("vitaminDNeedug", 10D);
-                hmap.put("vitaminENeedmg", 6D);
-                hmap.put("tiaminNeedmg", 0.9D);
-                hmap.put("riboflavinNeedmg", 1.1D);
-                hmap.put("niacinNeedmg", 12D);
-                hmap.put("vitaminB6Needmg", 1D);
-                hmap.put("folateNeedug", 130D);
-                hmap.put("vitaminB12Needug", 1.3D);
-                hmap.put("vitaminCNeedmg", 40D);
-                hmap.put("calciumNeedmg", 700D);
-                hmap.put("phosphorusNeedmg", 540D);
-                hmap.put("potassiumNeedg", 2D);
-                hmap.put("magnesiumNeed", 200D);
-                hmap.put("ironNeedmg", 9D);
-                hmap.put("zinkNeedmg", 7D);
-                hmap.put("copperNeedmg", 0D);
-                hmap.put("iodineNeedug", 0D);
-                hmap.put("seleniumNeedug", 30D);
-                hmap.put("proteinNeed", proteinNeed);
-                hmap.put("carbohydratesNeed", carbohydratesNeed);
-                hmap.put("fatNeed", fatNeed);
-                hmap.put("bmr", dc);
+            if (age < 9)
+                getChildRDI(age);
+            else
+                // getMaleRDI(age);
 
 
-            } else if (age < 13) {
+
+             if ( age >= 10 && age < 13 ) {
 
                 hmap.put("vitaminANeedug", 600D);
                 hmap.put("vitaminDNeedug", 10D);
@@ -249,40 +227,15 @@ public class User extends Model{
 
             }
 
-
-
         } if (sex == FEMALE) {
             dc = (activityLevel * (66.5 + (13.7516 * weight) + (5.0033 * height) - (6.7550 * age)) + goal.getGoal());
 
+            if (age < 9)
+                getChildRDI(age);
+            else
+                //getMaleRDI(age);
 
-            if (age < 10) {
-
-                hmap.put("vitaminANeedug", 400D);
-                hmap.put("vitaminDNeedug", 10D);
-                hmap.put("vitaminENeedmg", 6D);
-                hmap.put("tiaminNeedmg", 0.9D);
-                hmap.put("riboflavinNeedmg", 1.1D);
-                hmap.put("niacinNeedmg", 12D);
-                hmap.put("vitaminB6Needmg", 1D);
-                hmap.put("folateNeedug", 130D);
-                hmap.put("vitaminB12Needug", 1.3D);
-                hmap.put("vitaminCNeedmg", 40D);
-                hmap.put("calciumNeedmg", 700D);
-                hmap.put("phosphorusNeedmg", 540D);
-                hmap.put("potassiumNeedg", 2D);
-                hmap.put("magnesiumNeed", 200D);
-                hmap.put("ironNeedmg", 9D);
-                hmap.put("zinkNeedmg", 7D);
-                hmap.put("copperNeedmg", 0D);
-                hmap.put("iodineNeedug", 0D);
-                hmap.put("seleniumNeedug", 30D);
-                hmap.put("proteinNeed", proteinNeed);
-                hmap.put("carbohydratesNeed", carbohydratesNeed);
-                hmap.put("fatNeed", fatNeed);
-                hmap.put("bmr", dc);
-
-
-            } else if (age < 13) {
+              if ( age >= 10 && age < 13) {
 
                 hmap.put("vitaminANeedug", 600D);
                 hmap.put("vitaminDNeedug", 10D);
@@ -442,6 +395,120 @@ public class User extends Model{
 
         }
     }
+
+    public void getChildRDI(int age) {
+
+        if (age < 1) {
+            hmap.put("vitaminANeedug", 300D);
+            hmap.put("vitaminDNeedug", 10D);
+            hmap.put("vitaminENeedmg", 3D);
+            hmap.put("tiaminNeedmg", 0.4D);
+            hmap.put("riboflavinNeedmg", 0.5D);
+            hmap.put("niacinNeedmg", 5D);
+            hmap.put("vitaminB6Needmg", 0.4D);
+            hmap.put("folateNeedug", 50D);
+            hmap.put("vitaminB12Needug", 0.5D);
+            hmap.put("vitaminCNeedmg", 20D);
+            hmap.put("calciumNeedmg", 540D);
+            hmap.put("phosphorusNeedmg", 420D);
+            hmap.put("potassiumNeedg", 1.1D);
+            hmap.put("magnesiumNeed", 80D);
+            hmap.put("ironNeedmg", 8D);
+            hmap.put("zinkNeedmg", 5D);
+            hmap.put("copperNeedmg", 0.3D);
+            hmap.put("iodineNeedug", 50D);
+            hmap.put("seleniumNeedug", 15D);
+            hmap.put("proteinNeed", proteinNeed);
+            hmap.put("carbohydratesNeed", carbohydratesNeed);
+            hmap.put("fatNeed", fatNeed);
+            hmap.put("bmr", dc);
+
+
+        } else if (age < 2) {
+
+            hmap.put("vitaminANeedug", 300D);
+            hmap.put("vitaminDNeedug", 10D);
+            hmap.put("vitaminENeedmg", 4D);
+            hmap.put("tiaminNeedmg", 0.5D);
+            hmap.put("riboflavinNeedmg", 0.6D);
+            hmap.put("niacinNeedmg", 7D);
+            hmap.put("vitaminB6Needmg", 0.5D);
+            hmap.put("folateNeedug", 60D);
+            hmap.put("vitaminB12Needug", 0.6D);
+            hmap.put("vitaminCNeedmg", 25D);
+            hmap.put("calciumNeedmg", 600D);
+            hmap.put("phosphorusNeedmg", 470D);
+            hmap.put("potassiumNeedg", 1.4D);
+            hmap.put("magnesiumNeed", 85D);
+            hmap.put("ironNeedmg", 8D);
+            hmap.put("zinkNeedmg", 5D);
+            hmap.put("copperNeedmg", 0.3D);
+            hmap.put("iodineNeedug", 70D);
+            hmap.put("seleniumNeedug", 20D);
+            hmap.put("proteinNeed", proteinNeed);
+            hmap.put("carbohydratesNeed", carbohydratesNeed);
+            hmap.put("fatNeed", fatNeed);
+            hmap.put("bmr", dc);
+
+
+        } else if (age < 5) {
+
+            hmap.put("vitaminANeedug", 350D);
+            hmap.put("vitaminDNeedug", 10D);
+            hmap.put("vitaminENeedmg", 5D);
+            hmap.put("tiaminNeedmg", 0.6D);
+            hmap.put("riboflavinNeedmg", 0.7D);
+            hmap.put("niacinNeedmg", 9D);
+            hmap.put("vitaminB6Needmg", 0.7D);
+            hmap.put("folateNeedug", 80D);
+            hmap.put("vitaminB12Needug", 0.8D);
+            hmap.put("vitaminCNeedmg", 30D);
+            hmap.put("calciumNeedmg", 600D);
+            hmap.put("phosphorusNeedmg", 470D);
+            hmap.put("potassiumNeedg", 1.8D);
+            hmap.put("magnesiumNeed", 120D);
+            hmap.put("ironNeedmg", 8D);
+            hmap.put("zinkNeedmg", 6D);
+            hmap.put("copperNeedmg", 0.4D);
+            hmap.put("iodineNeedug", 90D);
+            hmap.put("seleniumNeedug", 25D);
+            hmap.put("proteinNeed", proteinNeed);
+            hmap.put("carbohydratesNeed", carbohydratesNeed);
+            hmap.put("fatNeed", fatNeed);
+            hmap.put("bmr", dc);
+
+
+        } else if (age <= 10) {
+
+            hmap.put("vitaminANeedug", 400D);
+            hmap.put("vitaminDNeedug", 10D);
+            hmap.put("vitaminENeedmg", 6D);
+            hmap.put("tiaminNeedmg", 0.9D);
+            hmap.put("riboflavinNeedmg", 1.1D);
+            hmap.put("niacinNeedmg", 12D);
+            hmap.put("vitaminB6Needmg", 1D);
+            hmap.put("folateNeedug", 130D);
+            hmap.put("vitaminB12Needug", 1.3D);
+            hmap.put("vitaminCNeedmg", 40D);
+            hmap.put("calciumNeedmg", 700D);
+            hmap.put("phosphorusNeedmg", 540D);
+            hmap.put("potassiumNeedg", 2D);
+            hmap.put("magnesiumNeed", 200D);
+            hmap.put("ironNeedmg", 9D);
+            hmap.put("zinkNeedmg", 7D);
+            hmap.put("copperNeedmg", 0.5D);
+            hmap.put("iodineNeedug", 120D);
+            hmap.put("seleniumNeedug", 30D);
+            hmap.put("proteinNeed", proteinNeed);
+            hmap.put("carbohydratesNeed", carbohydratesNeed);
+            hmap.put("fatNeed", fatNeed);
+            hmap.put("bmr", dc);
+
+
+        }
+    }
+
+
 
 }
 
