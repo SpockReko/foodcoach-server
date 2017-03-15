@@ -13,5 +13,8 @@ GET     /food/group/:code                   controllers.FoodController.getByGrou
 # Recipe items
 GET     /recipe/:id                         controllers.RecipeController.get(id: Long)
 
+# Week menu options from client
+POST    /weekmenu                           controllers.WeekMenuController.weekMenu
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
