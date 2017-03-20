@@ -1,6 +1,7 @@
 package models.recipe;
 
 import com.avaje.ebean.Model;
+import models.food.Sugars;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -75,7 +76,74 @@ public class Recipe extends Model {
     public Double getAsh() {
         return ingredients.stream().mapToDouble(Ingredient::getAsh).sum();
     }
-    public Double getWaste() {
-        return ingredients.stream().mapToDouble(Ingredient::getWaste).sum();
+
+    /*
+    Extra nutrition data
+     */
+    public Double getSugars() {
+        return ingredients.stream().mapToDouble(Ingredient::getSugars).sum();
+    }
+    public Double getFat() {
+        return ingredients.stream().mapToDouble(Ingredient::getFat).sum();
+    }
+    public Double getVitaminA() {
+        return ingredients.stream().mapToDouble(Ingredient::getVitaminA).sum();
+    }
+    public Double getVitaminB6() {
+        return ingredients.stream().mapToDouble(Ingredient::getVitaminB6).sum();
+    }
+    public Double getVitaminB12() {
+        return ingredients.stream().mapToDouble(Ingredient::getVitaminB12).sum();
+    }
+    public Double getVitaminC() {
+        return ingredients.stream().mapToDouble(Ingredient::getVitaminC).sum();
+    }
+    public Double getVitaminD() {
+        return ingredients.stream().mapToDouble(Ingredient::getVitaminD).sum();
+    }
+    public Double getVitaminE() {
+        return ingredients.stream().mapToDouble(Ingredient::getVitaminE).sum();
+    }
+    public Double getThiamine() {
+        return ingredients.stream().mapToDouble(Ingredient::getThiamine).sum();
+    }
+    public Double getRiboflavin() {
+        return ingredients.stream().mapToDouble(Ingredient::getRiboflavin).sum();
+    }
+    public Double getNiacin() {
+        return ingredients.stream().mapToDouble(Ingredient::getNiacin).sum();
+    }
+    public Double getNiacinEquivalents() {
+        return ingredients.stream().mapToDouble(Ingredient::getNiacinEquivalents).sum();
+    }
+    public Double getFolate() {
+        return ingredients.stream().mapToDouble(Ingredient::getFolate).sum();
+    }
+    public Double getPhosphorus() {
+        return ingredients.stream().mapToDouble(Ingredient::getPhosphorus).sum();
+    }
+    public Double getIodine() {
+        return ingredients.stream().mapToDouble(Ingredient::getIodine).sum();
+    }
+    public Double getIron() {
+        return ingredients.stream().mapToDouble(Ingredient::getIron).sum();
+    }
+    public Double getCalcium() {
+        return ingredients.stream().mapToDouble(Ingredient::getCalcium).sum();
+    }
+    public Double getPotassium() {
+        return ingredients.stream().mapToDouble(Ingredient::getPotassium).sum();
+    }
+    public Double getMagnesium() {
+        return ingredients.stream().mapToDouble(Ingredient::getMagnesium).sum();
+    }
+    public Double getSalt() {
+        return ingredients.stream().mapToDouble(Ingredient::getSalt).sum();
+    }
+    public Double getSelenium() {
+        return ingredients.stream().mapToDouble(Ingredient::getSelenium).sum();
+    }
+    public Double getZink() {
+        return ingredients.stream().mapToDouble(Ingredient::getZink).sum();
     }
 }

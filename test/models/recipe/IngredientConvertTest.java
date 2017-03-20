@@ -191,18 +191,4 @@ public class IngredientConvertTest {
         assertEquals(120, matsked.getAsh(), delta);
     }
 
-    @Test
-    public void getWaste() throws Exception {
-        assertEquals(100, kilo.getWaste(), delta);
-        assertEquals(100, hekto.getWaste(), delta);
-        assertEquals(100, gram.getWaste(), delta);
-        assertEquals(80, liter.getWaste(), delta);
-        assertEquals(80, deci.getWaste(), delta);
-        assertEquals(80, centi.getWaste(), delta);
-        assertEquals(80, milli.getWaste(), delta);
-        assertEquals(80, krydd.getWaste(), delta);
-        assertEquals(80, tesked.getWaste(), delta);
-        assertEquals(120, matsked.getWaste(), delta);
-    }
-
 }

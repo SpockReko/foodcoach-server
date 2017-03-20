@@ -21,3 +21,9 @@ GET     /emmatest/:str                      controllers.ApplicationController.in
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
+
+# User info
+GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
+
+# Front-end
+#POST
