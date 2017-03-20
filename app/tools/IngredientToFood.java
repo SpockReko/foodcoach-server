@@ -2,8 +2,8 @@ package tools;
 
 import models.food.FoodItem;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import info.debatty.java.stringsimilarity.*;
 
 /**
@@ -11,60 +11,60 @@ import info.debatty.java.stringsimilarity.*;
  */
 public class IngredientToFood {
 
+    private static final int MAX_DISTANCE = 2;
 
-    public static FoodItem ingToFood (String ing){
-        try {
-            FoodItem food= FoodItem.find.where().eq("name", ing).findUnique();
-            if (food == null) {
-                //kolla om ing är felstavad
-                String corrected = autoCorrect(ing);
-                if (!corrected.equals(ing.toLowerCase())) {
-                    System.out.println("HAR RÄTTAT RÄTT JAJJAMEN!");
-                    return FoodItem.find.where().eq("name", corrected).findList().get(0);
-                } else {
-                    System.out.println("NYTT FOODITEM! hejejhekjgekl");
-                    return new FoodItem(ing, FoodItem.find.findCount()*ing.hashCode());
-                }
+    private static Levenshtein levenshtein = new Levenshtein();
+    private static FoodItem matchingFood = null;
+    private static double shortestDistance = Double.MAX_VALUE;
+
+    public static FoodItem findMatch(String ingredient) {
+        matchingFood = null;
+        shortestDistance = Double.MAX_VALUE;
+
+        FoodItem food = FoodItem.find.where()
+            .contains("searchTags", ingredient)
+            .or().eq("name", ingredient)
+            .findUnique();
+
+        if (food == null) {
+            food = autoCorrect(ingredient);
+            if (food != null) {
+                return food;
+            } else {
+                // TODO Throw exception here instead
+                int foodNumber = FoodItem.find.findCount() * ingredient.hashCode();
+                return new FoodItem(ingredient, foodNumber);
             }
-            else {return food;}
-
-        }catch (Exception ex){
-            System.out.println("gick inte så bra");
+        } else {
+            return food;
         }
-        return null;
     }
 
-    public static String autoCorrect(String ing) {
-        System.out.println("I AUTOCORRECT");
-        int max = 3;
-        Levenshtein l = new Levenshtein();
-        List<FoodItem> allIng = FoodItem.find.all();
-        FoodItem matchIng = allIng.get(0);
-        double tempDist;
-        double dist = 5;
-        for (FoodItem food : allIng){
-            String foo = food.getName().toLowerCase();
-            tempDist = l.distance(foo , ing.toLowerCase());
-            if (tempDist <= max){
-                if (dist != 5) {
-                    if ( tempDist < dist ) {
-                        matchIng = food;
-                        dist = tempDist;
-                    }
+    private static FoodItem autoCorrect(String ingredient) {
+        List<FoodItem> allFoods = FoodItem.find.all();
+
+        for (FoodItem food : allFoods) {
+            if (food.searchTags != null && !food.searchTags.isEmpty()) {
+                for (String tag : food.searchTags) {
+                    checkDistance(ingredient, tag, food);
                 }
-                else {
-                        matchIng = food;
-                        dist = tempDist;
-                }
-                //HÄR SKA VI SE OM VI FÅR FLER OCH HANTERA DET
-                //else if (matchIng != null && dist == l.distance(matchIng.get(0).getName(), ing)){
-                //    matchIng.add(food);
-                //}
+            }
+            String tag = food.getName().toLowerCase();
+            checkDistance(ingredient, tag, food);
+        }
+        return matchingFood;
+    }
+
+    private static void checkDistance(String input, String tag, FoodItem food) {
+        double tagDistance = levenshtein.distance(tag.toLowerCase(), input.toLowerCase());
+
+        if (tagDistance <= MAX_DISTANCE) {
+            if (tagDistance < shortestDistance) {
+                matchingFood = food;
+                System.out.println("tag: dist = " + shortestDistance);
+                System.out.println("tag: matchingFood = " + matchingFood.screenName);
+                shortestDistance = tagDistance;
             }
         }
-        if (matchIng != allIng.get(0)){
-            return matchIng.getName();
-        }
-        return ing;
     }
 }

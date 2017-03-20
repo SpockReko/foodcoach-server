@@ -1,9 +1,11 @@
 package models.food;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.DbArray;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,7 +35,7 @@ public class FoodItem extends Model {
     /* Data used when matching web strings */
     public String example;
     public String screenName;
-    public String searchString;
+    @DbArray(length = 255) public List<String> searchTags;
 
     private Float energyKcal;
     private Float energyKj;
@@ -68,7 +70,7 @@ public class FoodItem extends Model {
     @ManyToOne public LangualTerm labelClaim;
     @ManyToOne public LangualTerm geographicSource;
     @ManyToOne public LangualTerm distinctiveFeatures;
-
+    
     public FoodItem(String name, int lmvFoodNumber) {
         this.name = name;
         this.lmvFoodNumber = lmvFoodNumber;
