@@ -11,7 +11,7 @@ import info.debatty.java.stringsimilarity.*;
  */
 public class IngredientToFood {
 
-    private static final int MAX_DISTANCE = 3;
+    private static final int MAX_DISTANCE = 2;
 
     private static Levenshtein levenshtein = new Levenshtein();
     private static FoodItem matchingFood = null;
