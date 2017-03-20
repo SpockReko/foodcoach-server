@@ -1,6 +1,6 @@
 package controllers;
 
-import models.algorithm.WeekMenu;
+import algorithms.WeekMenu;
 import models.recipe.Recipe;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -9,7 +9,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

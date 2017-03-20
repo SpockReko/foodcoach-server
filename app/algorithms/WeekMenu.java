@@ -1,4 +1,4 @@
-package models.algorithm;
+package algorithms;
 
 import models.food.FoodItem;
 import models.recipe.Recipe;
