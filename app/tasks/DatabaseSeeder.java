@@ -39,6 +39,7 @@ public class DatabaseSeeder {
     private static EbeanServer db;
 
     private static final String CSV_PATH = "resources/fooditems/FoodDB_201702061629.csv";
+    private static final String MOD_CSV_PATH = "resources/fooditems/modified.csv";
     private static final String MOCK_PATH = "resources/recipes/recipes.csv";
 
     private static final String GREEN = "\u001B[32m";
@@ -87,7 +88,7 @@ public class DatabaseSeeder {
         settings.setNumberOfRowsToSkip(1);
 
         CsvParser parser = new CsvParser(settings);
-        List<String[]> allRows = parser.parseAll(getReader(CSV_PATH));
+        List<String[]> allRows = parser.parseAll(getReader(MOD_CSV_PATH));
 
         if (db.find(FoodItem.class).where().findCount() > 0) {
             throw new DatabaseNotEmptyException();
@@ -129,6 +130,10 @@ public class DatabaseSeeder {
             Float zink = toFloat(cols[57]); Float waste = toFloat(cols[58]);
             String scientificName = cols[60];
             String lmvProject = cols[59];
+            // Parse details
+            String example = cols[75];
+            String screenName = cols[76];
+            String searchString = cols[77];
 
             Fats fats = new Fats(fat, sumSaturatedFats, fattyAcid40100, fattyAcid120, fattyAcid140,
                     fattyAcid160, fattyAcid180, fattyAcid200, sumMonounsaturatedFats, fattyAcid161,
@@ -154,7 +159,7 @@ public class DatabaseSeeder {
             if (cols[62] != null) {
                 linkFoodSources(item, extractNameAndCode(cols[62]));
             }
-            for (int i = 63; i < cols.length; i++) {
+            for (int i = 63; i < 75; i++) {
                 if (cols[i] != null) {
                     String[] languals = cols[i].split(";");
                     for (String langual : languals) {
@@ -163,6 +168,10 @@ public class DatabaseSeeder {
                     }
                 }
             }
+
+            item.example = example;
+            item.screenName = screenName;
+            item.searchString = searchString;
 
             foods.add(item);
             pb.step();

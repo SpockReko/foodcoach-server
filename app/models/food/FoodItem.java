@@ -64,6 +64,14 @@ public class FoodItem extends Model {
     @ManyToOne public LangualTerm geographicSource;
     @ManyToOne public LangualTerm distinctiveFeatures;
 
+
+    public String example;
+    public String screenName;
+    public String searchString;
+
+
+
+
     public FoodItem(String name, int lmvFoodNumber) {
         this.name = name;
         this.lmvFoodNumber = lmvFoodNumber;
