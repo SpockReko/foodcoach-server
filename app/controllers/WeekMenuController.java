@@ -1,5 +1,7 @@
 package controllers;
 
+import models.algorithm.WeekMenu;
+import models.recipe.Recipe;
 import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.libs.Json;
@@ -7,7 +9,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +22,7 @@ public class WeekMenuController extends Controller {
     @Inject FormFactory formFactory;
 
     // POST /weekmenu
+
     public Result weekMenu() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String dateBorn = requestData.get("dateBorn");
@@ -37,6 +42,20 @@ public class WeekMenuController extends Controller {
         map.put("goal", goal);
         map.put("allergy", allergy);
 
-        return ok(Json.toJson(map));
+        //return ok(Json.toJson(map));
+        return weekMenuTest();
+    }
+
+    //Testa week menu
+    public Result weekMenuTest(){
+        List<Recipe> allRecept = Recipe.find.all();
+        WeekMenu weekMenu = new WeekMenu();
+        //TODO: Få följande värden ifrån användaren genom client
+        weekMenu.setNrOfRecept(2);
+        weekMenu.setAllRecepie(allRecept);
+        weekMenu.setDesiredValue(0.5);
+        weekMenu.calculateWeekMenu(allRecept.size(),allRecept);
+        List<Recipe> resultingWeekMenu = weekMenu.getOptimalMenu();
+        return ok(Json.toJson(resultingWeekMenu));
     }
 }
