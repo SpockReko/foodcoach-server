@@ -17,6 +17,14 @@ public class ApplicationController extends Controller {
 
     public Result ingToFood (String str){
 		FoodItem item = IngredientToFood.ingToFood(str);
-		return ok(item.getName());
+		if (item.example != null) {
+            return ok(item.screenName + " (exempelvis " + item.example + ")");
+        }
+        else if (item.screenName != null){
+            return ok(item.screenName);
+        }
+        else {
+            return ok(item.getName());
+        }
 	}
 }

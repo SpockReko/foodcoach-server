@@ -17,6 +17,7 @@ import play.Logger;
 
 import javax.persistence.PersistenceException;
 import java.io.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -39,7 +40,7 @@ public class DatabaseSeeder {
     private static EbeanServer db;
 
     private static final String CSV_PATH = "resources/fooditems/FoodDB_201702061629.csv";
-    private static final String MOD_CSV_PATH = "resources/fooditems/modified.csv";
+    private static final String MOD_CSV_PATH = "resources/fooditems/foodDB_modified.csv";
     private static final String MOCK_PATH = "resources/recipes/recipes.csv";
 
     private static final String GREEN = "\u001B[32m";
@@ -133,7 +134,7 @@ public class DatabaseSeeder {
             // Parse details
             String example = cols[75];
             String screenName = cols[76];
-            String searchString = cols[77];
+            String searchStrings = cols[77];
 
             Fats fats = new Fats(fat, sumSaturatedFats, fattyAcid40100, fattyAcid120, fattyAcid140,
                     fattyAcid160, fattyAcid180, fattyAcid200, sumMonounsaturatedFats, fattyAcid161,
@@ -171,7 +172,13 @@ public class DatabaseSeeder {
 
             item.example = example;
             item.screenName = screenName;
-            item.searchString = searchString;
+
+            if (searchStrings != null) {
+                List<String> searchTags = new LinkedList<>();
+                String[] tags = searchStrings.split(",");
+                Collections.addAll(searchTags, tags);
+                item.searchTags = searchTags;
+            }
 
             foods.add(item);
             pb.step();

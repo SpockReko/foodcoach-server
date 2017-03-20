@@ -2,69 +2,87 @@ package tools;
 
 import models.food.FoodItem;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import info.debatty.java.stringsimilarity.*;
+
+import javax.naming.ldap.PagedResultsControl;
 
 /**
  * Created by emmafahlen on 2017-02-14.
  */
 public class IngredientToFood {
 
+    private static final int MAX_DISTANCE = 3;
+    private static double shortestDistance = Double.MAX_VALUE;
+    private static Levenshtein l = new Levenshtein();
+    private static FoodItem matchingFood = null;
 
-    public static FoodItem ingToFood (String ing){
+    public static FoodItem ingToFood(String ingredient) {
         try {
-            FoodItem food= FoodItem.find.where().eq("name", ing).findUnique();
-            if (food == null) {
-                //kolla om ing är felstavad
-                String corrected = autoCorrect(ing);
-                if (!corrected.equals(ing.toLowerCase())) {
-                    System.out.println("HAR RÄTTAT RÄTT JAJJAMEN!");
-                    return FoodItem.find.where().eq("name", corrected).findList().get(0);
-                } else {
-                    System.out.println("NYTT FOODITEM! hejejhekjgekl");
-                    return new FoodItem(ing, FoodItem.find.findCount()*ing.hashCode());
-                }
-            }
-            else {return food;}
+            FoodItem food = FoodItem.find.where().contains("searchTags", ingredient).findUnique();
 
-        }catch (Exception ex){
-            System.out.println("gick inte så bra");
+            if (food == null) {
+                food = FoodItem.find.where().eq("name", ingredient).findUnique();
+            }
+
+            System.out.println("food = " + food);
+
+            if (food == null) {
+                String corrected = autoCorrect(ingredient.toLowerCase());
+                if (!corrected.equals(ingredient.toLowerCase())) {
+                    food = FoodItem.find.where().eq("screenName", corrected).findUnique();
+                    if (food == null) {
+                        food = FoodItem.find.where().eq("name", corrected).findUnique();
+                    }
+                    if (food != null) {
+                        return food;
+                    }
+                    return new FoodItem(ingredient, FoodItem.find.findCount() * ingredient.hashCode());
+                } else {
+                    return new FoodItem(ingredient, FoodItem.find.findCount() * ingredient.hashCode());
+                }
+            } else {
+                System.out.println("before return on else " + food);
+                return food;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Catchade exception!");
         }
         return null;
     }
 
-    public static String autoCorrect(String ing) {
-        System.out.println("I AUTOCORRECT");
-        int max = 3;
-        Levenshtein l = new Levenshtein();
-        List<FoodItem> allIng = FoodItem.find.all();
-        FoodItem matchIng = allIng.get(0);
-        double tempDist;
-        double dist = 5;
-        for (FoodItem food : allIng){
-            String foo = food.getName().toLowerCase();
-            tempDist = l.distance(foo , ing.toLowerCase());
-            if (tempDist <= max){
-                if (dist != 5) {
-                    if ( tempDist < dist ) {
-                        matchIng = food;
-                        dist = tempDist;
-                    }
+    private static String autoCorrect(String ingredient) {
+        System.out.println(l.distance("rödlök", ingredient));
+
+        List<FoodItem> allFoods = FoodItem.find.all();
+
+        for (FoodItem food : allFoods) {
+            if (food.searchTags != null && !food.searchTags.isEmpty()) {
+                for (String tag : food.searchTags) {
+                    checkDistance(ingredient, tag, food);
                 }
-                else {
-                        matchIng = food;
-                        dist = tempDist;
-                }
-                //HÄR SKA VI SE OM VI FÅR FLER OCH HANTERA DET
-                //else if (matchIng != null && dist == l.distance(matchIng.get(0).getName(), ing)){
-                //    matchIng.add(food);
-                //}
+            }
+            String tag = food.getName().toLowerCase();
+            checkDistance(ingredient, tag, food);
+        }
+        if (matchingFood != null) {
+            return matchingFood.screenName;
+        }
+        return ingredient;
+    }
+
+    private static void checkDistance(String input, String tag, FoodItem food) {
+        double tagDistance = l.distance(tag.toLowerCase(), input.toLowerCase());
+
+        if (tagDistance <= MAX_DISTANCE) {
+            if (tagDistance < shortestDistance) {
+                matchingFood = food;
+                System.out.println("tag: dist = " + shortestDistance);
+                System.out.println("tag: matchingFood = " + matchingFood.screenName);
+                shortestDistance = tagDistance;
             }
         }
-        if (matchIng != allIng.get(0)){
-            return matchIng.getName();
-        }
-        return ing;
     }
 }
