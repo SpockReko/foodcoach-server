@@ -76,7 +76,6 @@ public class RecipeTest {
         assertEquals(40, recipe.getWater(), delta);
         assertEquals(40, recipe.getAlcohol(), delta);
         assertEquals(40, recipe.getAsh(), delta);
-        assertEquals(40, recipe.getWaste(), delta);
     }
 
 }

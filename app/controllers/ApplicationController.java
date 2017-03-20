@@ -5,20 +5,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import tools.IngredientToFood;
 
-import tools.IngredientToFood;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.List;
-
-import tools.IngredientToFood;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.List;
-
 /**
  * HTTP controller that handles all general requests to the server.
  */
@@ -31,6 +17,6 @@ public class ApplicationController extends Controller {
 
     public Result ingToFood (String str){
 		FoodItem item = IngredientToFood.ingToFood(str);
-		return ok(item.name);
+		return ok(item.getName());
 	}
 }
