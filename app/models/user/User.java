@@ -60,6 +60,36 @@ public class User extends Model {
 
 
 
+    public HashMap<String, Double> hmap = new HashMap<>();
+
+    public User() {
+        hmap.put("bmr", 2000D);
+        hmap.put("proteinNeed", 17*2000D);
+        hmap.put("carbohydratesNeed", 50*2000D);
+        hmap.put("fatNeed", 33*2000D);
+
+        hmap.put("vitaminANeedug", 800D);
+        hmap.put("vitaminDNeedug", 20D);
+        hmap.put("vitaminENeedmg", 9D);
+        hmap.put("tiaminNeedmg", 1.2D);
+        hmap.put("riboflavinNeedmg", 1.35D);
+        hmap.put("niacinNeedmg", 16D);
+        hmap.put("vitaminB6Needmg", 1.4D);
+        hmap.put("folateNeedug", 300D);
+        hmap.put("vitaminB12Needug", 2D);
+        hmap.put("vitaminCNeedmg", 75D);
+        hmap.put("calciumNeedmg", 800D);
+        hmap.put("phosphorusNeedmg", 600D);
+        hmap.put("potassiumNeedg", 3.3D);
+        hmap.put("magnesiumNeed", 315D);
+        hmap.put("ironNeedmg", 9D);
+        hmap.put("zinkNeedmg", 8D);
+        hmap.put("copperNeedmg", 0.9D);
+        hmap.put("iodineNeedug", 150D);
+        hmap.put("seleniumNeedug", 55D);
+    }
+
+
     public User(Sex sex, double activityLevel, double weight, double height, int age, Goal goal, ArrayList<String> allergier){
         this.sex = sex;
         this.activityLevel = activityLevel;
@@ -68,10 +98,10 @@ public class User extends Model {
         this.age = age;
         this.goal = goal;
         this.allergier = allergier;
+        dailyCalori();
     }
 
-    public HashMap<String, Double> hmap = new HashMap<>();
-
+    
     public void dailyCalori() {
         double dc;
 
