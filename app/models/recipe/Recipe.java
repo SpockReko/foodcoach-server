@@ -86,9 +86,6 @@ public class Recipe extends Model {
     public Double getSugars() {
         return ingredients.stream().mapToDouble(Ingredient::getSugars).sum();
     }
-    public Double getFat() {
-        return ingredients.stream().mapToDouble(Ingredient::getFat).sum();
-    }
     public Double getVitaminA() {
         return ingredients.stream().mapToDouble(Ingredient::getVitaminA).sum();
     }
@@ -151,9 +148,9 @@ public class Recipe extends Model {
     }
 
 
-    public Double getIron() {
-        return ingredients.stream().mapToDouble(Ingredient::getIron).sum();
-    }
+    /*
+    Extra calculations
+     */
     public Double getEnergyPercentProtein() {
         return 4*100*getProtein()/getEnergyKcal(); // energi från protein per portion
     }
