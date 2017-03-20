@@ -58,6 +58,9 @@ public class Recipe extends Model {
     public Double getProtein() {
         return ingredients.stream().mapToDouble(Ingredient::getProtein).sum();
     }
+    public Double getFat() {
+        return ingredients.stream().mapToDouble(Ingredient::getFat).sum();
+    }
     public Double getFibre() {
         return ingredients.stream().mapToDouble(Ingredient::getFibre).sum();
     }
@@ -146,4 +149,22 @@ public class Recipe extends Model {
     public Double getZink() {
         return ingredients.stream().mapToDouble(Ingredient::getZink).sum();
     }
+
+
+    public Double getIron() {
+        return ingredients.stream().mapToDouble(Ingredient::getIron).sum();
+    }
+    public Double getEnergyPercentProtein() {
+        return 4*100*getProtein()/getEnergyKcal(); // energi från protein per portion
+    }
+    public Double getEnergyPercentCarbohydrates() {
+        return 4*100*getCarbohydrates()/getEnergyKcal(); // energi från kolhydrater per portion
+    }
+    public Double getEnergyPercentFat() {
+        return 9*100*getFat()/getEnergyKcal(); // energi från fett per portion
+    }
+    public Double getKcalPerPortion() {
+        return getEnergyKcal()/getPortions();
+    }
+
 }

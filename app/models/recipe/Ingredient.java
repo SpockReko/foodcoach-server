@@ -50,6 +50,9 @@ public class Ingredient extends Model {
     public Double getProtein() {
         return foodItem.getProtein() * multiplier();
     }
+    public Double getFat() {
+        return foodItem.getFats().getFat() * multiplier();
+    }
     public Double getFibre() {
         return foodItem.getFibre() * multiplier();
     }
@@ -138,6 +141,10 @@ public class Ingredient extends Model {
     public Double getZink() {
         return foodItem.getMinerals().getFolate() * multiplier();
     }
+
+    public Double getIron() { return foodItem.getMinerals().getIron() * multiplier(); }
+
+    public Minerals getMinerals() { return foodItem.getMinerals(); }
 
     private double multiplier() {
         double multiplier = amount.getUnit().getFraction() * amount.getAmount();
