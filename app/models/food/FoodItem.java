@@ -30,6 +30,11 @@ public class FoodItem extends Model {
     /* Used to convert between 100g and 100ml (1 dl) */
     public Double densityConstant;
 
+    /* Data used when matching web strings */
+    public String example;
+    public String screenName;
+    public String searchString;
+
     private Float energyKcal;
     private Float energyKj;
     @Column(name = "carbohydrates_g") private Float carbohydrates;
@@ -63,14 +68,6 @@ public class FoodItem extends Model {
     @ManyToOne public LangualTerm labelClaim;
     @ManyToOne public LangualTerm geographicSource;
     @ManyToOne public LangualTerm distinctiveFeatures;
-
-
-    public String example;
-    public String screenName;
-    public String searchString;
-
-
-
 
     public FoodItem(String name, int lmvFoodNumber) {
         this.name = name;
