@@ -176,7 +176,9 @@ public class DatabaseSeeder {
             if (searchStrings != null) {
                 List<String> searchTags = new LinkedList<>();
                 String[] tags = searchStrings.split(",");
-                Collections.addAll(searchTags, tags);
+                for (String tag : tags) {
+                    searchTags.add(tag.trim());
+                }
                 item.searchTags = searchTags;
             }
 
@@ -317,7 +319,7 @@ public class DatabaseSeeder {
             db.insert(new FoodGroup("Ägg eller äggprodukt", "A0790"));
         }
         updateGroupParent("A0791", "A0790");
-        updateGroupParent("A0792", "A0790");
+        //updateGroupParent("A0792", "A0790");
         updateGroupParent("A0794", "A0793");
         updateGroupParent("A0795", "A0793");
         updateGroupParent("A0796", "A0793");

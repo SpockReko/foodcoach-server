@@ -18,9 +18,11 @@ libraryDependencies += "edu.uci.ics" % "crawler4j" % "4.2"
 libraryDependencies += "org.jsoup" % "jsoup" % "1.10.2"
 libraryDependencies += "com.univocity" % "univocity-parsers" % "2.3.1"
 
+// Helpers
+libraryDependencies += "info.debatty" % "java-string-similarity" % "0.23"
+
 // Visuals
 libraryDependencies += "me.tongfei" % "progressbar" % "0.5.3"
-libraryDependencies += "info.debatty" % "java-string-similarity" % "0.23"
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 

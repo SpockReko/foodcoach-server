@@ -15,16 +15,14 @@ public class ApplicationController extends Controller {
         return ok("It works!");
     }
 
-    public Result ingToFood (String str){
-		FoodItem item = IngredientToFood.ingToFood(str);
-		if (item.example != null) {
+    public Result ingToFood(String str) {
+        FoodItem item = IngredientToFood.findMatch(str);
+        if (item.example != null) {
             return ok(item.screenName + " (exempelvis " + item.example + ")");
-        }
-        else if (item.screenName != null){
+        } else if (item.screenName != null) {
             return ok(item.screenName);
-        }
-        else {
+        } else {
             return ok(item.getName());
         }
-	}
+    }
 }
