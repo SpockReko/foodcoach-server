@@ -1,6 +1,8 @@
 package controllers;
 
 import algorithms.WeekMenu;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.recipe.Recipe;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -48,6 +50,7 @@ public class WeekMenuController extends Controller {
     //Testa week menu
     public Result weekMenuTest(){
         List<Recipe> allRecept = Recipe.find.all();
+        System.out.println(allRecept.size());
         WeekMenu weekMenu = new WeekMenu();
         //TODO: Få följande värden ifrån användaren genom client
         weekMenu.setNrOfRecept(2);
@@ -55,6 +58,15 @@ public class WeekMenuController extends Controller {
         weekMenu.setDesiredValue(0.5);
         weekMenu.calculateWeekMenu(allRecept.size(),allRecept);
         List<Recipe> resultingWeekMenu = weekMenu.getOptimalMenu();
-        return ok(Json.toJson(resultingWeekMenu));
+        System.out.println(resultingWeekMenu.size());
+        ObjectNode json = Json.newObject();
+        ArrayNode array = json.putArray("recipe");
+        for (Recipe recipe : resultingWeekMenu) {
+            System.out.println(recipe.getTitle());
+            ObjectNode node = Json.newObject();
+            node.put("titel",recipe.getTitle());
+            array.add(node);
+        }
+        return ok(json);
     }
 }
