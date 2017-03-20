@@ -68,8 +68,75 @@ public class Ingredient extends Model {
     public Double getAsh() {
         return foodItem.getAsh() * multiplier();
     }
-    public Double getWaste() {
-        return foodItem.getWaste() * multiplier();
+
+    /*
+    Extra nutrition data
+     */
+    public Double getSugars() {
+        return foodItem.getSugars().getSugars() * multiplier();
+    }
+    public Double getFat() {
+        return foodItem.getFats().getFat() * multiplier();
+    }
+    public Double getVitaminA() {
+        return foodItem.getVitamins().getVitaminA() * multiplier();
+    }
+    public Double getVitaminB6() {
+        return foodItem.getVitamins().getVitaminB6() * multiplier();
+    }
+    public Double getVitaminB12() {
+        return foodItem.getVitamins().getVitaminB12() * multiplier();
+    }
+    public Double getVitaminC() {
+        return foodItem.getVitamins().getVitaminC() * multiplier();
+    }
+    public Double getVitaminD() {
+        return foodItem.getVitamins().getVitaminD() * multiplier();
+    }
+    public Double getVitaminE() {
+        return foodItem.getVitamins().getVitaminE() * multiplier();
+    }
+    public Double getThiamine() {
+        return foodItem.getVitamins().getThiamine() * multiplier();
+    }
+    public Double getRiboflavin() {
+        return foodItem.getVitamins().getRiboflavin() * multiplier();
+    }
+    public Double getNiacin() {
+        return foodItem.getVitamins().getNiacin() * multiplier();
+    }
+    public Double getNiacinEquivalents() {
+        return foodItem.getVitamins().getNiacinEquivalents() * multiplier();
+    }
+    public Double getFolate() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getPhosphorus() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getIodine() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getIron() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getCalcium() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getPotassium() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getMagnesium() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getSalt() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getSelenium() {
+        return foodItem.getMinerals().getFolate() * multiplier();
+    }
+    public Double getZink() {
+        return foodItem.getMinerals().getFolate() * multiplier();
     }
 
     private double multiplier() {
