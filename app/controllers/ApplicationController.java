@@ -31,6 +31,6 @@ public class ApplicationController extends Controller {
 
     public Result ingToFood (String str){
 		FoodItem item = IngredientToFood.ingToFood(str);
-		return ok(item.name);
+		return ok(item.getName());
 	}
 }

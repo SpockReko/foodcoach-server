@@ -7,7 +7,7 @@ public class TestITF {
     static IngredientToFood food = new IngredientToFood();
 
     public static void main(String[] args) {
-        System.out.println(food.IngToFood("Avocado").name);
+        System.out.println(food.ingToFood("Avocado").getName());
     }
 
 }
