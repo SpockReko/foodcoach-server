@@ -29,6 +29,7 @@ public class Algorithms {
         nutrientsContent.put("vitaminB12", recipe.getVitaminB12());
         nutrientsContent.put("vitaminC", recipe.getVitaminC());
         nutrientsContent.put("vitaminD", recipe.getVitaminD());
+        nutrientsContent.put("vitaminE", recipe.getVitaminE());
         nutrientsContent.put("thiamine", recipe.getThiamine());
         nutrientsContent.put("riboflavin", recipe.getRiboflavin());
         nutrientsContent.put("niacin", recipe.getNiacin());
