@@ -31,7 +31,7 @@ public class RecipePageParser {
         /*
          * These pages will get crawled.
          */
-        controller.addSeed("http://receptfavoriter.se/recept/pasta-med-salsiccia.html");
+        controller.addSeed("http://receptfavoriter.se/recept/carbonara-med-creme-fraiche.html");
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
