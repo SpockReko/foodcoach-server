@@ -1,4 +1,4 @@
-package tools;
+package parsers;
 
 import models.food.FoodItem;
 
@@ -9,7 +9,7 @@ import info.debatty.java.stringsimilarity.*;
 /**
  * Created by emmafahlen on 2017-02-14.
  */
-public class IngredientToFood {
+public class IngredientParser {
 
     private static final int MAX_DISTANCE = 2;
 

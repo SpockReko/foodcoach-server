@@ -4,6 +4,8 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import models.recipe.Recipe;
+import parsers.RecipeParser;
+import parsers.ReceptFavoriterParser;
 
 /**
  * Created by fredrikkindstrom on 2017-03-20.
@@ -21,7 +23,7 @@ public class RecipeCrawler extends WebCrawler {
         if (page.getParseData() instanceof HtmlParseData) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String html = htmlParseData.getHtml();
-            IRecipeParser parser;
+            RecipeParser parser;
 
             if (url.startsWith("http://receptfavoriter")) {
                 parser = new ReceptFavoriterParser();
