@@ -1,15 +1,16 @@
-package tools;
+package parsers;
 
 import models.food.FoodItem;
 
 import java.util.List;
 
 import info.debatty.java.stringsimilarity.*;
+import play.Logger;
 
 /**
  * Created by emmafahlen on 2017-02-14.
  */
-public class IngredientToFood {
+public class IngredientParser {
 
     private static final int MAX_DISTANCE = 2;
 
@@ -61,9 +62,9 @@ public class IngredientToFood {
         if (tagDistance <= MAX_DISTANCE) {
             if (tagDistance < shortestDistance) {
                 matchingFood = food;
-                System.out.println("tag: dist = " + shortestDistance);
-                System.out.println("tag: matchingFood = " + matchingFood.screenName);
                 shortestDistance = tagDistance;
+                Logger.debug("Found distance: " + shortestDistance);
+                Logger.debug("Matching food: " + matchingFood.screenName);
             }
         }
     }

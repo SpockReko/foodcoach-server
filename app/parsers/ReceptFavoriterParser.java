@@ -1,4 +1,4 @@
-package http;
+package parsers;
 
 import models.recipe.Recipe;
 import org.jsoup.Jsoup;
@@ -9,7 +9,7 @@ import org.jsoup.select.Elements;
 /**
  * Created by fredrikkindstrom on 2017-03-20.
  */
-public class ReceptFavoriterParser implements IRecipeParser {
+public class ReceptFavoriterParser implements RecipeParser {
 
     @Override
     public Recipe parse(String html) {
@@ -22,6 +22,6 @@ public class ReceptFavoriterParser implements IRecipeParser {
         for (Element ingredient : ingredients) {
             System.out.println(ingredient.text());
         }
-        return new Recipe(title, 4, null);
+        return null;
     }
 }

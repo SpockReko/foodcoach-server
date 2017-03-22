@@ -13,17 +13,14 @@ GET     /food/group/:code                   controllers.FoodController.getByGrou
 # Recipe items
 GET     /recipe/:id                         controllers.RecipeController.get(id: Long)
 
-# Week menu options from client
-POST    /weekmenu                           controllers.WeekMenuController.weekMenu
-
-# Test Emma
-GET     /emmatest/:str                      controllers.ApplicationController.ingToFood(str: String)
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                       controllers.Assets.at(path="/public", file)
-
 # User info
 GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
 
-# Front-end
-#POST
+# Week menu options from client
+POST    /weekmenu                           controllers.WeekMenuController.weekMenu
+
+# Parse ingredient string to food item
+GET     /parse/:ingredient                  controllers.ParseController.parseIngredient(ingredient: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                       controllers.Assets.at(path="/public", file)
