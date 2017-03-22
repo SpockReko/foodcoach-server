@@ -29,6 +29,7 @@ public class WeekMenu {
             if(indexOfRecepieList > 0){
                 if(newChoicenRecepies.size() < nrOfRecept){
                     newChoicenRecepies.add(allRecepie.get(indexOfRecepieList));
+                    System.out.println(indexOfRecepieList + "nummer av recept i varje steg!");
                     firstValue = calculateWeekMenu(indexOfRecepieList-1, newChoicenRecepies);
                     secondValue = calculateWeekMenu(indexOfRecepieList-1, choicenRecepies);
                 }
