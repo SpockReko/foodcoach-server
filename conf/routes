@@ -18,6 +18,7 @@ GET     /user/:alder                        controllers.UserController.getRDI(al
 
 # Week menu options from client
 POST    /weekmenu                           controllers.WeekMenuController.weekMenu
+GET     /weekmenu                           controllers.WeekMenuController.weekMenu()
 
 # Parse ingredient string to food item
 GET     /parse/:ingredient                  controllers.ParseController.parseIngredient(ingredient: String)

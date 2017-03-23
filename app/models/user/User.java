@@ -69,6 +69,32 @@ public class User extends Model {
         this.goal = Goal.DECREASE;
         dailyCalories();
         getMaleRDI(age);
+/*
+        hmap.put("bmr", 2000D);
+        hmap.put("protein", 17*2000D);
+        hmap.put("carbohydrates", 50*2000D);
+        hmap.put("fat", 33*2000D);
+
+        hmap.put("vitaminANeedug", 800D);
+        hmap.put("vitaminNeedDug", 20D);
+        hmap.put("vitaminENeedmg", 9D);
+        hmap.put("tiaminNeedmg", 1.2D);
+        hmap.put("riboflavinNeedmg", 1.35D);
+        hmap.put("niacinNeedmg", 16D);
+        hmap.put("vitaminB6Needmg", 1.4D);
+        hmap.put("folateNeedug", 300D);
+        hmap.put("vitaminB12Needug", 2D);
+        hmap.put("vitaminCNeedmg", 75D);
+        hmap.put("calciumNeedmg", 800D);
+        hmap.put("phosphorusNeedmg", 600D);
+        hmap.put("potassiumNeedg", 3.3D);
+        hmap.put("magnesiumNeed", 315D);
+        hmap.put("ironNeedmg", 9D);
+        hmap.put("zinkNeedmg", 8D);
+        hmap.put("copperNeedmg", 0.9D);
+        hmap.put("iodineNeedug", 150D);
+        hmap.put("seleniumNeedug", 55D);
+        */
     }
 
 
