@@ -2,6 +2,7 @@ package algorithms;
 
 import models.food.FoodItem;
 import models.recipe.Recipe;
+import models.user.RDI;
 import models.user.User;
 
 
@@ -41,8 +42,6 @@ public class WeekMenu {
                 }
             }
 
-            Double menuNutions = 0.0;
-
             Double menuNutrition;
             if(Math.max(firstValue, secondValue ) == firstValue){
                 menuNutrition = nutritionValueCalculation(newChoicenRecipes);
@@ -61,8 +60,8 @@ public class WeekMenu {
     public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
         /*Random r = new Random();
         return (0.01*r.nextInt(100));*/
-        HashMap<String,Double> nutrientsNeed = user.hmap;
-        HashMap<String,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
+        HashMap<RDI,Double> nutrientsNeed = user.hmap;
+        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
         return Algorithms.L2Norm(nutrientsNeed,nutrientsContent);
     }
 
