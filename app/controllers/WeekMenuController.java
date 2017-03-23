@@ -24,7 +24,6 @@ public class WeekMenuController extends Controller {
     @Inject FormFactory formFactory;
 
     // POST /weekmenu
-
     public Result weekMenu() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String dateBorn = requestData.get("dateBorn");

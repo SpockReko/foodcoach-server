@@ -35,7 +35,7 @@ public class UserController extends Controller {
 
         User newuser = new User(kon, aktivitet, vikt, langd, age, mal2, allergi);
 
-        newuser.dailyCalori();
+        //newuser.dailyCalori();
 
         double kalori = newuser.hmap.get("bmr");
 
