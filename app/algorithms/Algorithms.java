@@ -21,7 +21,6 @@ public class Algorithms {
                 sum += L2NormTerm(nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient));
             }
         }
-
         return sum;
     }
 
