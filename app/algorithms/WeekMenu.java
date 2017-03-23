@@ -3,37 +3,37 @@ package algorithms;
 import models.food.FoodItem;
 import models.recipe.Recipe;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by stefa on 2017-02-28.
  */
 public class WeekMenu {
 
-    private Double optimalMenuNutions = 0.0;
+    private Double optimalMenuNutions = 1.0;
     private List optimalMenu = new ArrayList<Recipe>();
-
-    private Double desiredValue = 0.0;
-
+    private Double limitFromOptimalResult = 0.0;
     private int nrOfRecept;
     private List<Recipe> allRecepie = new ArrayList<>();
-    public Double calculateWeekMenu(int indexOfRecepieList, List<Recipe> choicenRecepies){
 
+
+    public Double calculateWeekMenu(int indexOfRecepieList, List<Recipe> choicenRecepies){
+        Collections.shuffle(allRecepie);
         Double firstValue = 1.0;
         Double secondValue = 1.0;
-        if(optimalMenuNutions < desiredValue ){
+
+        //If you are in the limit of the optimal value.
+        if(optimalMenuNutions < limitFromOptimalResult ){
             List<Recipe> newChoicenRecepies = choicenRecepies;
 
             if(indexOfRecepieList > 0){
                 if(newChoicenRecepies.size() < nrOfRecept){
                     newChoicenRecepies.add(allRecepie.get(indexOfRecepieList));
-                    System.out.println(indexOfRecepieList + "nummer av recept i varje steg!");
                     firstValue = calculateWeekMenu(indexOfRecepieList-1, newChoicenRecepies);
                     secondValue = calculateWeekMenu(indexOfRecepieList-1, choicenRecepies);
                 }
             }
+
             Double menuNutions = 0.0;
             if(Math.max(firstValue, secondValue ) == firstValue){
                 menuNutions = nutionValueCalculation(newChoicenRecepies);
@@ -77,7 +77,7 @@ public class WeekMenu {
 
 
     public void setDesiredValue(Double desiredValue) {
-        this.desiredValue = desiredValue;
+        this.limitFromOptimalResult = desiredValue;
     }
 
     public void setNrOfRecept(int nrOfRecept) {
