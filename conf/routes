@@ -11,7 +11,7 @@ GET     /food/name/:name                    controllers.FoodController.getByName
 GET     /food/group/:code                   controllers.FoodController.getByGroup(code: String)
 
 # Recipe items
-GET     /recipe/:id                         controllers.RecipeController.get(id: Long)
+GET     /recipes                            controllers.RecipeController.getAll
 
 # User info
 GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
