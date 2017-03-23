@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import controllers.ParseController;
 import models.food.FoodItem;
 import models.recipe.Amount;
+import models.recipe.Ingredient;
 
 import java.util.*;
 
@@ -21,18 +22,32 @@ public class IngredientSplitter {
 
     private List<String> notOther = new ArrayList<>();
     private List<String> stringList = new ArrayList<>();
-    private Map<String, Integer> ingredients = new HashMap<>();
-    private Map<String, Integer> adjektiv = new HashMap<>();
-    private Map<String, Integer> other = new HashMap<>();
-    private Map<String, Integer> numerics = new HashMap<>();
-    private Map<String, Integer> units = new HashMap<>();
+    private List<String> ingredients = new ArrayList<>();
+    private List<Amount.Unit> units = new ArrayList<>();
+    private Map<Integer, String> adjektiv = new HashMap<>();
+    private Map<Integer, String> other = new HashMap<>();
+    private Map<Integer, String> numerics = new HashMap<>();
 
     public IngredientSplitter(String ingredientLine, JsonNode node) {
         this.ingredientLine = ingredientLine;
         this.node = node;
     }
 
-    public List divided() {
+    public Ingredient createIngredient() {
+        divide();
+        extractIngeridents();
+        extractUnits();
+        extractNumeric();
+        extractAdjektiv();
+        extractOther();
+
+        System.out.println(ingredients.get(0));
+        FoodItem foodItem = parse.findMatch(ingredients.get(0));
+        Ingredient ingredient = new Ingredient(foodItem, new Amount(Double.parseDouble(numerics.get(0)), units.get(0)));
+        return ingredient;
+    }
+
+    public List divide() {
         System.out.println(ingredientLine);
         String[] div = ingredientLine.trim().split("\\s+");
         System.out.println(div);
@@ -43,17 +58,18 @@ public class IngredientSplitter {
         return stringList;
     }
 
-    public Map extractIngeridents() {
+    public List extractIngeridents() {
         int counter = 0;
         for (String str : stringList) {
             if (!str.matches(".*\\d+.*")) {
                 if (parse.findMatch(str) != null) {
-                    ingredients.put(str, counter);
+                    ingredients.add(str);
                     notOther.add(str);
                 }
             }
             counter++;
         }
+        System.out.println(ingredients);
         return ingredients;
     }
 
@@ -61,7 +77,7 @@ public class IngredientSplitter {
         int counter = 0;
         for (String str : stringList) {
             if (getters.getSucPosTag(node, counter).equals("JJ")) {
-                adjektiv.put(str, counter);
+                adjektiv.put(counter, str);
                 notOther.add(str);
             }
             counter++;
@@ -73,7 +89,7 @@ public class IngredientSplitter {
         int counter = 0;
         for (String str : stringList) {
             if (getters.getSucFeatures(node, counter).equals("NOM")) {
-                numerics.put(str, counter);
+                numerics.put(counter, str);
                 notOther.add(str);
             }
             counter++;
@@ -81,7 +97,7 @@ public class IngredientSplitter {
         return numerics;
     }
 
-    public Map extractUnits() {
+    public List extractUnits() {
         int counter;
         unitsID = Amount.Unit.values();
         for (Amount.Unit unit : unitsID) {
@@ -89,13 +105,15 @@ public class IngredientSplitter {
             for (String str : stringList) {
                 for (String identifier : unit.getIdentifiers()) {
                     if (identifier.equals(getters.getLemma(node, counter))) {
-                        units.put(str, counter);
+                        units.add(unit);
                         notOther.add(str);
                     }
                 }
+                System.out.println("UNIT = " + units);
                 counter++;
             }
         }
+        System.out.println("UNIT = " + units);
         return units;
     }
 
@@ -104,7 +122,7 @@ public class IngredientSplitter {
         int counter = 0;
         for (String str : stringList) {
             if (!notOther.contains(str)) {
-                other.put(str, counter);
+                other.put(counter, str);
             }
             counter++;
         }

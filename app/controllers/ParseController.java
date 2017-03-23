@@ -2,9 +2,10 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.food.FoodItem;
+import models.recipe.Ingredient;
 import parsers.IngredientParser;
 import parsers.IngredientSplitter;
-import parsers.WordGetters;
+import play.libs.Json;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
 import play.mvc.Controller;
@@ -63,15 +64,19 @@ public class ParseController extends Controller {
         JsonNode node = parseRecipie(recipe);
 
         IngredientSplitter splitter = new IngredientSplitter(recipe, node);
-        System.out.println("DIVIDED = " + splitter.divided());
-        System.out.println("INGREDIENTS = " + splitter.extractIngeridents());
-        System.out.println("ADJEKTIV = " + splitter.extractAdjektiv());
-        System.out.println("NUMERIC = " + splitter.extractNumeric());
-        System.out.println("UNITS = " + splitter.extractUnits());
-        System.out.println("OTHER = " + splitter.extractOther());
+//        System.out.println("DIVIDED = " + splitter.divide());
+//        System.out.println("INGREDIENTS = " + splitter.extractIngeridents());
+//        System.out.println("ADJEKTIV = " + splitter.extractAdjektiv());
+//        System.out.println("NUMERIC = " + splitter.extractNumeric());
+//        System.out.println("UNITS = " + splitter.extractUnits());
+//        System.out.println("OTHER = " + splitter.extractOther());
+
+        Ingredient ingredient = splitter.createIngredient();
+
+        //System.out.println(splitter.createIngredient().toString());
 
 
 
-        return ok(node);
+        return ok(Json.toJson(ingredient));
     }
 }
