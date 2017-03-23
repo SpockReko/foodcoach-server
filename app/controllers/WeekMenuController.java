@@ -13,6 +13,7 @@ import play.mvc.Result;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -49,15 +50,17 @@ public class WeekMenuController extends Controller {
 
     //Testa week menu
     public Result weekMenuTest(){
-        List<Recipe> allRecept = Recipe.find.all();
-        System.out.println(allRecept.size());
+        List<Recipe> allRecipes = Recipe.find.all();
+        List<Recipe> chosenRecipes = new ArrayList<Recipe>();
+
         WeekMenu weekMenu = new WeekMenu();
         //TODO: Få följande värden ifrån användaren genom client
-        weekMenu.setNrOfRecept(2);
-        weekMenu.setAllRecepie(allRecept);
-        weekMenu.setDesiredValue(0.5);
-        weekMenu.calculateWeekMenu(allRecept.size(),allRecept);
+        weekMenu.setNrOfRecipes(3);
+        weekMenu.setAllRecipes(allRecipes);
+        weekMenu.setDesiredValue(0D);
+        weekMenu.calculateWeekMenu(allRecipes.size()-1,chosenRecipes);
         List<Recipe> resultingWeekMenu = weekMenu.getOptimalMenu();
+/*
         System.out.println(resultingWeekMenu.size());
         ObjectNode json = Json.newObject();
         ArrayNode array = json.putArray("recipe");
@@ -68,5 +71,8 @@ public class WeekMenuController extends Controller {
             array.add(node);
         }
         return ok(json);
+*/
+        return ok(resultingWeekMenu.get(0).getTitle()+"\n"+resultingWeekMenu.get(1).getTitle()+"\n"+resultingWeekMenu.get(2).getTitle());
+
     }
 }

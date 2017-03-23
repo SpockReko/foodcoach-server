@@ -64,12 +64,12 @@ public class User extends Model {
 
     public User() {
         hmap.put("bmr", 2000D);
-        hmap.put("proteinNeed", 17*2000D);
-        hmap.put("carbohydratesNeed", 50*2000D);
-        hmap.put("fatNeed", 33*2000D);
+        hmap.put("protein", 17*2000D);
+        hmap.put("carbohydrates", 50*2000D);
+        hmap.put("fat", 33*2000D);
 
         hmap.put("vitaminANeedug", 800D);
-        hmap.put("vitaminDNeedug", 20D);
+        hmap.put("vitaminNeedDug", 20D);
         hmap.put("vitaminENeedmg", 9D);
         hmap.put("tiaminNeedmg", 1.2D);
         hmap.put("riboflavinNeedmg", 1.35D);
