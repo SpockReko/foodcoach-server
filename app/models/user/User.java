@@ -106,7 +106,7 @@ public class User extends Model {
         this.goal = goal;
         this.allergier = allergier;
         dailyCalories();
-
+        getRDI();
     }
 
     
@@ -126,11 +126,6 @@ public class User extends Model {
             hmap.put(RDI.Fat, fatNeed);
 
 
-            if (age < 10)
-                getChildRDI(age);
-            else
-                getFemaleRDI(age);
-
         }
         if (sex == MALE) {
             dc = (activityLevel * (66.5 + (13.7516 * weight) + (5.0033 * height) - (6.7550 * age)) + goal.getGoal());
@@ -144,26 +139,17 @@ public class User extends Model {
             hmap.put(RDI.Carbohydrates, carbohydratesNeed);
             hmap.put(RDI.Fat, fatNeed);
 
-
-            if (age < 10)
-                getChildRDI(age);
-            else
-                getMaleRDI(age);
-
-
         }
-
+        getRDI();
     }
 
-    private void getRDI() throws Exception {
+    private void getRDI() {
         if(age<=10){
             getChildRDI(age);
         }else if(sex.equals(Sex.MALE)){
             getMaleRDI(age);
         }else if(sex.equals(Sex.FEMALE)){
             getFemaleRDI(age);
-        }else{
-            throw new InputMismatchException();
         }
     }
 
