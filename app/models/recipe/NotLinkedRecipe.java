@@ -3,21 +3,20 @@ package models.recipe;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.DbArray;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/**
- * Created by fredrikkindstrom on 2017-03-23.
- */
+@Entity
+@Table(name = "NotLinkedRecipes")
 public class NotLinkedRecipe extends Model {
 
     @Id private long id;
 
     @NotNull private final String title;
     @NotNull private final int portions;
-    public String description;
-    public int cookingDurationMinutes;
 
     @DbArray(length = 800) public List<String> ingredients;
 
@@ -28,6 +27,8 @@ public class NotLinkedRecipe extends Model {
         this.portions = portions;
         this.ingredients = ingredients;
     }
+
+    public static Finder<Long, NotLinkedRecipe> find = new Finder<>(NotLinkedRecipe.class);
 
     public long getId() {
         return id;

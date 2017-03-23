@@ -7,6 +7,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by fredrikkindstrom on 2017-03-20.
  */
@@ -22,11 +25,9 @@ public class ReceptFavoriterParser implements RecipeParser {
 
         Elements ingredients = doc.select(".recipe-ingredients li");
 
-        System.out.println(title);
-        System.out.println(portions);
-        for (Element ingredient : ingredients) {
-            System.out.println(ingredient.text());
-        }
-        return null;
+        List<String> textIngredients = new ArrayList<>();
+        ingredients.forEach(elem -> textIngredients.add(elem.text()));
+
+        return new NotLinkedRecipe(title, portions, textIngredients);
     }
 }
