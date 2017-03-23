@@ -11,7 +11,7 @@ public enum RDI {
         VitaminAUG,
         VitaminDUG,
         VitaminEMG,
-        ThiamineMg,
+        ThiamineMG,
         RiboflavinMG,
         NiacinMG,
         VitaminB6MG,

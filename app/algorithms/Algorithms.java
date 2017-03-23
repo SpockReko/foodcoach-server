@@ -12,10 +12,10 @@ public class Algorithms {
         return Math.pow(1 - procentNutrient, 2);
     }
 
-    public static Double L2Norm(HashMap<String,Double> nutrientsNeed, HashMap<String,Double> nutrientsContent) {
+    public static Double L2Norm(HashMap<RDI,Double> nutrientsNeed, HashMap<RDI,Double> nutrientsContent) {
         Double sum = 0D;
-        String nutrient;
-        for( Map.Entry<String,Double> entry : nutrientsNeed.entrySet() ) {
+        RDI nutrient;
+        for( Map.Entry<RDI,Double> entry : nutrientsNeed.entrySet() ) {
             nutrient = entry.getKey();
             if(nutrientsNeed.containsKey(nutrient) && nutrientsContent.containsKey(nutrient)) {
                 sum += L2NormTerm(nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient));
@@ -43,7 +43,7 @@ public class Algorithms {
             addToHashMap(nutrientsContent,RDI.VitaminCMG, recipe.getVitaminC());
             addToHashMap(nutrientsContent,RDI.VitaminDUG, recipe.getVitaminD());
             addToHashMap(nutrientsContent,RDI.VitaminEMG, recipe.getVitaminE());
-            addToHashMap(nutrientsContent,RDI.ThiamineMg, recipe.getThiamine());
+            addToHashMap(nutrientsContent,RDI.ThiamineMG, recipe.getThiamine());
             addToHashMap(nutrientsContent,RDI.RiboflavinMG, recipe.getRiboflavin());
             addToHashMap(nutrientsContent,RDI.NiacinMG, recipe.getNiacin());
             addToHashMap(nutrientsContent,RDI.FolateUG, recipe.getFolate());
