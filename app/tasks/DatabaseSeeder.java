@@ -51,7 +51,7 @@ public class DatabaseSeeder {
 
     public static void main(String[] args) {
 
-        db = getDatabase();
+        db = CommonTools.getDatabase();
 
         System.out.println("\n" + PURPLE + "--- (Seeding database) ---\n" + RESET);
 
@@ -479,23 +479,6 @@ public class DatabaseSeeder {
         } else {
             return null;
         }
-    }
-
-    private static EbeanServer getDatabase() {
-        Config conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve();
-        DataSourceConfig foodDB = new DataSourceConfig();
-        ServerConfig config = new ServerConfig();
-
-        config.setName("mysql");
-        foodDB.setDriver("com.mysql.jdbc.Driver");
-        foodDB.setUsername(conf.getString("db.default.username"));
-        foodDB.setPassword(conf.getString("db.default.password"));
-        foodDB.setUrl(conf.getString("db.default.url"));
-        config.setDataSourceConfig(foodDB);
-        config.setDefaultServer(true);
-        config.setRegister(false);
-
-        return EbeanServerFactory.create(config);
     }
 
     private static Reader getReader(String path) {
