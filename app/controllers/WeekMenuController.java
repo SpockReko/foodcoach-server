@@ -1,6 +1,8 @@
 package controllers;
 
 import algorithms.WeekMenu;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.recipe.Recipe;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -11,6 +13,7 @@ import play.mvc.Result;
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -21,7 +24,6 @@ public class WeekMenuController extends Controller {
     @Inject FormFactory formFactory;
 
     // POST /weekmenu
-
     public Result weekMenu() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String dateBorn = requestData.get("dateBorn");
@@ -47,14 +49,29 @@ public class WeekMenuController extends Controller {
 
     //Testa week menu
     public Result weekMenuTest(){
-        List<Recipe> allRecept = Recipe.find.all();
+        List<Recipe> allRecipes = Recipe.find.all();
+        List<Recipe> chosenRecipes = new ArrayList<Recipe>();
+
         WeekMenu weekMenu = new WeekMenu();
         //TODO: Få följande värden ifrån användaren genom client
-        weekMenu.setNrOfRecept(2);
-        weekMenu.setAllRecepie(allRecept);
-        weekMenu.setDesiredValue(0.5);
-        weekMenu.calculateWeekMenu(allRecept.size(),allRecept);
+        weekMenu.setNrOfRecipes(3);
+        weekMenu.setAllRecipes(allRecipes);
+        weekMenu.setDesiredValue(0.5D);
+        weekMenu.calculateWeekMenu(allRecipes.size()-1,chosenRecipes);
         List<Recipe> resultingWeekMenu = weekMenu.getOptimalMenu();
-        return ok(Json.toJson(resultingWeekMenu));
+/*
+        System.out.println(resultingWeekMenu.size());
+        ObjectNode json = Json.newObject();
+        ArrayNode array = json.putArray("recipe");
+        for (Recipe recipe : resultingWeekMenu) {
+            System.out.println(recipe.getTitle());
+            ObjectNode node = Json.newObject();
+            node.put("titel",recipe.getTitle());
+            array.add(node);
+        }
+        return ok(json);
+*/
+        return ok(resultingWeekMenu.get(0).getTitle()+"\n"+resultingWeekMenu.get(1).getTitle()+"\n"+resultingWeekMenu.get(2).getTitle());
+
     }
 }

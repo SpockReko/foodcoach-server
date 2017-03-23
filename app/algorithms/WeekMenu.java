@@ -2,65 +2,87 @@ package algorithms;
 
 import models.food.FoodItem;
 import models.recipe.Recipe;
+import models.user.RDI;
+import models.user.User;
 
+
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.HashMap;
 
 /**
  * Created by stefa on 2017-02-28.
  */
 public class WeekMenu {
 
-    private Double optimalMenuNutions = 0.0;
+    private Double optimalMenuNutions = 1.0;
     private List optimalMenu = new ArrayList<Recipe>();
+    private Double limitFromOptimalResult = 0.0;
+    private int nrOfRecipes;
+    private List<Recipe> allRecipes = new ArrayList<>();
 
-    private Double desiredValue = 0.0;
+    private User user = new User();
 
-    private int nrOfRecept;
-    private List<Recipe> allRecepie = new ArrayList<>();
-    public Double calculateWeekMenu(int indexOfRecepieList, List<Recipe> choicenRecepies){
-
+    public Double calculateWeekMenu(int indexOfRecipeList, List<Recipe> chosenRecipes) {
         Double firstValue = 1.0;
         Double secondValue = 1.0;
-        if(optimalMenuNutions < desiredValue ){
-            List<Recipe> newChoicenRecepies = choicenRecepies;
+        System.out.println("calculateWeekMenu is called " + indexOfRecipeList);
+        //If you are in the limit of the optimal value.
+        if (optimalMenuNutions > limitFromOptimalResult) {
+            if (indexOfRecipeList >= 0) { // Then there is recipes left
+                if (chosenRecipes.size() < nrOfRecipes) {
+                    //New list to add a recipe to!
+                    List<Recipe> newChoicenRecipes = chosenRecipes;
+                    //Add a recipe
+                    newChoicenRecipes.add(allRecipes.get(indexOfRecipeList));
 
-            if(indexOfRecepieList > 0){
-                if(newChoicenRecepies.size() < nrOfRecept){
-                    newChoicenRecepies.add(allRecepie.get(indexOfRecepieList));
-                    firstValue = calculateWeekMenu(indexOfRecepieList-1, newChoicenRecepies);
-                    secondValue = calculateWeekMenu(indexOfRecepieList-1, choicenRecepies);
+                    if(nutritionValueCalculation(chosenRecipes) < optimalMenuNutions
+                            && chosenRecipes.size() == nrOfRecipes) {
+                        optimalMenu = chosenRecipes;
+                        optimalMenuNutions = nutritionValueCalculation(chosenRecipes);
+                    }
+                    if(nutritionValueCalculation(newChoicenRecipes) < optimalMenuNutions
+                            && chosenRecipes.size() == nrOfRecipes){
+                        optimalMenu = chosenRecipes;
+                        optimalMenuNutions = nutritionValueCalculation(newChoicenRecipes);
+                    }
+
+                    // Solve the same problem with the current recipe added
+                    return Math.min(calculateWeekMenu(indexOfRecipeList - 1, newChoicenRecipes),
+                    // Solve the same problem without the current recipe added
+                    calculateWeekMenu(indexOfRecipeList - 1, chosenRecipes));
+
+                } else {
+                    return nutritionValueCalculation(chosenRecipes);
                 }
+            } else if (chosenRecipes.size() != nrOfRecipes) { //Then list is empty
+                return 10.0;
+            } else{
+                return nutritionValueCalculation(chosenRecipes);
             }
-            Double menuNutions = 0.0;
-            if(Math.max(firstValue, secondValue ) == firstValue){
-                menuNutions = nutionValueCalculation(newChoicenRecepies);
-                choicenRecepies = newChoicenRecepies;
-            }else{
-                menuNutions =  nutionValueCalculation(choicenRecepies);
-            }
-            if(optimalMenuNutions <= menuNutions){
-                optimalMenuNutions = menuNutions;
-                optimalMenu = choicenRecepies;
-            }
+        }else{
+            return 10.0;
         }
-        return optimalMenuNutions;
     }
 
-    public double nutionValueCalculation(List<Recipe> choicenRecepies){
+    public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
         Random r = new Random();
         return (0.01*r.nextInt(100));
+        /*HashMap<RDI,Double> nutrientsNeed = user.hmap;
+        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
+        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent);
+        */
     }
 
 
-    public int getNrOfRecept() {
-        return nrOfRecept;
+    public int getNrOfRecipes() {
+        return nrOfRecipes;
     }
 
-
-    public List<Recipe> getAllRecepie() {
-        return allRecepie;
+    public List<Recipe> getAllRecipes() {
+        return allRecipes;
     }
 
     public List getOptimalMenu() {
@@ -76,15 +98,15 @@ public class WeekMenu {
 
 
     public void setDesiredValue(Double desiredValue) {
-        this.desiredValue = desiredValue;
+        this.limitFromOptimalResult = desiredValue;
     }
 
-    public void setNrOfRecept(int nrOfRecept) {
-        this.nrOfRecept = nrOfRecept;
+    public void setNrOfRecipes(int nrOfRecipes) {
+        this.nrOfRecipes = nrOfRecipes;
     }
 
-    public void setAllRecepie(List<Recipe> allRecepie) {
-        this.allRecepie = allRecepie;
+    public void setAllRecipes(List<Recipe> allRecipes) {
+        this.allRecipes = allRecipes;
     }
 
 }

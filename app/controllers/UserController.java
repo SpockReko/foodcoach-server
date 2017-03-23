@@ -1,6 +1,7 @@
 package controllers;
 
 
+import models.user.RDI;
 import models.user.User;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -35,9 +36,7 @@ public class UserController extends Controller {
 
         User newuser = new User(kon, aktivitet, vikt, langd, age, mal2, allergi);
 
-        newuser.dailyCalori();
-
-        double kalori = newuser.hmap.get("bmr");
+        double kalori = newuser.hmap.get(RDI.CaloriKcal);
 
 
         return ok("Du bränner " + String.valueOf(newuser.hmap.get("bmr")) + " kalorier. Akta dig för " + newuser.allergier.get(1));

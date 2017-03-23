@@ -11,13 +11,14 @@ GET     /food/name/:name                    controllers.FoodController.getByName
 GET     /food/group/:code                   controllers.FoodController.getByGroup(code: String)
 
 # Recipe items
-GET     /recipe/:id                         controllers.RecipeController.get(id: Long)
+GET     /recipes                            controllers.RecipeController.getAll
 
 # User info
 GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
 
 # Week menu options from client
 POST    /weekmenu                           controllers.WeekMenuController.weekMenu
+GET     /weekmenu                           controllers.WeekMenuController.weekMenu()
 
 # Parse ingredient string to food item
 GET     /parse/:ingredient                  controllers.ParseController.parseIngredient(ingredient: String)

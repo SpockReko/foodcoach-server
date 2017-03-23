@@ -8,14 +8,25 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import java.util.List;
+
 /**
  * Created by fredrikkindstrom on 2017-02-24.
  */
 public class RecipeController extends Controller {
 
-    // GET /recipe/:id
-    public Result get(long id) {
-        Recipe recipe = Recipe.find.byId(id);
+    // GET /recipes
+    public Result getAll() {
+        List<Recipe> recipes = Recipe.find.all();
+        ArrayNode jsonArray = Json.newArray();
+        for (Recipe recipe : recipes) {
+            jsonArray.add(getJson(recipe));
+        }
+
+        return ok(jsonArray);
+    }
+
+    private ObjectNode getJson(Recipe recipe) {
         ObjectNode json = Json.newObject();
         json.put("title", recipe.getTitle());
         json.put("portions", recipe.getPortions());
@@ -41,7 +52,6 @@ public class RecipeController extends Controller {
             node.put("water", Math.round(i.getWater()));
             array.add(node);
         }
-
-        return ok(json);
+        return json;
     }
 }
