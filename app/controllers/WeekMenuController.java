@@ -56,7 +56,7 @@ public class WeekMenuController extends Controller {
         //TODO: Få följande värden ifrån användaren genom client
         weekMenu.setNrOfRecipes(3);
         weekMenu.setAllRecipes(allRecipes);
-        weekMenu.setDesiredValue(0.5D);
+        weekMenu.setDesiredValue(0.0D);
         weekMenu.calculateWeekMenu(allRecipes.size()-1,chosenRecipes);
         List<Recipe> resultingWeekMenu = weekMenu.getOptimalMenu();
 /*
@@ -71,7 +71,6 @@ public class WeekMenuController extends Controller {
         }
         return ok(json);
 */
-        return ok(resultingWeekMenu.get(0).getTitle()+"\n"+resultingWeekMenu.get(1).getTitle()+"\n"+resultingWeekMenu.get(2).getTitle());
-
+        return ok(resultingWeekMenu.get(0).getTitle()+"\n"+resultingWeekMenu.get(1).getTitle());
     }
 }
