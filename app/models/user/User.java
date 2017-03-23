@@ -4,10 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static models.user.User.Sex.FEMALE;
 import static models.user.User.Sex.MALE;
@@ -60,16 +57,26 @@ public class User extends Model {
 
 
 
+
     public HashMap<String, Double> hmap = new HashMap<>();
 
     public User() {
+        this.sex = Sex.MALE;
+        this.activityLevel = 2.0;
+        this.weight = 90.0;
+        this.height = 190.2;
+        this.age = 25;
+        this.goal = Goal.DECREASE;
+        dailyCalories();
+        getMaleRDI(age);
+/*
         hmap.put("bmr", 2000D);
-        hmap.put("proteinNeed", 17*2000D);
-        hmap.put("carbohydratesNeed", 50*2000D);
-        hmap.put("fatNeed", 33*2000D);
+        hmap.put("protein", 17*2000D);
+        hmap.put("carbohydrates", 50*2000D);
+        hmap.put("fat", 33*2000D);
 
         hmap.put("vitaminANeedug", 800D);
-        hmap.put("vitaminDNeedug", 20D);
+        hmap.put("vitaminNeedDug", 20D);
         hmap.put("vitaminENeedmg", 9D);
         hmap.put("tiaminNeedmg", 1.2D);
         hmap.put("riboflavinNeedmg", 1.35D);
@@ -87,6 +94,7 @@ public class User extends Model {
         hmap.put("copperNeedmg", 0.9D);
         hmap.put("iodineNeedug", 150D);
         hmap.put("seleniumNeedug", 55D);
+        */
     }
 
 
@@ -98,11 +106,12 @@ public class User extends Model {
         this.age = age;
         this.goal = goal;
         this.allergier = allergier;
-        dailyCalori();
+        dailyCalories();
+
     }
 
     
-    public void dailyCalori() {
+    private void dailyCalories() {
         double dc;
 
         if (sex == FEMALE) {
@@ -147,6 +156,19 @@ public class User extends Model {
 
     }
 
+    private void getRDI() throws Exception {
+        if(age<=10){
+            getChildRDI(age);
+        }else if(sex.equals(Sex.MALE)){
+            getMaleRDI(age);
+        }else if(sex.equals(Sex.FEMALE)){
+            getFemaleRDI(age);
+        }else{
+            throw new InputMismatchException();
+        }
+    }
+
+    //TODO: Improvments, change all the strings to RDI enums instead.
     private void getChildRDI(int age) {
 
         if (age < 1) {

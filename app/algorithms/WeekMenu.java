@@ -2,65 +2,77 @@ package algorithms;
 
 import models.food.FoodItem;
 import models.recipe.Recipe;
+import models.user.User;
 
+
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.HashMap;
 
 /**
  * Created by stefa on 2017-02-28.
  */
 public class WeekMenu {
 
-    private Double optimalMenuNutions = 0.0;
+    private Double optimalMenuNutions = 1.0;
     private List optimalMenu = new ArrayList<Recipe>();
+    private Double limitFromOptimalResult = 0.0;
+    private int nrOfRecipes;
+    private List<Recipe> allRecipes = new ArrayList<>();
 
-    private Double desiredValue = 0.0;
+    private User user = new User();
 
-    private int nrOfRecept;
-    private List<Recipe> allRecepie = new ArrayList<>();
-    public Double calculateWeekMenu(int indexOfRecepieList, List<Recipe> choicenRecepies){
-
+    public Double calculateWeekMenu(int indexOfRecepieList, List<Recipe> chosenRecipes){
+        Collections.shuffle(allRecipes);
         Double firstValue = 1.0;
         Double secondValue = 1.0;
-        if(optimalMenuNutions < desiredValue ){
-            List<Recipe> newChoicenRecepies = choicenRecepies;
+
+        //If you are in the limit of the optimal value.
+        if(optimalMenuNutions < limitFromOptimalResult ){
+            List<Recipe> newChoicenRecipes = chosenRecipes;
 
             if(indexOfRecepieList > 0){
-                if(newChoicenRecepies.size() < nrOfRecept){
-                    newChoicenRecepies.add(allRecepie.get(indexOfRecepieList));
-                    firstValue = calculateWeekMenu(indexOfRecepieList-1, newChoicenRecepies);
-                    secondValue = calculateWeekMenu(indexOfRecepieList-1, choicenRecepies);
+                if(newChoicenRecipes.size() < nrOfRecipes){
+                    newChoicenRecipes.add(allRecipes.get(indexOfRecepieList));
+                    firstValue = calculateWeekMenu(indexOfRecepieList-1, newChoicenRecipes);
+                    secondValue = calculateWeekMenu(indexOfRecepieList-1, chosenRecipes);
                 }
             }
+
             Double menuNutions = 0.0;
+
+            Double menuNutrition;
             if(Math.max(firstValue, secondValue ) == firstValue){
-                menuNutions = nutionValueCalculation(newChoicenRecepies);
-                choicenRecepies = newChoicenRecepies;
+                menuNutrition = nutritionValueCalculation(newChoicenRecipes);
+                chosenRecipes = newChoicenRecipes;
             }else{
-                menuNutions =  nutionValueCalculation(choicenRecepies);
+                menuNutrition =  nutritionValueCalculation(chosenRecipes);
             }
-            if(optimalMenuNutions <= menuNutions){
-                optimalMenuNutions = menuNutions;
-                optimalMenu = choicenRecepies;
+            if(optimalMenuNutions <= menuNutrition){
+                optimalMenuNutions = menuNutrition;
+                optimalMenu = chosenRecipes;
             }
         }
         return optimalMenuNutions;
     }
 
-    public double nutionValueCalculation(List<Recipe> choicenRecepies){
-        Random r = new Random();
-        return (0.01*r.nextInt(100));
+    public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
+        /*Random r = new Random();
+        return (0.01*r.nextInt(100));*/
+        HashMap<String,Double> nutrientsNeed = user.hmap;
+        HashMap<String,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
+        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent);
     }
 
 
-    public int getNrOfRecept() {
-        return nrOfRecept;
+    public int getNrOfRecipes() {
+        return nrOfRecipes;
     }
 
-
-    public List<Recipe> getAllRecepie() {
-        return allRecepie;
+    public List<Recipe> getAllRecipes() {
+        return allRecipes;
     }
 
     public List getOptimalMenu() {
@@ -76,15 +88,15 @@ public class WeekMenu {
 
 
     public void setDesiredValue(Double desiredValue) {
-        this.desiredValue = desiredValue;
+        this.limitFromOptimalResult = desiredValue;
     }
 
-    public void setNrOfRecept(int nrOfRecept) {
-        this.nrOfRecept = nrOfRecept;
+    public void setNrOfRecipes(int nrOfRecipes) {
+        this.nrOfRecipes = nrOfRecipes;
     }
 
-    public void setAllRecepie(List<Recipe> allRecepie) {
-        this.allRecepie = allRecepie;
+    public void setAllRecipes(List<Recipe> allRecipes) {
+        this.allRecipes = allRecipes;
     }
 
 }
