@@ -3,6 +3,7 @@ package http;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
 import parsers.RecipeParser;
 import parsers.ReceptFavoriterParser;
@@ -31,7 +32,7 @@ public class RecipeCrawler extends WebCrawler {
                 throw new IllegalStateException("No parser for site: " + url);
             }
 
-            Recipe parsedRecipe = parser.parse(html);
+            NotLinkedRecipe parsedRecipe = parser.parseWithoutLinking(html);
 
             System.out.println(parsedRecipe.getTitle());
         }

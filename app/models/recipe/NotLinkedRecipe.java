@@ -28,4 +28,14 @@ public class NotLinkedRecipe extends Model {
         this.portions = portions;
         this.ingredients = ingredients;
     }
+
+    public long getId() {
+        return id;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public int getPortions() {
+        return portions;
+    }
 }
