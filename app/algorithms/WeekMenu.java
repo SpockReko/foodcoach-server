@@ -19,46 +19,52 @@ public class WeekMenu {
 
     private Double optimalMenuNutions = 1.0;
     private List optimalMenu = new ArrayList<Recipe>();
-    private Double limitFromOptimalResult = 0.5;
+    private Double limitFromOptimalResult = 0.0;
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
 
     private User user = new User();
 
-    public Double calculateWeekMenu(int indexOfRecipeList, List<Recipe> chosenRecipes){
+    public Double calculateWeekMenu(int indexOfRecipeList, List<Recipe> chosenRecipes) {
         Double firstValue = 1.0;
         Double secondValue = 1.0;
         System.out.println("calculateWeekMenu is called " + indexOfRecipeList);
         //If you are in the limit of the optimal value.
-        if(optimalMenuNutions > limitFromOptimalResult ){
-            List<Recipe> newChoicenRecipes = chosenRecipes;
-
-            if(indexOfRecipeList >= 0){
-                if(newChoicenRecipes.size() < nrOfRecipes){
+        if (optimalMenuNutions > limitFromOptimalResult) {
+            if (indexOfRecipeList >= 0) { // Then there is recipes left
+                if (chosenRecipes.size() < nrOfRecipes) {
+                    //New list to add a recipe to!
+                    List<Recipe> newChoicenRecipes = chosenRecipes;
+                    //Add a recipe
                     newChoicenRecipes.add(allRecipes.get(indexOfRecipeList));
-                    firstValue = calculateWeekMenu(indexOfRecipeList-1, newChoicenRecipes);
-                    secondValue = calculateWeekMenu(indexOfRecipeList-1, chosenRecipes);
-                }
-            }
 
-            Double menuNutrition;
-            //System.out.println("!!!!!!!!!!! " + firstValue + " ????? "+ secondValue);
-            if(Math.max(firstValue, secondValue ) == firstValue){
-                //System.out.println("FirstValue is biggest....");
-                menuNutrition = nutritionValueCalculation(newChoicenRecipes);
-                //System.out.println("menuNutriens is " + menuNutrition);
-                chosenRecipes = newChoicenRecipes;
-            }else{
-                menuNutrition =  nutritionValueCalculation(chosenRecipes);
+                    if(nutritionValueCalculation(chosenRecipes) < optimalMenuNutions
+                            && chosenRecipes.size() == nrOfRecipes) {
+                        optimalMenu = chosenRecipes;
+                        optimalMenuNutions = nutritionValueCalculation(chosenRecipes);
+                    }
+                    if(nutritionValueCalculation(newChoicenRecipes) < optimalMenuNutions
+                            && chosenRecipes.size() == nrOfRecipes){
+                        optimalMenu = chosenRecipes;
+                        optimalMenuNutions = nutritionValueCalculation(newChoicenRecipes);
+                    }
+
+                    // Solve the same problem with the current recipe added
+                    return Math.min(calculateWeekMenu(indexOfRecipeList - 1, newChoicenRecipes),
+                    // Solve the same problem without the current recipe added
+                    calculateWeekMenu(indexOfRecipeList - 1, chosenRecipes));
+
+                } else {
+                    return nutritionValueCalculation(chosenRecipes);
+                }
+            } else if (chosenRecipes.size() != nrOfRecipes) { //Then list is empty
+                return 10.0;
+            } else{
+                return nutritionValueCalculation(chosenRecipes);
             }
-            if(optimalMenuNutions > menuNutrition){
-                optimalMenuNutions = menuNutrition;
-                optimalMenu = chosenRecipes;
-            }
+        }else{
+            return 10.0;
         }
-        System.out.println("calculateWeekMenu is ending " + indexOfRecipeList);
-        System.out.println("firstValue " + firstValue + " - secondvalue " + secondValue + " - optimalMenuNut " + optimalMenuNutions);
-        return optimalMenuNutions;
     }
 
     public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
