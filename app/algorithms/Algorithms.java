@@ -1,6 +1,7 @@
 package algorithms;
 import java.util.*;
 import models.recipe.*;
+import models.user.RDI;
 
 /**
  * Created by louiserost on 2017-03-06.
@@ -27,44 +28,44 @@ public class Algorithms {
     /*
     Returns total amount of nutrients for several recipes
      */
-    public static HashMap<String,Double> nutrientsContent(List<Recipe> recipes) {
-        HashMap<String, Double> nutrientsContent = new HashMap<String, Double>();
+    public static HashMap<RDI,Double> nutrientsContent(List<Recipe> recipes) {
+        HashMap<RDI, Double> nutrientsContent = new HashMap<RDI, Double>();
 
         for( Recipe recipe : recipes ) {
-            addToHashMap(nutrientsContent,"bmr",recipe.getEnergyKcal());
-            addToHashMap(nutrientsContent,"fat",recipe.getFat());
-            addToHashMap(nutrientsContent,"protein",recipe.getProtein());
-            addToHashMap(nutrientsContent,"carbohydrates",recipe.getCarbohydrates());
+            addToHashMap(nutrientsContent,RDI.CaloriKcal,recipe.getEnergyKcal());
+            addToHashMap(nutrientsContent,RDI.Fat,recipe.getFat());
+            addToHashMap(nutrientsContent,RDI.Protein,recipe.getProtein());
+            addToHashMap(nutrientsContent,RDI.Carbohydrates,recipe.getCarbohydrates());
 
-            addToHashMap(nutrientsContent,"vitaminA", recipe.getVitaminA());
-            addToHashMap(nutrientsContent,"vitaminB6", recipe.getVitaminB6());
-            addToHashMap(nutrientsContent,"vitaminB12", recipe.getVitaminB12());
-            addToHashMap(nutrientsContent,"vitaminC", recipe.getVitaminC());
-            addToHashMap(nutrientsContent,"vitaminD", recipe.getVitaminD());
-            addToHashMap(nutrientsContent,"vitaminE", recipe.getVitaminE());
-            addToHashMap(nutrientsContent,"thiamine", recipe.getThiamine());
-            addToHashMap(nutrientsContent,"riboflavin", recipe.getRiboflavin());
-            addToHashMap(nutrientsContent,"niacin", recipe.getNiacin());
-            addToHashMap(nutrientsContent,"folate", recipe.getFolate());
-            addToHashMap(nutrientsContent,"calcium", recipe.getCalcium());
-            addToHashMap(nutrientsContent,"phosphorus", recipe.getPhosphorus());
-            addToHashMap(nutrientsContent,"potassium", recipe.getPotassium());
-            addToHashMap(nutrientsContent,"magnesium", recipe.getMagnesium());
-            addToHashMap(nutrientsContent,"iron", recipe.getIron());
-            addToHashMap(nutrientsContent,"zink", recipe.getZink());
-            addToHashMap(nutrientsContent,"iodine", recipe.getIodine());
-            addToHashMap(nutrientsContent,"selenium", recipe.getSelenium());
+            addToHashMap(nutrientsContent,RDI.VitaminAUG, recipe.getVitaminA());
+            addToHashMap(nutrientsContent,RDI.VitaminB6MG, recipe.getVitaminB6());
+            addToHashMap(nutrientsContent,RDI.VitaminB12UG, recipe.getVitaminB12());
+            addToHashMap(nutrientsContent,RDI.VitaminCMG, recipe.getVitaminC());
+            addToHashMap(nutrientsContent,RDI.VitaminDUG, recipe.getVitaminD());
+            addToHashMap(nutrientsContent,RDI.VitaminEMG, recipe.getVitaminE());
+            addToHashMap(nutrientsContent,RDI.ThiamineMg, recipe.getThiamine());
+            addToHashMap(nutrientsContent,RDI.RiboflavinMG, recipe.getRiboflavin());
+            addToHashMap(nutrientsContent,RDI.NiacinMG, recipe.getNiacin());
+            addToHashMap(nutrientsContent,RDI.FolateUG, recipe.getFolate());
+            addToHashMap(nutrientsContent,RDI.CalciumMG, recipe.getCalcium());
+            addToHashMap(nutrientsContent,RDI.PhosphorusMG, recipe.getPhosphorus());
+            addToHashMap(nutrientsContent,RDI.PotassiumG, recipe.getPotassium());
+            addToHashMap(nutrientsContent,RDI.Magnesium, recipe.getMagnesium());
+            addToHashMap(nutrientsContent,RDI.IronMG, recipe.getIron());
+            addToHashMap(nutrientsContent,RDI.ZinkMG, recipe.getZink());
+            addToHashMap(nutrientsContent,RDI.IodineUG, recipe.getIodine());
+            addToHashMap(nutrientsContent,RDI.SeleniumUG, recipe.getSelenium());
         }
 
         return nutrientsContent;
     }
 
 
-    public static HashMap<String,Double> addToHashMap(HashMap<String,Double> hmap, String string, Double additionalTerm) {
-        if( !hmap.containsKey(string) ) {
-            hmap.put(string,0D);
+    public static HashMap<RDI,Double> addToHashMap(HashMap<RDI,Double> hmap, RDI nutrient, Double additionalTerm) {
+        if( !hmap.containsKey(nutrient) ) {
+            hmap.put(nutrient,0D);
         }
-        hmap.put(string,hmap.get(string)+additionalTerm);
+        hmap.put(nutrient,hmap.get(nutrient)+additionalTerm);
         return hmap;
     }
 
