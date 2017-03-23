@@ -56,7 +56,7 @@ public class WeekMenuController extends Controller {
         //TODO: Få följande värden ifrån användaren genom client
         weekMenu.setNrOfRecipes(3);
         weekMenu.setAllRecipes(allRecipes);
-        weekMenu.setDesiredValue(0D);
+        weekMenu.setDesiredValue(0.5D);
         weekMenu.calculateWeekMenu(allRecipes.size()-1,chosenRecipes);
         List<Recipe> resultingWeekMenu = weekMenu.getOptimalMenu();
 /*
