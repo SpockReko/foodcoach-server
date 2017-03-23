@@ -6,7 +6,7 @@ lazy val `foodcoach` = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
 scalaVersion := "2.11.8"
 
-libraryDependencies ++= Seq(javaJdbc, cache, javaWs)
+libraryDependencies ++= Seq(javaJdbc, cache, javaWs, filters)
 
 // Database
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.40"
