@@ -12,7 +12,7 @@ import play.Logger;
  */
 public class IngredientParser {
 
-    private static final int MAX_DISTANCE = 2;
+    private static int maxDistance = 2;
 
     private static Levenshtein levenshtein = new Levenshtein();
     private static FoodItem matchingFood = null;
@@ -33,8 +33,9 @@ public class IngredientParser {
                 return food;
             } else {
                 // TODO Throw exception here instead
-                int foodNumber = FoodItem.find.findCount() * ingredient.hashCode();
-                return new FoodItem(ingredient, foodNumber);
+                return null;
+                //int foodNumber = FoodItem.find.findCount() * ingredient.hashCode();
+                //return new FoodItem(ingredient, foodNumber);
             }
         } else {
             return food;
@@ -57,9 +58,15 @@ public class IngredientParser {
     }
 
     private static void checkDistance(String input, String tag, FoodItem food) {
+        if (input.length() <=1){
+            maxDistance = 0;
+        }
+        if (input.length() <= 3){
+            maxDistance = 1;
+        }
         double tagDistance = levenshtein.distance(tag.toLowerCase(), input.toLowerCase());
 
-        if (tagDistance <= MAX_DISTANCE) {
+        if (tagDistance <= maxDistance) {
             if (tagDistance < shortestDistance) {
                 matchingFood = food;
                 shortestDistance = tagDistance;

@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.recipe.Ingredient;
+import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -24,6 +25,12 @@ public class RecipeController extends Controller {
         }
 
         return ok(jsonArray);
+    }
+
+    // GET /notlinked_recipes
+    public Result getAllNotLinked() {
+        List<NotLinkedRecipe> recipes = NotLinkedRecipe.find.all();
+        return ok(Json.toJson(recipes));
     }
 
     private ObjectNode getJson(Recipe recipe) {
