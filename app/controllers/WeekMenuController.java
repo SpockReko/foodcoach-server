@@ -25,42 +25,38 @@ public class WeekMenuController extends Controller {
     @Inject FormFactory formFactory;
 
     // POST /weekmenu
-    public Result weekMenu() {
+    public Result weekMenuMethod() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         int age = Integer.parseInt(requestData.get("age"));
         String sex = requestData.get("sex"); // output: "women" or "male"
         User.Sex sexEnum = sex.equals("women") ? User.Sex.FEMALE : User.Sex.MALE;
-        String weight = requestData.get("weight");
-        String length = requestData.get("length");
-        String activityLevel = requestData.get("activityLevel"); // low: 1.2
+        Double weight = Double.parseDouble(requestData.get("weight"));
+        Double length = Double.parseDouble(requestData.get("length");
+        Double activityLevel = Double.parseDouble(requestData.get("activityLevel"); // low: 1.2
         String goal = requestData.get("goal");// low: 1
+        User.Goal goalEnum = goal.equals("1") ? User.Goal.DECREASE : goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
         String allergy = requestData.get("allergy");// sträng
+        ArrayList<String> allergyList = new ArrayList<>();
+        for(String n : allergy.split(" ")){
+            allergyList.add(n);
+        }
+        int nrOfRecipes = Integer.parseInt(requestData.get("nrOfRevipe"));
 
-        System.out.println(
-                "DateBorn: " + dateBorn +
-                        "\n sex: " + sex +
-                        "\n weight: " + weight +
-                        "\n lenght: " + length +
-                        "\n activityLevel: " + activityLevel +
-                        "\n goal: " + goal +
-                        "\n allergy: " + allergy
-        );
+        User user = new User(sexEnum,activityLevel,weight,length,age,goalEnum,allergyList);
 
-        User user = new User(sexEnum,activityLevel,weight,length,age,goal,allergy);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("dateBorn", dateBorn);
-        map.put("sex", sex);
-        map.put("weight", weight);
-        map.put("length", length);
-        map.put("activityLevel", activityLevel);
-        map.put("goal", goal);
-        map.put("allergy", allergy);
-
+        List<Recipe> allRecipes = Recipe.find.all();
+        //List<Recipe> filteredRecipes =
+        //        somewhere.removeRecepiesFromListContainsGivenIngrediense(
+        //                allRecipes,
+        //                allergyList);
+        // weekmenu(user)?
+        WeekMenu weekMenuInstant = new WeekMenu(user);
+        weekMenuInstant.setNrOfRecipes(nrOfRecipes);
 
         //return ok(Json.toJson(map));
         return weekMenuTest();
     }
+
 
     //Testa week menu
     public Result weekMenuTest(){
