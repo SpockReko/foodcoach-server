@@ -23,9 +23,9 @@ public class Recipe extends Model {
     @Id private long id;
 
     @NotNull private final String title;
+    @NotNull private final int portions;
     public String description;
     public int cookingDurationMinutes;
-    @NotNull private final int portions;
 
     @ManyToMany(cascade = CascadeType.ALL) public List<Ingredient> ingredients;
 

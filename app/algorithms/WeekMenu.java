@@ -20,81 +20,58 @@ public class WeekMenu {
 
     private Double optimalMenuNutrition = 1.0;
     private List optimalMenu = new ArrayList<Recipe>();
-    private Double limitFromOptimalResult = 0.5;
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
-
+    private List<List<Recipe>> weekmenuList = new ArrayList<>();
     private User user = new User();
 
-    public Double calculateWeekMenu(int indexOfRecipeList, List<Recipe> chosenRecipes){
-        Double firstValue = 1.0;
-        Double secondValue = 1.0;
-        System.out.println("calculateWeekMenu is called " + indexOfRecipeList);
-        //If you are in the limit of the optimal value.
-        if(optimalMenuNutrition > limitFromOptimalResult ){
-            List<Recipe> newChosenRecipes = chosenRecipes;
-
-            if(indexOfRecipeList >= 0){
-                if(newChosenRecipes.size() < nrOfRecipes){
-                    newChosenRecipes.add(allRecipes.get(indexOfRecipeList));
-                    firstValue = calculateWeekMenu(indexOfRecipeList-1, newChosenRecipes);
-                    secondValue = calculateWeekMenu(indexOfRecipeList-1, chosenRecipes);
-                }
-            }
-
-            Double menuNutrition;
-            //System.out.println("!!!!!!!!!!! " + firstValue + " ????? "+ secondValue);
-            if(Math.max(firstValue, secondValue ) == firstValue){
-                menuNutrition = nutritionValueCalculation(newChosenRecipes);
-                chosenRecipes = newChosenRecipes;
-            }else{
-                menuNutrition =  nutritionValueCalculation(chosenRecipes);
-                newChosenRecipes = chosenRecipes;
-            }
-
-            if(optimalMenuNutrition > menuNutrition){
-                optimalMenuNutrition = menuNutrition;
-                optimalMenu = chosenRecipes;
-                System.out.println("Uppdaterar optimalmenu");
-            }
+    public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
+        if (currentList.size() == nrOfRecipes){
+            weekmenuList.add(currentList);
+            return 1;
+        }else if(indexOfRecipes < 0){
+            return 0;
+        }else{
+            List<Recipe> newList = new ArrayList<>(currentList);
+            currentList.add(allRecipes.get(indexOfRecipes));
+            return returnAllWeekMenus(indexOfRecipes-1, currentList) +
+                    returnAllWeekMenus(indexOfRecipes-1, newList);
         }
 
-        return optimalMenuNutrition;
     }
 
-    public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
-        Random r = new Random();
-        return (0.01*r.nextInt(100));
-        /*HashMap<RDI,Double> nutrientsNeed = user.hmap;
-        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
-        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent);
-        */
-    }
-
-
-    public int getNrOfRecipes() {
-        return nrOfRecipes;
-    }
-
-    public List<Recipe> getAllRecipes() {
-        return allRecipes;
-    }
-
-    public List getOptimalMenu() {
+    public List<Recipe> calculateWeekMenu() {
+        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
+        optimalMenuNutrition = nutritionValueCalculation(weekmenuList.get(0));
+        for(List<Recipe> lr : weekmenuList){
+            double value = nutritionValueCalculation(lr);
+            System.out.println("Näringsvärdet för " + recipeListToString(lr) + "\n... är värdet: " + value);
+            if(value <= optimalMenuNutrition){
+                optimalMenuNutrition = value;
+                optimalMenu = lr;
+            }
+        }
         return optimalMenu;
     }
 
-    // Exemple of how to get values..
-    private void exemple() {
-        // N är värdet av av aska i första råvaran!
-        FoodItem food = FoodItem.find.where().eq("lmv_food_number", 1).findUnique();
-        float n = food.getAsh();
+    public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
+        //Random r = new Random();
+        //return (0.01*r.nextInt(100));
+        HashMap<RDI,Double> nutrientsNeed = user.hmap;
+        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
+        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent);
+
     }
 
-
-    public void setDesiredValue(Double desiredValue) {
-        this.limitFromOptimalResult = desiredValue;
+    public String recipeListToString(List<Recipe> list){
+        String text = "";
+        for(Recipe r : list){
+            text = text + " " + r.getTitle() ;
+        }
+        return text;
     }
+
+    public int getNrOfRecipes(){ return nrOfRecipes;}
 
     public void setNrOfRecipes(int nrOfRecipes) {
         this.nrOfRecipes = nrOfRecipes;

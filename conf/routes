@@ -12,6 +12,7 @@ GET     /food/group/:code                   controllers.FoodController.getByGrou
 
 # Recipe items
 GET     /recipes                            controllers.RecipeController.getAll
+GET     /notlinked_recipes                  controllers.RecipeController.getAllNotLinked
 
 # User info
 GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
@@ -25,3 +26,5 @@ GET     /parse/:ingredient                  controllers.ParseController.parseIng
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
+
+GET     /parseRec/:taggedRecipe             controllers.ParseController.recipeInfo(taggedRecipe: String)
