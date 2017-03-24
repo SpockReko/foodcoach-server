@@ -17,7 +17,8 @@ import java.util.HashMap;
  */
 public class WeekMenu {
 
-    private Double optimalMenuNutions = 1.0;
+
+    private Double optimalMenuNutrition = 1.0;
     private List optimalMenu = new ArrayList<Recipe>();
     private Double limitFromOptimalResult = 0.5;
     private int nrOfRecipes;
@@ -30,13 +31,13 @@ public class WeekMenu {
         Double secondValue = 1.0;
         System.out.println("calculateWeekMenu is called " + indexOfRecipeList);
         //If you are in the limit of the optimal value.
-        if(optimalMenuNutions > limitFromOptimalResult ){
-            List<Recipe> newChoicenRecipes = chosenRecipes;
+        if(optimalMenuNutrition > limitFromOptimalResult ){
+            List<Recipe> newChosenRecipes = chosenRecipes;
 
             if(indexOfRecipeList >= 0){
-                if(newChoicenRecipes.size() < nrOfRecipes){
-                    newChoicenRecipes.add(allRecipes.get(indexOfRecipeList));
-                    firstValue = calculateWeekMenu(indexOfRecipeList-1, newChoicenRecipes);
+                if(newChosenRecipes.size() < nrOfRecipes){
+                    newChosenRecipes.add(allRecipes.get(indexOfRecipeList));
+                    firstValue = calculateWeekMenu(indexOfRecipeList-1, newChosenRecipes);
                     secondValue = calculateWeekMenu(indexOfRecipeList-1, chosenRecipes);
                 }
             }
@@ -44,21 +45,21 @@ public class WeekMenu {
             Double menuNutrition;
             //System.out.println("!!!!!!!!!!! " + firstValue + " ????? "+ secondValue);
             if(Math.max(firstValue, secondValue ) == firstValue){
-                //System.out.println("FirstValue is biggest....");
-                menuNutrition = nutritionValueCalculation(newChoicenRecipes);
-                //System.out.println("menuNutriens is " + menuNutrition);
-                chosenRecipes = newChoicenRecipes;
+                menuNutrition = nutritionValueCalculation(newChosenRecipes);
+                chosenRecipes = newChosenRecipes;
             }else{
                 menuNutrition =  nutritionValueCalculation(chosenRecipes);
+                newChosenRecipes = chosenRecipes;
             }
-            if(optimalMenuNutions > menuNutrition){
-                optimalMenuNutions = menuNutrition;
+
+            if(optimalMenuNutrition > menuNutrition){
+                optimalMenuNutrition = menuNutrition;
                 optimalMenu = chosenRecipes;
+                System.out.println("Uppdaterar optimalmenu");
             }
         }
-        System.out.println("calculateWeekMenu is ending " + indexOfRecipeList);
-        System.out.println("firstValue " + firstValue + " - secondvalue " + secondValue + " - optimalMenuNut " + optimalMenuNutions);
-        return optimalMenuNutions;
+
+        return optimalMenuNutrition;
     }
 
     public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
