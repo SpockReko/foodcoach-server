@@ -24,6 +24,10 @@ public class WeekMenu {
     private List<List<Recipe>> weekmenuList = new ArrayList<>();
     private User user = new User();
 
+    public WeekMenu(User user){
+        this.user = user;
+    }
+
     public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
         if (currentList.size() == nrOfRecipes){
             weekmenuList.add(currentList);

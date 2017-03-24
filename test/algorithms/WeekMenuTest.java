@@ -104,17 +104,13 @@ public class WeekMenuTest {
                 ));
 
         Recipe recipe = new Recipe("perfectRecipe",1,ingredients);
-        WeekMenu weekMenu = new WeekMenu();
+        WeekMenu weekMenu = new WeekMenu(new User());
         List<Recipe> allrecepies = Recipe.find.all();
         allrecepies.add(recipe);
         weekMenu.setAllRecipes(allrecepies);
-        weekMenu.setDesiredValue(1.0);
         weekMenu.setNrOfRecipes(1);
-        List<Recipe> emptylist = new ArrayList<>();
-        weekMenu.calculateWeekMenu(allrecepies.size(),emptylist);
-        assertTrue(weekMenu.getOptimalMenu().contains(recipe)
-                && weekMenu.getOptimalMenu().size() == 1);
+        List<Recipe> resultingList = weekMenu.calculateWeekMenu();
+        assertTrue(resultingList.contains(recipe)
+                && resultingList.size() == 1);
     }
-
-
 }
