@@ -17,7 +17,8 @@ import java.util.HashMap;
  */
 public class WeekMenu {
 
-    private Double optimalMenuNutions = 1.0;
+
+    private Double optimalMenuNutrition = 1.0;
     private List optimalMenu = new ArrayList<Recipe>();
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
@@ -45,12 +46,12 @@ public class WeekMenu {
 
     public List<Recipe> calculateWeekMenu() {
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
-        optimalMenuNutions = nutritionValueCalculation(weekmenuList.get(0));
+        optimalMenuNutrition = nutritionValueCalculation(weekmenuList.get(0));
         for(List<Recipe> lr : weekmenuList){
             double value = nutritionValueCalculation(lr);
             System.out.println("Näringsvärdet för " + recipeListToString(lr) + "\n... är värdet: " + value);
-            if(value <= optimalMenuNutions){
-                optimalMenuNutions = value;
+            if(value <= optimalMenuNutrition){
+                optimalMenuNutrition = value;
                 optimalMenu = lr;
             }
         }

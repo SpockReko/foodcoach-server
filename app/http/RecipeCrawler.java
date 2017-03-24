@@ -37,17 +37,35 @@ public class RecipeCrawler extends WebCrawler {
                 throw new IllegalStateException("No parser for site: " + url);
             }
 
-            NotLinkedRecipe parsedRecipe = parser.parseWithoutLinking(html);
-            parsedRecipe.sourceUrl = url;
-            if (db.find(NotLinkedRecipe.class)
+            parseNotLinkedRecipe(url, html, parser);
+        }
+    }
+
+    private void parseRecipe(String url, String html, RecipeParser parser) {
+        Recipe parsedRecipe = parser.parse(html);
+        parsedRecipe.sourceUrl = url;
+        if (db.find(Recipe.class)
                 .where()
                 .eq("title", parsedRecipe.getTitle())
                 .findCount() == 0) {
-                db.save(parsedRecipe);
-                Logger.info("Saved NotLinkedRecipe " + parsedRecipe.getTitle());
-            } else {
-                Logger.info("NotLinkedRecipe " + parsedRecipe.getTitle() + " already exists...");
-            }
+            db.save(parsedRecipe);
+            Logger.info("Saved Recipe " + parsedRecipe.getTitle());
+        } else {
+            Logger.info("Recipe " + parsedRecipe.getTitle() + " already exists...");
+        }
+    }
+
+    private void parseNotLinkedRecipe(String url, String html, RecipeParser parser) {
+        NotLinkedRecipe parsedRecipe = parser.parseWithoutLinking(html);
+        parsedRecipe.sourceUrl = url;
+        if (db.find(NotLinkedRecipe.class)
+                .where()
+                .eq("title", parsedRecipe.getTitle())
+                .findCount() == 0) {
+            db.save(parsedRecipe);
+            Logger.info("Saved NotLinkedRecipe " + parsedRecipe.getTitle());
+        } else {
+            Logger.info("NotLinkedRecipe " + parsedRecipe.getTitle() + " already exists...");
         }
     }
 }

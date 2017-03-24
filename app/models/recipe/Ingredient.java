@@ -39,111 +39,117 @@ public class Ingredient extends Model {
     }
 
     public Double getEnergyKcal() {
-        return foodItem.getEnergyKcal() * multiplier();
+        return multiplier(foodItem.getEnergyKcal());
     }
     public Double getEnergyKj() {
-        return foodItem.getEnergyKj() * multiplier();
+        return multiplier(foodItem.getEnergyKj());
     }
     public Double getCarbohydrates() {
-        return foodItem.getCarbohydrates() * multiplier();
+        return multiplier(foodItem.getCarbohydrates());
     }
     public Double getProtein() {
-        return foodItem.getProtein() * multiplier();
+        return multiplier(foodItem.getProtein());
     }
     public Double getFat() {
-        return foodItem.getFats().getFat() * multiplier();
+        return multiplier(foodItem.getFats().getFat());
     }
     public Double getFibre() {
-        return foodItem.getFibre() * multiplier();
+        return multiplier(foodItem.getFibre());
     }
     public Double getWholeGrain() {
-        return foodItem.getWholeGrain() * multiplier();
+        return multiplier(foodItem.getWholeGrain());
     }
     public Double getCholesterol() {
-        return foodItem.getCholesterol() * multiplier();
+        return multiplier(foodItem.getCholesterol());
     }
     public Double getWater() {
-        return foodItem.getWater() * multiplier();
+        return multiplier(foodItem.getWater());
     }
     public Double getAlcohol() {
-        return foodItem.getAlcohol() * multiplier();
+        return multiplier(foodItem.getAlcohol());
     }
     public Double getAsh() {
-        return foodItem.getAsh() * multiplier();
+        return multiplier(foodItem.getAsh());
     }
 
     /*
     Extra nutrition data
      */
     public Double getSugars() {
-        return foodItem.getSugars().getSugars() * multiplier();
+        return multiplier(foodItem.getSugars().getSugars());
     }
     public Double getVitaminA() {
-        return foodItem.getVitamins().getVitaminA() * multiplier();
+        return multiplier(foodItem.getVitamins().getVitaminA());
     }
     public Double getVitaminB6() {
-        return foodItem.getVitamins().getVitaminB6() * multiplier();
+        return multiplier(foodItem.getVitamins().getVitaminB6());
     }
     public Double getVitaminB12() {
-        return foodItem.getVitamins().getVitaminB12() * multiplier();
+        return multiplier(foodItem.getVitamins().getVitaminB12());
     }
     public Double getVitaminC() {
-        return foodItem.getVitamins().getVitaminC() * multiplier();
+        return multiplier(foodItem.getVitamins().getVitaminC());
     }
     public Double getVitaminD() {
-        return foodItem.getVitamins().getVitaminD() * multiplier();
+        return multiplier(foodItem.getVitamins().getVitaminD());
     }
     public Double getVitaminE() {
-        return foodItem.getVitamins().getVitaminE() * multiplier();
+        return multiplier(foodItem.getVitamins().getVitaminE());
     }
     public Double getThiamine() {
-        return foodItem.getVitamins().getThiamine() * multiplier();
+        return multiplier(foodItem.getVitamins().getThiamine());
     }
     public Double getRiboflavin() {
-        return foodItem.getVitamins().getRiboflavin() * multiplier();
+        return multiplier(foodItem.getVitamins().getRiboflavin());
     }
     public Double getNiacin() {
-        return foodItem.getVitamins().getNiacin() * multiplier();
+        return multiplier(foodItem.getVitamins().getNiacin());
     }
     public Double getNiacinEquivalents() {
-        return foodItem.getVitamins().getNiacinEquivalents() * multiplier();
+        return multiplier(foodItem.getVitamins().getNiacinEquivalents());
     }
     public Double getFolate() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getPhosphorus() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getIodine() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getIron() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getCalcium() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getPotassium() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getMagnesium() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getSalt() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getSelenium() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getZink() {
-        return foodItem.getMinerals().getFolate() * multiplier();
+        return multiplier(foodItem.getMinerals().getFolate());
     }
 
-    private double multiplier() {
+    private Double multiplier(Float value) {
+        if (value == null) {
+            return null;
+        }
         double multiplier = amount.getUnit().getFraction() * amount.getAmount();
         if (amount.getUnit().getType() == Amount.Unit.Type.VOLUME) {
-            multiplier *= foodItem.densityConstant;
+            // TODO fix some info message here for when there is no densityConstant
+            if (foodItem.densityConstant != null) {
+                multiplier *= foodItem.densityConstant;
+            }
         }
-        return multiplier;
+        return value * multiplier;
     }
 }
