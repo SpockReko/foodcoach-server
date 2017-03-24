@@ -6,9 +6,12 @@ import models.recipe.Ingredient;
 import models.recipe.Recipe;
 import models.user.RDI;
 import models.user.User;
+import org.jetbrains.annotations.NotNull;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -20,17 +23,64 @@ public class WeekMenuTest {
 
     //TODO: Add a user and recepie ith identical recepie and se if week menu chose this.
 
-    @Test
-    public void RecepieWithOptimalResultGetPickedTest(){
+    Double result;
+    List<Recipe> resultingList = new ArrayList<>();
+    Recipe userRecipe;
+    @Before
+    public void init(){
+
         User user = new User();
+        user.firstName = "User";
+        User stefan = new User(1);
+        stefan.firstName = "Stefan";
+
+        userRecipe = createOptimalRecipeForSpecificUser(user);
+        Recipe stefanRecipe = createOptimalRecipeForSpecificUser(stefan);
+        List<Recipe> recipes = new ArrayList<>();
+
+
+        recipes.add(userRecipe);
+        recipes.add(stefanRecipe);
+
+        WeekMenu weekMenu = new WeekMenu(user);
+        weekMenu.setAllRecipes(recipes);
+        weekMenu.setNrOfRecipes(1);
+        resultingList = weekMenu.calculateWeekMenu();
+
+        HashMap<RDI,Double> nutrientsNeed = user.hmap;
+        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(resultingList);
+        result = Algorithms.L2Norm(nutrientsNeed,nutrientsContent,resultingList);
+        System.out.println("The result is: " + result + "!!!!!!!!!!!!!!!!" );
+
+    }
+
+    @Test
+    public void userRecipeExistInTheResultTest(){
+        assertTrue(resultingList.contains(userRecipe));
+    }
+
+    @Test
+    public void onlyOneRecipeExistInTheList(){
+        assertTrue(resultingList.size() == 1);
+    }
+
+    @Test
+    public void theDistanceFromOptimalIsZero(){
+        assertTrue(result == 0);
+    }
+
+
+    @NotNull
+    private Recipe createOptimalRecipeForSpecificUser(User user) {
         List<Ingredient> ingredients = new ArrayList<>();
+        float convertToOnePortion = 0.3f;
         Sugars sugers = new Sugars(
                 0F,
                 0F,
                 0F,
                 0F);
         Fats fats = new Fats(
-                Float.parseFloat(user.hmap.get("fat")+""),
+                Float.parseFloat(user.hmap.get(RDI.Fat)+"") * convertToOnePortion,
                 0F,
                 0F,
                 0F,
@@ -52,31 +102,31 @@ public class WeekMenuTest {
         Vitamins vitamins = new Vitamins(
                 0F,
                 0F,
-                Float.parseFloat(user.hmap.get("vitaminANeedug")+""),
-                Float.parseFloat(user.hmap.get("vitaminB6Needmg")+""),
-                Float.parseFloat(user.hmap.get("vitaminB12Needug")+""),
-                Float.parseFloat(user.hmap.get("vitaminCNeedmg")+""),
+                Float.parseFloat(user.hmap.get(RDI.VitaminAUG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.VitaminB6MG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.VitaminB12UG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.VitaminCMG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.VitaminDUG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.VitaminEMG)+"") * convertToOnePortion,
                 0F,
-                0F,//TODO: HAr kommit hit från att mata in användarens värden!
-                0F,
-                Float.parseFloat(user.hmap.get("tiaminNeedmg")+""),
-                0F,
-                0F,
+                Float.parseFloat(user.hmap.get(RDI.ThiamineMG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.RiboflavinMG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.NiacinMG)+"") * convertToOnePortion,
                 0F);
         Minerals minerals = new Minerals(
+                Float.parseFloat(user.hmap.get(RDI.FolateUG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.PhosphorusMG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.IodineUG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.IronMG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.CalciumMG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.PotassiumG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.Magnesium)+"") * convertToOnePortion,
                 0F,
                 0F,
-                0F,
-                0F,
-                0F,
-                0F,
-                0F,
-                0F,
-                0F,
-                0F,
-                0F);
+                Float.parseFloat(user.hmap.get(RDI.SeleniumUG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.ZinkMG)+"") * convertToOnePortion);
         Amount amount = new Amount(100, Amount.Unit.GRAM);
-        //TODO: Add perfekt food item that covers everything that the user need!
+
         ingredients.add(
                 new Ingredient(
                         new FoodItem(
@@ -84,18 +134,18 @@ public class WeekMenuTest {
                                 "perfektus foodus",
                                 9999,
                                 "perfekt",
-                                Float.parseFloat(user.hmap.get("bmr")+""),//energyKcal
-                                0F,//EnergiKJ
-                                Float.parseFloat( user.hmap.get("carbohydrates")+""),//Carbohydrates
-                                Float.parseFloat(user.hmap.get("protein")+""),//protein,
-                                0F,// fibre,
-                                0F,//wholeGrain,
-                                0F,//Float cholesterol,
-                                0F,//Float water,
-                                0F,//Float alcohol,
-                                0F,//Float ash,
-                                0F,//Float waste,
-                                sugers,//Sugars sugars,
+                                Float.parseFloat(user.hmap.get(RDI.CaloriKcal)+"") * convertToOnePortion,
+                                0F,
+                                Float.parseFloat( user.hmap.get(RDI.Carbohydrates)+"") * convertToOnePortion,
+                                Float.parseFloat(user.hmap.get(RDI.Protein)+"") * convertToOnePortion,
+                                0F,
+                                0F,
+                                0F,
+                                0F,
+                                0F,
+                                0F,
+                                0F,
+                                sugers,
                                 fats,
                                 vitamins,
                                 minerals
@@ -103,14 +153,6 @@ public class WeekMenuTest {
                         ,amount
                 ));
 
-        Recipe recipe = new Recipe("perfectRecipe",1,ingredients);
-        WeekMenu weekMenu = new WeekMenu(new User());
-        List<Recipe> allrecepies = Recipe.find.all();
-        allrecepies.add(recipe);
-        weekMenu.setAllRecipes(allrecepies);
-        weekMenu.setNrOfRecipes(1);
-        List<Recipe> resultingList = weekMenu.calculateWeekMenu();
-        assertTrue(resultingList.contains(recipe)
-                && resultingList.size() == 1);
+        return new Recipe(user.firstName + "Recipe",1,ingredients);
     }
 }

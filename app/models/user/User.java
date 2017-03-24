@@ -61,14 +61,6 @@ public class User extends Model {
     public HashMap<RDI, Double> hmap = new HashMap<>();
 
     public User() {
-        /*this.sex = Sex.MALE;
-        this.activityLevel = 2.0;
-        this.weight = 90.0;
-        this.height = 190.2;
-        this.age = 25;
-        this.goal = Goal.DECREASE;
-        dailyCalories();
-        getMaleRDI(age);*/
 
         hmap.put(RDI.CaloriKcal, 2000D);
         hmap.put(RDI.Protein, 0.17*2000D);
@@ -77,7 +69,7 @@ public class User extends Model {
 
         hmap.put(RDI.VitaminAUG, 800D);
         hmap.put(RDI.VitaminDUG, 20D);
-        hmap.put(RDI.VitaminDUG, 9D);
+        hmap.put(RDI.VitaminEMG, 9D);
         hmap.put(RDI.ThiamineMG, 1.2D);
         hmap.put(RDI.RiboflavinMG, 1.35D);
         hmap.put(RDI.NiacinMG, 16D);
@@ -91,11 +83,23 @@ public class User extends Model {
         hmap.put(RDI.Magnesium, 315D);
         hmap.put(RDI.IronMG, 9D);
         hmap.put(RDI.ZinkMG, 8D);
-        hmap.put(RDI.CopperMG, 0.9D);
+        hmap.put(RDI.CopperMG, 0.9D); //TODO: Don't exist on our database! Maybe under another name?
         hmap.put(RDI.IodineUG, 150D);
         hmap.put(RDI.SeleniumUG, 55D);
     }
 
+    public User(int dummyNr){
+        if(dummyNr==1) {
+        this.sex = Sex.MALE;
+        this.activityLevel = 1.2;
+        this.weight = 102.0;
+        this.height = 191.0;
+        this.age = 30;
+        this.goal = Goal.DECREASE;
+        dailyCalories();
+        getRDI();
+        }
+    }
 
     public User(Sex sex, double activityLevel, double weight, double height, int age, Goal goal, ArrayList<String> allergier){
         this.sex = sex;
@@ -159,7 +163,7 @@ public class User extends Model {
         if (age < 1) {
             hmap.put(RDI.VitaminAUG, 300D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 3D);
+            hmap.put(RDI.VitaminEMG, 3D);
             hmap.put(RDI.ThiamineMG, 0.4D);
             hmap.put(RDI.RiboflavinMG, 0.5D);
             hmap.put(RDI.NiacinMG, 5D);
@@ -182,7 +186,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 300D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 4D);
+            hmap.put(RDI.VitaminEMG, 4D);
             hmap.put(RDI.ThiamineMG, 0.5D);
             hmap.put(RDI.RiboflavinMG, 0.6D);
             hmap.put(RDI.NiacinMG, 7D);
@@ -205,7 +209,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 350D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 5D);
+            hmap.put(RDI.VitaminEMG, 5D);
             hmap.put(RDI.ThiamineMG, 0.6D);
             hmap.put(RDI.RiboflavinMG, 0.7D);
             hmap.put(RDI.NiacinMG, 9D);
@@ -228,7 +232,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 400D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 6D);
+            hmap.put(RDI.VitaminEMG, 6D);
             hmap.put(RDI.ThiamineMG, 0.9D);
             hmap.put(RDI.RiboflavinMG, 1.1D);
             hmap.put(RDI.NiacinMG, 12D);
@@ -258,7 +262,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 600D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 8D);
+            hmap.put(RDI.VitaminEMG, 8D);
             hmap.put(RDI.ThiamineMG, 1.1D);
             hmap.put(RDI.RiboflavinMG, 1.3D);
             hmap.put(RDI.NiacinMG, 15D);
@@ -281,7 +285,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 900D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 10D);
+            hmap.put(RDI.VitaminEMG, 10D);
             hmap.put(RDI.ThiamineMG, 1.4D);
             hmap.put(RDI.RiboflavinMG, 1.7D);
             hmap.put(RDI.NiacinMG, 19D);
@@ -304,7 +308,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 900D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 10D);
+            hmap.put(RDI.VitaminEMG, 10D);
             hmap.put(RDI.ThiamineMG, 1.4D);
             hmap.put(RDI.RiboflavinMG, 1.6D);
             hmap.put(RDI.NiacinMG, 19D);
@@ -327,7 +331,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 900D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 10D);
+            hmap.put(RDI.VitaminEMG, 10D);
             hmap.put(RDI.ThiamineMG, 1.3D);
             hmap.put(RDI.RiboflavinMG, 1.5D);
             hmap.put(RDI.NiacinMG, 18D);
@@ -350,7 +354,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 900D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 10D);
+            hmap.put(RDI.VitaminEMG, 10D);
             hmap.put(RDI.ThiamineMG, 1.2D);
             hmap.put(RDI.RiboflavinMG, 1.4D);
             hmap.put(RDI.NiacinMG, 16D);
@@ -373,7 +377,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 900D);
             hmap.put(RDI.VitaminDUG, 20D);
-            hmap.put(RDI.VitaminDUG, 10D);
+            hmap.put(RDI.VitaminEMG, 10D);
             hmap.put(RDI.ThiamineMG, 1.2D);
             hmap.put(RDI.RiboflavinMG, 1.3D);
             hmap.put(RDI.NiacinMG, 15D);
@@ -402,7 +406,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 600D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 7D);
+            hmap.put(RDI.VitaminEMG, 7D);
             hmap.put(RDI.ThiamineMG, 1D);
             hmap.put(RDI.RiboflavinMG, 1.2D);
             hmap.put(RDI.NiacinMG, 14D);
@@ -425,7 +429,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 900D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 8D);
+            hmap.put(RDI.VitaminEMG, 8D);
             hmap.put(RDI.ThiamineMG, 1.2D);
             hmap.put(RDI.RiboflavinMG, 1.4D);
             hmap.put(RDI.NiacinMG, 16D);
@@ -447,7 +451,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 700D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 8D);
+            hmap.put(RDI.VitaminEMG, 8D);
             hmap.put(RDI.ThiamineMG, 1.1D);
             hmap.put(RDI.RiboflavinMG, 1.3D);
             hmap.put(RDI.NiacinMG, 15D);
@@ -470,7 +474,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 700D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 8D);
+            hmap.put(RDI.VitaminEMG, 8D);
             hmap.put(RDI.ThiamineMG, 1.1D);
             hmap.put(RDI.RiboflavinMG, 1.2D);
             hmap.put(RDI.NiacinMG, 14D);
@@ -493,7 +497,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 700D);
             hmap.put(RDI.VitaminDUG, 10D);
-            hmap.put(RDI.VitaminDUG, 8D);
+            hmap.put(RDI.VitaminEMG, 8D);
             hmap.put(RDI.ThiamineMG, 1D);
             hmap.put(RDI.RiboflavinMG, 1.2D);
             hmap.put(RDI.NiacinMG, 13D);
@@ -516,7 +520,7 @@ public class User extends Model {
 
             hmap.put(RDI.VitaminAUG, 700D);
             hmap.put(RDI.VitaminDUG, 20D);
-            hmap.put(RDI.VitaminDUG, 8D);
+            hmap.put(RDI.VitaminEMG, 8D);
             hmap.put(RDI.ThiamineMG, 1D);
             hmap.put(RDI.RiboflavinMG, 1.2D);
             hmap.put(RDI.NiacinMG, 13D);
