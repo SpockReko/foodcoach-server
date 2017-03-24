@@ -26,12 +26,15 @@ public class WeekMenuController extends Controller {
 
     // POST /weekmenu
     public Result weekMenu() {
+
         DynamicForm requestData = formFactory.form().bindFromRequest();
 
         User user;
         int nrOfRecipes;
+
         if(requestData.get("sex") != null) {
             Integer age = requestData.get("age") != null ? Integer.parseInt(requestData.get("age")) : 25;
+
             String sex = requestData.get("sex"); // output: "women" or "male"
             User.Sex sexEnum = sex.equals("women") ? User.Sex.FEMALE : User.Sex.MALE;
             Double weight = Double.parseDouble(requestData.get("weight"));
@@ -47,20 +50,28 @@ public class WeekMenuController extends Controller {
             nrOfRecipes = Integer.parseInt(requestData.get("nrOfRecipe"));
 
             user = new User(sexEnum, activityLevel, weight, length, age, goalEnum, allergyList);
+
         } else {
+
             user = new User();
+            nrOfRecipes = 3;
         }
+
         List<Recipe> allRecipes = Recipe.find.all();
+
         //List<Recipe> filteredRecipes =
-        //        somewhere.removeRecepiesFromListContainsGivenIngrediense(
+        //        somewhere.removeRecipesFromListContainsGivenIngredients(
         //                allRecipes,
         //                allergyList);
         // weekmenu(user)?
+
+
         WeekMenu weekMenuInstant = new WeekMenu(user);
         weekMenuInstant.setNrOfRecipes(nrOfRecipes);
 
         //return ok(Json.toJson(map));
         return weekMenuTest();
+
     }
 
 
