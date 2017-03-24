@@ -70,7 +70,7 @@ public class WeekMenu {
     public String recipeListToString(List<Recipe> list){
         String text = "";
         for(Recipe r : list){
-            text = text + " " + r.getTitle() ;
+            text = text + "\n " + r.getTitle() ;
         }
         return text;
     }

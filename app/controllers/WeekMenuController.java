@@ -98,7 +98,7 @@ public class WeekMenuController extends Controller {
         return ok(json);
 */
         if(resultingWeekMenu.size() == weekMenu.getNrOfRecipes())
-            return ok(resultingWeekMenu.get(0).getTitle()+"\n"+resultingWeekMenu.get(1).getTitle()+"\n"+resultingWeekMenu.get(2).getTitle());
+            return ok(weekMenu.recipeListToString(resultingWeekMenu));
         return ok("nothing found!");
     }
 }
