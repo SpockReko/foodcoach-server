@@ -45,7 +45,7 @@ public class ReceptFavoriterParser implements RecipeParser {
         Document doc = Jsoup.parse(html);
 
         String title = doc.select("h1[itemprop=name]").text();
-        String portionsText = doc.select("h3[itemprop=recipeYield]").text();
+        String portionsText = doc.select("h3[itemprop=recipeYield]").text().split(" ")[0];
         int portions = Integer.parseInt(portionsText.replaceAll("\\D+",""));
 
         Elements ingredients = doc.select(".recipe-ingredients li");
