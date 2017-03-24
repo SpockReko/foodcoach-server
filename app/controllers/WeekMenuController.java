@@ -25,25 +25,31 @@ public class WeekMenuController extends Controller {
     @Inject FormFactory formFactory;
 
     // POST /weekmenu
-    public Result weekMenuMethod() {
+    public Result weekMenu() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        int age = Integer.parseInt(requestData.get("age"));
-        String sex = requestData.get("sex"); // output: "women" or "male"
-        User.Sex sexEnum = sex.equals("women") ? User.Sex.FEMALE : User.Sex.MALE;
-        Double weight = Double.parseDouble(requestData.get("weight"));
-        Double length = Double.parseDouble(requestData.get("length");
-        Double activityLevel = Double.parseDouble(requestData.get("activityLevel"); // low: 1.2
-        String goal = requestData.get("goal");// low: 1
-        User.Goal goalEnum = goal.equals("1") ? User.Goal.DECREASE : goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
-        String allergy = requestData.get("allergy");// sträng
-        ArrayList<String> allergyList = new ArrayList<>();
-        for(String n : allergy.split(" ")){
-            allergyList.add(n);
+
+        User user;
+        int nrOfRecipes;
+        if(requestData.get("sex") != null) {
+            Integer age = requestData.get("age") != null ? Integer.parseInt(requestData.get("age")) : 25;
+            String sex = requestData.get("sex"); // output: "women" or "male"
+            User.Sex sexEnum = sex.equals("women") ? User.Sex.FEMALE : User.Sex.MALE;
+            Double weight = Double.parseDouble(requestData.get("weight"));
+            Double length = Double.parseDouble(requestData.get("length"));
+            Double activityLevel = Double.parseDouble(requestData.get("activityLevel")); // low: 1.2
+            String goal = requestData.get("goal");// low: 1
+            User.Goal goalEnum = goal.equals("1") ? User.Goal.DECREASE : goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
+            String allergy = requestData.get("allergy");// sträng
+            ArrayList<String> allergyList = new ArrayList<>();
+            for (String n : allergy.split(" ")) {
+                allergyList.add(n);
+            }
+            nrOfRecipes = Integer.parseInt(requestData.get("nrOfRecipe"));
+
+            user = new User(sexEnum, activityLevel, weight, length, age, goalEnum, allergyList);
+        } else {
+            user = new User();
         }
-        int nrOfRecipes = Integer.parseInt(requestData.get("nrOfRevipe"));
-
-        User user = new User(sexEnum,activityLevel,weight,length,age,goalEnum,allergyList);
-
         List<Recipe> allRecipes = Recipe.find.all();
         //List<Recipe> filteredRecipes =
         //        somewhere.removeRecepiesFromListContainsGivenIngrediense(
@@ -79,8 +85,9 @@ public class WeekMenuController extends Controller {
             array.add(node);
         }
         return ok(json);
-*/      if(resultingWeekMenu.size() == weekMenu.getNrOfRecipes())
-            return ok(resultingWeekMenu.get(0).getTitle()+"\n"+resultingWeekMenu.get(1).getTitle());
+*/
+        if(resultingWeekMenu.size() == weekMenu.getNrOfRecipes())
+            return ok(resultingWeekMenu.get(0).getTitle()+"\n"+resultingWeekMenu.get(1).getTitle()+"\n"+resultingWeekMenu.get(2).getTitle());
         return ok("nothing found!");
     }
 }

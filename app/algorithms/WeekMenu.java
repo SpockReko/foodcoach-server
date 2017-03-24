@@ -63,7 +63,7 @@ public class WeekMenu {
         //return (0.01*r.nextInt(100));
         HashMap<RDI,Double> nutrientsNeed = user.hmap;
         HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
-        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent);
+        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent,chosenRecipes);
 
     }
 
