@@ -1,9 +1,7 @@
 package controllers;
 
-import models.food.FoodItem;
 import play.mvc.Controller;
 import play.mvc.Result;
-import parsers.IngredientParser;
 
 /**
  * HTTP controller that handles all general requests to the server.

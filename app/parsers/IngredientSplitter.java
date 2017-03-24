@@ -16,7 +16,7 @@ public class IngredientSplitter {
     private static JsonNode node;
     private static ParseController parseController;
 
-    IngredientParser parse = new IngredientParser();
+    FoodItemParser parse = new FoodItemParser();
     WordGetters getters = new WordGetters();
     Amount.Unit[] unitsID;
 
