@@ -79,7 +79,7 @@ public class User extends Model {
         hmap.put(RDI.VitaminCMG, 75D);
         hmap.put(RDI.CalciumMG, 800D);
         hmap.put(RDI.PhosphorusMG, 600D);
-        hmap.put(RDI.PotassiumG, 3.3D);
+        hmap.put(RDI.PotassiumMG, 3300D);
         hmap.put(RDI.Magnesium, 315D);
         hmap.put(RDI.IronMG, 9D);
         hmap.put(RDI.ZinkMG, 8D);
@@ -173,7 +173,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 20D);
             hmap.put(RDI.CalciumMG, 540D);
             hmap.put(RDI.PhosphorusMG, 420D);
-            hmap.put(RDI.PotassiumG, 1.1D);
+            hmap.put(RDI.PotassiumMG, 1100D);
             hmap.put(RDI.Magnesium, 80D);
             hmap.put(RDI.IronMG, 8D);
             hmap.put(RDI.ZinkMG, 5D);
@@ -196,7 +196,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 25D);
             hmap.put(RDI.CalciumMG, 600D);
             hmap.put(RDI.PhosphorusMG, 470D);
-            hmap.put(RDI.PotassiumG, 1.4D);
+            hmap.put(RDI.PotassiumMG, 1400D);
             hmap.put(RDI.Magnesium, 85D);
             hmap.put(RDI.IronMG, 8D);
             hmap.put(RDI.ZinkMG, 5D);
@@ -219,7 +219,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 30D);
             hmap.put(RDI.CalciumMG, 600D);
             hmap.put(RDI.PhosphorusMG, 470D);
-            hmap.put(RDI.PotassiumG, 1.8D);
+            hmap.put(RDI.PotassiumMG, 1800D);
             hmap.put(RDI.Magnesium, 120D);
             hmap.put(RDI.IronMG, 8D);
             hmap.put(RDI.ZinkMG, 6D);
@@ -242,7 +242,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 40D);
             hmap.put(RDI.CalciumMG, 700D);
             hmap.put(RDI.PhosphorusMG, 540D);
-            hmap.put(RDI.PotassiumG, 2D);
+            hmap.put(RDI.PotassiumMG, 2000D);
             hmap.put(RDI.Magnesium, 200D);
             hmap.put(RDI.IronMG, 9D);
             hmap.put(RDI.ZinkMG, 7D);
@@ -272,7 +272,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 50D);
             hmap.put(RDI.CalciumMG, 900D);
             hmap.put(RDI.PhosphorusMG, 700D);
-            hmap.put(RDI.PotassiumG, 3.3D);
+            hmap.put(RDI.PotassiumMG, 3300D);
             hmap.put(RDI.Magnesium, 280D);
             hmap.put(RDI.IronMG, 11D);
             hmap.put(RDI.ZinkMG, 11D);
@@ -295,7 +295,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 900D);
             hmap.put(RDI.PhosphorusMG, 700D);
-            hmap.put(RDI.PotassiumG, 3.5D);
+            hmap.put(RDI.PotassiumMG, 3500D);
             hmap.put(RDI.Magnesium, 350D);
             hmap.put(RDI.IronMG, 11D);
             hmap.put(RDI.ZinkMG, 12D);
@@ -318,7 +318,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.5D);
+            hmap.put(RDI.PotassiumMG, 3500D);
             hmap.put(RDI.Magnesium, 350D);
             hmap.put(RDI.IronMG, 9D);
             hmap.put(RDI.ZinkMG, 9D);
@@ -341,7 +341,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.5D);
+            hmap.put(RDI.PotassiumMG, 3500D);
             hmap.put(RDI.Magnesium, 350D);
             hmap.put(RDI.IronMG, 9D);
             hmap.put(RDI.ZinkMG, 9D);
@@ -364,7 +364,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.5D);
+            hmap.put(RDI.PotassiumMG, 3500D);
             hmap.put(RDI.Magnesium, 350D);
             hmap.put(RDI.IronMG, 9D);
             hmap.put(RDI.ZinkMG, 9D);
@@ -387,7 +387,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.5D);
+            hmap.put(RDI.PotassiumMG, 3500D);
             hmap.put(RDI.Magnesium, 350D);
             hmap.put(RDI.IronMG, 9D);
             hmap.put(RDI.ZinkMG, 9D);
@@ -416,7 +416,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 50D);
             hmap.put(RDI.CalciumMG, 900D);
             hmap.put(RDI.PhosphorusMG, 700D);
-            hmap.put(RDI.PotassiumG, 2.9D);
+            hmap.put(RDI.PotassiumMG, 2900D);
             hmap.put(RDI.Magnesium, 280D);
             hmap.put(RDI.IronMG, 11D);
             hmap.put(RDI.ZinkMG, 8D);
@@ -439,7 +439,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 900D);
             hmap.put(RDI.PhosphorusMG, 700D);
-            hmap.put(RDI.PotassiumG, 3.1D);
+            hmap.put(RDI.PotassiumMG, 3100D);
             hmap.put(RDI.Magnesium, 280D);
             hmap.put(RDI.IronMG, 15D);
             hmap.put(RDI.ZinkMG, 7D);
@@ -461,7 +461,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.1D);
+            hmap.put(RDI.PotassiumMG, 3100D);
             hmap.put(RDI.Magnesium, 280D);
             hmap.put(RDI.IronMG, 15D);
             hmap.put(RDI.ZinkMG, 7D);
@@ -484,7 +484,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.1D);
+            hmap.put(RDI.PotassiumMG, 3100D);
             hmap.put(RDI.Magnesium, 280D);
             hmap.put(RDI.IronMG, 15D);
             hmap.put(RDI.ZinkMG, 7D);
@@ -507,7 +507,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.1D);
+            hmap.put(RDI.PotassiumMG, 3100D);
             hmap.put(RDI.Magnesium, 280D);
             hmap.put(RDI.IronMG, 9D);
             hmap.put(RDI.ZinkMG, 7D);
@@ -530,7 +530,7 @@ public class User extends Model {
             hmap.put(RDI.VitaminCMG, 75D);
             hmap.put(RDI.CalciumMG, 800D);
             hmap.put(RDI.PhosphorusMG, 600D);
-            hmap.put(RDI.PotassiumG, 3.1D);
+            hmap.put(RDI.PotassiumMG, 3100D);
             hmap.put(RDI.Magnesium, 280D);
             hmap.put(RDI.IronMG, 9D);
             hmap.put(RDI.ZinkMG, 7D);

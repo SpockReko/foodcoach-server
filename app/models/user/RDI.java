@@ -20,7 +20,7 @@ public enum RDI {
         VitaminCMG,
         CalciumMG,
         PhosphorusMG,
-        PotassiumG,
+        PotassiumMG,
         Magnesium,
         IronMG,
         ZinkMG,

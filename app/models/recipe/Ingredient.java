@@ -112,31 +112,33 @@ public class Ingredient extends Model {
         return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getPhosphorus() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getPotassium());
     }
+    
+    // TODO ändra getFolate() till getIodine() och lösa kompileringsfelet
     public Double getIodine() {
         return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getIron() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getIron());
     }
     public Double getCalcium() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getCalcium());
     }
     public Double getPotassium() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getPotassium());
     }
     public Double getMagnesium() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getMagnesium());
     }
     public Double getSalt() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getSalt());
     }
     public Double getSelenium() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getSelenium());
     }
     public Double getZink() {
-        return multiplier(foodItem.getMinerals().getFolate());
+        return multiplier(foodItem.getMinerals().getZink());
     }
 
     private Double multiplier(Float value) {

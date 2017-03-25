@@ -22,7 +22,7 @@ public class Algorithms {
                 sum += L2NormTerm(nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient));
             }
         }
-        return sum;
+        return Math.sqrt(sum);
     }
 
     /*
@@ -49,7 +49,7 @@ public class Algorithms {
             addToHashMap(nutrientsContent,RDI.FolateUG, recipe.getFolate()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.CalciumMG, recipe.getCalcium()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.PhosphorusMG, recipe.getPhosphorus()/recipe.getPortions());
-            addToHashMap(nutrientsContent,RDI.PotassiumG, recipe.getPotassium()/recipe.getPortions());
+            addToHashMap(nutrientsContent,RDI.PotassiumMG, recipe.getPotassium()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.Magnesium, recipe.getMagnesium()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.IronMG, recipe.getIron()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.ZinkMG, recipe.getZink()/recipe.getPortions());
