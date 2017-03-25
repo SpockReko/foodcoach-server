@@ -141,7 +141,8 @@ public class Ingredient extends Model {
 
     private Double multiplier(Float value) {
         if (value == null) {
-            return null;
+            // TODO return 0.0 for now, would be nice to know if there is no data present instead
+            return 0.0;
         }
         double multiplier = amount.getUnit().getFraction() * amount.getAmount();
         if (amount.getUnit().getType() == Amount.Unit.Type.VOLUME) {
