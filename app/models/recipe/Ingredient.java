@@ -112,9 +112,8 @@ public class Ingredient extends Model {
         return multiplier(foodItem.getMinerals().getFolate());
     }
     public Double getPhosphorus() {
-        return multiplier(foodItem.getMinerals().getPotassium());
+        return multiplier(foodItem.getMinerals().getPhosphorus());
     }
-    
     public Double getIodine() {
         return multiplier(foodItem.getMinerals().getIodine());
     }
