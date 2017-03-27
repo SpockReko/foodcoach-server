@@ -1,13 +1,16 @@
 package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import helpers.JsonWordHelper;
 import models.food.FoodItem;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
+import play.Logger;
 import play.libs.ws.WS;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,40 +30,105 @@ public class IngredientParser {
     private List<Amount.Unit> units = new ArrayList<>();
     private List<String> other = new ArrayList<>();
 
-    public Ingredient parse(String webString) {
-        System.out.println(webString);
-        int counter = 0;
-        JsonNode wordInfo = getWordInfo(webString);
-        String[] words = webString.trim().split("\\s+");
-        Map<String, Boolean> map = new HashMap<>();
+    private FoodItemParser foodItemParser = new FoodItemParser();
+    private JsonNode wordInfo;
+    private Map<String, Boolean> map = new HashMap<>();
+    private String workString;
 
-        for (String word : words){
-            map.put(word, true);
+    public Ingredient parse(String webString) {
+        workString = webString;
+
+        try {
+            wordInfo = retrieveWordInfo(webString);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        for (String word : words) {
-            for (Amount.Unit unit : Amount.Unit.values()) {
-                for (String identifier : unit.getIdentifiers()) {
-                    if (identifier.equals(getLemma(wordInfo, counter))) {
-                        if (map.get(word)) {
-                            units.add(unit);
-                            notOther.add(word);
-                            map.replace(word, false);
+        if (workString.contains("eller")) {
+            String[] split = workString.split("eller");
+        }
+
+        if (workString.contains(":")) {
+            String[] split = workString.split(":");
+        }
+
+        Ingredient ingredient;
+        try {
+            ingredient = findIngredient();
+        } catch (AmountNotFoundException e) {
+            Logger.warn("No amount found for '" + webString + "'");
+            return null;
+        }
+
+        return ingredient;
+    }
+
+    private Ingredient findIngredient() throws AmountNotFoundException {
+        Amount amount = findAmount(workString);
+        FoodItem food = findFood(workString);
+
+        return new Ingredient(food, amount);
+    }
+
+    private Amount findAmount(String str) throws AmountNotFoundException {
+        String[] words = str.trim().split("\\s+");
+        Double numeric = null;
+        Amount.Unit unit = null;
+        List<Integer> wordsToRemove = new ArrayList<>();
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            for (Amount.Unit u : Amount.Unit.values()) {
+                for (String identifier : u.getIdentifiers()) {
+                    if (identifier.equals(JsonWordHelper.getLemma(wordInfo, i))) {
+                        if (unit == null) {
+                            unit = u;
                             System.out.println("Added " + word + " as unit");
+                            wordsToRemove.add(i);
+                            notOther.add(word);
                         }
                     }
                 }
             }
-            if (getSucFeatures(wordInfo, counter).equals("NOM")) {
-                if (map.get(word)) {
-                    numerics.add(word);
-                    notOther.add(word);
+            if (JsonWordHelper.getSucFeatures(wordInfo, i).equals("NOM")) {
+                if (numeric == null) {
+                    word = word.replace(',','.');
+                    numeric = Double.parseDouble(word);
                     System.out.println("Added " + word + " as numeric");
-                    map.replace(word, false);
+                    wordsToRemove.add(i);
+                    notOther.add(word);
                 }
             }
+        }
+
+        if (numeric != null && unit != null) {
+            StringBuilder strBuilder = new StringBuilder();
+            for (int i = 0; i < words.length; i++) {
+                if (wordsToRemove.contains(i)) {
+                    continue;
+                }
+                strBuilder.append(words[i]).append(" ");
+            }
+            workString = strBuilder.toString();
+            return new Amount(numeric, unit);
+        } else {
+            throw new AmountNotFoundException();
+        }
+    }
+
+    private FoodItem findFood(String str) {
+        int counter = 0;
+
+        String[] words = str.trim().split("\\s+");
+        Map<String, Boolean> map = new HashMap<>();
+
+        for (String word : words) {
+            map.put(word, true);
+        }
+
+        for (String word : words) {
             if (!word.matches(".*\\d+.*")) {
-                if (FoodItemParser.findMatch(word) != null) {
+                if (foodItemParser.findMatch(word) != null) {
                     if (map.get(word)) {
                         ingredients.add(word);
                         notOther.add(word);
@@ -69,7 +137,7 @@ public class IngredientParser {
                     }
                 }
             }
-            if (getSucPosTag(wordInfo, counter).equals("JJ")) {
+            if (JsonWordHelper.getSucPosTag(wordInfo, counter).equals("JJ")) {
                 if (map.get(word)) {
                     adjectives.add(word);
                     notOther.add(word);
@@ -85,80 +153,34 @@ public class IngredientParser {
             }
         }
 
-        if (ingredients.isEmpty() || numerics.isEmpty() || units.isEmpty()) {
+        if (ingredients.isEmpty()) {
             return null;
         }
 
-        Amount amount;
-        try {
-            amount = new Amount(Double.parseDouble(numerics.get(0).replace(',','.')), units.get(0));
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-
-        FoodItem foodItem = FoodItemParser.findMatch(ingredients.get(0));
-
-        return new Ingredient(foodItem, amount);
+        return foodItemParser.findMatch(ingredients.get(0));
     }
 
-    private JsonNode getWordInfo(String webString) {
+    /**
+     * Calls an external API to get words in a String classified.
+     *
+     * @param webString
+     * @return
+     * @throws IOException
+     */
+    private JsonNode retrieveWordInfo(String webString) throws IOException {
         WSClient ws = WS.newClient(9000);
         CompletionStage<WSResponse> request = ws.url("http://json-tagger.herokuapp.com/tag")
-                .setContentType("application/x-www-form-urlencoded")
-                .post(webString);
+            .setContentType("application/x-www-form-urlencoded").post(webString);
         CompletionStage<JsonNode> jsonPromise = request.thenApply(WSResponse::asJson);
         try {
             return jsonPromise.toCompletableFuture().get();
         } catch (InterruptedException | ExecutionException e) {
             throw new IllegalArgumentException("Illegal webString");
+        } finally {
+            ws.close();
         }
     }
 
-    public String getWordForm(JsonNode json, int index) {
-        String str = json.get("sentences").get(0).get(index).get("word_form").toString();
-        return str.substring(1, str.length() - 1);
-    }
-
-    public String getLemma(JsonNode json, int index) {
-        String str = json.get("sentences").get(0).get(index).get("lemma").toString();
-        return str.substring(1, str.length() - 1);
-    }
-
-    public String getSucPosTag(JsonNode json, int index) {
-        String str = json.get("sentences").get(0).get(index).get("suc_tags").get("pos_tag").toString();
-        return str.substring(1, str.length() - 1);
-    }
-
-    public String getSucFeatures(JsonNode json, int index) {
-        String str = json.get("sentences").get(0).get(index).get("suc_tags").get("features").toString();
-        return str.substring(1, str.length() - 1);
-    }
-
-    public String getUdPosTag(JsonNode json, int index) {
-        String str = json.get("sentences").get(0).get(index).get("ud_tags").get("pos_tag").toString();
-        return str.substring(1, str.length() - 1);
-    }
-
-    public String getUdFeatures(JsonNode json, int index) {
-        String str = json.get("sentences").get(0).get(index).get("ud_tags").get("features").toString();
-        return str.substring(1, str.length() - 1);
-    }
-
-    public String getTokenID(JsonNode json, int index) {
-        String str = json.get("sentences").get(0).get(index).get("token_id").toString();
-        return str.substring(1, str.length() - 1);
-    }
-
-    public int getNumberOfWords(JsonNode json) {
-        int counter = 0;
-        while (true) {
-            if (json.get("sentences").get(0).has(counter)) {
-                counter++;
-            } else {
-                break;
-            }
-        }
-        System.out.println("COUNT = " + counter);
-        return counter;
-    }
+    public class AmountNotFoundException extends Exception {}
+    public class FoodNotFoundException extends Exception {}
 }

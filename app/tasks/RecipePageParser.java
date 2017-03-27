@@ -16,7 +16,7 @@ import java.io.FileReader;
 public class RecipePageParser {
 
     private static final String RECIPES_URLS_PATH = "resources/recipe_urls/receptfavoriter_se.txt";
-    private static final int RECIPES_TO_PARSE = 300;
+    private static final int RECIPES_TO_PARSE = 1;
 
     public static void main(String[] args) throws Exception {
         String crawlStorageFolder = "target/crawl-data";
