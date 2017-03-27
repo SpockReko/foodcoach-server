@@ -1,6 +1,7 @@
 package algorithms;
 
 import models.food.FoodItem;
+import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.RDI;
 import models.user.User;
@@ -22,7 +23,7 @@ public class WeekMenu {
     private List optimalMenu = new ArrayList<Recipe>();
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
-    private List<List<Recipe>> weekmenuList = new ArrayList<>();
+    private List<Menu> weekmenuList = new ArrayList<>();
     private User user = new User();
 
     public WeekMenu(User user){
@@ -31,7 +32,7 @@ public class WeekMenu {
 
     public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
         if (currentList.size() == nrOfRecipes){
-            weekmenuList.add(currentList);
+            weekmenuList.add(new Menu(currentList));
             return 1;
         }else if(indexOfRecipes < 0){
             return 0;
