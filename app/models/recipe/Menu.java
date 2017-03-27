@@ -15,6 +15,9 @@ public class Menu {
         this.recipeList = recipes;
     }
 
+    public List<Recipe> getRecipeList(){
+        return new ArrayList<>(recipeList);
+    }
     public void addComment(String comment){
         commentList.add(comment);
     }

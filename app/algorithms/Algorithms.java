@@ -12,8 +12,8 @@ public class Algorithms {
         return Math.pow(1 - procentNutrient, 2);
     }
 
-    public static Double L2Norm(HashMap<RDI,Double> nutrientsNeedPerDay, HashMap<RDI,Double> nutrientsContent, List<Recipe> recipes) {
-        HashMap<RDI,Double> nutrientsNeed = nutrientsNeedScaled(nutrientsNeedPerDay,recipes.size());
+    public static Double L2Norm(HashMap<RDI,Double> nutrientsNeedPerDay, HashMap<RDI,Double> nutrientsContent, Menu recipes) {
+        HashMap<RDI,Double> nutrientsNeed = nutrientsNeedScaled(nutrientsNeedPerDay,recipes.getRecipeList().size());
         Double sum = 0D;
         RDI nutrient;
         for( Map.Entry<RDI,Double> entry : nutrientsNeed.entrySet() ) {
@@ -29,10 +29,10 @@ public class Algorithms {
     /*
     Returns total amount of nutrients for several recipes
      */
-    public static HashMap<RDI,Double> nutrientsContent(List<Recipe> recipes) {
+    public static HashMap<RDI,Double> nutrientsContent(Menu recipes) {
         HashMap<RDI, Double> nutrientsContent = new HashMap<RDI, Double>();
 
-        for( Recipe recipe : recipes ) {
+        for( Recipe recipe : recipes.getRecipeList() ) {
             addToHashMap(nutrientsContent,RDI.CaloriKcal,recipe.getEnergyKcal()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.Fat,recipe.getFat()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.Protein,recipe.getProtein()/recipe.getPortions());

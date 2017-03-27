@@ -20,10 +20,10 @@ public class WeekMenu {
 
 
     private Double optimalMenuNutrition = 1.0;
-    private List optimalMenu = new ArrayList<Recipe>();
+    private Menu optimalMenu = new Menu(new ArrayList<Recipe>());
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
-    private List<Menu> weekmenuList = new ArrayList<>();
+    private List<Menu> weekMenuList = new ArrayList<>();
     private User user = new User();
 
     public WeekMenu(User user){
@@ -32,7 +32,7 @@ public class WeekMenu {
 
     public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
         if (currentList.size() == nrOfRecipes){
-            weekmenuList.add(new Menu(currentList));
+            weekMenuList.add(new Menu(currentList));
             return 1;
         }else if(indexOfRecipes < 0){
             return 0;
@@ -45,21 +45,21 @@ public class WeekMenu {
 
     }
 
-    public List<Recipe> calculateWeekMenu() {
+    public Menu calculateWeekMenu() {
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
-        optimalMenuNutrition = nutritionValueCalculation(weekmenuList.get(0));
-        for(List<Recipe> lr : weekmenuList){
-            double value = nutritionValueCalculation(lr);
-            System.out.println("Näringsvärdet för " + recipeListToString(lr) + "\n... är värdet: " + value);
+        optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
+        for(Menu menu : weekMenuList){
+            double value = nutritionValueCalculation(menu);
+            System.out.println("Näringsvärdet för " + recipeListToString(menu) + "\n... är värdet: " + value);
             if(value <= optimalMenuNutrition){
                 optimalMenuNutrition = value;
-                optimalMenu = lr;
+                optimalMenu = menu;
             }
         }
         return optimalMenu;
     }
 
-    public Double nutritionValueCalculation(List<Recipe> chosenRecipes){
+    public Double nutritionValueCalculation(Menu chosenRecipes){
         //Random r = new Random();
         //return (0.01*r.nextInt(100));
         HashMap<RDI,Double> nutrientsNeed = user.hmap;
@@ -68,9 +68,9 @@ public class WeekMenu {
 
     }
 
-    public String recipeListToString(List<Recipe> list){
+    public String recipeListToString(Menu menu){
         String text = "";
-        for(Recipe r : list){
+        for(Recipe r : menu.getRecipeList()){
             text = text + "\n " + r.getTitle() ;
         }
         return text;
