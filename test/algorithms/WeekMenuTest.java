@@ -119,7 +119,7 @@ public class WeekMenuTest {
                 Float.parseFloat(user.hmap.get(RDI.IodineUG)+"") * convertToOnePortion,
                 Float.parseFloat(user.hmap.get(RDI.IronMG)+"") * convertToOnePortion,
                 Float.parseFloat(user.hmap.get(RDI.CalciumMG)+"") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(RDI.PotassiumG)+"") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(RDI.PotassiumMG)+"") * convertToOnePortion,
                 Float.parseFloat(user.hmap.get(RDI.Magnesium)+"") * convertToOnePortion,
                 0F,
                 0F,
