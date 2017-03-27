@@ -3,6 +3,7 @@ package controllers;
 import algorithms.WeekMenu;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.User;
 import play.data.DynamicForm;
@@ -32,8 +33,9 @@ public class WeekMenuController extends Controller {
         User user;
         int nrOfRecipes;
 
-        if(requestData.get("sex") != null) {
-            Integer age = requestData.get("age") != null ? Integer.parseInt(requestData.get("age")) : 25;
+        if (requestData.get("sex") != null) {
+            Integer age =
+                requestData.get("age") != null ? Integer.parseInt(requestData.get("age")) : 25;
 
             String sex = requestData.get("sex"); // output: "women" or "male"
             User.Sex sexEnum = sex.equals("women") ? User.Sex.FEMALE : User.Sex.MALE;
@@ -41,7 +43,9 @@ public class WeekMenuController extends Controller {
             Double length = Double.parseDouble(requestData.get("length"));
             Double activityLevel = Double.parseDouble(requestData.get("activityLevel")); // low: 1.2
             String goal = requestData.get("goal");// low: 1
-            User.Goal goalEnum = goal.equals("1") ? User.Goal.DECREASE : goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
+            User.Goal goalEnum = goal.equals("1") ?
+                User.Goal.DECREASE :
+                goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
             String allergy = requestData.get("allergy");// sträng
             ArrayList<String> allergyList = new ArrayList<>();
             for (String n : allergy.split(" ")) {
@@ -76,7 +80,7 @@ public class WeekMenuController extends Controller {
 
 
     //Testa week menu
-    public Result weekMenuTest(){
+    public Result weekMenuTest() {
         List<Recipe> allRecipes = Recipe.find.all();
         List<Recipe> chosenRecipes = new ArrayList<Recipe>();
 
@@ -84,7 +88,7 @@ public class WeekMenuController extends Controller {
         //TODO: Få följande värden ifrån användaren genom client
         weekMenu.setNrOfRecipes(3);
         weekMenu.setAllRecipes(allRecipes);
-        List<Recipe> resultingWeekMenu = weekMenu.calculateWeekMenu();
+        Menu resultingWeekMenu = weekMenu.calculateWeekMenu();
 /*
         System.out.println(resultingWeekMenu.size());
         ObjectNode json = Json.newObject();
@@ -97,7 +101,7 @@ public class WeekMenuController extends Controller {
         }
         return ok(json);
 */
-        if(resultingWeekMenu.size() == weekMenu.getNrOfRecipes())
+        if (resultingWeekMenu.getRecipeList().size() == weekMenu.getNrOfRecipes())
             return ok(weekMenu.recipeListToString(resultingWeekMenu));
         return ok("nothing found!");
     }
