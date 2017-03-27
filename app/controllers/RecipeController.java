@@ -2,13 +2,16 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.food.FoodItem;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
+import parsers.IngredientParser;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +34,13 @@ public class RecipeController extends Controller {
     public Result getAllNotLinked() {
         List<NotLinkedRecipe> recipes = NotLinkedRecipe.find.all();
         return ok(Json.toJson(recipes));
+    }
+
+    // GET /parsetest
+    public Result parseTest() {
+        IngredientParser parser = new IngredientParser();
+        Ingredient ingredient = parser.parse("200 gram havssalt");
+        return ok(Json.toJson(ingredient));
     }
 
     private ObjectNode getJson(Recipe recipe) {

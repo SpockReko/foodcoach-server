@@ -25,7 +25,8 @@ public class ParseController extends Controller {
     static WSClient ws;
 
     public Result parseIngredient(String str) {
-        FoodItem item = FoodItemParser.findMatch(str);
+        FoodItemParser foodItemParser = new FoodItemParser();
+        FoodItem item = foodItemParser.findMatch(str);
         if (item.example != null) {
             return ok("<font size=\"4\" color=\"blue\">"
                     + "#" + item.getLmvFoodNumber() + " - "

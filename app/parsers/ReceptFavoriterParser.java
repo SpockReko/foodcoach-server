@@ -30,8 +30,8 @@ public class ReceptFavoriterParser implements RecipeParser {
 
         for (Element ingredientString : ingredientStrings) {
             Ingredient ingredient;
-            System.out.println(ingredientString.text());
-            ingredient = ingredientParser.parse(ingredientString.text());
+            String webString = ingredientString.text().toLowerCase().trim();
+            ingredient = ingredientParser.parse(webString);
             if (ingredient != null) {
                 ingredients.add(ingredient);
             }

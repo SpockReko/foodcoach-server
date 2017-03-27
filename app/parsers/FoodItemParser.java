@@ -12,13 +12,13 @@ import play.Logger;
  */
 public class FoodItemParser {
 
-    private static int maxDistance = 2;
+    private int maxDistance = 2;
 
-    private static Levenshtein levenshtein = new Levenshtein();
-    private static FoodItem matchingFood = null;
-    private static double shortestDistance = Double.MAX_VALUE;
+    private Levenshtein levenshtein = new Levenshtein();
+    private FoodItem matchingFood = null;
+    private double shortestDistance = Double.MAX_VALUE;
 
-    public static FoodItem findMatch(String ingredient) {
+    public FoodItem findMatch(String ingredient) {
         matchingFood = null;
         shortestDistance = Double.MAX_VALUE;
 
@@ -42,7 +42,7 @@ public class FoodItemParser {
         }
     }
 
-    private static FoodItem autoCorrect(String ingredient) {
+    private FoodItem autoCorrect(String ingredient) {
         List<FoodItem> allFoods = FoodItem.find.all();
 
         for (FoodItem food : allFoods) {
@@ -57,7 +57,7 @@ public class FoodItemParser {
         return matchingFood;
     }
 
-    private static void checkDistance(String input, String tag, FoodItem food) {
+    private void checkDistance(String input, String tag, FoodItem food) {
         if (input.length() <=1){
             maxDistance = 0;
         }
