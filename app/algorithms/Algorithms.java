@@ -12,8 +12,8 @@ public class Algorithms {
         return Math.pow(1 - procentNutrient, 2);
     }
 
-    public static Double L2Norm(HashMap<RDI,Double> nutrientsNeedPerDay, HashMap<RDI,Double> nutrientsContent, Menu recipes) {
-        HashMap<RDI,Double> nutrientsNeed = nutrientsNeedScaled(nutrientsNeedPerDay,recipes.getRecipeList().size());
+    public static Double L2Norm(HashMap<RDI,Double> nutrientsNeedPerDay, HashMap<RDI,Double> nutrientsContent, Menu menu) {
+        HashMap<RDI,Double> nutrientsNeed = nutrientsNeedScaled(nutrientsNeedPerDay,menu.getRecipeList().size());
         Double sum = 0D;
         RDI nutrient;
         for( Map.Entry<RDI,Double> entry : nutrientsNeed.entrySet() ) {
@@ -21,6 +21,7 @@ public class Algorithms {
             if(nutrientsNeed.containsKey(nutrient) && nutrientsContent.containsKey(nutrient)) {
                 double l2NormResult = L2NormTerm(nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient));
                 sum += l2NormResult > Math.pow(10,-8) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)
+                addNutrionInfoToWeekMenu(menu, nutrient, l2NormResult);
             }
         }
         return Math.sqrt(sum);
@@ -29,10 +30,10 @@ public class Algorithms {
     /*
     Returns total amount of nutrients for several recipes
      */
-    public static HashMap<RDI,Double> nutrientsContent(Menu recipes) {
+    public static HashMap<RDI,Double> nutrientsContent(Menu menu) {
         HashMap<RDI, Double> nutrientsContent = new HashMap<RDI, Double>();
 
-        for( Recipe recipe : recipes.getRecipeList() ) {
+        for( Recipe recipe : menu.getRecipeList() ) {
             addToHashMap(nutrientsContent,RDI.CaloriKcal,recipe.getEnergyKcal()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.Fat,recipe.getFat()/recipe.getPortions());
             addToHashMap(nutrientsContent,RDI.Protein,recipe.getProtein()/recipe.getPortions());
@@ -61,7 +62,6 @@ public class Algorithms {
         return nutrientsContent;
     }
 
-
     /*
     Adds term to current value for nutrient in HashMap
      */
@@ -83,6 +83,17 @@ public class Algorithms {
             nutrientsNeedScaled.put(nutrient, 0.3*nrOfRecipes*nutrientsNeedPerDay.get(nutrient)); // assumes each meal is 30% of daily intake
         }
         return nutrientsNeedScaled;
+    }
+
+
+    private static void addNutrionInfoToWeekMenu(Menu menu, RDI nutrient, double l2NormResult) {
+        if((nutrient + "").length() < 7) {
+            menu.addComment(nutrient + ":\t\t" +
+                    Math.sqrt(l2NormResult));
+        }else{
+            menu.addComment(nutrient + ":\t" +
+                    Math.sqrt(l2NormResult));
+        }
     }
 
 }

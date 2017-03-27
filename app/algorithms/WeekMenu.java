@@ -18,8 +18,8 @@ import java.util.HashMap;
  */
 public class WeekMenu {
 
-
-    private Double optimalMenuNutrition = 1.0;
+    private final Double LARGE_DISTANCE = 999999999.9999;
+    private Double optimalMenuNutrition = LARGE_DISTANCE;
     private Menu optimalMenu = new Menu(new ArrayList<Recipe>());
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
@@ -50,7 +50,7 @@ public class WeekMenu {
         optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
         for(Menu menu : weekMenuList){
             double value = nutritionValueCalculation(menu);
-            System.out.println("Näringsvärdet för " + recipeListToString(menu) + "\n... är värdet: " + value);
+            System.out.println("Nutrients for " + recipeListToString(menu) + "\n... has the value: " + value);
             if(value <= optimalMenuNutrition){
                 optimalMenuNutrition = value;
                 optimalMenu = menu;
@@ -59,19 +59,22 @@ public class WeekMenu {
         return optimalMenu;
     }
 
-    public Double nutritionValueCalculation(Menu chosenRecipes){
-        //Random r = new Random();
-        //return (0.01*r.nextInt(100));
+    public Double nutritionValueCalculation(Menu chosenMenu){
+
         HashMap<RDI,Double> nutrientsNeed = user.hmap;
-        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenRecipes);
-        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent,chosenRecipes);
+        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenMenu);
+        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent,chosenMenu);
 
     }
 
     public String recipeListToString(Menu menu){
         String text = "";
         for(Recipe r : menu.getRecipeList()){
-            text = text + "\n " + r.getTitle() ;
+            text = text + r.getTitle() + "\n";
+        }
+        text = text + "\n\n";
+        for(String comment : menu.getCommentList()){
+            text = text + comment + "\n";
         }
         return text;
     }

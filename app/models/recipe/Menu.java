@@ -16,8 +16,13 @@ public class Menu {
     }
 
     public List<Recipe> getRecipeList(){
-        return recipeList;
+        return new ArrayList<Recipe>(recipeList); //Return a copy so the class is unmodifiable
     }
+
+    public List<String> getCommentList(){
+        return new ArrayList<String>(commentList);
+    }
+
     public void addComment(String comment){
         commentList.add(comment);
     }
