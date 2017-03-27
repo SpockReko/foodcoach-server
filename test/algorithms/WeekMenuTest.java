@@ -8,6 +8,7 @@ import models.user.RDI;
 import models.user.User;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,11 +24,11 @@ public class WeekMenuTest {
 
     //TODO: Add a user and recepie ith identical recepie and se if week menu chose this.
 
-    Double result;
-    List<Recipe> resultingList = new ArrayList<>();
-    Recipe userRecipe;
-    @Before
-    public void init(){
+    private static Double result;
+    private static List<Recipe> resultingList = new ArrayList<>();
+    private static Recipe userRecipe;
+    @BeforeClass
+    public static void init(){
 
         User user = new User();
         user.firstName = "User";
@@ -71,7 +72,7 @@ public class WeekMenuTest {
 
 
     @NotNull
-    private Recipe createOptimalRecipeForSpecificUser(User user) {
+    private static Recipe createOptimalRecipeForSpecificUser(User user) {
         List<Ingredient> ingredients = new ArrayList<>();
         float convertToOnePortion = 0.3f;
         Sugars sugers = new Sugars(

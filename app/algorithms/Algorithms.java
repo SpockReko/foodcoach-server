@@ -19,7 +19,8 @@ public class Algorithms {
         for( Map.Entry<RDI,Double> entry : nutrientsNeed.entrySet() ) {
             nutrient = entry.getKey();
             if(nutrientsNeed.containsKey(nutrient) && nutrientsContent.containsKey(nutrient)) {
-                sum += L2NormTerm(nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient));
+                double l2NormResult = L2NormTerm(nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient));
+                sum += l2NormResult > Math.pow(10,-8) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)
             }
         }
         return Math.sqrt(sum);
