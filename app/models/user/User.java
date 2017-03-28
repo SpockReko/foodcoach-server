@@ -64,9 +64,9 @@ public class User extends Model {
     public User() {
 
         hmap.put(Nutrient.CaloriKcal, 2000D);
-        hmap.put(Nutrient.Protein, 0.17*2000D);
-        hmap.put(Nutrient.Carbohydrates, 0.50*2000D);
-        hmap.put(Nutrient.Fat, 0.33*2000D);
+        hmap.put(Nutrient.Protein, 0.17*2000D/4);
+        hmap.put(Nutrient.Carbohydrates, 0.50*2000D/4);
+        hmap.put(Nutrient.Fat, 0.33*2000D/9);
         hmap.put(Nutrient.Fibre, 30D);
 
         hmap.put(Nutrient.VitaminAUG, 800D);

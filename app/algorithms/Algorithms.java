@@ -30,7 +30,7 @@ public class Algorithms {
                 filterLimit(nutrient, nutrientsContent.get(nutrient), nutrientsNeed.get(nutrient), overdoseValues.get(nutrient));
                 Double percentageOfRDI = nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient);
                 sum += L2NormTerm(percentageOfRDI);
-                addNutrionInfoToWeekMenu(menu, nutrient, L2NormTerm(percentageOfRDI));
+                addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
             }
         }
         return Math.sqrt(sum);
@@ -40,15 +40,15 @@ public class Algorithms {
     If RDI of the nutrient is fulfilled, procent is set to optimal value (100%). Also informs if the nutrient is overdosed.
      */
     public static void filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose) {
-        Double procentNutrient = nutrientContent/nutrientNeed;
+        Double percentageNutrient = nutrientContent/nutrientNeed;
 
-        if( procentNutrient > 1D && nutrientContent < overdose ) {
-            procentNutrient = 1D;
+        if( percentageNutrient > 1D && nutrientContent < overdose ) {
+            percentageNutrient = 1D;
         } else if (nutrientContent > overdose ){
             // TODO lägga till meddelande om att det är för mycket av näringsämnet
             System.out.print("\nOBS!!! Överdosering av ");
             System.out.print(nutrient);
-            System.out.print("\nContent: "+nutrientContent+". Need: "+nutrientNeed+"\n\n");
+            System.out.print("\nInnehåll: "+nutrientContent+". Behov: "+nutrientNeed+"\n\n");
         }
     }
 
@@ -60,30 +60,30 @@ public class Algorithms {
         HashMap<Nutrient, Double> nutrientsContent = new HashMap<Nutrient, Double>();
 
         for( Recipe recipe : menu.getRecipeList() ) {
-            addToHashMap(nutrientsContent, Nutrient.CaloriKcal,recipe.getEnergyKcal()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Fat,recipe.getFat()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Protein,recipe.getProtein()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Carbohydrates,recipe.getCarbohydrates()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Fibre,recipe.getFibre()/recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.CaloriKcal, recipe.getEnergyKcal() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.Fat, recipe.getFat() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.Protein, recipe.getProtein() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.Carbohydrates, recipe.getCarbohydrates() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.Fibre, recipe.getFibre() / recipe.getPortions());
 
-            addToHashMap(nutrientsContent, Nutrient.VitaminAUG, recipe.getVitaminA()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminB6MG, recipe.getVitaminB6()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminB12UG, recipe.getVitaminB12()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminCMG, recipe.getVitaminC()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminDUG, recipe.getVitaminD()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminEMG, recipe.getVitaminE()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.ThiamineMG, recipe.getThiamine()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.RiboflavinMG, recipe.getRiboflavin()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.NiacinMG, recipe.getNiacin()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.FolateUG, recipe.getFolate()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.CalciumMG, recipe.getCalcium()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.PhosphorusMG, recipe.getPhosphorus()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.PotassiumMG, recipe.getPotassium()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.MagnesiumMG, recipe.getMagnesium()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.IronMG, recipe.getIron()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.ZinkMG, recipe.getZink()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.IodineUG, recipe.getIodine()/recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.SeleniumUG, recipe.getSelenium()/recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VitaminAUG, recipe.getVitaminA() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VitaminB6MG, recipe.getVitaminB6() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VitaminB12UG, recipe.getVitaminB12() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VitaminCMG, recipe.getVitaminC() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VitaminDUG, recipe.getVitaminD() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VitaminEMG, recipe.getVitaminE() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.ThiamineMG, recipe.getThiamine() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.RiboflavinMG, recipe.getRiboflavin() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.NiacinMG, recipe.getNiacin() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.FolateUG, recipe.getFolate() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.CalciumMG, recipe.getCalcium() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.PhosphorusMG, recipe.getPhosphorus() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.PotassiumMG, recipe.getPotassium() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.MagnesiumMG, recipe.getMagnesium() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.IronMG, recipe.getIron() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.ZinkMG, recipe.getZink() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.IodineUG, recipe.getIodine() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.SeleniumUG, recipe.getSelenium() / recipe.getPortions());
         }
 
         return nutrientsContent;
@@ -96,7 +96,7 @@ public class Algorithms {
         if( !hmap.containsKey(nutrient) ) {
             hmap.put(nutrient,0D);
         }
-        hmap.put(nutrient,hmap.get(nutrient)+additionalTerm);
+        hmap.put(nutrient, hmap.get(nutrient) + additionalTerm);
         return hmap;
     }
 
@@ -113,13 +113,13 @@ public class Algorithms {
     }
 
 
-    private static void addNutrionInfoToWeekMenu(Menu menu, Nutrient nutrient, double l2NormResult) {
+    private static void addNutrionInfoToWeekMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
         if((nutrient + "").length() < 7) {
             menu.addComment(nutrient + ":\t\t" +
-                    Math.sqrt(l2NormResult));
+                    percentageOfRDI);
         }else{
             menu.addComment(nutrient + ":\t" +
-                    Math.sqrt(l2NormResult));
+                    percentageOfRDI);
         }
     }
 

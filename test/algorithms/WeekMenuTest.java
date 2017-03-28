@@ -99,7 +99,7 @@ public class WeekMenuTest {
                 Float.parseFloat(user.hmap.get(Nutrient.IronMG) + "") * convertToOnePortion,
                 Float.parseFloat(user.hmap.get(Nutrient.CalciumMG) + "") * convertToOnePortion,
                 Float.parseFloat(user.hmap.get(Nutrient.PotassiumMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.Magnesium) + "") * convertToOnePortion, 0F, 0F,
+                Float.parseFloat(user.hmap.get(Nutrient.MagnesiumMG) + "") * convertToOnePortion, 0F, 0F,
                 Float.parseFloat(user.hmap.get(Nutrient.SeleniumUG) + "") * convertToOnePortion,
                 Float.parseFloat(user.hmap.get(Nutrient.ZinkMG) + "") * convertToOnePortion);
         Amount amount = new Amount(100, Amount.Unit.GRAM);
