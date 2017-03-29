@@ -70,7 +70,7 @@ public class WeekMenuController extends Controller {
         // weekmenu(user)?
 
 
-        WeekMenu weekMenuInstant = new WeekMenu(user);
+        WeekMenu weekMenuInstant = new WeekMenu(user, allRecipes);
         weekMenuInstant.setNrOfRecipes(nrOfRecipes);
 
         //return ok(Json.toJson(map));
@@ -84,10 +84,9 @@ public class WeekMenuController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         List<Recipe> chosenRecipes = new ArrayList<Recipe>();
 
-        WeekMenu weekMenu = new WeekMenu(new User());
+        WeekMenu weekMenu = new WeekMenu(new User(), allRecipes);
         //TODO: Få följande värden ifrån användaren genom client
         weekMenu.setNrOfRecipes(3);
-        weekMenu.setAllRecipes(allRecipes);
         Menu resultingWeekMenu = weekMenu.calculateWeekMenu();
 /*
         System.out.println(resultingWeekMenu.size());

@@ -1,6 +1,7 @@
 package algorithms;
 
 import models.food.FoodItem;
+import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
@@ -24,8 +25,9 @@ public class WeekMenu {
     private List<Menu> weekMenuList = new ArrayList<>();
     private User user = new User();
 
-    public WeekMenu(User user){
+    public WeekMenu(User user, List<Recipe> recipeList){
         this.user = user;
+        this.allRecipes = recipeList;
     }
 
     public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
@@ -76,6 +78,18 @@ public class WeekMenu {
             text = text + comment + "\n";
         }
         return text;
+    }
+
+    private void filterRecepies(List<Ingredient> ingredientList, List<Recipe> recipeList){
+        List<Recipe> filteredRecipes = new ArrayList<>();
+        for (Recipe recipe : allRecipes){
+            for (Ingredient ingredient :ingredientList) {
+                if(recipe.ingredients.contains(ingredient)){
+
+                }
+            }
+        }
+        allRecipes = filteredRecipes;
     }
 
     public int getNrOfRecipes(){ return nrOfRecipes;}
