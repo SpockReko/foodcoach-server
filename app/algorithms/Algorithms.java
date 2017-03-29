@@ -1,5 +1,7 @@
 package algorithms;
 import java.util.*;
+
+import models.food.FoodItem;
 import models.recipe.*;
 import models.user.Nutrient;
 
@@ -124,6 +126,27 @@ public class Algorithms {
             menu.addComment(nutrient + ":\t" +
                     percentageOfRDI);
         }
+    }
+
+    public static List<FoodItem> SortByTheDifference(Ingredient ingredient){
+        /** Sortera en lista på livsmedel med mest lik i toppen till minst lik i botten
+         * Lista på alla ingredienser
+         *      - sortera listan på minst till mest skillnad av näringsvärdena
+         *          - Quicksort!
+         * Returnera listan.
+         *                                                                          */
+        List<FoodItem> foods = FoodItem.find.all();
+        foods = QuicksortFoodItem.sort(foods, ingredient.getFoodItem());
+        return null;
+    }
+
+    public static Recipe changeIngrediense(Recipe recipe, Ingredient ingredient, FoodItem foodItem){
+        List<Ingredient> recipeIngredient = recipe.ingredients;
+        recipeIngredient.remove(ingredient);
+        recipeIngredient.add(new Ingredient(foodItem,ingredient.getAmount()));
+        return recipe;
+        // TODO: Om inte ingredients listan ej har shared reference så måste vi köra koden här under.
+        //return new Recipe(recipe.getTitle()+ " changed", recipe.getPortions(), recipeIngredient);
     }
 
 }

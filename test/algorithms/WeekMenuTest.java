@@ -52,7 +52,6 @@ public class WeekMenuTest {
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
         HashMap<Nutrient,Double> nutrientsContent = Algorithms.nutrientsContent(resultingMenu);
         result = Algorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,resultingMenu);
-        System.out.println("The result is: " + result + "!!!!!!!!!!!!!!!!" );
 
     }
 
