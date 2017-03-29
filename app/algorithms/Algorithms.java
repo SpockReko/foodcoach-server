@@ -23,13 +23,15 @@ public class Algorithms {
         for( Map.Entry<Nutrient,Double> entry : nutrientsNeed.entrySet() ) {
             nutrient = entry.getKey();
             if(nutrientsNeed.containsKey(nutrient) && nutrientsContent.containsKey(nutrient) && overdoseValues.containsKey(nutrient)) {
-                /*
-                double l2NormResult = L2NormTerm(nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient));
-                sum += l2NormResult > Math.pow(10,-8) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)
-                */
-                filterLimit(nutrient, nutrientsContent.get(nutrient), nutrientsNeed.get(nutrient), overdoseValues.get(nutrient));
-                Double percentageOfRDI = nutrientsContent.get(nutrient) / nutrientsNeed.get(nutrient);
-                sum += L2NormTerm(percentageOfRDI);
+                // TODO: filterLimit påverkar ingen variabel i denna metoden.
+                Double percentageOfRDI = filterLimit(
+                                        nutrient,
+                                        nutrientsContent.get(nutrient),
+                                        nutrientsNeed.get(nutrient),
+                                        overdoseValues.get(nutrient));
+                Double l2NormResult = L2NormTerm(percentageOfRDI);
+                sum += l2NormResult > Math.pow(10,-10) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)
+//                sum += L2NormTerm(percentageOfRDI);
                 addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
             }
         }
@@ -39,7 +41,7 @@ public class Algorithms {
     /*
     If RDI of the nutrient is fulfilled, procent is set to optimal value (100%). Also informs if the nutrient is overdosed.
      */
-    public static void filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose) {
+    public static double filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose) {
         Double percentageNutrient = nutrientContent/nutrientNeed;
 
         if( percentageNutrient > 1D && nutrientContent < overdose ) {
@@ -50,6 +52,7 @@ public class Algorithms {
             System.out.print(nutrient);
             System.out.print("\nInnehåll: "+nutrientContent+". Behov: "+nutrientNeed+"\n\n");
         }
+        return percentageNutrient;
     }
 
 
