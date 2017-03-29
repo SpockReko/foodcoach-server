@@ -2,9 +2,13 @@ package algorithms;
 
 import models.recipe.Ingredient;
 import models.recipe.IngredientAmount;
+import models.recipe.Menu;
 import models.recipe.Recipe;
+import models.user.Nutrient;
 import models.user.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +30,13 @@ public class RecipeOptimizer {
     }
 
     public Recipe OptimizeARecipe(Recipe recipe, User user){
+        List<Recipe> r = new ArrayList<>();
+        r.add(recipe);
+        HashMap<Nutrient,Double> nutrients = Algorithms.nutrientsContent(new Menu(r));
+        HashMap<Nutrient,Double> userNeeds = user.hmap;
+
+
+
         // Optimize a recepie to satisfie Users need!
         // suggested way is:
         // * To see if the recipe is to much calories or to little for the user.

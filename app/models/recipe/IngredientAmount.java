@@ -10,15 +10,15 @@ package models.recipe;
 public class IngredientAmount {
 
     private Ingredient ingredient;
-    private int amount;
+    private int atLeastAmount;
 
     public IngredientAmount(Ingredient ingredient, int amount){
         this.ingredient = ingredient;
-        this.amount = amount;
+        this.atLeastAmount = amount;
     }
 
     public int getAmount() {
-        return amount;
+        return atLeastAmount;
     }
 
     public Ingredient getIngredient() {
