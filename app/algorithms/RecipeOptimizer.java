@@ -1,19 +1,27 @@
 package algorithms;
 
 import models.recipe.Ingredient;
+import models.recipe.IngredientAmount;
 import models.recipe.Recipe;
 import models.user.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by stefa on 2017-03-20.
  */
 public class RecipeOptimizer {
 
-    public Recipe generateNewRecipe(List<Ingredient> list, User user){
-        // Optimize the recipe with help of simplex method.
-        // We need to define a limit for every ingrediense so it not becomes 0% of anything.
+    // The map include the given ingredient and number of least amount of th ingredient.
+    public Recipe generateNewRecipe(List<IngredientAmount> list, User user){
+        RecipeSimplex recipeSimplex = new RecipeSimplex();
+        for (IngredientAmount ingredientAmount: list) {
+            Ingredient ingredient = ingredientAmount.getIngredient();
+            int amount = ingredientAmount.getAmount();
+//            recipeSimplex.add(ingredient,amount);
+        }
+//        return recipeSimplex.generateNewRecipe;
         return null;
     }
 
