@@ -3,14 +3,12 @@ package algorithms;
 import models.food.FoodItem;
 import models.recipe.Menu;
 import models.recipe.Recipe;
-import models.user.RDI;
+import models.user.Nutrient;
 import models.user.User;
 
 
-import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.HashMap;
 
 /**
@@ -59,13 +57,14 @@ public class WeekMenu {
         return optimalMenu;
     }
 
+
     public Double nutritionValueCalculation(Menu chosenMenu){
-
-        HashMap<RDI,Double> nutrientsNeed = user.hmap;
-        HashMap<RDI,Double> nutrientsContent = Algorithms.nutrientsContent(chosenMenu);
-        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent,chosenMenu);
-
+        HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
+        HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
+        HashMap<Nutrient,Double> nutrientsContent = Algorithms.nutrientsContent(chosenMenu);
+        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
     }
+
 
     public String recipeListToString(Menu menu){
         String text = "";

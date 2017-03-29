@@ -3,11 +3,12 @@ package models.user;
 /**
  * Created by Admin on 2017-03-23.
  */
-public enum RDI {
+public enum Nutrient {
         CaloriKcal,
         Protein,
         Carbohydrates,
         Fat,
+        Fibre,
         VitaminAUG,
         VitaminDUG,
         VitaminEMG,
@@ -21,7 +22,7 @@ public enum RDI {
         CalciumMG,
         PhosphorusMG,
         PotassiumMG,
-        Magnesium,
+        MagnesiumMG,
         IronMG,
         ZinkMG,
         CopperMG,

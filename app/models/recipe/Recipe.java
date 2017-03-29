@@ -160,6 +160,9 @@ public class Recipe extends Model {
     public Double getEnergyPercentFat() {
         return 9*100*getFat()/getEnergyKcal(); // energi från fett per portion
     }
+    public Double getEnergyPercentFibre() {
+        return 2*100*getFibre()/getEnergyKcal();
+    }
     public Double getKcalPerPortion() {
         return getEnergyKcal()/getPortions();
     }
