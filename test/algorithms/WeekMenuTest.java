@@ -44,8 +44,7 @@ public class WeekMenuTest {
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
-        WeekMenu weekMenu = new WeekMenu(user);
-        weekMenu.setAllRecipes(recipes);
+        WeekMenu weekMenu = new WeekMenu(user,recipes);
         weekMenu.setNrOfRecipes(1);
         resultingMenu = weekMenu.calculateWeekMenu();
 
@@ -108,7 +107,8 @@ public class WeekMenuTest {
             new FoodItem("perfectFood", "perfektus foodus", 9999, "perfekt",
                 Float.parseFloat(user.hmap.get(Nutrient.CaloriKcal) + "") * convertToOnePortion, 0F,
                 Float.parseFloat(user.hmap.get(Nutrient.Carbohydrates) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.Protein) + "") * convertToOnePortion, 0F, 0F, 0F,
+                Float.parseFloat(user.hmap.get(Nutrient.Protein) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.Fibre) + "")* convertToOnePortion, 0F, 0F,
                 0F, 0F, 0F, 0F, sugars, fats, vitamins, minerals), amount));
 
         return new Recipe(user.firstName + "Recipe", 1, ingredients);

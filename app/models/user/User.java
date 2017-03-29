@@ -132,6 +132,7 @@ public class User extends Model {
             hmap.put(Nutrient.Protein, proteinNeed);
             hmap.put(Nutrient.Carbohydrates, carbohydratesNeed);
             hmap.put(Nutrient.Fat, fatNeed);
+            hmap.put(Nutrient.Fibre, 30D);
 
 
         }
@@ -146,7 +147,7 @@ public class User extends Model {
             hmap.put(Nutrient.Protein, proteinNeed);
             hmap.put(Nutrient.Carbohydrates, carbohydratesNeed);
             hmap.put(Nutrient.Fat, fatNeed);
-
+            hmap.put(Nutrient.Fibre, 30D);
         }
         getRDI();
     }
