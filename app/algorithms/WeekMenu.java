@@ -1,11 +1,13 @@
 package algorithms;
 
 import models.food.FoodItem;
+import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
+import org.jetbrains.annotations.NotNull;
 
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class WeekMenu {
     private List<Recipe> allRecipes = new ArrayList<>();
     private List<Menu> weekMenuList = new ArrayList<>();
     private User user = new User();
+    private List<Recipe> notThisRecipes = new ArrayList<>(); //TODO: Dummy list!
 
     public WeekMenu(User user, List<Recipe> recipeList){
         this.user = user;
@@ -46,6 +49,7 @@ public class WeekMenu {
     }
 
     public Menu calculateWeekMenu() {
+        filterRecepies(user.allergier,notThisRecipes);
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
         optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
         for(Menu menu : weekMenuList){
@@ -80,26 +84,43 @@ public class WeekMenu {
         return text;
     }
 
-    private void filterRecepies(List<Ingredient> ingredientList, List<Recipe> recipeList){
-        List<Recipe> filteredRecipes = new ArrayList<>();
-        for (Recipe recipe : allRecipes){
-            for (Ingredient ingredient :ingredientList) {
-                if(recipe.ingredients.contains(ingredient)){
+    private void filterRecepies(List<String> stringList, List<Recipe> recipeList){
 
-                }
+        List<Ingredient> ingredientList = getIngredientsFromString(stringList);
+        List<Recipe> filteredRecipes = new ArrayList<>();
+
+        for (Recipe recipe : allRecipes){
+            boolean badRecipe = false;
+            for (Ingredient ingredient :ingredientList) {
+                if(recipe.ingredients.contains(ingredient)) badRecipe = true;
             }
+            for (Recipe r: recipeList) {
+                if(recipe.equals(r)) badRecipe = true;
+            }
+            if(!badRecipe) filteredRecipes.add(recipe);
         }
         allRecipes = filteredRecipes;
+    }
+
+    @NotNull
+    private List<Ingredient> getIngredientsFromString(List<String> stringList) {
+        List<Ingredient> ingredientList = new ArrayList<>();
+
+        for (String name: stringList) {
+            List<FoodItem> foods = FoodItem.find.where().contains("name", name).findList();
+            if( foods != null){
+                for (FoodItem fi: foods) {
+                    ingredientList.add(new Ingredient(fi,new Amount(100.0, Amount.Unit.GRAM)));
+                }
+            }
+
+        } return ingredientList;
     }
 
     public int getNrOfRecipes(){ return nrOfRecipes;}
 
     public void setNrOfRecipes(int nrOfRecipes) {
         this.nrOfRecipes = nrOfRecipes;
-    }
-
-    public void setAllRecipes(List<Recipe> allRecipes) {
-        this.allRecipes = allRecipes;
     }
 
 }
