@@ -51,8 +51,8 @@ public class Amount {
         KRYDDMATT(0.01, Type.VOLUME, new String[] { "krm", "kryddmått" }),
         TESKED(0.05, Type.VOLUME, new String[] { "tsk", "tesked" }),
         MATSKED(0.15, Type.VOLUME, new String[] { "msk", "matsked" }),
-        // Unkown unit
-        UNKNOWN(0.0, Type.UNKNOWN, new String[] {""} );
+        // Single piece unit
+        STYCK(0.0, Type.SINGLE, new String[] { "st", "stycken" } );
 
         private final double fraction;
         private final Type type;
@@ -95,6 +95,6 @@ public class Amount {
         /**
          * The type of the unit. Either mass or volume.
          */
-        public enum Type {MASS, VOLUME, UNKNOWN}
+        public enum Type { MASS, VOLUME, SINGLE }
     }
 }

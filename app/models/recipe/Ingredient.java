@@ -44,7 +44,6 @@ public class Ingredient extends Model {
     public Amount getAmount() {
         return amount;
     }
-
     public Double getEnergyKcal() {
         return multiplier(foodItem.getEnergyKcal());
     }
