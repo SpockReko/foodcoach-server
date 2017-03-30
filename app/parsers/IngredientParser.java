@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by emmafahlen on 2017-03-23.
@@ -23,12 +25,19 @@ import java.util.concurrent.ExecutionException;
 public class IngredientParser {
 
     private List<TaggedWord> taggedWords;
-    private String leftover;
+    private String leftover = "";
+    private String insideParenthesis = "";
 
     public Ingredient parse(String webString) {
+        
+        String[] parenthesis = extractParenthesis(webString);
+        String line = parenthesis[0];
+        if (parenthesis[1] != null) {
+            insideParenthesis = parenthesis[1];
+        }
 
         try {
-            JsonNode jsonNode = retrieveWordInfo(webString);
+            JsonNode jsonNode = retrieveWordInfo(line);
             taggedWords = JsonHelper.getTaggedWords(jsonNode);
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,10 +58,11 @@ public class IngredientParser {
         Logger.info("Parsing \"" + line + "\"");
         Amount amount = findAmount();
         FoodItem food = findFood();
-        String comment = leftover;
 
         if (food != null) {
-            if (!comment.matches("[ -.,:]*")) {
+            if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
+                String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
+                comment += insideParenthesis;
                 Logger.debug("Added " + comment.trim() + " as comment");
                 return new Ingredient(food, amount, comment.trim());
             } else {
@@ -61,6 +71,18 @@ public class IngredientParser {
         } else {
             throw new IngredientNotFoundException();
         }
+    }
+
+    private String[] extractParenthesis(String input) {
+        String[] split = new String[2];
+        Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(input);
+        while(m.find()) {
+            if (m.group(1) != null) {
+                split[1] = m.group(1);
+            }
+        }
+        split[0] = input.replaceAll("\\(([^)]+)\\)", "");
+        return split;
     }
 
     private Amount findAmount() {
@@ -128,7 +150,7 @@ public class IngredientParser {
                     line.contains(" " + tag + ",") ||
                     line.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
-                        Logger.debug("Found \"" + item.getName());
+                        Logger.debug("Found \"" + item.getName() + "\"");
                         food = item;
                         matchingTag = tag;
                         matchingTagLength = tag.length();
