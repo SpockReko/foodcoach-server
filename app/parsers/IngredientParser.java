@@ -140,11 +140,11 @@ public class IngredientParser {
     }
 
     private String normalizeTaggedWords() {
-        String line = " ";
+        StringBuilder line = new StringBuilder(" ");
         for (TaggedWord taggedWord : taggedWords) {
-            line += taggedWord.getLemma() + " ";
+            line.append(taggedWord.getLemma()).append(" ");
         }
-        return line;
+        return line.toString();
     }
 
     /**
