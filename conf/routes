@@ -22,7 +22,8 @@ POST    /weekmenu                           controllers.WeekMenuController.weekM
 GET     /weekmenu                           controllers.WeekMenuController.weekMenu()
 
 # Parse ingredient string to food item
-GET     /parse/:ingredient                  controllers.ParseController.parseIngredient(ingredient: String)
+GET     /parseIng/:ingredient               controllers.ParseController.parseIngredient(ingredient: String)
+GET     /parseFull/:input                   controllers.ParseController.parseFull(input: String)
 GET     /runParse                           controllers.ParseController.runParse
 
 # Map static resources from the /public folder to the /assets URL path
