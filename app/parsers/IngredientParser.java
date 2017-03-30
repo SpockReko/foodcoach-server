@@ -23,7 +23,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class IngredientParser {
 
-    private FoodItemParser foodItemParser = new FoodItemParser();
     private JsonNode wordInfo;
     private String workString;
 
@@ -56,19 +55,31 @@ public class IngredientParser {
     }
 
     private Ingredient findIngredient() throws IngredientNotFoundException {
+        Logger.debug("Original: " + workString);
         Amount amount = findAmount(workString);
+        Logger.debug("After amount: " + workString);
         FoodItem food = findFood(workString);
+        Logger.debug("After food: " + workString);
+        String comment = workString;
 
         if (amount == null) {
             Logger.warn("No amount found for '" + workString + "'");
             if (food != null) {
-                return new Ingredient(food, new Amount(0, Amount.Unit.UNKNOWN));
+                if (!comment.isEmpty() && !comment.equals(" ")) {
+                    return new Ingredient(food, new Amount(0, Amount.Unit.UNKNOWN), comment.trim());
+                } else {
+                    return new Ingredient(food, new Amount(0, Amount.Unit.UNKNOWN));
+                }
             } else {
                 throw new IngredientNotFoundException();
             }
+        } else {
+            if (!comment.isEmpty() && !comment.equals(" ")) {
+                return new Ingredient(food, amount, comment.trim());
+            } else {
+                return new Ingredient(food, amount);
+            }
         }
-
-        return new Ingredient(food, amount);
     }
 
     private Amount findAmount(String str) {
@@ -117,6 +128,7 @@ public class IngredientParser {
 
     private FoodItem findFood(String str) {
         String ingredient = " " + str + " ";
+        String matchingTag = "";
         int matchingTagLength = 0;
         FoodItem food = null;
         List<FoodItem> items = FoodItem.find.select("searchTags").findList();
@@ -130,11 +142,15 @@ public class IngredientParser {
                     if (tag.length() > matchingTagLength) {
                         Logger.debug("Found \"" + item.getName() + "\" for string '" + str + "'");
                         food = item;
+                        matchingTag = tag;
                         matchingTagLength = tag.length();
                     }
                 }
             }
         }
+
+        workString = workString.replace(matchingTag, "");
+
         return food;
     }
 
