@@ -20,14 +20,12 @@ libraryDependencies += "com.univocity" % "univocity-parsers" % "2.3.1"
 
 // Helpers
 libraryDependencies += "info.debatty" % "java-string-similarity" % "0.23"
+libraryDependencies += "org.apache.commons" % "commons-math3" % "3.6.1"
 
 // Visuals
 libraryDependencies += "me.tongfei" % "progressbar" % "0.5.3"
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-
-//Simplex
-libraryDependencies += "org.apache.commons" % "commons-math3" % "3.6.1"
 
 lazy val seed = taskKey[Unit]("Database seeder")
 fullRunTask(seed, Compile, "tasks.DatabaseSeeder")
