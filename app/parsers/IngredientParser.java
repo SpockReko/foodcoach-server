@@ -29,7 +29,7 @@ public class IngredientParser {
     private String insideParenthesis = "";
 
     public Ingredient parse(String webString) {
-        
+
         String[] parenthesis = extractParenthesis(webString);
         String line = parenthesis[0];
         if (parenthesis[1] != null) {
@@ -55,7 +55,7 @@ public class IngredientParser {
     }
 
     private Ingredient findIngredient(String line) throws IngredientNotFoundException {
-        Logger.info("Parsing \"" + line + "\"");
+        Logger.info("Parsing - \"" + line + "\"");
         Amount amount = findAmount();
         FoodItem food = findFood();
 
@@ -96,7 +96,6 @@ public class IngredientParser {
                     if (identifier.equals(taggedWord.getLemma())) {
                         if (unit == null) {
                             unit = u;
-                            Logger.debug("Added " + unit.name() + " as unit");
                             filteredWords.remove(taggedWord);
                         }
                     }
@@ -111,7 +110,7 @@ public class IngredientParser {
                     } else {
                         numeric = Double.parseDouble(word);
                     }
-                    Logger.debug("Added " + word + " as numeric");
+                    Logger.debug("Added " + numeric + " as numeric");
                     filteredWords.remove(taggedWord);
                 }
             }
@@ -120,8 +119,8 @@ public class IngredientParser {
         // Choose STYCK as unit if no unit is found.
         if (unit == null) {
             unit = Amount.Unit.STYCK;
-            Logger.debug("Added " + unit.name() + " as unit");
         }
+        Logger.debug("Added " + unit.name() + " as unit");
 
         if (numeric != null && unit != null) {
             taggedWords = filteredWords;
