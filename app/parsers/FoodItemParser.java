@@ -19,21 +19,22 @@ public class FoodItemParser {
     private FoodItem matchingFood = null;
     private double shortestDistance = Double.MAX_VALUE;
 
-    public FoodItem findMatch(String ingredient) {
-        ingredient = " " + ingredient + " ";
+    public FoodItem findMatch(String input) {
+        String ingredient = " " + input + " ";
         matchingFood = null;
         shortestDistance = Double.MAX_VALUE;
         int matchingTagLength = 0;
         FoodItem food = null;
-        // TODO this creates an error but still works, look into it
-        List<FoodItem> items = FoodItem.find.select("search_tags").findList();
+        List<FoodItem> items = FoodItem.find.select("searchTags").findList();
 
         for (FoodItem item : items) {
             List<String> tags = item.searchTags;
             for (String tag : tags) {
-                if (ingredient.contains(" " + tag + " ")){
-                    if (tag.length() > matchingTagLength){
-                        Logger.debug("Found \"" + item.getName() + "\" for tag '" + tag + "'");
+                if (ingredient.contains(" " + tag + " ") ||
+                    ingredient.contains(" " + tag + ",") ||
+                    ingredient.contains(" " + tag + ".")) {
+                    if (tag.length() > matchingTagLength) {
+                        Logger.debug("Found \"" + item.getName() + "\" for string '" + input + "'");
                         food = item;
                         matchingTagLength = tag.length();
                     }
@@ -59,10 +60,10 @@ public class FoodItemParser {
     }
 
     private void checkDistance(String input, String tag, FoodItem food) {
-        if (input.length() <=1){
+        if (input.length() <= 1) {
             maxDistance = 0;
         }
-        if (input.length() <= 3){
+        if (input.length() <= 3) {
             maxDistance = 1;
         }
         double tagDistance = levenshtein.distance(tag.toLowerCase(), input.toLowerCase());
