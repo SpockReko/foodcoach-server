@@ -52,7 +52,7 @@ public class Amount {
         TESKED(0.05, Type.VOLUME, new String[] { "tsk", "tesked" }),
         MATSKED(0.15, Type.VOLUME, new String[] { "msk", "matsked" }),
         // Unkown unit
-        UNKNOWN(0.0, Type.UNKNOWN, new String[] {"UNKOWN"} );
+        UNKNOWN(0.0, Type.UNKNOWN, new String[] {""} );
 
         private final double fraction;
         private final Type type;

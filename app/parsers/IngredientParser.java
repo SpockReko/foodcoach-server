@@ -44,28 +44,34 @@ public class IngredientParser {
             String[] split = workString.split(":");
         }
 
-        Ingredient ingredient;
+        Ingredient ingredient = null;
         try {
             ingredient = findIngredient();
-        } catch (AmountNotFoundException e) {
-            Logger.warn("No amount found for '" + webString + "'");
-            return null;
-        } catch (FoodNotFoundException e) {
-            Logger.warn("No food found for '" + webString + "'");
+        } catch (IngredientNotFoundException e) {
+            Logger.warn("No match for '" + ingredient + "'");
             return null;
         }
 
         return ingredient;
     }
 
-    private Ingredient findIngredient() throws AmountNotFoundException, FoodNotFoundException {
+    private Ingredient findIngredient() throws IngredientNotFoundException {
         Amount amount = findAmount(workString);
         FoodItem food = findFood(workString);
+
+        if (amount == null) {
+            Logger.warn("No amount found for '" + workString + "'");
+            if (food != null) {
+                return new Ingredient(food, new Amount(0, Amount.Unit.UNKNOWN));
+            } else {
+                throw new IngredientNotFoundException();
+            }
+        }
 
         return new Ingredient(food, amount);
     }
 
-    private Amount findAmount(String str) throws AmountNotFoundException {
+    private Amount findAmount(String str) {
         String[] words = str.trim().split("\\s+");
         Double numeric = null;
         Amount.Unit unit = null;
@@ -105,17 +111,17 @@ public class IngredientParser {
             workString = strBuilder.toString();
             return new Amount(numeric, unit);
         } else {
-            throw new AmountNotFoundException();
+            return null;
         }
     }
 
-    private FoodItem findFood(String str) throws FoodNotFoundException {
+    private FoodItem findFood(String str) {
 
         FoodItem item = foodItemParser.findMatch(str);
         if (item != null) {
             return item;
         } else {
-            throw new FoodNotFoundException();
+            return null;
         }
     }
 
@@ -140,6 +146,5 @@ public class IngredientParser {
         }
     }
 
-    public class AmountNotFoundException extends Exception {}
-    public class FoodNotFoundException extends Exception {}
+    private class IngredientNotFoundException extends Throwable {}
 }
