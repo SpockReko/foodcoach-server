@@ -116,13 +116,26 @@ public class IngredientParser {
     }
 
     private FoodItem findFood(String str) {
+        String ingredient = " " + str + " ";
+        int matchingTagLength = 0;
+        FoodItem food = null;
+        List<FoodItem> items = FoodItem.find.select("searchTags").findList();
 
-        FoodItem item = foodItemParser.findMatch(str);
-        if (item != null) {
-            return item;
-        } else {
-            return null;
+        for (FoodItem item : items) {
+            List<String> tags = item.searchTags;
+            for (String tag : tags) {
+                if (ingredient.contains(" " + tag + " ") ||
+                    ingredient.contains(" " + tag + ",") ||
+                    ingredient.contains(" " + tag + ".")) {
+                    if (tag.length() > matchingTagLength) {
+                        Logger.debug("Found \"" + item.getName() + "\" for string '" + str + "'");
+                        food = item;
+                        matchingTagLength = tag.length();
+                    }
+                }
+            }
         }
+        return food;
     }
 
     /**
