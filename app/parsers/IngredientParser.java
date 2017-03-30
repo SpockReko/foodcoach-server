@@ -23,11 +23,6 @@ import java.util.concurrent.ExecutionException;
  */
 public class IngredientParser {
 
-    private List<String> notOther = new ArrayList<>();
-    private List<String> ingredients = new ArrayList<>();
-    private List<String> adjectives = new ArrayList<>();
-    private List<String> other = new ArrayList<>();
-
     private FoodItemParser foodItemParser = new FoodItemParser();
     private JsonNode wordInfo;
     private String workString;
@@ -55,12 +50,15 @@ public class IngredientParser {
         } catch (AmountNotFoundException e) {
             Logger.warn("No amount found for '" + webString + "'");
             return null;
+        } catch (FoodNotFoundException e) {
+            Logger.warn("No food found for '" + webString + "'");
+            return null;
         }
 
         return ingredient;
     }
 
-    private Ingredient findIngredient() throws AmountNotFoundException {
+    private Ingredient findIngredient() throws AmountNotFoundException, FoodNotFoundException {
         Amount amount = findAmount(workString);
         FoodItem food = findFood(workString);
 
@@ -80,9 +78,8 @@ public class IngredientParser {
                     if (identifier.equals(JsonWordHelper.getLemma(wordInfo, i))) {
                         if (unit == null) {
                             unit = u;
-                            System.out.println("Added " + word + " as unit");
+                            Logger.debug("Added " + word + " as unit");
                             wordsToRemove.add(i);
-                            notOther.add(word);
                         }
                     }
                 }
@@ -91,9 +88,8 @@ public class IngredientParser {
                 if (numeric == null) {
                     word = word.replace(',','.');
                     numeric = Double.parseDouble(word);
-                    System.out.println("Added " + word + " as numeric");
+                    Logger.debug("Added " + word + " as numeric");
                     wordsToRemove.add(i);
-                    notOther.add(word);
                 }
             }
         }
@@ -113,48 +109,14 @@ public class IngredientParser {
         }
     }
 
-    private FoodItem findFood(String str) {
-        int counter = 0;
+    private FoodItem findFood(String str) throws FoodNotFoundException {
 
-        String[] words = str.trim().split("\\s+");
-        Map<String, Boolean> map = new HashMap<>();
-
-        for (String word : words) {
-            map.put(word, true);
+        FoodItem item = foodItemParser.findMatch(str);
+        if (item != null) {
+            return item;
+        } else {
+            throw new FoodNotFoundException();
         }
-
-        for (String word : words) {
-            if (!word.matches(".*\\d+.*")) {
-                if (foodItemParser.findMatch(" " + word + " ") != null) {
-                    if (map.get(word)) {
-                        ingredients.add(word);
-                        notOther.add(word);
-                        System.out.println("Added " + word + " as ingredient");
-                        map.replace(word, false);
-                    }
-                }
-            }
-            if (JsonWordHelper.getSucPosTag(wordInfo, counter).equals("JJ")) {
-                if (map.get(word)) {
-                    adjectives.add(word);
-                    notOther.add(word);
-                    System.out.println("Added " + word + " as adjective");
-                    map.replace(word, false);
-                }
-            }
-            counter++;
-        }
-        for (String word : words) {
-            if (!notOther.contains(word)) {
-                other.add(word);
-            }
-        }
-
-        if (ingredients.isEmpty()) {
-            return null;
-        }
-
-        return foodItemParser.findMatch(ingredients.get(0));
     }
 
     /**

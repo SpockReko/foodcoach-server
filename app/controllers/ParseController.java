@@ -45,6 +45,13 @@ public class ParseController extends Controller {
         }
     }
 
+    public Result parseFull(String input) {
+        IngredientParser ingredientParser = new IngredientParser();
+        Ingredient ingredient = ingredientParser.parse(input);
+
+        return ok(Json.toJson(ingredient));
+    }
+
     public Result recipeInfo(String recipe) {
         IngredientParser parser = new IngredientParser();
         Ingredient ing = parser.parse(recipe);
