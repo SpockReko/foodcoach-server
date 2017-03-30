@@ -20,10 +20,12 @@ public class FoodItemParser {
     private double shortestDistance = Double.MAX_VALUE;
 
     public FoodItem findMatch(String ingredient) {
+        ingredient = " " + ingredient + " ";
         matchingFood = null;
         shortestDistance = Double.MAX_VALUE;
         int matchingTagLength = 0;
         FoodItem food = null;
+        // TODO this creates an error but still works, look into it
         List<FoodItem> items = FoodItem.find.select("search_tags").findList();
 
         for (FoodItem item : items) {
@@ -31,7 +33,9 @@ public class FoodItemParser {
             for (String tag : tags) {
                 if (ingredient.contains(" " + tag + " ")){
                     if (tag.length() > matchingTagLength){
+                        Logger.debug("Found \"" + item.getName() + "\" for tag '" + tag + "'");
                         food = item;
+                        matchingTagLength = tag.length();
                     }
                 }
             }

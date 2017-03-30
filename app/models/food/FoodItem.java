@@ -5,6 +5,7 @@ import com.avaje.ebean.annotation.DbArray;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public class FoodItem extends Model {
     /* Data used when matching web strings */
     public String example;
     public String screenName;
-    @DbArray(length = 255) public List<String> searchTags;
+    @DbArray(length = 255) public List<String> searchTags = new ArrayList<>();
 
     private Float energyKcal;
     private Float energyKj;
