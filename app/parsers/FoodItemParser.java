@@ -27,20 +27,20 @@ public class FoodItemParser {
         FoodItem food = null;
         List<FoodItem> items = FoodItem.find.select("searchTags").findList();
 
-        for (FoodItem item : items) {
-            List<String> tags = item.searchTags;
-            for (String tag : tags) {
-                if (ingredient.contains(" " + tag + " ") ||
-                    ingredient.contains(" " + tag + ",") ||
-                    ingredient.contains(" " + tag + ".")) {
-                    if (tag.length() > matchingTagLength) {
-                        Logger.debug("Found \"" + item.getName() + "\" for string '" + input + "'");
-                        food = item;
-                        matchingTagLength = tag.length();
-                    }
-                }
-            }
-        }
+//        for (FoodItem item : items) {
+//            List<String> tags = item.searchTags;
+//            for (String tag : tags) {
+//                if (ingredient.contains(" " + tag + " ") ||
+//                    ingredient.contains(" " + tag + ",") ||
+//                    ingredient.contains(" " + tag + ".")) {
+//                    if (tag.length() > matchingTagLength) {
+//                        Logger.debug("Found \"" + item.getName() + "\" for string '" + input + "'");
+//                        food = item;
+//                        matchingTagLength = tag.length();
+//                    }
+//                }
+//            }
+//        }
         return food;
     }
 
