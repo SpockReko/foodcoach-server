@@ -2,6 +2,7 @@ package parsers;
 
 import models.food.FoodItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.debatty.java.stringsimilarity.*;
@@ -21,25 +22,21 @@ public class FoodItemParser {
     public FoodItem findMatch(String ingredient) {
         matchingFood = null;
         shortestDistance = Double.MAX_VALUE;
+        int matchingTagLength = 0;
+        FoodItem food = null;
+        List<FoodItem> items = FoodItem.find.select("search_tags").findList();
 
-        FoodItem food = FoodItem.find.where()
-            .contains("searchTags", ingredient)
-            .or().eq("name", ingredient)
-            .findUnique();
-
-        if (food == null) {
-            food = autoCorrect(ingredient);
-            if (food != null) {
-                return food;
-            } else {
-                // TODO Throw exception here instead
-                return null;
-                //int foodNumber = FoodItem.find.findCount() * ingredient.hashCode();
-                //return new FoodItem(ingredient, foodNumber);
+        for (FoodItem item : items) {
+            List<String> tags = item.searchTags;
+            for (String tag : tags) {
+                if (ingredient.contains(" " + tag + " ")){
+                    if (tag.length() > matchingTagLength){
+                        food = item;
+                    }
+                }
             }
-        } else {
-            return food;
         }
+        return food;
     }
 
     private FoodItem autoCorrect(String ingredient) {
