@@ -34,6 +34,8 @@ public class IngredientParser {
         String line = parenthesis[0];
         if (parenthesis[1] != null) {
             insideParenthesis = parenthesis[1];
+        } else {
+            insideParenthesis = "";
         }
 
         try {
@@ -45,17 +47,16 @@ public class IngredientParser {
 
         Ingredient ingredient;
         try {
-            ingredient = findIngredient(webString);
+            ingredient = findIngredient();
         } catch (IngredientNotFoundException e) {
-            Logger.error("No match for \"" + webString + "\"");
+            Logger.error("No match \"" + webString + "\"");
             return null;
         }
 
         return ingredient;
     }
 
-    private Ingredient findIngredient(String line) throws IngredientNotFoundException {
-        Logger.info("Parsing - \"" + line + "\"");
+    private Ingredient findIngredient() throws IngredientNotFoundException {
         Amount amount = findAmount();
         FoodItem food = findFood();
 
@@ -63,9 +64,13 @@ public class IngredientParser {
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 comment += insideParenthesis;
-                Logger.debug("Added " + comment.trim() + " as comment");
+                Logger.trace("Added " + comment.trim() + " as comment");
+                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", " +
+                    food.getName() + ", \"" + comment.trim() + "\" }");
                 return new Ingredient(food, amount, comment.trim());
             } else {
+                Logger.info("Ingredient { " +
+                    amount.getAmount() + ", " + amount.getUnit() + ", " + food.getName() + " }");
                 return new Ingredient(food, amount);
             }
         } else {
@@ -110,7 +115,7 @@ public class IngredientParser {
                     } else {
                         numeric = Double.parseDouble(word);
                     }
-                    Logger.debug("Added " + numeric + " as numeric");
+                    Logger.trace("Added " + numeric + " as numeric");
                     filteredWords.remove(taggedWord);
                 }
             }
@@ -120,13 +125,13 @@ public class IngredientParser {
         if (unit == null) {
             unit = Amount.Unit.STYCK;
         }
-        Logger.debug("Added " + unit.name() + " as unit");
+        Logger.trace("Added " + unit.name() + " as unit");
+        taggedWords = filteredWords;
 
-        if (numeric != null && unit != null) {
-            taggedWords = filteredWords;
+        if (numeric != null) {
             return new Amount(numeric, unit);
         } else {
-            return null;
+            return new Amount(0.0, Amount.Unit.EMPTY);
         }
     }
 
@@ -149,7 +154,7 @@ public class IngredientParser {
                     line.contains(" " + tag + ",") ||
                     line.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
-                        Logger.debug("Found \"" + item.getName() + "\"");
+                        Logger.trace("Found \"" + item.getName() + "\"");
                         food = item;
                         matchingTag = tag;
                         matchingTagLength = tag.length();
@@ -159,7 +164,6 @@ public class IngredientParser {
         }
 
         leftover = line.replace(matchingTag, "");
-
         return food;
     }
 

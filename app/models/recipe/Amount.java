@@ -52,7 +52,9 @@ public class Amount {
         TESKED(0.05, Type.VOLUME, new String[] { "tsk", "tesked" }),
         MATSKED(0.15, Type.VOLUME, new String[] { "msk", "matsked" }),
         // Single piece unit
-        STYCK(0.0, Type.SINGLE, new String[] { "st", "stycken" } );
+        STYCK(0.0, Type.SINGLE, new String[] { "st", "stycken" } ),
+        // Empty unit
+        EMPTY(0.0, Type.EMPTY, new String[] {""} );
 
         private final double fraction;
         private final Type type;
@@ -95,6 +97,6 @@ public class Amount {
         /**
          * The type of the unit. Either mass or volume.
          */
-        public enum Type { MASS, VOLUME, SINGLE }
+        public enum Type { MASS, VOLUME, SINGLE, EMPTY }
     }
 }
