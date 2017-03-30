@@ -26,13 +26,10 @@ public class IngredientParser {
     private List<String> notOther = new ArrayList<>();
     private List<String> ingredients = new ArrayList<>();
     private List<String> adjectives = new ArrayList<>();
-    private List<String> numerics = new ArrayList<>();
-    private List<Amount.Unit> units = new ArrayList<>();
     private List<String> other = new ArrayList<>();
 
     private FoodItemParser foodItemParser = new FoodItemParser();
     private JsonNode wordInfo;
-    private Map<String, Boolean> map = new HashMap<>();
     private String workString;
 
     public Ingredient parse(String webString) {
@@ -128,7 +125,7 @@ public class IngredientParser {
 
         for (String word : words) {
             if (!word.matches(".*\\d+.*")) {
-                if (foodItemParser.findMatch(word) != null) {
+                if (foodItemParser.findMatch(" " + word + " ") != null) {
                     if (map.get(word)) {
                         ingredients.add(word);
                         notOther.add(word);

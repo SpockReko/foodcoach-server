@@ -36,13 +36,6 @@ public class RecipeController extends Controller {
         return ok(Json.toJson(recipes));
     }
 
-    // GET /parsetest
-    public Result parseTest() {
-        IngredientParser parser = new IngredientParser();
-        Ingredient ingredient = parser.parse("200 gram havssalt");
-        return ok(Json.toJson(ingredient));
-    }
-
     private ObjectNode getJson(Recipe recipe) {
         ObjectNode json = Json.newObject();
         json.put("title", recipe.getTitle());
