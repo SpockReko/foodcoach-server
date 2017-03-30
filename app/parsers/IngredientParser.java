@@ -23,10 +23,9 @@ import java.util.concurrent.ExecutionException;
 public class IngredientParser {
 
     private List<TaggedWord> taggedWords;
-    private String workString;
+    private String leftover;
 
     public Ingredient parse(String webString) {
-        workString = webString;
 
         try {
             JsonNode jsonNode = retrieveWordInfo(webString);
@@ -35,33 +34,25 @@ public class IngredientParser {
             e.printStackTrace();
         }
 
-        if (workString.contains("eller")) {
-            String[] split = workString.split("eller");
-        }
-
-        if (workString.contains(":")) {
-            String[] split = workString.split(":");
-        }
-
-        Ingredient ingredient = null;
+        Ingredient ingredient;
         try {
-            ingredient = findIngredient();
+            ingredient = findIngredient(webString);
         } catch (IngredientNotFoundException e) {
-            Logger.warn("No match for '" + webString + "'");
+            Logger.error("No match for \"" + webString + "\"");
             return null;
         }
 
         return ingredient;
     }
 
-    private Ingredient findIngredient() throws IngredientNotFoundException {
-        Logger.info(workString);
-        Amount amount = findAmount(workString);
-        FoodItem food = findFood(workString);
-        String comment = workString;
+    private Ingredient findIngredient(String line) throws IngredientNotFoundException {
+        Logger.info("Parsing \"" + line + "\"");
+        Amount amount = findAmount();
+        FoodItem food = findFood();
+        String comment = leftover;
 
         if (amount == null) {
-            Logger.warn("No amount found for '" + workString + "'");
+            Logger.warn("No amount found");
             if (food != null) {
                 if (!comment.isEmpty() && !comment.equals(" ")) {
                     return new Ingredient(food, new Amount(0, Amount.Unit.UNKNOWN), comment.trim());
@@ -80,7 +71,7 @@ public class IngredientParser {
         }
     }
 
-    private Amount findAmount(String str) {
+    private Amount findAmount() {
         List<TaggedWord> filteredWords = new ArrayList<>(taggedWords);
         Double numeric = null;
         Amount.Unit unit = null;
@@ -113,19 +104,15 @@ public class IngredientParser {
         }
 
         if (numeric != null && unit != null) {
-            StringBuilder strBuilder = new StringBuilder();
-            for (TaggedWord word : filteredWords) {
-                strBuilder.append(word.getWord()).append(" ");
-            }
-            workString = strBuilder.toString();
+            taggedWords = filteredWords;
             return new Amount(numeric, unit);
         } else {
             return null;
         }
     }
 
-    private FoodItem findFood(String str) {
-        String ingredient = " " + str + " ";
+    private FoodItem findFood() {
+        String line = normalizeTaggedWords();
         String matchingTag = "";
         int matchingTagLength = 0;
         FoodItem food = null;
@@ -134,10 +121,11 @@ public class IngredientParser {
         for (FoodItem item : items) {
             List<String> tags = item.searchTags;
             for (String tag : tags) {
-                if (ingredient.contains(" " + tag + " ") || ingredient.contains(" " + tag + ",")
-                    || ingredient.contains(" " + tag + ".")) {
+                if (line.contains(" " + tag + " ")||
+                    line.contains(" " + tag + ",") ||
+                    line.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
-                        Logger.debug("Found \"" + item.getName() + "\" for string '" + str + "'");
+                        Logger.debug("Found \"" + item.getName());
                         food = item;
                         matchingTag = tag;
                         matchingTagLength = tag.length();
@@ -146,9 +134,17 @@ public class IngredientParser {
             }
         }
 
-        workString = workString.replace(matchingTag, "");
+        leftover = line.replace(matchingTag, "");
 
         return food;
+    }
+
+    private String normalizeTaggedWords() {
+        String line = " ";
+        for (TaggedWord taggedWord : taggedWords) {
+            line += taggedWord.getLemma() + " ";
+        }
+        return line;
     }
 
     /**
