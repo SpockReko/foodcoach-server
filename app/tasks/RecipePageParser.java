@@ -37,7 +37,7 @@ public class RecipePageParser {
         /*
          * Add pages from .txt file to be crawled.
          */
-        controller.addSeed("http://receptfavoriter.se/recept/indisk-kycklinggryta-med-curry-och-graedde.html");
+        controller.addSeed("http://receptfavoriter.se/recept/snabb-laxgryta-med-graedde-svamp-och-groensaker.html");
 //        try (BufferedReader br = new BufferedReader(new FileReader(RECIPES_URLS_PATH))) {
 //            String lineUrl;
 //            for (int i = 0; i < RECIPES_TO_PARSE; i++) {

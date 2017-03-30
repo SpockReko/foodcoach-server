@@ -61,7 +61,7 @@ public class ParseController extends Controller {
 
     public Result runParse() {
         IngredientParser parser = new IngredientParser();
-        NotLinkedRecipe notLinkedRecipe = NotLinkedRecipe.find.byId(1L);
+        NotLinkedRecipe notLinkedRecipe = NotLinkedRecipe.find.byId(2L);
 
         List<Ingredient> taggedIngredients = new ArrayList<>();
         for (String string : notLinkedRecipe.ingredients) {
