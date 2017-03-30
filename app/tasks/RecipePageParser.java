@@ -16,7 +16,7 @@ import java.io.FileReader;
 public class RecipePageParser {
 
     private static final String RECIPES_URLS_PATH = "resources/recipe_urls/receptfavoriter_se.txt";
-    private static final int RECIPES_TO_PARSE = 1;
+    private static final int RECIPES_TO_PARSE = 10;
 
     public static void main(String[] args) throws Exception {
         String crawlStorageFolder = "target/crawl-data";
@@ -37,16 +37,17 @@ public class RecipePageParser {
         /*
          * Add pages from .txt file to be crawled.
          */
-        try (BufferedReader br = new BufferedReader(new FileReader(RECIPES_URLS_PATH))) {
-            String lineUrl;
-            for (int i = 0; i < RECIPES_TO_PARSE; i++) {
-                if ((lineUrl = br.readLine()) != null) {
-                    controller.addSeed(lineUrl);
-                } else {
-                    break;
-                }
-            }
-        }
+        controller.addSeed("http://receptfavoriter.se/recept/indisk-kycklinggryta-med-curry-och-graedde.html");
+//        try (BufferedReader br = new BufferedReader(new FileReader(RECIPES_URLS_PATH))) {
+//            String lineUrl;
+//            for (int i = 0; i < RECIPES_TO_PARSE; i++) {
+//                if ((lineUrl = br.readLine()) != null) {
+//                    controller.addSeed(lineUrl);
+//                } else {
+//                    break;
+//                }
+//            }
+//        }
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code

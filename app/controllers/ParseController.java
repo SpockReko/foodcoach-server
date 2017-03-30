@@ -61,19 +61,14 @@ public class ParseController extends Controller {
 
     public Result runParse() {
         IngredientParser parser = new IngredientParser();
-        List<NotLinkedRecipe> notLinkedRecipes = NotLinkedRecipe.find.all();
+        NotLinkedRecipe notLinkedRecipe = NotLinkedRecipe.find.byId(11L);
 
-        for (NotLinkedRecipe notLinkedRecipe : notLinkedRecipes) {
-            List<Ingredient> taggedIngredients = new ArrayList<>();
-            for (String string : notLinkedRecipe.ingredients) {
-                parser = new IngredientParser();
-                Ingredient ingredient = parser.parse(string);
-                if (ingredient != null) {
-                    taggedIngredients.add(ingredient);
-                }
+        List<Ingredient> taggedIngredients = new ArrayList<>();
+        for (String string : notLinkedRecipe.ingredients) {
+            Ingredient ingredient = parser.parse(string);
+            if (ingredient != null) {
+                taggedIngredients.add(ingredient);
             }
-            Recipe recipe = new Recipe(notLinkedRecipe.getTitle(), notLinkedRecipe.getPortions(), taggedIngredients);
-            recipe.save();
         }
         return ok("Finished!");
     }
