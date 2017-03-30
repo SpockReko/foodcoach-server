@@ -51,23 +51,15 @@ public class IngredientParser {
         FoodItem food = findFood();
         String comment = leftover;
 
-        if (amount == null) {
-            Logger.warn("No amount found");
-            if (food != null) {
-                if (!comment.isEmpty() && !comment.equals(" ")) {
-                    return new Ingredient(food, new Amount(0, Amount.Unit.UNKNOWN), comment.trim());
-                } else {
-                    return new Ingredient(food, new Amount(0, Amount.Unit.UNKNOWN));
-                }
-            } else {
-                throw new IngredientNotFoundException();
-            }
-        } else {
-            if (!comment.isEmpty() && !comment.equals(" ")) {
+        if (food != null) {
+            if (!comment.matches("[ -.,:]*")) {
+                Logger.debug("Added " + comment.trim() + " as comment");
                 return new Ingredient(food, amount, comment.trim());
             } else {
                 return new Ingredient(food, amount);
             }
+        } else {
+            throw new IngredientNotFoundException();
         }
     }
 
@@ -82,7 +74,7 @@ public class IngredientParser {
                     if (identifier.equals(taggedWord.getLemma())) {
                         if (unit == null) {
                             unit = u;
-                            Logger.debug("Added " + taggedWord.getWord() + " as unit");
+                            Logger.debug("Added " + unit.name() + " as unit");
                             filteredWords.remove(taggedWord);
                         }
                     }
@@ -103,6 +95,12 @@ public class IngredientParser {
             }
         }
 
+        // Choose STYCK as unit if no unit is found.
+        if (unit == null) {
+            unit = Amount.Unit.STYCK;
+            Logger.debug("Added " + unit.name() + " as unit");
+        }
+
         if (numeric != null && unit != null) {
             taggedWords = filteredWords;
             return new Amount(numeric, unit);
@@ -112,7 +110,12 @@ public class IngredientParser {
     }
 
     private FoodItem findFood() {
-        String line = normalizeTaggedWords();
+        StringBuilder builder = new StringBuilder(" ");
+        for (TaggedWord taggedWord : taggedWords) {
+            builder.append(taggedWord.getLemma()).append(" ");
+        }
+
+        String line = builder.toString();
         String matchingTag = "";
         int matchingTagLength = 0;
         FoodItem food = null;
@@ -137,14 +140,6 @@ public class IngredientParser {
         leftover = line.replace(matchingTag, "");
 
         return food;
-    }
-
-    private String normalizeTaggedWords() {
-        StringBuilder line = new StringBuilder(" ");
-        for (TaggedWord taggedWord : taggedWords) {
-            line.append(taggedWord.getLemma()).append(" ");
-        }
-        return line.toString();
     }
 
     /**
