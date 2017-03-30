@@ -1,7 +1,8 @@
 package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import helpers.JsonWordHelper;
+import helpers.JsonHelper;
+import helpers.TaggedWord;
 import models.food.FoodItem;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
@@ -12,9 +13,7 @@ import play.libs.ws.WSResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 
@@ -23,14 +22,15 @@ import java.util.concurrent.ExecutionException;
  */
 public class IngredientParser {
 
-    private JsonNode wordInfo;
+    private List<TaggedWord> taggedWords;
     private String workString;
 
     public Ingredient parse(String webString) {
         workString = webString;
 
         try {
-            wordInfo = retrieveWordInfo(webString);
+            JsonNode jsonNode = retrieveWordInfo(webString);
+            taggedWords = JsonHelper.getTaggedWords(jsonNode);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class IngredientParser {
         try {
             ingredient = findIngredient();
         } catch (IngredientNotFoundException e) {
-            Logger.warn("No match for '" + ingredient + "'");
+            Logger.warn("No match for '" + webString + "'");
             return null;
         }
 
@@ -55,11 +55,9 @@ public class IngredientParser {
     }
 
     private Ingredient findIngredient() throws IngredientNotFoundException {
-        Logger.debug("Original: " + workString);
+        Logger.info(workString);
         Amount amount = findAmount(workString);
-        Logger.debug("After amount: " + workString);
         FoodItem food = findFood(workString);
-        Logger.debug("After food: " + workString);
         String comment = workString;
 
         if (amount == null) {
@@ -83,41 +81,41 @@ public class IngredientParser {
     }
 
     private Amount findAmount(String str) {
-        String[] words = str.trim().split("\\s+");
+        List<TaggedWord> filteredWords = new ArrayList<>(taggedWords);
         Double numeric = null;
         Amount.Unit unit = null;
-        List<Integer> wordsToRemove = new ArrayList<>();
 
-        for (int i = 0; i < words.length; i++) {
-            String word = words[i];
+        for (TaggedWord taggedWord : taggedWords) {
             for (Amount.Unit u : Amount.Unit.values()) {
                 for (String identifier : u.getIdentifiers()) {
-                    if (identifier.equals(JsonWordHelper.getLemma(wordInfo, i))) {
+                    if (identifier.equals(taggedWord.getLemma())) {
                         if (unit == null) {
                             unit = u;
-                            Logger.debug("Added " + word + " as unit");
-                            wordsToRemove.add(i);
+                            Logger.debug("Added " + taggedWord.getWord() + " as unit");
+                            filteredWords.remove(taggedWord);
                         }
                     }
                 }
             }
-            if (JsonWordHelper.getSucFeatures(wordInfo, i).equals("NOM")) {
+            if (taggedWord.getUdPosTag().equals("NUM")) {
                 if (numeric == null) {
-                    word = word.replace(',','.');
-                    numeric = Double.parseDouble(word);
+                    String word = taggedWord.getWord().replace(',', '.');
+                    if (word.contains("/")) {
+                        String[] part = word.split("/");
+                        numeric = Double.parseDouble(part[0]) / Double.parseDouble(part[1]);
+                    } else {
+                        numeric = Double.parseDouble(word);
+                    }
                     Logger.debug("Added " + word + " as numeric");
-                    wordsToRemove.add(i);
+                    filteredWords.remove(taggedWord);
                 }
             }
         }
 
         if (numeric != null && unit != null) {
             StringBuilder strBuilder = new StringBuilder();
-            for (int i = 0; i < words.length; i++) {
-                if (wordsToRemove.contains(i)) {
-                    continue;
-                }
-                strBuilder.append(words[i]).append(" ");
+            for (TaggedWord word : filteredWords) {
+                strBuilder.append(word.getWord()).append(" ");
             }
             workString = strBuilder.toString();
             return new Amount(numeric, unit);
@@ -136,9 +134,8 @@ public class IngredientParser {
         for (FoodItem item : items) {
             List<String> tags = item.searchTags;
             for (String tag : tags) {
-                if (ingredient.contains(" " + tag + " ") ||
-                    ingredient.contains(" " + tag + ",") ||
-                    ingredient.contains(" " + tag + ".")) {
+                if (ingredient.contains(" " + tag + " ") || ingredient.contains(" " + tag + ",")
+                    || ingredient.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
                         Logger.debug("Found \"" + item.getName() + "\" for string '" + str + "'");
                         food = item;

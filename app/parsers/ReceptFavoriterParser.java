@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import play.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ public class ReceptFavoriterParser implements RecipeParser {
             ingredient = ingredientParser.parse(webString);
             if (ingredient != null) {
                 ingredients.add(ingredient);
+            } else {
+                Logger.error("Couldn't parse '" + webString + "' moving on...");
             }
         }
 
