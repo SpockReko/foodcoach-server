@@ -71,6 +71,9 @@ public class Ingredient extends Model {
     public Double getAsh() {
         return multiplier(foodItem.getAsh());
     }
+    public Double getWaste() {
+        return multiplier(foodItem.getWaste());
+    }
 
     /*
     Extra nutrition data

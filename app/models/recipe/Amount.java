@@ -29,6 +29,7 @@ public class Amount {
         return amount;
     }
 
+
     /**
      * Returns the unit. 2 "liters" or 3.5 "kilograms" for example.
      * @return The unit of the amount.

@@ -40,7 +40,8 @@ public class RecipeOptimizer {
         // Optimize a recepie to satisfie Users need!
         // suggested way is:
         // * To see if the recipe is to much calories or to little for the user.
-        // * Then we need to increase och decrease the volym of ingredients in a smart way.
+        //   * If it to little: Sort fooditems in highest consetration of missing nutrious values to the least and
+        //   * If it to much sort ingredience with % and highest to lowest
         return null;
     }
 
