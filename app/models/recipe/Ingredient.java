@@ -23,6 +23,7 @@ public class Ingredient extends Model {
 
     @ManyToOne @NotNull private final FoodItem foodItem;
     @Embedded @NotNull private final Amount amount;
+    public String comment;
 
     @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
 
@@ -31,13 +32,18 @@ public class Ingredient extends Model {
         this.amount = amount;
     }
 
+    public Ingredient(FoodItem foodItem, Amount amount, String comment) {
+        this.foodItem = foodItem;
+        this.amount = amount;
+        this.comment = comment;
+    }
+
     public FoodItem getFoodItem() {
         return foodItem;
     }
     public Amount getAmount() {
         return amount;
     }
-
     public Double getEnergyKcal() {
         return multiplier(foodItem.getEnergyKcal());
     }

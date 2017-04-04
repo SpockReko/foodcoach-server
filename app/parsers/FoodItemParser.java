@@ -2,6 +2,7 @@ package parsers;
 
 import models.food.FoodItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.debatty.java.stringsimilarity.*;
@@ -12,37 +13,38 @@ import play.Logger;
  */
 public class FoodItemParser {
 
-    private static int maxDistance = 2;
+    private int maxDistance = 2;
 
-    private static Levenshtein levenshtein = new Levenshtein();
-    private static FoodItem matchingFood = null;
-    private static double shortestDistance = Double.MAX_VALUE;
+    private Levenshtein levenshtein = new Levenshtein();
+    private FoodItem matchingFood = null;
+    private double shortestDistance = Double.MAX_VALUE;
 
-    public static FoodItem findMatch(String ingredient) {
+    public FoodItem findMatch(String input) {
+        String ingredient = " " + input + " ";
         matchingFood = null;
         shortestDistance = Double.MAX_VALUE;
+        int matchingTagLength = 0;
+        FoodItem food = null;
+        List<FoodItem> items = FoodItem.find.select("searchTags").findList();
 
-        FoodItem food = FoodItem.find.where()
-            .contains("searchTags", ingredient)
-            .or().eq("name", ingredient)
-            .findUnique();
-
-        if (food == null) {
-            food = autoCorrect(ingredient);
-            if (food != null) {
-                return food;
-            } else {
-                // TODO Throw exception here instead
-                return null;
-                //int foodNumber = FoodItem.find.findCount() * ingredient.hashCode();
-                //return new FoodItem(ingredient, foodNumber);
-            }
-        } else {
-            return food;
-        }
+//        for (FoodItem item : items) {
+//            List<String> tags = item.searchTags;
+//            for (String tag : tags) {
+//                if (ingredient.contains(" " + tag + " ") ||
+//                    ingredient.contains(" " + tag + ",") ||
+//                    ingredient.contains(" " + tag + ".")) {
+//                    if (tag.length() > matchingTagLength) {
+//                        Logger.debug("Found \"" + item.getName() + "\" for string '" + input + "'");
+//                        food = item;
+//                        matchingTagLength = tag.length();
+//                    }
+//                }
+//            }
+//        }
+        return food;
     }
 
-    private static FoodItem autoCorrect(String ingredient) {
+    private FoodItem autoCorrect(String ingredient) {
         List<FoodItem> allFoods = FoodItem.find.all();
 
         for (FoodItem food : allFoods) {
@@ -57,11 +59,11 @@ public class FoodItemParser {
         return matchingFood;
     }
 
-    private static void checkDistance(String input, String tag, FoodItem food) {
-        if (input.length() <=1){
+    private void checkDistance(String input, String tag, FoodItem food) {
+        if (input.length() <= 1) {
             maxDistance = 0;
         }
-        if (input.length() <= 3){
+        if (input.length() <= 3) {
             maxDistance = 1;
         }
         double tagDistance = levenshtein.distance(tag.toLowerCase(), input.toLowerCase());

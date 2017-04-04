@@ -25,7 +25,8 @@ public class ParseController extends Controller {
     static WSClient ws;
 
     public Result parseIngredient(String str) {
-        FoodItem item = FoodItemParser.findMatch(str);
+        FoodItemParser foodItemParser = new FoodItemParser();
+        FoodItem item = foodItemParser.findMatch(str);
         if (item.example != null) {
             return ok("<font size=\"4\" color=\"blue\">"
                     + "#" + item.getLmvFoodNumber() + " - "
@@ -44,6 +45,13 @@ public class ParseController extends Controller {
         }
     }
 
+    public Result parseFull(String input) {
+        IngredientParser ingredientParser = new IngredientParser();
+        Ingredient ingredient = ingredientParser.parse(input);
+
+        return ok(Json.toJson(ingredient));
+    }
+
     public Result recipeInfo(String recipe) {
         IngredientParser parser = new IngredientParser();
         Ingredient ing = parser.parse(recipe);
@@ -58,14 +66,11 @@ public class ParseController extends Controller {
         for (NotLinkedRecipe notLinkedRecipe : notLinkedRecipes) {
             List<Ingredient> taggedIngredients = new ArrayList<>();
             for (String string : notLinkedRecipe.ingredients) {
-                parser = new IngredientParser();
                 Ingredient ingredient = parser.parse(string);
                 if (ingredient != null) {
                     taggedIngredients.add(ingredient);
                 }
             }
-            Recipe recipe = new Recipe(notLinkedRecipe.getTitle(), notLinkedRecipe.getPortions(), taggedIngredients);
-            recipe.save();
         }
         return ok("Finished!");
     }

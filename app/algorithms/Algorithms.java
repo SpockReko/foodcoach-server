@@ -25,15 +25,14 @@ public class Algorithms {
         for( Map.Entry<Nutrient,Double> entry : nutrientsNeed.entrySet() ) {
             nutrient = entry.getKey();
             if(nutrientsNeed.containsKey(nutrient) && nutrientsContent.containsKey(nutrient) && overdoseValues.containsKey(nutrient)) {
-                // TODO: filterLimit påverkar ingen variabel i denna metoden.
                 Double percentageOfRDI = filterLimit(
                                         nutrient,
                                         nutrientsContent.get(nutrient),
                                         nutrientsNeed.get(nutrient),
                                         overdoseValues.get(nutrient));
-                Double l2NormResult = L2NormTerm(percentageOfRDI);
-                sum += l2NormResult > Math.pow(10,-10) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)
-//                sum += L2NormTerm(percentageOfRDI);
+                /*Double l2NormResult = L2NormTerm(percentageOfRDI);
+                sum += l2NormResult > Math.pow(10,-10) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)*/
+                sum += L2NormTerm(percentageOfRDI);
                 addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
             }
         }
@@ -41,9 +40,9 @@ public class Algorithms {
     }
 
     /*
-    If RDI of the nutrient is fulfilled, procent is set to optimal value (100%). Also informs if the nutrient is overdosed.
+    If RDI of the nutrient is fulfilled, percentage is set to optimal value (100%). Also informs if the nutrient is overdosed.
      */
-    public static double filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose) {
+    public static Double filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose) {
         Double percentageNutrient = nutrientContent/nutrientNeed;
 
         if( percentageNutrient > 1D && nutrientContent < overdose ) {
@@ -128,25 +127,24 @@ public class Algorithms {
         }
     }
 
+    //TODO: Använd dessa metoderna någonstans!
     public static List<FoodItem> SortByTheDifference(Ingredient ingredient){
-        /** Sortera en lista på livsmedel med mest lik i toppen till minst lik i botten
-         * Lista på alla ingredienser
-         *      - sortera listan på minst till mest skillnad av näringsvärdena
-         *          - Quicksort!
-         * Returnera listan.
-         *                                                                          */
+
         List<FoodItem> foods = FoodItem.find.all();
         foods = QuicksortFoodItem.sort(foods, ingredient.getFoodItem());
-        return null;
+        return foods;
+
     }
 
-    public static Recipe changeIngrediense(Recipe recipe, Ingredient ingredient, FoodItem foodItem){
+    public static Recipe changeIngredient(Recipe recipe, Ingredient ingredient, FoodItem foodItem){
+
         List<Ingredient> recipeIngredient = recipe.ingredients;
         recipeIngredient.remove(ingredient);
         recipeIngredient.add(new Ingredient(foodItem,ingredient.getAmount()));
         return recipe;
         // TODO: Om inte ingredients listan ej har shared reference så måste vi köra koden här under.
         //return new Recipe(recipe.getTitle()+ " changed", recipe.getPortions(), recipeIngredient);
+
     }
 
 }

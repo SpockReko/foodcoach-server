@@ -174,12 +174,10 @@ public class DatabaseSeeder {
             item.screenName = screenName;
 
             if (searchStrings != null) {
-                List<String> searchTags = new LinkedList<>();
                 String[] tags = searchStrings.split(",");
                 for (String tag : tags) {
-                    searchTags.add(tag.trim());
+                    item.searchTags.add(tag.trim());
                 }
-                item.searchTags = searchTags;
             }
 
             foods.add(item);
