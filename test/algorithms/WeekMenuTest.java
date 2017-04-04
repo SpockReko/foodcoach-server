@@ -7,13 +7,12 @@ import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
+import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 
@@ -26,7 +25,10 @@ public class WeekMenuTest {
 
     private static Double result;
     private static Menu resultingMenu;
+    private static Menu resultingMenuFilterIngrediense;
+    private static Menu resultingMenuFilterRecipe;
     private static Recipe userRecipe;
+    private static List<Recipe> recipes = new ArrayList<>();
 
     @BeforeClass
     public static void init() {
@@ -38,7 +40,6 @@ public class WeekMenuTest {
 
         userRecipe = createOptimalRecipeForSpecificUser(user);
         Recipe stefanRecipe = createOptimalRecipeForSpecificUser(stefan);
-        List<Recipe> recipes = new ArrayList<>();
 
 
         recipes.add(userRecipe);
@@ -46,12 +47,20 @@ public class WeekMenuTest {
 
         WeekMenu weekMenu = new WeekMenu(user,recipes);
         weekMenu.setNrOfRecipes(1);
-        resultingMenu = weekMenu.calculateWeekMenu();
+        resultingMenu = weekMenu.calculateWeekMenu(new ArrayList<>());
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
         HashMap<Nutrient,Double> nutrientsContent = Algorithms.nutrientsContent(resultingMenu);
         result = Algorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,resultingMenu);
+
+        Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
+        weekMenu.addAllergies(usersPerfectIngrediense);
+        resultingMenuFilterIngrediense = weekMenu.calculateWeekMenu(new ArrayList<>());
+
+        List<Recipe> filterList = new ArrayList<>();
+        filterList.add(userRecipe);
+        resultingMenuFilterRecipe = weekMenu.calculateWeekMenu(filterList);
 
     }
 
@@ -70,6 +79,21 @@ public class WeekMenuTest {
         assertTrue(result == 0);
     }
 
+//    @Test
+//    public void filterIngredientTest(){
+//        assertTrue(!resultingMenuFilterIngrediense.getRecipeList().contains(userRecipe));
+//    }
+
+    @Test
+    public void filterRecipeTest(){
+        System.out.println("Listan innehåller: " );
+        for (Recipe i : resultingMenuFilterRecipe.getRecipeList()) {
+
+            System.out.println("inlkuderar: " +i.getTitle());
+
+        }
+        assertTrue(!resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
+    }
 
     @NotNull
     private static Recipe createOptimalRecipeForSpecificUser(User user) {
@@ -102,13 +126,14 @@ public class WeekMenuTest {
                 Float.parseFloat(user.hmap.get(Nutrient.ZinkMG) + "") * convertToOnePortion);
         Amount amount = new Amount(100, Amount.Unit.GRAM);
 
-        ingredients.add(new Ingredient(
-            new FoodItem("perfectFood", "perfektus foodus", 9999, "perfekt",
-                Float.parseFloat(user.hmap.get(Nutrient.CaloriKcal) + "") * convertToOnePortion, 0F,
-                Float.parseFloat(user.hmap.get(Nutrient.Carbohydrates) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.Protein) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.Fibre) + "")* convertToOnePortion, 0F, 0F,
-                0F, 0F, 0F, 0F, sugars, fats, vitamins, minerals), amount));
+        Ingredient perfectIngredient = new Ingredient(
+                new FoodItem("perfectFoodFor" + user.firstName, "perfektus foodus", 9999, "perfekt",
+                        Float.parseFloat(user.hmap.get(Nutrient.CaloriKcal) + "") * convertToOnePortion, 0F,
+                        Float.parseFloat(user.hmap.get(Nutrient.Carbohydrates) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.Protein) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.Fibre) + "")* convertToOnePortion, 0F, 0F,
+                        0F, 0F, 0F, 0F, sugars, fats, vitamins, minerals), amount);
+        ingredients.add(perfectIngredient);
 
         return new Recipe(user.firstName + "Recipe", 1, ingredients);
     }

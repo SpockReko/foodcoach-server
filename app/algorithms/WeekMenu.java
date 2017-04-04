@@ -20,17 +20,28 @@ import java.util.HashMap;
 public class WeekMenu {
 
     private final Double LARGE_DISTANCE = 999999999.9999;
-    private Double optimalMenuNutrition = LARGE_DISTANCE;
-    private Menu optimalMenu = new Menu(new ArrayList<Recipe>());
+    private Double optimalMenuNutrition;
+    private Menu optimalMenu = new Menu(new ArrayList<>());
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
     private List<Menu> weekMenuList = new ArrayList<>();
     private User user = new User();
-    private List<Recipe> notThisRecipes = new ArrayList<>(); //TODO: Dummy list!
+
+    private List<Ingredient> notThisIngredients = new ArrayList<>();
 
     public WeekMenu(User user, List<Recipe> recipeList){
         this.user = user;
         this.allRecipes = recipeList;
+    }
+
+    private void reset(){
+        optimalMenuNutrition = LARGE_DISTANCE;
+        optimalMenu = new Menu(new ArrayList<>());
+        weekMenuList = new ArrayList<>();
+    }
+
+    public void addAllergies(Ingredient ingredient) {
+        notThisIngredients.add(ingredient);
     }
 
     public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
@@ -48,8 +59,10 @@ public class WeekMenu {
 
     }
 
-    public Menu calculateWeekMenu() {
-        filterRecepies(user.allergier,notThisRecipes);
+
+    public Menu calculateWeekMenu(List<Recipe> notThisRecipes) {
+        reset();
+        filterRecipes(notThisIngredients,notThisRecipes);
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
         optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
         for(Menu menu : weekMenuList){
@@ -71,7 +84,6 @@ public class WeekMenu {
         return Algorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
     }
 
-
     public String recipeListToString(Menu menu){
         String text = "";
         for(Recipe r : menu.getRecipeList()){
@@ -84,37 +96,67 @@ public class WeekMenu {
         return text;
     }
 
-    private void filterRecepies(List<String> stringList, List<Recipe> recipeList){
 
-        List<Ingredient> ingredientList = getIngredientsFromString(stringList);
+    private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList){
+
+        System.out.println("optimalMenuNutrition: " + optimalMenuNutrition +
+                "\noptimalMenu size: " + optimalMenu.getRecipeList().size() +
+                "\nnrOfRecipe: " + nrOfRecipes +
+                "\nallRecipes size: " + allRecipes.size() +
+                "\nweekMenuList size: " + weekMenuList.size() +
+                "\nUser: " + user.firstName);
+        System.out.println("*********************************************************start");
+
+        System.out.println("#IngredientList in weekmenu at row 88 has size: " + ingredientList.size());
         List<Recipe> filteredRecipes = new ArrayList<>();
-
+        System.out.println("#recipesList in weekmenu at parameter has size: " + recipeList.size());
+        System.out.println("For loop starts! nr of Recepies: " + allRecipes.size());
         for (Recipe recipe : allRecipes){
+            System.out.println("\nLoop for recipe " + recipe.getTitle());
             boolean badRecipe = false;
             for (Ingredient ingredient :ingredientList) {
-                if(recipe.ingredients.contains(ingredient)) badRecipe = true;
+                System.out.println("\t"+recipe.getTitle() + " see if if it have ingredient: " + ingredient);
+                if(recipe.ingredients.contains(ingredient)){
+                    badRecipe = true;
+                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! Ingredient " + ingredient + "exist in allergies!");
+                }
             }
             for (Recipe r: recipeList) {
-                if(recipe.equals(r)) badRecipe = true;
+                if(recipe.equals(r)){
+                    badRecipe = true;
+                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! You don't want this recepie!");
+                }
             }
             if(!badRecipe) filteredRecipes.add(recipe);
+            System.out.println("Now is the size of the filteredRecipes: " + filteredRecipes.size());
+        }
+        System.out.println("Now has all loops ended! the filterdList has size: " + filteredRecipes.size());
+        for (Recipe r: filteredRecipes) {
+            System.out.println("recipe: " + r.getTitle());
         }
         allRecipes = filteredRecipes;
+
+        System.out.println("************************************************************slut");
     }
 
-    @NotNull
     private List<Ingredient> getIngredientsFromString(List<String> stringList) {
         List<Ingredient> ingredientList = new ArrayList<>();
 
         for (String name: stringList) {
-            List<FoodItem> foods = FoodItem.find.where().contains("name", name).findList();
+            //TODO: Fix the error of the MYSQL call!
+            List<FoodItem> foods;
+            try {
+                foods = FoodItem.find.where().contains("name", name).findList();
+            }catch(Exception e){
+                foods = null;
+            }
             if( foods != null){
                 for (FoodItem fi: foods) {
                     ingredientList.add(new Ingredient(fi,new Amount(100.0, Amount.Unit.GRAM)));
                 }
             }
-
-        } return ingredientList;
+        }
+        return ingredientList;
     }
 
     public int getNrOfRecipes(){ return nrOfRecipes;}
@@ -122,5 +164,4 @@ public class WeekMenu {
     public void setNrOfRecipes(int nrOfRecipes) {
         this.nrOfRecipes = nrOfRecipes;
     }
-
 }

@@ -28,15 +28,20 @@ public class WeekMenuController extends Controller {
     // POST /weekmenu
     public Result weekMenu() {
 
+        // TODO: Refractor: Logic should not be in a controller
+
         DynamicForm requestData = formFactory.form().bindFromRequest();
 
         User user;
         int nrOfRecipes;
+        List<Recipe> removeRecipeList = new ArrayList<>();
 
-        if (requestData.get("sex") != null) {
+        if (requestData.get("sex") != null) {  // If there exist input from client.
+
+
+            //Change the format to suit user constructor variables.
             Integer age =
                 requestData.get("age") != null ? Integer.parseInt(requestData.get("age")) : 25;
-
             String sex = requestData.get("sex"); // output: "women" or "male"
             User.Sex sexEnum = sex.equals("women") ? User.Sex.FEMALE : User.Sex.MALE;
             Double weight = Double.parseDouble(requestData.get("weight"));
@@ -51,57 +56,31 @@ public class WeekMenuController extends Controller {
             for (String n : allergy.split(" ")) {
                 allergyList.add(n);
             }
-            nrOfRecipes = Integer.parseInt(requestData.get("nrOfRecipe"));
 
             user = new User(sexEnum, activityLevel, weight, length, age, goalEnum, allergyList);
+            nrOfRecipes = Integer.parseInt(requestData.get("nrOfRecipe"));
+            String recipe = requestData.get("removeRecipe");
 
-        } else {
+            for (String n : recipe.split(" ")) {
+                removeRecipeList.add(Recipe.find.where().contains("title", n).findUnique());
+            }
+        } else { // If we run it from the "Server"
 
             user = new User();
             nrOfRecipes = 3;
+
         }
 
+
         List<Recipe> allRecipes = Recipe.find.all();
-
-        //List<Recipe> filteredRecipes =
-        //        somewhere.removeRecipesFromListContainsGivenIngredients(
-        //                allRecipes,
-        //                allergyList);
-        // weekmenu(user)?
-
-
         WeekMenu weekMenuInstant = new WeekMenu(user, allRecipes);
         weekMenuInstant.setNrOfRecipes(nrOfRecipes);
 
-        //return ok(Json.toJson(map));
-        return weekMenuTest();
+        Menu resultingWeekMenu = weekMenuInstant.calculateWeekMenu(removeRecipeList);
 
-    }
-
-
-    //Testa week menu
-    public Result weekMenuTest() {
-        List<Recipe> allRecipes = Recipe.find.all();
-        List<Recipe> chosenRecipes = new ArrayList<Recipe>();
-
-        WeekMenu weekMenu = new WeekMenu(new User(), allRecipes);
-        //TODO: Få följande värden ifrån användaren genom client
-        weekMenu.setNrOfRecipes(3);
-        Menu resultingWeekMenu = weekMenu.calculateWeekMenu();
-/*
-        System.out.println(resultingWeekMenu.size());
-        ObjectNode json = Json.newObject();
-        ArrayNode array = json.putArray("recipe");
-        for (Recipe recipe : resultingWeekMenu) {
-            System.out.println(recipe.getTitle());
-            ObjectNode node = Json.newObject();
-            node.put("titel",recipe.getTitle());
-            array.add(node);
-        }
-        return ok(json);
-*/
-        if (resultingWeekMenu.getRecipeList().size() == weekMenu.getNrOfRecipes())
-            return ok(weekMenu.recipeListToString(resultingWeekMenu));
+        if (resultingWeekMenu.getRecipeList().size() == weekMenuInstant.getNrOfRecipes())
+            return ok(weekMenuInstant.recipeListToString(resultingWeekMenu));
         return ok("nothing found!");
+
     }
 }
