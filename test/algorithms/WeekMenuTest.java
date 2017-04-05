@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.util.*;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -45,14 +46,14 @@ public class WeekMenuTest {
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
-        WeekMenu weekMenu = new WeekMenu(user,recipes);
+        MenuAlgorithms weekMenu = new MenuAlgorithms(user,recipes);
         weekMenu.setNrOfRecipes(1);
         resultingMenu = weekMenu.calculateWeekMenu(new ArrayList<>());
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
-        HashMap<Nutrient,Double> nutrientsContent = Algorithms.nutrientsContent(resultingMenu);
-        result = Algorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,resultingMenu);
+        HashMap<Nutrient,Double> nutrientsContent = NutritionAlgorithms.nutrientsContent(resultingMenu);
+        result = NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,resultingMenu);
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         weekMenu.addAllergies(usersPerfectIngrediense);
@@ -92,7 +93,7 @@ public class WeekMenuTest {
             System.out.println("inlkuderar: " +i.getTitle());
 
         }
-        assertTrue(!resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
+        assertFalse(resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
     }
 
     @NotNull
