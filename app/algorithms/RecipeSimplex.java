@@ -1,5 +1,7 @@
 package algorithms;
 
+import models.recipe.Recipe;
+import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearObjectiveFunction;
 import org.apache.commons.math3.optim.linear.Relationship;
@@ -25,14 +27,20 @@ public class RecipeSimplex {
         }
     }
 
-    public void addLinearObjectiveFunction(int numberOfIngredients, List<Ingredient> ingredients) {
-        double[] objFcn = new double[numberOfIngredients];
+    public void addLinearObjectiveFunction(List<Ingredient> ingredients) {
+        double[] objFcn = new double[ingredients.size()];
 
         for( int i=0; i<ingredients.size(); i++ ) {
             objFcn[i] = ingredients.get(i).getWaste()/100;
         }
 
         f = new LinearObjectiveFunction(objFcn,0);
+    }
+
+    public double[] doOptimize() {
+        PointValuePair result = solver.doOptimize();
+        double[] optimalPoint = result.getPoint();
+        return optimalPoint;
     }
 
 }

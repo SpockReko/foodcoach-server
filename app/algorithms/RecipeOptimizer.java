@@ -16,21 +16,22 @@ import java.util.List;
 public class RecipeOptimizer {
 
     private Double lowestPercentageOfIngredient;
+    private List<Ingredient> ingredients;
+    User user;
 
-    // The map include the given ingredient and number of least amount of th ingredient.
-    public Recipe generateNewRecipe(List<Ingredient> ingredients, User user){
-        HashMap<Integer,Ingredient> indexOfIngredient;
-        List<Double> leastAmountOfIngredient = leastAmountOfIngredient(ingredients);
+    public RecipeOptimizer(Recipe recipe, User user) {
+        ingredients = recipe.ingredients;
+        this.user = user;
+    }
+
+    public Recipe generateNewRecipe(){
+        List<Double> leastAmountOfIngredients = leastAmountOfIngredients(ingredients);
 
         RecipeSimplex recipeSimplex = new RecipeSimplex();
-        recipeSimplex.addConstraint(leastAmountOfIngredient);
-        /*
-        for (IngredientAmount ingredientAmount: list) {
-            Ingredient ingredient = ingredientAmount.getIngredient();
-            int amount = ingredientAmount.getAmount();
-            recipeSimplex.add(ingredient,amount);
-        }
-//        return recipeSimplex.generateNewRecipe;*/
+        recipeSimplex.addLinearObjectiveFunction(ingredients);
+        recipeSimplex.addConstraint(leastAmountOfIngredients);
+        double[] optimalAmountOfIngredients = recipeSimplex.doOptimize();
+
         return null;
     }
 
@@ -50,13 +51,15 @@ public class RecipeOptimizer {
         return null;
     }
 
-    private List<Double> leastAmountOfIngredient(List<Ingredient> ingredients) {
-        List<Double> leastAmountOfIngredient = new ArrayList<>();
+    private List<Double> leastAmountOfIngredients(List<Ingredient> ingredients) {
+        List<Double> leastAmountOfIngredients = new ArrayList<>();
         for( int i=0; i<ingredients.size(); i++ ) {
             Ingredient ingredient = ingredients.get(i);
-            leastAmountOfIngredient.set(i,ingredient.getAmount().getAmount()*lowestPercentageOfIngredient);
+            if( lowestPercentageOfIngredient != null ) {
+                leastAmountOfIngredients.add(i, ingredient.getAmount().getAmount() * lowestPercentageOfIngredient);
+            }
         }
-        return leastAmountOfIngredient;
+        return leastAmountOfIngredients;
     }
 
     public void setLowestPercentageOfIngredient(Double lowestPercentageOfIngredient) {
