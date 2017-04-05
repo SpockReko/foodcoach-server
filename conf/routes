@@ -18,8 +18,8 @@ GET     /notlinked_recipes                  controllers.RecipeController.getAllN
 GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
 
 # Week menu options from client
-POST    /weekmenu                           controllers.WeekMenuController.weekMenu
-GET     /weekmenu                           controllers.WeekMenuController.weekMenu()
+POST    /weekmenu                           controllers.MenuAlgorithmsController.weekmenu
+GET     /weekmenu                           controllers.MenuAlgorithmsController.weekmenu()
 
 # Parse ingredient string to food item
 GET     /parseIng/:ingredient               controllers.ParseController.parseIngredient(ingredient: String)
