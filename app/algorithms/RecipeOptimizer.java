@@ -30,26 +30,11 @@ public class RecipeOptimizer {
         RecipeSimplex recipeSimplex = new RecipeSimplex();
         recipeSimplex.addLinearObjectiveFunction(ingredients);
         recipeSimplex.addConstraint(leastAmountOfIngredients);
-        double[] optimalAmountOfIngredients = recipeSimplex.doOptimize();
+        double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
         return null;
     }
 
-    public Recipe OptimizeARecipe(Recipe recipe, User user){
-        List<Recipe> r = new ArrayList<>();
-        r.add(recipe);
-        HashMap<Nutrient,Double> nutrients = NutritionAlgorithms.nutrientsContent(new Menu(r));
-        HashMap<Nutrient,Double> userNeeds = user.hmap;
-
-
-
-        // Optimize a recepie to satisfie Users need!
-        // suggested way is:
-        // * To see if the recipe is to much calories or to little for the user.
-        //   * If it to little: Sort fooditems in highest consetration of missing nutrious values to the least and
-        //   * If it to much sort ingredience with % and highest to lowest
-        return null;
-    }
 
     private List<Double> leastAmountOfIngredients(List<Ingredient> ingredients) {
         List<Double> leastAmountOfIngredients = new ArrayList<>();
