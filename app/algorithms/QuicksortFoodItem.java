@@ -98,7 +98,7 @@ public class QuicksortFoodItem {
         sum += Math.abs(foodItem1.getMinerals().getSelenium() - foodItemWeCompare.getMinerals().getCalcium());
         sum += Math.abs(foodItem1.getMinerals().getSodium() - foodItemWeCompare.getMinerals().getCalcium());
         sum += Math.abs(foodItem1.getMinerals().getZink() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getSugars().getSugars() - foodItemWeCompare.getSugars().getSugars());
+        //sum += Math.abs(foodItem1.getSugars().getSugars() - foodItemWeCompare.getSugars().getSugars());
 
         return sum;
     }

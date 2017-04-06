@@ -1,32 +1,27 @@
 package controllers;
 
-import algorithms.WeekMenu;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import algorithms.MenuAlgorithms;
 import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.User;
 import play.data.DynamicForm;
 import play.data.FormFactory;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by fredrikkindstrom on 2017-03-15.
  */
-public class WeekMenuController extends Controller {
+public class MenuAlgorithmsController extends Controller {
 
     @Inject FormFactory formFactory;
 
     // POST /weekmenu
-    public Result weekMenu() {
+    public Result weekmenu() {
 
         // TODO: Refractor: Logic should not be in a controller
 
@@ -73,13 +68,13 @@ public class WeekMenuController extends Controller {
 
 
         List<Recipe> allRecipes = Recipe.find.all();
-        WeekMenu weekMenuInstant = new WeekMenu(user, allRecipes);
-        weekMenuInstant.setNrOfRecipes(nrOfRecipes);
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(user, allRecipes);
+        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-        Menu resultingWeekMenu = weekMenuInstant.calculateWeekMenu(removeRecipeList);
+        Menu resultingWeekMenu = menuAlgorithmsInstant.calculateWeekMenu(removeRecipeList);
 
-        if (resultingWeekMenu.getRecipeList().size() == weekMenuInstant.getNrOfRecipes())
-            return ok(weekMenuInstant.recipeListToString(resultingWeekMenu));
+        if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(menuAlgorithmsInstant.recipeListToString(resultingWeekMenu));
         return ok("nothing found!");
 
     }

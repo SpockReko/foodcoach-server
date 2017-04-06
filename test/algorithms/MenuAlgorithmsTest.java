@@ -7,20 +7,18 @@ import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
-import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Admin on 2017-03-23.
  */
-public class WeekMenuTest {
+public class MenuAlgorithmsTest {
 
     //TODO: Add a user and recepie ith identical recepie and se if week menu chose this.
 
@@ -46,9 +44,9 @@ public class WeekMenuTest {
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
-        MenuAlgorithms weekMenu = new MenuAlgorithms(user,recipes);
-        weekMenu.setNrOfRecipes(1);
-        resultingMenu = weekMenu.calculateWeekMenu(new ArrayList<>());
+        MenuAlgorithms menuAlgorithms = new MenuAlgorithms(user,recipes);
+        menuAlgorithms.setNrOfRecipes(1);
+        resultingMenu = menuAlgorithms.calculateWeekMenu(new ArrayList<>());
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -56,12 +54,12 @@ public class WeekMenuTest {
         result = NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,resultingMenu);
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
-        weekMenu.addAllergies(usersPerfectIngrediense);
-        resultingMenuFilterIngrediense = weekMenu.calculateWeekMenu(new ArrayList<>());
+        menuAlgorithms.addAllergies(usersPerfectIngrediense);
+        resultingMenuFilterIngrediense = menuAlgorithms.calculateWeekMenu(new ArrayList<>());
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
-        resultingMenuFilterRecipe = weekMenu.calculateWeekMenu(filterList);
+        resultingMenuFilterRecipe = menuAlgorithms.calculateWeekMenu(filterList);
 
     }
 
@@ -93,7 +91,7 @@ public class WeekMenuTest {
             System.out.println("inlkuderar: " +i.getTitle());
 
         }
-        assertFalse(resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
+        assertTrue(!resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
     }
 
     @NotNull

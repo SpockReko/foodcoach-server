@@ -7,7 +7,6 @@ import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
-import org.jetbrains.annotations.NotNull;
 
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 /**
  * Created by stefa on 2017-02-28.
  */
-public class WeekMenu {
+public class MenuAlgorithms {
 
     private final Double LARGE_DISTANCE = 999999999.9999;
     private Double optimalMenuNutrition;
@@ -29,7 +28,7 @@ public class WeekMenu {
 
     private List<Ingredient> notThisIngredients = new ArrayList<>();
 
-    public WeekMenu(User user, List<Recipe> recipeList){
+    public MenuAlgorithms(User user, List<Recipe> recipeList){
         this.user = user;
         this.allRecipes = recipeList;
     }
@@ -80,8 +79,8 @@ public class WeekMenu {
     public Double nutritionValueCalculation(Menu chosenMenu){
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
-        HashMap<Nutrient,Double> nutrientsContent = Algorithms.nutrientsContent(chosenMenu);
-        return Algorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
+        HashMap<Nutrient,Double> nutrientsContent = NutritionAlgorithms.nutrientsContent(chosenMenu);
+        return NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
     }
 
     public String recipeListToString(Menu menu){

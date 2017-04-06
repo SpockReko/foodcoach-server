@@ -8,7 +8,7 @@ import models.user.Nutrient;
 /**
  * Created by louiserost on 2017-03-06.
  */
-public class Algorithms {
+public class NutritionAlgorithms {
 
     public static Double L2NormTerm(Double percentageOfRDI) {
         return Math.pow(1 - percentageOfRDI, 2);
@@ -30,8 +30,6 @@ public class Algorithms {
                                         nutrientsContent.get(nutrient),
                                         nutrientsNeed.get(nutrient),
                                         overdoseValues.get(nutrient));
-                /*Double l2NormResult = L2NormTerm(percentageOfRDI);
-                sum += l2NormResult > Math.pow(10,-10) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)*/
                 sum += L2NormTerm(percentageOfRDI);
                 addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
             }
