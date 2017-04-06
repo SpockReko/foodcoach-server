@@ -1,5 +1,7 @@
 package algorithms;
 
+import models.food.FoodItem;
+import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
@@ -16,15 +18,17 @@ import java.util.List;
 public class RecipeOptimizer {
 
     private Double lowestPercentageOfIngredient;
+    private Recipe recipe;
     private List<Ingredient> ingredients;
     User user;
 
     public RecipeOptimizer(Recipe recipe, User user) {
-        ingredients = recipe.ingredients;
+        this.recipe = recipe;
+        this.ingredients = recipe.ingredients;
         this.user = user;
     }
 
-    public Recipe generateNewRecipe(){
+    public Recipe optimizeRecipe(){
         List<Double> leastAmountOfIngredients = leastAmountOfIngredients(ingredients);
 
         RecipeSimplex recipeSimplex = new RecipeSimplex();
@@ -32,7 +36,15 @@ public class RecipeOptimizer {
         recipeSimplex.addConstraint(leastAmountOfIngredients);
         double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
-        return null;
+        List<Ingredient> newIngredients = new ArrayList<>();
+        for( int i=0; i<optimalAmountOfIngredients.length; i++ ){
+            FoodItem foodItem = ingredients.get(i).getFoodItem();
+            Amount amount = new Amount(optimalAmountOfIngredients[i], ingredients.get(i).getAmount().getUnit());
+            Ingredient ingredient = new Ingredient(foodItem, amount);
+            newIngredients.add(ingredient);
+        }
+        Recipe newRecipe = new Recipe(recipe.getTitle(), recipe.getPortions(), newIngredients);
+        return newRecipe;
     }
 
 

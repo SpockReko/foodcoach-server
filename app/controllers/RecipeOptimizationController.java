@@ -16,8 +16,8 @@ public class RecipeOptimizationController extends Controller {
         User user = new User();
         RecipeOptimizer recipeOptimizer = new RecipeOptimizer(recipe, user);
         recipeOptimizer.setLowestPercentageOfIngredient(0.75D);
-        recipeOptimizer.generateNewRecipe();
+        Recipe optimizedRecipe = recipeOptimizer.optimizeRecipe();
 
-        return ok();
+        return ok(optimizedRecipe.getTitle());
     }
 }
