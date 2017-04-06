@@ -14,10 +14,10 @@ public class RecipeOptimizationController extends Controller {
     public Result recipeOptimization() {
         Recipe recipe = Recipe.find.byId(1L);
         User user = new User();
-        RecipeOptimizer recipeOptimizer = new RecipeOptimizer(recipe, user);
-        recipeOptimizer.setLowestPercentageOfIngredient(0.75D);
-        Recipe optimizedRecipe = recipeOptimizer.optimizeRecipe();
+        RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
+        recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
+        Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
 
-        return ok(optimizedRecipe.getTitle());
+        return ok(recipeOptimizerInstant.recipeToString(optimizedRecipe));
     }
 }
