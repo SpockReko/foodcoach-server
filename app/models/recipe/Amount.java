@@ -99,5 +99,12 @@ public class Amount {
          * The type of the unit. Either mass or volume.
          */
         public enum Type { MASS, VOLUME, SINGLE, EMPTY }
+
+        @Override
+        public String toString(){
+            return this.getIdentifiers()[0];
+        }
     }
+
+
 }

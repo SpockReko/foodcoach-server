@@ -112,12 +112,21 @@ public class User extends Model {
         this.height = height;
         this.age = age;
         this.goal = goal;
-        this.allergier = allergier;
+
+        addAllergier(allergier);
         dailyCalories();
         calculateOverdoseValues(age);
     }
 
-    
+    private void addAllergier(ArrayList<String> allergier) {
+        if(allergier==null){
+            this.allergier = new ArrayList<>();
+        }else {
+            this.allergier = allergier;
+        }
+    }
+
+
     private void dailyCalories() {
         double dc;
 
