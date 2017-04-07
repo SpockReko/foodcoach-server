@@ -30,8 +30,6 @@ public class NutritionAlgorithms {
                                         nutrientsContent.get(nutrient),
                                         nutrientsNeed.get(nutrient),
                                         overdoseValues.get(nutrient));
-                /*Double l2NormResult = L2NormTerm(percentageOfRDI);
-                sum += l2NormResult > Math.pow(10,-10) ? l2NormResult : 0.0; // 10^-8 = (0.0000 0001)*/
                 sum += L2NormTerm(percentageOfRDI);
                 addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
             }

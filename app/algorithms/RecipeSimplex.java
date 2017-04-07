@@ -1,5 +1,7 @@
 package algorithms;
 
+import models.recipe.Recipe;
+import org.apache.commons.math3.optim.OptimizationData;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
@@ -15,20 +17,21 @@ import java.util.*;
 public class RecipeSimplex {
     SimplexSolver solver = new SimplexSolver();
     LinearObjectiveFunction f;
+    //LinearConstraintSet constraints = new LinearConstraintSet();
+    Collection<LinearConstraint> constraintsCollection = new ArrayList();
     LinearConstraintSet constraints;
 
     public void addConstraint(List<Double> leastAmountOfIngredient) {
         for( int i=0; i<leastAmountOfIngredient.size(); i++ ) {
             double[] arr = new double[leastAmountOfIngredient.size()];
             arr[i] = 1;
-            Collection<LinearConstraint> cs = constraints.getConstraints();
-            cs.add(new LinearConstraint(arr, Relationship.GEQ, leastAmountOfIngredient.get(i)));
-            constraints = new LinearConstraintSet(cs);
+            constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, leastAmountOfIngredient.get(i)));
         }
+        constraints = new LinearConstraintSet(constraintsCollection);
     }
 
-    public void addLinearObjectiveFunction(int numberOfIngredients, List<Ingredient> ingredients) {
-        double[] objFcn = new double[numberOfIngredients];
+    public void addLinearObjectiveFunction(List<Ingredient> ingredients) {
+        double[] objFcn = new double[ingredients.size()];
 
         for( int i=0; i<ingredients.size(); i++ ) {
             objFcn[i] = ingredients.get(i).getWaste()/100;
@@ -37,8 +40,9 @@ public class RecipeSimplex {
         f = new LinearObjectiveFunction(objFcn,0);
     }
 
-    public double[] optimize(){
+    public double[] optimize() {
         PointValuePair result = solver.optimize(f,constraints);
         return result.getPoint();
     }
+
 }
