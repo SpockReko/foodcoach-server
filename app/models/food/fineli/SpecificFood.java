@@ -30,13 +30,13 @@ public class SpecificFood extends Model {
     @Enumerated(EnumType.STRING) public Processing processing;
     @DbArray(length = 400) public List<SpecialDiet> specialDiets = new ArrayList<>();
 
-    private Double energyKcal;
     private Double energyKj;
     @Column(name = "carbohydrates_g") private Double carbohydrates;
     @Column(name = "protein_g") private Double protein;
-    @Column(name = "salt_g") private Double salt;
+    @Column(name = "fat_g") private Double fat;
     @Column(name = "fibre_g") private Double fibre;
     @Column(name = "alcohol_g") private Double alcohol;
+    @Column(name = "salt_g") private Double salt;
 
     @Column(name = "vitamin_a_ug") private Double vitaminA;
     @Column(name = "vitamin_b6_ug") private Double vitaminB6;
@@ -66,8 +66,8 @@ public class SpecificFood extends Model {
         this.fineliId = fineliId;
     }
 
-    public SpecificFood(String name, int fineliId, Double energyKcal, Double energyKj,
-        Double carbohydrates, Double protein, Double salt, Double fibre, Double alcohol,
+    public SpecificFood(String name, int fineliId, Double energyKj,
+        Double carbohydrates, Double protein, Double fat, Double fibre, Double alcohol, Double salt,
         Double vitaminA, Double vitaminB6, Double vitaminB12, Double vitaminC, Double vitaminD,
         Double vitaminE, Double vitaminK, Double thiamine, Double riboflavin, Double niacin,
         Double niacinEquivalents, Double folate, Double phosphorus, Double iodine, Double iron,
@@ -75,13 +75,13 @@ public class SpecificFood extends Model {
         Double zink) {
         this.name = name;
         this.fineliId = fineliId;
-        this.energyKcal = energyKcal;
         this.energyKj = energyKj;
         this.carbohydrates = carbohydrates;
         this.protein = protein;
-        this.salt = salt;
+        this.fat = fat;
         this.fibre = fibre;
         this.alcohol = alcohol;
+        this.salt = salt;
         this.vitaminA = vitaminA;
         this.vitaminB6 = vitaminB6;
         this.vitaminB12 = vitaminB12;

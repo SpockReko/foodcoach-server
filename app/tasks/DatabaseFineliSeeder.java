@@ -48,37 +48,43 @@ public class DatabaseFineliSeeder {
     private static final int GEN_PROCESSING = 10;
     private static final int GEN_SPECIAL_DIETS = 13;
 
+    private static final int SPEC_ID = 0;
+    private static final int SPEC_ENERGY_KJ = 2;
+    private static final int SPEC_CARB = 3;
+    private static final int SPEC_PROTEIN = 5;
+    private static final int SPEC_FAT = 4;
+    private static final int SPEC_FIBRE = 7;
+    private static final int SPEC_ALCOHOL = 6;
+    private static final int SPEC_SALT = 39;
+    private static final int SPEC_VITAMIN_A = 52;
+    private static final int SPEC_VITAMIN_B6 = 47;
+    private static final int SPEC_VITAMIN_B12 = 50;
+    private static final int SPEC_VITAMIN_C = 51;
+    private static final int SPEC_VITAMIN_D = 54;
+    private static final int SPEC_VITAMIN_E = 55;
+    private static final int SPEC_VITAMIN_K = 56;
+    private static final int SPEC_THIAMINE = 49;
+    private static final int SPEC_RIBOFLAVIN = 48;
+    private static final int SPEC_NIACIN = 46;
+    private static final int SPEC_NIACIN_EQ = 45;
+    private static final int SPEC_FOLATE = 44;
+    private static final int SPEC_PHOSPHORUS = 40;
+    private static final int SPEC_IODINE = 35;
+    private static final int SPEC_IRON = 34;
+    private static final int SPEC_CALCIUM = 33;
+    private static final int SPEC_POTASSIUM = 36;
+    private static final int SPEC_MAGNESIUM = 37;
+    private static final int SPEC_SODIUM = 38;
+    private static final int SPEC_SELENIUM = 41;
+    private static final int SPEC_ZINK = 42;
+
     private static Set<GeneralFood> generalFoods = new HashSet<>();
     private static List<SpecificFood> specificFoods = new LinkedList<>();
+    private static Map<Integer, Integer> idRowNumbers = new HashMap<>();
 
     public static void main(String[] args) {
 
         db = CommonTools.getDatabase();
-
-        System.out.println(
-            "\n" + CommonTools.PURPLE + "--- (Seeding database) ---\n" + CommonTools.RESET);
-
-        try {
-            db.find(FoodItem.class).where().eq("id", "1").findUnique();
-        } catch (PersistenceException e) {
-            System.out.println(CommonTools.YELLOW
-                + "No database tables present. Please start server and run evolution script first!\n"
-                + CommonTools.RESET);
-            return;
-        }
-
-        System.out.println(CommonTools.CYAN + "Importing foods from TSV..." + CommonTools.RESET);
-        try {
-            importFoods();
-        } catch (DatabaseNotEmptyException e) {
-            System.out.println(
-                CommonTools.YELLOW + "Foods already imported, moving on..." + CommonTools.RESET);
-        }
-
-        System.out.println();
-    }
-
-    private static void importFoods() throws DatabaseNotEmptyException {
 
         TsvParserSettings settings = new TsvParserSettings();
         settings.getFormat().setLineSeparator("\n");
@@ -88,23 +94,40 @@ public class DatabaseFineliSeeder {
         List<String[]> generalRows = parser.parseAll(getReader(GENERAL_TSV));
         List<String[]> specificRows = parser.parseAll(getReader(SPECIFIC_TSV));
 
-        if (db.find(SpecificFood.class).where().findCount() > 0) {
-            throw new DatabaseNotEmptyException();
+        System.out.println(
+            "\n" + CommonTools.PURPLE + "--- (Seeding database) ---\n" + CommonTools.RESET);
+
+        try {
+            db.find(SpecificFood.class).where().eq("id", "1").findUnique();
+        } catch (PersistenceException e) {
+            System.out.println(CommonTools.YELLOW
+                + "No database tables present. Please start server and run evolution script first!\n"
+                + CommonTools.RESET);
+            return;
         }
 
-        ProgressBar pb = new ProgressBar("Importing", generalRows.size(), 50).start();
-
-        for (String[] cols : generalRows) {
-            readGeneralRow(cols);
-            pb.step();
+        for (int i = 0; i < specificRows.size(); i++) {
+            idRowNumbers.put(Integer.parseInt(specificRows.get(i)[SPEC_ID]), i);
         }
-        db.saveAll(generalFoods);
 
+        System.out.println(CommonTools.CYAN + "Importing general foods from TSV..." + CommonTools.RESET);
+        importFoods(generalRows, specificRows);
+        printDone();
 
-        pb.stop();
+        System.out.println();
     }
 
-    private static void readGeneralRow(String[] cols) {
+    private static void importFoods(List<String[]> generalRows, List<String[]> specificRows) {
+
+        for (String[] cols : generalRows) {
+            readGeneralRow(cols, specificRows);
+        }
+
+        db.saveAll(generalFoods);
+        db.saveAll(specificFoods);
+    }
+
+    private static void readGeneralRow(String[] cols, List<String[]> specificRows) {
         GeneralFood generalFood;
         if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[GEN_NAME]))) {
             generalFood = generalFoods.stream()
@@ -115,7 +138,38 @@ public class DatabaseFineliSeeder {
 
         String name = cols[GEN_DISPLAY_NAME];
         int fineliId = Integer.parseInt(cols[GEN_ID]);
-        SpecificFood specificFood = new SpecificFood(name, fineliId);
+        String[] nutritionCols = specificRows.get(idRowNumbers.get(fineliId));
+        SpecificFood specificFood = new SpecificFood(
+            name, fineliId,
+            toDouble(nutritionCols[SPEC_ENERGY_KJ]),
+            toDouble(nutritionCols[SPEC_CARB]),
+            toDouble(nutritionCols[SPEC_PROTEIN]),
+            toDouble(nutritionCols[SPEC_FAT]),
+            toDouble(nutritionCols[SPEC_FIBRE]),
+            toDouble(nutritionCols[SPEC_ALCOHOL]),
+            toDouble(nutritionCols[SPEC_SALT]),
+            toDouble(nutritionCols[SPEC_VITAMIN_A]),
+            toDouble(nutritionCols[SPEC_VITAMIN_B6]),
+            toDouble(nutritionCols[SPEC_VITAMIN_B12]),
+            toDouble(nutritionCols[SPEC_VITAMIN_C]),
+            toDouble(nutritionCols[SPEC_VITAMIN_D]),
+            toDouble(nutritionCols[SPEC_VITAMIN_E]),
+            toDouble(nutritionCols[SPEC_VITAMIN_K]),
+            toDouble(nutritionCols[SPEC_THIAMINE]),
+            toDouble(nutritionCols[SPEC_RIBOFLAVIN]),
+            toDouble(nutritionCols[SPEC_NIACIN]),
+            toDouble(nutritionCols[SPEC_NIACIN_EQ]),
+            toDouble(nutritionCols[SPEC_FOLATE]),
+            toDouble(nutritionCols[SPEC_PHOSPHORUS]),
+            toDouble(nutritionCols[SPEC_IODINE]),
+            toDouble(nutritionCols[SPEC_IRON]),
+            toDouble(nutritionCols[SPEC_CALCIUM]),
+            toDouble(nutritionCols[SPEC_POTASSIUM]),
+            toDouble(nutritionCols[SPEC_MAGNESIUM]),
+            toDouble(nutritionCols[SPEC_SODIUM]),
+            toDouble(nutritionCols[SPEC_SELENIUM]),
+            toDouble(nutritionCols[SPEC_ZINK])
+        );
 
         if (cols[GEN_SPECIFIC_TAGS] != null) {
             String[] tags = cols[GEN_SPECIFIC_TAGS].split(",");
@@ -252,9 +306,13 @@ public class DatabaseFineliSeeder {
         }
     }
 
-    private static Float toFloat(String col) {
-        if (!col.equals("NULL")) {
-            return Float.parseFloat(col);
+    private static Double toDouble(String col) {
+        if (col.equals("<0.1")) {
+            return 0.09;
+        } else if (col.equals("<0.01")) {
+            return 0.009;
+        } else if (col != null && !col.equals("N/A")) {
+            return Double.parseDouble(col);
         } else {
             return null;
         }
@@ -270,8 +328,5 @@ public class DatabaseFineliSeeder {
 
     private static void printDone() {
         System.out.println(CommonTools.GREEN + "Done" + CommonTools.RESET);
-    }
-
-    private static class DatabaseNotEmptyException extends Exception {
     }
 }
