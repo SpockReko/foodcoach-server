@@ -45,6 +45,7 @@ public class Recipe extends Model {
     public int getPortions() {
         return portions;
     }
+    public List<Ingredient> getIngredients(){return ingredients;}
 
     public Double getEnergyKcal() {
         return ingredients.stream().mapToDouble(Ingredient::getEnergyKcal).sum();

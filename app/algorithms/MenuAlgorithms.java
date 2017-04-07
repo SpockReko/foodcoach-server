@@ -98,44 +98,24 @@ public class MenuAlgorithms {
 
     private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList){
 
-        System.out.println("optimalMenuNutrition: " + optimalMenuNutrition +
-                "\noptimalMenu size: " + optimalMenu.getRecipeList().size() +
-                "\nnrOfRecipe: " + nrOfRecipes +
-                "\nallRecipes size: " + allRecipes.size() +
-                "\nweekMenuList size: " + weekMenuList.size() +
-                "\nUser: " + user.firstName);
-        System.out.println("*********************************************************start");
-
-        System.out.println("#IngredientList in weekmenu at row 88 has size: " + ingredientList.size());
         List<Recipe> filteredRecipes = new ArrayList<>();
-        System.out.println("#recipesList in weekmenu at parameter has size: " + recipeList.size());
-        System.out.println("For loop starts! nr of Recepies: " + allRecipes.size());
         for (Recipe recipe : allRecipes){
-            System.out.println("\nLoop for recipe " + recipe.getTitle());
             boolean badRecipe = false;
             for (Ingredient ingredient :ingredientList) {
-                System.out.println("\t"+recipe.getTitle() + " see if if it have ingredient: " + ingredient);
                 if(recipe.ingredients.contains(ingredient)){
                     badRecipe = true;
-                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! Ingredient " + ingredient + "exist in allergies!!!**!!!");
                 }
             }
             for (Recipe r: recipeList) {
                 if(recipe.equals(r)){
                     badRecipe = true;
-                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! You don't want this recepie!");
                 }
             }
             if(!badRecipe) filteredRecipes.add(recipe);
-            System.out.println("Now is the size of the filteredRecipes: " + filteredRecipes.size());
         }
-        System.out.println("Now has all loops ended! the filterdList has size: " + filteredRecipes.size());
         for (Recipe r: filteredRecipes) {
-            System.out.println("recipe: " + r.getTitle());
         }
         allRecipes = filteredRecipes;
-
-        System.out.println("************************************************************slut");
     }
 
     private List<Ingredient> getIngredientsFromString(List<String> stringList) {

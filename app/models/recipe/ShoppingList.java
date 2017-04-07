@@ -11,10 +11,19 @@ public class ShoppingList {
 
     private Map<Ingredient,Boolean> map = new HashMap<>();
     private Double totalWaste = 0.0;
+    private static List<Ingredient> ingredients;
 
+    public ShoppingList(Menu menu){
+        List<Recipe> recipes=menu.getRecipeList();
+        List<Ingredient> ingredients= new ArrayList<>();
+        for(Recipe recipe: recipes){
+            ingredients.addAll(recipe.getIngredients());
+        }
+        new ShoppingList(ingredients, false);
+    }
 
     public ShoppingList(List<Ingredient> list, Boolean check){
-
+        ingredients=list;
         for (Ingredient ingredient: list ) {
             if(map.containsKey(ingredient)){
                 totalWaste -= ingredient.getWaste();
@@ -25,9 +34,6 @@ public class ShoppingList {
             totalWaste += ingredient.getWaste();
         }
     }
-
-
-
 
     private Ingredient getKey(Ingredient ingredient){
         Iterator iterator = map.keySet().iterator();
