@@ -2,6 +2,7 @@ package models.food.fineli;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.DbArray;
+import helpers.Constants;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -59,7 +60,7 @@ public class Food extends Model {
     @Column(name = "magnesium_mg") private Double magnesium;
     @Column(name = "sodium_mg") private Double sodium;
     @Column(name = "selenium_ug") private Double selenium;
-    @Column(name = "zink_mg") private Double zink;
+    @Column(name = "zinc_mg") private Double zinc;
 
     public Food(String name, int fineliId) {
         this.name = name;
@@ -72,7 +73,7 @@ public class Food extends Model {
         Double vitaminE, Double vitaminK, Double thiamine, Double riboflavin, Double niacin,
         Double niacinEquivalents, Double folate, Double phosphorus, Double iodine, Double iron,
         Double calcium, Double potassium, Double magnesium, Double sodium, Double selenium,
-        Double zink) {
+        Double zinc) {
         this.name = name;
         this.fineliId = fineliId;
         this.energyKj = energyKj;
@@ -102,12 +103,79 @@ public class Food extends Model {
         this.magnesium = magnesium;
         this.sodium = sodium;
         this.selenium = selenium;
-        this.zink = zink;
+        this.zinc = zinc;
     }
 
     public static Finder<Long, Food> find = new Finder<>(Food.class);
 
+    public long getId() {
+        return id;
+    }
     public int getFineliId() {
         return fineliId;
+    }
+    public Double getNutrient(Nutrient nutrient) {
+        switch (nutrient) {
+            case KCAL:
+                return energyKj * Constants.KCAL_FACTOR;
+            case KJ:
+                return energyKj;
+            case CARBOHYDRATES:
+                return carbohydrates;
+            case PROTEIN:
+                return protein;
+            case FAT:
+                return fat;
+            case FIBRE:
+                return fibre;
+            case SALT:
+                return salt;
+            case ALCOHOL:
+                return alcohol;
+            case VITAMIN_A:
+                return vitaminA;
+            case VITAMIN_B6:
+                return vitaminB6;
+            case VITAMIN_B12:
+                return vitaminB12;
+            case VITAMIN_C:
+                return vitaminC;
+            case VITAMIN_D:
+                return vitaminD;
+            case VITAMIN_E:
+                return vitaminE;
+            case VITAMIN_K:
+                return vitaminK;
+            case THIAMINE:
+                return thiamine;
+            case RIBOFLAVIN:
+                return riboflavin;
+            case NIACIN:
+                return niacin;
+            case NIACIN_EQ:
+                return niacinEquivalents;
+            case FOLATE:
+                return folate;
+            case PHOSPHORUS:
+                return phosphorus;
+            case IODINE:
+                return iodine;
+            case IRON:
+                return iron;
+            case CALCIUM:
+                return calcium;
+            case POTASSIUM:
+                return potassium;
+            case MAGNESIUM:
+                return magnesium;
+            case SODIUM:
+                return sodium;
+            case SELENIUM:
+                return selenium;
+            case ZINC:
+                return zinc;
+            default:
+                throw new IllegalArgumentException("No such nutrient for this food");
+        }
     }
 }
