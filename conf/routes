@@ -21,8 +21,9 @@ GET     /user/:alder                        controllers.UserController.getRDI(al
 POST    /weekmenu                           controllers.MenuAlgorithmsController.weekmenu
 GET     /weekmenu                           controllers.MenuAlgorithmsController.weekmenu()
 
-# Optimized recipe
-GET     /recipe                             controllers.RecipeOptimizationController.recipeOptimization()
+# Optimize recipe
+GET     /recipe/:number                     controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
+GET     /recipe/title/:title                controllers.RecipeOptimizationController.optimizeByTitle(title: String)
 
 # Parse ingredient string to food item
 GET     /parseIng/:ingredient               controllers.ParseController.parseIngredient(ingredient: String)

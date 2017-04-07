@@ -7,6 +7,8 @@ import org.apache.commons.math3.optim.linear.*;
 import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 import org.apache.commons.math3.optimization.GoalType;
 import models.recipe.Ingredient;
+
+import javax.swing.*;
 import java.util.*;
 
 /**

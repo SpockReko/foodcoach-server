@@ -2,10 +2,7 @@ package models.recipe;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by stefa on 2017-03-31.
@@ -126,17 +123,24 @@ public class ShoppingList {
 
 
     // Print out the shoppinglist
-    public String toString(){
-        String text = "\n";
-        Iterator iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
-            text += (Boolean)pair.getValue() ? " [X] " : " [ ] ";
-            text += pair.getKey() + "\n";
-            iterator.remove();
+    public static String toString(ShoppingList shoppingList){
+        Iterator iterator = shoppingList.map.entrySet().iterator();
+        String text = "Shoppinglist!\n";
+        while(iterator.hasNext()){
+            Map.Entry<Ingredient,Boolean> entry = (Map.Entry) iterator.next();
+            boolean marked = entry.getValue();
+            String amount = entry.getKey().getAmount().getAmount() + "";
+            String unit = entry.getKey().getAmount().getUnit().toString();
+            String foodItem = entry.getKey().getFoodItem().getName();
+            if(marked){
+                text += "[x] ";
+            }else{
+                text += "[ ] ";
+            }
+            text += amount + " " + unit + " " + foodItem + "\n";
         }
         return text;
     }
 
-
+    //getDummyFoodItem(long nr);
 }
