@@ -66,7 +66,7 @@ public class MenuAlgorithms {
         optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
         for(Menu menu : weekMenuList){
             double value = nutritionValueCalculation(menu);
-            System.out.println("Nutrients for " + recipeListToString(menu) + "\n... has the value: " + value);
+            System.out.println("Nutrients for " + menu.recipeListToString(menu) + "\n... has the value: " + value);
             if(value <= optimalMenuNutrition){
                 optimalMenuNutrition = value;
                 optimalMenu = menu;
@@ -82,19 +82,6 @@ public class MenuAlgorithms {
         HashMap<Nutrient,Double> nutrientsContent = NutritionAlgorithms.nutrientsContent(chosenMenu);
         return NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
     }
-
-    public String recipeListToString(Menu menu){
-        String text = "";
-        for(Recipe r : menu.getRecipeList()){
-            text = text + r.getTitle() + "\n";
-        }
-        text = text + "\n\n";
-        for(String comment : menu.getCommentList()){
-            text = text + comment + "\n";
-        }
-        return text;
-    }
-
 
     private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList){
 

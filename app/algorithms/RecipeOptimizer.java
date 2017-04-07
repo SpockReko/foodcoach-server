@@ -67,25 +67,4 @@ public class RecipeOptimizer {
         return lowestPercentageOfIngredient;
     }
 
-    public String recipeToString(Recipe recipe){
-        String text = recipe.getTitle()+"\n\n";
-        for( Ingredient i : recipe.ingredients ){
-            text += i.getFoodItem().getName();
-            if(i.getFoodItem().getName().length()<8) {
-                text += "\t\t\t\t\t";
-            } else if(i.getFoodItem().getName().length()>=8 && i.getFoodItem().getName().length()<16) {
-                text += "\t\t\t\t";
-            } else if(i.getFoodItem().getName().length()>=16 && i.getFoodItem().getName().length()<24) {
-                text += "\t\t\t";
-            } else if (i.getFoodItem().getName().length()>=24 && i.getFoodItem().getName().length() <32) {
-                text +="\t\t";
-            } else {
-                text +="\t";
-            }
-            text += i.getAmount().getAmount()+" "+i.getAmount().getUnit()+"\n";
-        }
-        text = text + "\n\n";
-        return text;
-    }
-
 }

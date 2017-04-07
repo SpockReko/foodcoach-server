@@ -25,6 +25,7 @@ public class RecipeSimplex {
         for( int i=0; i<leastAmountOfIngredient.size(); i++ ) {
             double[] arr = new double[leastAmountOfIngredient.size()];
             arr[i] = 1;
+            // TODO 1 -> waste
             constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, leastAmountOfIngredient.get(i)));
         }
         constraints = new LinearConstraintSet(constraintsCollection);
