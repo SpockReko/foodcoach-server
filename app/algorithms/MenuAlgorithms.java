@@ -104,7 +104,7 @@ public class MenuAlgorithms {
                 System.out.println("\t"+recipe.getTitle() + " see if if it have ingredient: " + ingredient);
                 if(recipe.ingredients.contains(ingredient)){
                     badRecipe = true;
-                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! Ingredient " + ingredient + "exist in allergies!");
+                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! Ingredient " + ingredient + "exist in allergies!!!**!!!");
                 }
             }
             for (Recipe r: recipeList) {

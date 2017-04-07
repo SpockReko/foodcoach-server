@@ -1,10 +1,9 @@
 package algorithms;
 
-import models.food.*;
+import models.GlobalDummyModels;
 import models.recipe.*;
 import models.user.Nutrient;
 import models.user.User;
-import org.jetbrains.annotations.NotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -76,10 +75,11 @@ public class MenuAlgorithmsTest {
         assertTrue(result == 0);
     }
 
-//    @Test
-//    public void filterIngredientTest(){
-//        assertTrue(!resultingMenuFilterIngrediense.getRecipeList().contains(userRecipe));
-//    }
+
+    @Test
+    public void filterIngredientTest(){
+        assertTrue(!resultingMenuFilterIngrediense.getRecipeList().contains(userRecipe));
+    }
 
     @Test
     public void filterRecipeTest(){
