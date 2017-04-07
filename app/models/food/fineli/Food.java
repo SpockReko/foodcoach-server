@@ -12,14 +12,14 @@ import java.util.List;
  * Created by fredrikkindstrom on 2017-04-04.
  */
 @Entity
-@Table(name = "SpecificFoods")
-public class SpecificFood extends Model {
+@Table(name = "Foods")
+public class Food extends Model {
 
     @Id private long id;
     private final int fineliId;
 
     @NotNull public String name;
-    @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public GeneralFood generalFood;
+    @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public FoodGeneral general;
     @DbArray(length = 255) public List<String> tags = new ArrayList<>();
 
     public String scientificName;
@@ -28,7 +28,7 @@ public class SpecificFood extends Model {
     public Double densityConstant;
 
     @Enumerated(EnumType.STRING) public Processing processing;
-    @DbArray(length = 400) public List<SpecialDiet> specialDiets = new ArrayList<>();
+    @DbArray(length = 400) public List<Diet> diets = new ArrayList<>();
 
     private Double energyKj;
     @Column(name = "carbohydrates_g") private Double carbohydrates;
@@ -61,12 +61,12 @@ public class SpecificFood extends Model {
     @Column(name = "selenium_ug") private Double selenium;
     @Column(name = "zink_mg") private Double zink;
 
-    public SpecificFood(String name, int fineliId) {
+    public Food(String name, int fineliId) {
         this.name = name;
         this.fineliId = fineliId;
     }
 
-    public SpecificFood(String name, int fineliId, Double energyKj,
+    public Food(String name, int fineliId, Double energyKj,
         Double carbohydrates, Double protein, Double fat, Double fibre, Double alcohol, Double salt,
         Double vitaminA, Double vitaminB6, Double vitaminB12, Double vitaminC, Double vitaminD,
         Double vitaminE, Double vitaminK, Double thiamine, Double riboflavin, Double niacin,

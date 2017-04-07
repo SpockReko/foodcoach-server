@@ -3,12 +3,10 @@ package tasks;
 import com.avaje.ebean.EbeanServer;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
-import me.tongfei.progressbar.ProgressBar;
-import models.food.*;
-import models.food.fineli.GeneralFood;
+import models.food.fineli.FoodGeneral;
 import models.food.fineli.Processing;
-import models.food.fineli.SpecialDiet;
-import models.food.fineli.SpecificFood;
+import models.food.fineli.Diet;
+import models.food.fineli.Food;
 
 import javax.persistence.PersistenceException;
 import java.io.BufferedReader;
@@ -78,8 +76,8 @@ public class DatabaseFineliSeeder {
     private static final int SPEC_SELENIUM = 41;
     private static final int SPEC_ZINK = 42;
 
-    private static Set<GeneralFood> generalFoods = new HashSet<>();
-    private static List<SpecificFood> specificFoods = new LinkedList<>();
+    private static Set<FoodGeneral> generalFoods = new HashSet<>();
+    private static List<Food> foods = new LinkedList<>();
     private static Map<Integer, Integer> idRowNumbers = new HashMap<>();
 
     public static void main(String[] args) {
@@ -98,7 +96,7 @@ public class DatabaseFineliSeeder {
             "\n" + CommonTools.PURPLE + "--- (Seeding database) ---\n" + CommonTools.RESET);
 
         try {
-            db.find(SpecificFood.class).where().eq("id", "1").findUnique();
+            db.find(Food.class).where().eq("id", "1").findUnique();
         } catch (PersistenceException e) {
             System.out.println(CommonTools.YELLOW
                 + "No database tables present. Please start server and run evolution script first!\n"
@@ -110,7 +108,7 @@ public class DatabaseFineliSeeder {
             idRowNumbers.put(Integer.parseInt(specificRows.get(i)[SPEC_ID]), i);
         }
 
-        System.out.println(CommonTools.CYAN + "Importing general foods from TSV..." + CommonTools.RESET);
+        System.out.print(CommonTools.CYAN + "Importing foods from Fineli..." + CommonTools.RESET);
         importFoods(generalRows, specificRows);
         printDone();
 
@@ -124,22 +122,22 @@ public class DatabaseFineliSeeder {
         }
 
         db.saveAll(generalFoods);
-        db.saveAll(specificFoods);
+        db.saveAll(foods);
     }
 
     private static void readGeneralRow(String[] cols, List<String[]> specificRows) {
-        GeneralFood generalFood;
+        FoodGeneral generalFood;
         if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[GEN_NAME]))) {
             generalFood = generalFoods.stream()
                 .filter(g -> g.name.equals(cols[GEN_NAME])).findFirst().get();
         } else {
-            generalFood = new GeneralFood(cols[GEN_NAME]);
+            generalFood = new FoodGeneral(cols[GEN_NAME]);
         }
 
         String name = cols[GEN_DISPLAY_NAME];
         int fineliId = Integer.parseInt(cols[GEN_ID]);
         String[] nutritionCols = specificRows.get(idRowNumbers.get(fineliId));
-        SpecificFood specificFood = new SpecificFood(
+        Food specificFood = new Food(
             name, fineliId,
             toDouble(nutritionCols[SPEC_ENERGY_KJ]),
             toDouble(nutritionCols[SPEC_CARB]),
@@ -194,7 +192,7 @@ public class DatabaseFineliSeeder {
         if (cols[GEN_SPECIAL_DIETS] != null) {
             String[] diets = cols[GEN_SPECIAL_DIETS].split(",");
             for (String diet : diets) {
-                specificFood.specialDiets.add(getSpecialDiet(diet.trim()));
+                specificFood.diets.add(getSpecialDiet(diet.trim()));
             }
         }
 
@@ -203,14 +201,14 @@ public class DatabaseFineliSeeder {
             for (String tag : tags) {
                 generalFood.searchTags.add(tag.trim());
             }
-            generalFood.defaultSpecificFood = specificFood;
+            generalFood.defaultFood = specificFood;
         } else {
-            generalFood.specificFoods.add(specificFood);
+            generalFood.foods.add(specificFood);
         }
 
-        specificFood.generalFood = generalFood;
+        specificFood.general = generalFood;
         generalFoods.add(generalFood);
-        specificFoods.add(specificFood);
+        foods.add(specificFood);
     }
 
 	/*
@@ -257,50 +255,50 @@ public class DatabaseFineliSeeder {
         }
     }
 
-    private static SpecialDiet getSpecialDiet(String str) {
+    private static Diet getSpecialDiet(String str) {
         switch (str) {
             case "CHOLFREE":
-                return SpecialDiet.CHOLESTEROL_FREE;
+                return Diet.CHOLESTEROL_FREE;
             case "EGGFREE":
-                return SpecialDiet.EGG_FREE;
+                return Diet.EGG_FREE;
             case "FATFREE":
-                return SpecialDiet.FAT_FREE;
+                return Diet.FAT_FREE;
             case "GLUTFREE":
-                return SpecialDiet.GLUTEN_FREE;
+                return Diet.GLUTEN_FREE;
             case "HIGHFIBR":
-                return SpecialDiet.HIGH_FIBRE;
+                return Diet.HIGH_FIBRE;
             case "HIGHSALT":
-                return SpecialDiet.STRONGLY_SALTED;
+                return Diet.STRONGLY_SALTED;
             case "LACOVEGE":
-                return SpecialDiet.LACTO_OVO_VEG;
+                return Diet.LACTO_OVO_VEG;
             case "LACSFREE":
-                return SpecialDiet.LASTOSE_FREE;
+                return Diet.LASTOSE_FREE;
             case "LACVEGE":
-                return SpecialDiet.LACTO_VEG;
+                return Diet.LACTO_VEG;
             case "LOWCHOL":
-                return SpecialDiet.LOW_CHOLESTEROL;
+                return Diet.LOW_CHOLESTEROL;
             case "LOWFAT":
-                return SpecialDiet.LOW_FAT;
+                return Diet.LOW_FAT;
             case "LOWLACS":
-                return SpecialDiet.LOW_LACTOSE;
+                return Diet.LOW_LACTOSE;
             case "LOWPROT":
-                return SpecialDiet.LOW_PROTEIN;
+                return Diet.LOW_PROTEIN;
             case "LOWSALT":
-                return SpecialDiet.REDUCED_SALT;
+                return Diet.REDUCED_SALT;
             case "MILKFREE":
-                return SpecialDiet.MILK_FREE;
+                return Diet.MILK_FREE;
             case "NAGLUFRE":
-                return SpecialDiet.NATURALLY_GLUTEN_FREE;
+                return Diet.NATURALLY_GLUTEN_FREE;
             case "SALTFREE":
-                return SpecialDiet.SALT_FREE;
+                return Diet.SALT_FREE;
             case "SOYAFREE":
-                return SpecialDiet.SOY_FREE;
+                return Diet.SOY_FREE;
             case "UNSWEET":
-                return SpecialDiet.UNSWEETENED;
+                return Diet.UNSWEETENED;
             case "VEGAN":
-                return SpecialDiet.VEGAN;
+                return Diet.VEGAN;
             case "VITAMADD":
-                return SpecialDiet.ADDED_VITAMINS;
+                return Diet.ADDED_VITAMINS;
             default:
                 return null;
         }

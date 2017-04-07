@@ -12,8 +12,8 @@ import java.util.List;
  * Created by fredrikkindstrom on 2017-04-04.
  */
 @Entity
-@Table(name = "GeneralFoods")
-public class GeneralFood extends Model {
+@Table(name = "FoodGenerals")
+public class FoodGeneral extends Model {
 
     @Id private long id;
 
@@ -21,11 +21,11 @@ public class GeneralFood extends Model {
 
     @DbArray(length = 255) public List<String> searchTags = new ArrayList<>();
 
-    @NotNull public SpecificFood defaultSpecificFood;
+    @NotNull public Food defaultFood;
 
-    @OneToMany public List<SpecificFood> specificFoods = new ArrayList<>();
+    @OneToMany public List<Food> foods = new ArrayList<>();
 
-    public GeneralFood(String name) {
+    public FoodGeneral(String name) {
         this.name = name;
     }
 }
