@@ -28,7 +28,7 @@ public class Food extends Model {
     public Double densityConstant;
 
     @Enumerated(EnumType.STRING) public Processing processing;
-    @DbArray(length = 400) public List<Diet> diets = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL) public List<Diet> diets = new ArrayList<>();
 
     private Double energyKj;
     @Column(name = "carbohydrates_g") private Double carbohydrates;
@@ -104,6 +104,8 @@ public class Food extends Model {
         this.selenium = selenium;
         this.zink = zink;
     }
+
+    public static Finder<Long, Food> find = new Finder<>(Food.class);
 
     public int getFineliId() {
         return fineliId;

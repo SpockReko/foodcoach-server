@@ -77,7 +77,8 @@ public class DatabaseFineliSeeder {
     private static final int SPEC_ZINK = 42;
 
     private static Set<FoodGeneral> generalFoods = new HashSet<>();
-    private static List<Food> foods = new LinkedList<>();
+    private static List<Food> foods = new ArrayList<>();
+    private static List<Diet> diets = new ArrayList<>();
     private static Map<Integer, Integer> idRowNumbers = new HashMap<>();
 
     public static void main(String[] args) {
@@ -192,7 +193,7 @@ public class DatabaseFineliSeeder {
         if (cols[GEN_SPECIAL_DIETS] != null) {
             String[] diets = cols[GEN_SPECIAL_DIETS].split(",");
             for (String diet : diets) {
-                specificFood.diets.add(getSpecialDiet(diet.trim()));
+                specificFood.diets.add(getDiet(diet.trim()));
             }
         }
 
@@ -255,52 +256,63 @@ public class DatabaseFineliSeeder {
         }
     }
 
-    private static Diet getSpecialDiet(String str) {
+    private static Diet getDiet(String str) {
         switch (str) {
             case "CHOLFREE":
-                return Diet.CHOLESTEROL_FREE;
+                return addOrGetDiet(Diet.Type.CHOLESTEROL_FREE);
             case "EGGFREE":
-                return Diet.EGG_FREE;
+                return addOrGetDiet(Diet.Type.EGG_FREE);
             case "FATFREE":
-                return Diet.FAT_FREE;
+                return addOrGetDiet(Diet.Type.FAT_FREE);
             case "GLUTFREE":
-                return Diet.GLUTEN_FREE;
+                return addOrGetDiet(Diet.Type.GLUTEN_FREE);
             case "HIGHFIBR":
-                return Diet.HIGH_FIBRE;
+                return addOrGetDiet(Diet.Type.HIGH_FIBRE);
             case "HIGHSALT":
-                return Diet.STRONGLY_SALTED;
+                return addOrGetDiet(Diet.Type.STRONGLY_SALTED);
             case "LACOVEGE":
-                return Diet.LACTO_OVO_VEG;
+                return addOrGetDiet(Diet.Type.LACTO_OVO_VEG);
             case "LACSFREE":
-                return Diet.LASTOSE_FREE;
+                return addOrGetDiet(Diet.Type.LACTOSE_FREE);
             case "LACVEGE":
-                return Diet.LACTO_VEG;
+                return addOrGetDiet(Diet.Type.LACTO_VEG);
             case "LOWCHOL":
-                return Diet.LOW_CHOLESTEROL;
+                return addOrGetDiet(Diet.Type.LOW_CHOLESTEROL);
             case "LOWFAT":
-                return Diet.LOW_FAT;
+                return addOrGetDiet(Diet.Type.LOW_FAT);
             case "LOWLACS":
-                return Diet.LOW_LACTOSE;
+                return addOrGetDiet(Diet.Type.LOW_LACTOSE);
             case "LOWPROT":
-                return Diet.LOW_PROTEIN;
+                return addOrGetDiet(Diet.Type.LOW_PROTEIN);
             case "LOWSALT":
-                return Diet.REDUCED_SALT;
+                return addOrGetDiet(Diet.Type.REDUCED_SALT);
             case "MILKFREE":
-                return Diet.MILK_FREE;
+                return addOrGetDiet(Diet.Type.MILK_FREE);
             case "NAGLUFRE":
-                return Diet.NATURALLY_GLUTEN_FREE;
+                return addOrGetDiet(Diet.Type.NATURALLY_GLUTEN_FREE);
             case "SALTFREE":
-                return Diet.SALT_FREE;
+                return addOrGetDiet(Diet.Type.SALT_FREE);
             case "SOYAFREE":
-                return Diet.SOY_FREE;
+                return addOrGetDiet(Diet.Type.SOY_FREE);
             case "UNSWEET":
-                return Diet.UNSWEETENED;
+                return addOrGetDiet(Diet.Type.UNSWEETENED);
             case "VEGAN":
-                return Diet.VEGAN;
+                return addOrGetDiet(Diet.Type.VEGAN);
             case "VITAMADD":
-                return Diet.ADDED_VITAMINS;
+                return addOrGetDiet(Diet.Type.ADDED_VITAMINS);
             default:
                 return null;
+        }
+    }
+
+    private static Diet addOrGetDiet(Diet.Type type) {
+        Optional<Diet> opt = diets.stream().filter(d -> d.type == type).findFirst();
+        if (opt.isPresent()) {
+            return opt.get();
+        } else {
+            Diet diet = new Diet(type);
+            diets.add(diet);
+            return diet;
         }
     }
 
