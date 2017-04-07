@@ -20,9 +20,8 @@ public class SpecificFood extends Model {
 
     @NotNull public String name;
     @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public GeneralFood generalFood;
-    @DbArray(length = 255) public List<String> extraTags = new ArrayList<>();
+    @DbArray(length = 255) public List<String> tags = new ArrayList<>();
 
-    public String displayName;
     public String scientificName;
     public String exampleBrands;
     public Integer pieceWeightGrams;
@@ -104,5 +103,9 @@ public class SpecificFood extends Model {
         this.sodium = sodium;
         this.selenium = selenium;
         this.zink = zink;
+    }
+
+    public int getFineliId() {
+        return fineliId;
     }
 }

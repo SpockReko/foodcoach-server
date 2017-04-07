@@ -39,8 +39,8 @@ public class DatabaseSeeder {
 
     private static EbeanServer db;
 
-    private static final String CSV_PATH = "resources/fooditems/FoodDB_201702061629.csv";
-    private static final String MOD_CSV_PATH = "resources/fooditems/foodDB_modified.csv";
+    private static final String CSV_PATH = "resources/lmv_food/FoodDB_201702061629.csv";
+    private static final String MOD_CSV_PATH = "resources/lmv_food/foodDB_modified.csv";
     private static final String MOCK_PATH = "resources/recipes/recipes.csv";
 
     private static final String GREEN = "\u001B[32m";

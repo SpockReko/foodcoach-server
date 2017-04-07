@@ -14,6 +14,12 @@ import java.io.File;
  */
 public class CommonTools {
 
+    static final String GREEN = "\u001B[32m";
+    static final String YELLOW = "\u001B[33m";
+    static final String CYAN = "\u001B[36m";
+    static final String PURPLE = "\u001B[35m";
+    static final String RESET = "\u001B[0m";
+
     public static EbeanServer getDatabase() {
         Config conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve();
         DataSourceConfig foodDB = new DataSourceConfig();
