@@ -3,7 +3,6 @@ package algorithms;
 import models.food.FoodItem;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
-import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
@@ -32,11 +31,14 @@ public class RecipeOptimizer {
         List<Double> leastAmountOfIngredients = leastAmountOfIngredients(ingredients);
 
         RecipeSimplex recipeSimplex = new RecipeSimplex();
-        recipeSimplex.addLinearObjectiveFunction(ingredients);
-        recipeSimplex.addConstraint(leastAmountOfIngredients);
+        recipeSimplex.setLinearObjectiveFunction(ingredients);
+        recipeSimplex.setConstraintsIngredients(leastAmountOfIngredients);
+        HashMap<Nutrient,Double> nutritionNeed = NutritionAlgorithms.nutrientsNeedScaled(user.hmap,1);
+        recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed);
         double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
         List<Ingredient> newIngredients = new ArrayList<>();
+        // Changes amount of each ingredient in the recipe to the optimal amount
         for( int i=0; i<optimalAmountOfIngredients.length; i++ ){
             FoodItem foodItem = ingredients.get(i).getFoodItem();
             Amount amount = new Amount(optimalAmountOfIngredients[i], ingredients.get(i).getAmount().getUnit());
@@ -47,7 +49,9 @@ public class RecipeOptimizer {
         return newRecipe;
     }
 
-
+    /*
+    To set a lowest amount of each ingredient in the recipe
+     */
     private List<Double> leastAmountOfIngredients(List<Ingredient> ingredients) {
         List<Double> leastAmountOfIngredients = new ArrayList<>();
         for( int i=0; i<ingredients.size(); i++ ) {
