@@ -2,16 +2,13 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.food.FoodItem;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
-import parsers.IngredientParser;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,20 +43,16 @@ public class RecipeController extends Controller {
         json.put("carbohydrates", Math.round(recipe.getCarbohydrates()));
         json.put("protein", Math.round(recipe.getProtein()));
         json.put("fibre", Math.round(recipe.getFibre()));
-        json.put("wholeGrain", Math.round(recipe.getWholeGrain()));
-        json.put("water", Math.round(recipe.getWater()));
         ArrayNode array = json.putArray("ingredients");
         for (Ingredient i : recipe.ingredients) {
             ObjectNode node = Json.newObject();
-            node.put("name", i.getFoodItem().getName());
+            node.put("name", i.getFood().name);
             node.put("amount", i.getAmount().getAmount() + " " + i.getAmount().getUnit().name());
             node.put("energyKcal", Math.round(i.getEnergyKcal()));
             node.put("energyKj", Math.round(i.getEnergyKj()));
             node.put("carbohydrates", Math.round(i.getCarbohydrates()));
             node.put("protein", Math.round(i.getProtein()));
             node.put("fibre", Math.round(i.getFibre()));
-            node.put("wholeGrain", Math.round(i.getWholeGrain()));
-            node.put("water", Math.round(i.getWater()));
             array.add(node);
         }
         return json;

@@ -3,7 +3,6 @@ package algorithms;
 import models.GlobalDummyModels;
 import models.food.*;
 import models.user.User;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -50,8 +49,8 @@ public class QuicksortTest {
         food3 = new FoodItem("food3", "h", 3, "GH", 300F,
                 3F, 3F, 3F, 3F, 3F, 3F, 3F, 3F, 3F,
                 3F, sug,fat,vit,min);
-        food4 =GlobalDummyModels.createOptimalRecipeForSpecificUser(new User()).ingredients.get(0).getFoodItem();
-        food5 =GlobalDummyModels.createOptimalRecipeForSpecificUser(new User(1)).ingredients.get(0).getFoodItem();
+        food4 =GlobalDummyModels.createOptimalRecipeForSpecificUser(new User()).ingredients.get(0).getFood();
+        food5 =GlobalDummyModels.createOptimalRecipeForSpecificUser(new User(1)).ingredients.get(0).getFood();
 
         foodList.add(food1);
         foodList.add(food2);

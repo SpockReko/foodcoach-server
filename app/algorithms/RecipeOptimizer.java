@@ -1,10 +1,10 @@
 package algorithms;
 
-import models.food.FoodItem;
+import models.food.fineli.Food;
+import models.food.fineli.Nutrient;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
-import models.user.Nutrient;
 import models.user.User;
 
 import java.util.ArrayList;
@@ -40,9 +40,9 @@ public class RecipeOptimizer {
         List<Ingredient> newIngredients = new ArrayList<>();
         // Changes amount of each ingredient in the recipe to the optimal amount
         for( int i=0; i<optimalAmountOfIngredients.length; i++ ){
-            FoodItem foodItem = ingredients.get(i).getFoodItem();
+            Food food = ingredients.get(i).getFood();
             Amount amount = new Amount(optimalAmountOfIngredients[i], ingredients.get(i).getAmount().getUnit());
-            Ingredient ingredient = new Ingredient(foodItem, amount);
+            Ingredient ingredient = new Ingredient(food, amount);
             newIngredients.add(ingredient);
         }
         Recipe newRecipe = new Recipe(recipe.getTitle(), recipe.getPortions(), newIngredients);

@@ -1,17 +1,16 @@
 package algorithms;
 
-import models.food.FoodItem;
+import models.food.fineli.Food;
+import models.food.fineli.Nutrient;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
-import models.user.Nutrient;
 import models.user.User;
 
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by stefa on 2017-02-28.
@@ -130,15 +129,15 @@ public class MenuAlgorithms {
 
         for (String name: stringList) {
             //TODO: Fix the error of the MYSQL call!
-            List<FoodItem> foods;
+            List<Food> foods;
             try {
-                foods = FoodItem.find.where().contains("name", name).findList();
-            }catch(Exception e){
+                foods = Food.find.where().contains("name", name).findList();
+            } catch(Exception e) {
                 foods = null;
             }
-            if( foods != null){
-                for (FoodItem fi: foods) {
-                    ingredientList.add(new Ingredient(fi,new Amount(100.0, Amount.Unit.GRAM)));
+            if (foods != null) {
+                for (Food food: foods) {
+                    ingredientList.add(new Ingredient(food, new Amount(100.0, Amount.Unit.GRAM)));
                 }
             }
         }

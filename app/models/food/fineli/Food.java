@@ -117,7 +117,7 @@ public class Food extends Model {
     public Double getNutrient(Nutrient nutrient) {
         switch (nutrient) {
             case KCAL:
-                return energyKj * Constants.KCAL_FACTOR;
+                return energyKj / Constants.KCAL_FACTOR;
             case KJ:
                 return energyKj;
             case CARBOHYDRATES:

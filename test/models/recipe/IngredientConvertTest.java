@@ -48,7 +48,7 @@ public class IngredientConvertTest {
 
     @Test
     public void getFoodItem() throws Exception {
-        assertThat(kilo.getFoodItem(), is(foodItem));
+        assertThat(kilo.getFood(), is(foodItem));
     }
 
     @Test
