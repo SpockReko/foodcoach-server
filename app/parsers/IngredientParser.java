@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import helpers.JsonHelper;
 import helpers.TaggedWord;
 import models.food.FoodItem;
+import models.food.fineli.Food;
+import models.food.fineli.FoodGeneral;
+import models.food.fineli.Nutrient;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
@@ -58,19 +61,19 @@ public class IngredientParser {
 
     private Ingredient findIngredient() throws IngredientNotFoundException {
         Amount amount = findAmount();
-        FoodItem food = findFood();
+        Food food = findFoodGeneral().defaultFood;
 
         if (food != null) {
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 comment += insideParenthesis;
                 Logger.trace("Added " + comment.trim() + " as comment");
-                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", " +
-                    food.getName() + ", \"" + comment.trim() + "\" }");
+                Logger.info("Ingredient { " + amount.getAmount() + ", " +
+                    amount.getUnit() + ", " + food.name + ", \"" + comment.trim() + "\" }");
                 return new Ingredient(food, amount, comment.trim());
             } else {
                 Logger.info("Ingredient { " +
-                    amount.getAmount() + ", " + amount.getUnit() + ", " + food.getName() + " }");
+                    amount.getAmount() + ", " + amount.getUnit() + ", " + food.name + " }");
                 return new Ingredient(food, amount);
             }
         } else {
@@ -135,7 +138,7 @@ public class IngredientParser {
         }
     }
 
-    private FoodItem findFood() {
+    private FoodGeneral findFoodGeneral() {
         StringBuilder builder = new StringBuilder(" ");
         for (TaggedWord taggedWord : taggedWords) {
             builder.append(taggedWord.getLemma()).append(" ");
@@ -144,18 +147,18 @@ public class IngredientParser {
         String line = builder.toString();
         String matchingTag = "";
         int matchingTagLength = 0;
-        FoodItem food = null;
-        List<FoodItem> items = FoodItem.find.select("searchTags").findList();
+        FoodGeneral food = null;
+        List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
 
-        for (FoodItem item : items) {
-            List<String> tags = item.searchTags;
+        for (FoodGeneral general : items) {
+            List<String> tags = general.searchTags;
             for (String tag : tags) {
                 if (line.contains(" " + tag + " ")||
                     line.contains(" " + tag + ",") ||
                     line.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
-                        Logger.trace("Found \"" + item.getName() + "\"");
-                        food = item;
+                        Logger.trace("Found \"" + general.name + "\"");
+                        food = general;
                         matchingTag = tag;
                         matchingTagLength = tag.length();
                     }

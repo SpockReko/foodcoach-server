@@ -40,7 +40,7 @@ public class RecipeOptimizer {
         List<Ingredient> newIngredients = new ArrayList<>();
         // Changes amount of each ingredient in the recipe to the optimal amount
         for( int i=0; i<optimalAmountOfIngredients.length; i++ ){
-            FoodItem foodItem = ingredients.get(i).getFoodItem();
+            FoodItem foodItem = ingredients.get(i).getFood();
             Amount amount = new Amount(optimalAmountOfIngredients[i], ingredients.get(i).getAmount().getUnit());
             Ingredient ingredient = new Ingredient(foodItem, amount);
             newIngredients.add(ingredient);

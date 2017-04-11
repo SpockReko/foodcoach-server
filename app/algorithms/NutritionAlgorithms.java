@@ -129,7 +129,7 @@ public class NutritionAlgorithms {
     public static List<FoodItem> SortByTheDifference(Ingredient ingredient){
 
         List<FoodItem> foods = FoodItem.find.all();
-        foods = QuicksortFoodItem.sort(foods, ingredient.getFoodItem());
+        foods = QuicksortFoodItem.sort(foods, ingredient.getFood());
         return foods;
 
     }

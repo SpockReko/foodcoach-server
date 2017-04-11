@@ -2,16 +2,13 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.food.FoodItem;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
-import parsers.IngredientParser;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +48,7 @@ public class RecipeController extends Controller {
         ArrayNode array = json.putArray("ingredients");
         for (Ingredient i : recipe.ingredients) {
             ObjectNode node = Json.newObject();
-            node.put("name", i.getFoodItem().getName());
+            node.put("name", i.getFood().getName());
             node.put("amount", i.getAmount().getAmount() + " " + i.getAmount().getUnit().name());
             node.put("energyKcal", Math.round(i.getEnergyKcal()));
             node.put("energyKj", Math.round(i.getEnergyKj()));

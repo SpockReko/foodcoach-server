@@ -16,7 +16,7 @@ public class IngredientPersistTest extends FakeApplicationInMemoryDB {
         item.save();
 
         Ingredient ingredient = new Ingredient(item, new Amount(30, Amount.Unit.DECILITER));
-        assertThat(ingredient.getFoodItem(), is(item));
+        assertThat(ingredient.getFood(), is(item));
         ingredient.save();
 
         Ingredient dbIngredient = Ebean.find(Ingredient.class).findUnique();

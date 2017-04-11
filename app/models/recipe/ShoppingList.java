@@ -33,7 +33,7 @@ public class ShoppingList {
         Iterator iterator = map.keySet().iterator();
         while(iterator.hasNext()) {
             Ingredient indexIngredient = map.keySet().iterator().next();
-            if(indexIngredient.getFoodItem().equals(ingredient.getFoodItem())){
+            if(indexIngredient.getFood().equals(ingredient.getFood())){
                 return indexIngredient;
             }
         }
@@ -66,7 +66,7 @@ public class ShoppingList {
         Iterator iterator = map.keySet().iterator();
         while(iterator.hasNext()) {
             Ingredient indexIngredient = map.keySet().iterator().next();
-            if(indexIngredient.getFoodItem().equals(ingredient.getFoodItem())){
+            if(indexIngredient.getFood().equals(ingredient.getFood())){
                 map.remove(indexIngredient);
                 Ingredient newIngredient;
                 if(indexIngredient.getAmount().getAmount() > amount) {
@@ -85,7 +85,7 @@ public class ShoppingList {
         Iterator iterator = map.keySet().iterator();
         while(iterator.hasNext()) {
             Ingredient indexIngredient = map.keySet().iterator().next();
-            if(indexIngredient.getFoodItem().equals(ingredient.getFoodItem())){
+            if(indexIngredient.getFood().equals(ingredient.getFood())){
                 map.remove(indexIngredient);
                 Ingredient newIngredient = ChangeAmountOfIngredient(amount, indexIngredient);
                 map.put(newIngredient,map.get(indexIngredient));
@@ -97,7 +97,7 @@ public class ShoppingList {
     @NotNull
     private Ingredient ChangeAmountOfIngredient(double amount, Ingredient indexIngredient) {
         return new Ingredient(
-                indexIngredient.getFoodItem(),
+                indexIngredient.getFood(),
                 new Amount(
                         indexIngredient.getAmount().getAmount() + amount,
                         indexIngredient.getAmount().getUnit()
@@ -131,7 +131,7 @@ public class ShoppingList {
             boolean marked = entry.getValue();
             String amount = entry.getKey().getAmount().getAmount() + "";
             String unit = entry.getKey().getAmount().getUnit().toString();
-            String foodItem = entry.getKey().getFoodItem().getName();
+            String foodItem = entry.getKey().getFood().getName();
             if(marked){
                 text += "[x] ";
             }else{

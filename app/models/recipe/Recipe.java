@@ -1,14 +1,10 @@
 package models.recipe;
 
 import com.avaje.ebean.Model;
-import models.food.Sugars;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
 
 /**
  * A static recipe most likely parsed and matched with ingredients from the web.
@@ -170,8 +166,8 @@ public class Recipe extends Model {
     public String recipeToString(Recipe recipe){
         String text = recipe.getTitle()+"\n\n";
         for( Ingredient i : recipe.ingredients ){
-            text += i.getFoodItem().getName();
-            int stringLength = i.getFoodItem().getName().length();
+            text += i.getFood().getName();
+            int stringLength = i.getFood().getName().length();
             if(stringLength<8) {
                 text += "\t\t\t\t\t";
             } else if(stringLength>=8 && stringLength<16) {
