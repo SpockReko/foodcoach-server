@@ -13,8 +13,8 @@ public class ShoppingList {
     private Double totalWaste = 0.0;
 
 
-    public ShoppingList(List<Ingredient> list, Boolean check){
-
+    public ShoppingList(List<Ingredient> list, Boolean check) {
+        /*
         for (Ingredient ingredient: list ) {
             if(map.containsKey(ingredient)){
                 totalWaste -= ingredient.getWaste();
@@ -24,6 +24,7 @@ public class ShoppingList {
             }
             totalWaste += ingredient.getWaste();
         }
+        */
     }
 
 
@@ -131,7 +132,7 @@ public class ShoppingList {
             boolean marked = entry.getValue();
             String amount = entry.getKey().getAmount().getAmount() + "";
             String unit = entry.getKey().getAmount().getUnit().toString();
-            String foodItem = entry.getKey().getFood().getName();
+            String foodItem = entry.getKey().getFood().name;
             if(marked){
                 text += "[x] ";
             }else{

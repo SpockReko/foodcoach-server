@@ -1,11 +1,11 @@
 package models;
 
-import algorithms.QuicksortFoodItem;
 import models.food.*;
+import models.food.fineli.Food;
+import models.food.fineli.Nutrient;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
-import models.user.Nutrient;
 import models.user.User;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,40 +27,67 @@ public class GlobalDummyModels {
         Sugars sugars = new Sugars(0F, 0F, 0F, 0F);
 
         Fats fats =
-                new Fats(Float.parseFloat(user.hmap.get(Nutrient.Fat) + "") * convertToOnePortion,
+                new Fats(Float.parseFloat(user.hmap.get(Nutrient.FAT) + "") * convertToOnePortion,
                         0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F);
 
         Vitamins vitamins = new Vitamins(0F, 0F,
-                Float.parseFloat(user.hmap.get(Nutrient.VitaminAUG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.VitaminB6MG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.VitaminB12UG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.VitaminCMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.VitaminDUG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.VitaminEMG) + "") * convertToOnePortion, 0F,
-                Float.parseFloat(user.hmap.get(Nutrient.ThiamineMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.RiboflavinMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.NiacinMG) + "") * convertToOnePortion, 0F);
+                Float.parseFloat(user.hmap.get(Nutrient.VITAMIN_A) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VITAMIN_B6) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VITAMIN_B12) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VITAMIN_C) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VITAMIN_D) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VITAMIN_E) + "") * convertToOnePortion, 0F,
+                Float.parseFloat(user.hmap.get(Nutrient.THIAMINE) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.RIBOFLAVIN) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.NIACIN) + "") * convertToOnePortion, 0F);
 
         Minerals minerals =
-                new Minerals(Float.parseFloat(user.hmap.get(Nutrient.FolateUG) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.PhosphorusMG) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.IodineUG) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.IronMG) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.CalciumMG) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.PotassiumMG) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.MagnesiumMG) + "") * convertToOnePortion, 0F, 0F,
-                        Float.parseFloat(user.hmap.get(Nutrient.SeleniumUG) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.ZinkMG) + "") * convertToOnePortion);
+                new Minerals(Float.parseFloat(user.hmap.get(Nutrient.FOLATE) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.PHOSPHORUS) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.IODINE) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.IRON) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.CALCIUM) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.POTASSIUM) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.MAGNESIUM) + "") * convertToOnePortion, 0F, 0F,
+                        Float.parseFloat(user.hmap.get(Nutrient.SELENIUM) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.ZINC) + "") * convertToOnePortion);
 
         Amount amount = new Amount(100, Amount.Unit.GRAM);
 
-        Ingredient perfectIngredient = new Ingredient(
-                new FoodItem("perfectFoodFor" + user.firstName, "perfektus foodus", 9999, "perfekt",
-                        Float.parseFloat(user.hmap.get(Nutrient.CaloriKcal) + "") * convertToOnePortion, 0F,
-                        Float.parseFloat(user.hmap.get(Nutrient.Carbohydrates) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.Protein) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.Fibre) + "")* convertToOnePortion, 0F, 0F,
-                        0F, 0F, 0F, 0F, sugars, fats, vitamins, minerals), amount);
+        Food perfectFood = new Food(
+            "perfectFoodFor",
+            9999,
+            user.hmap.get(Nutrient.KJ) * convertToOnePortion,
+            user.hmap.get(Nutrient.CARBOHYDRATES) * convertToOnePortion,
+            user.hmap.get(Nutrient.PROTEIN) * convertToOnePortion,
+            user.hmap.get(Nutrient.FAT) * convertToOnePortion,
+            user.hmap.get(Nutrient.FIBRE) * convertToOnePortion,
+            user.hmap.get(Nutrient.ALCOHOL) * convertToOnePortion,
+            user.hmap.get(Nutrient.SALT) * convertToOnePortion,
+            user.hmap.get(Nutrient.VITAMIN_A) * convertToOnePortion,
+            user.hmap.get(Nutrient.VITAMIN_B6) * convertToOnePortion,
+            user.hmap.get(Nutrient.VITAMIN_B12) * convertToOnePortion,
+            user.hmap.get(Nutrient.VITAMIN_C) * convertToOnePortion,
+            user.hmap.get(Nutrient.VITAMIN_D) * convertToOnePortion,
+            user.hmap.get(Nutrient.VITAMIN_E) * convertToOnePortion,
+            user.hmap.get(Nutrient.VITAMIN_K) * convertToOnePortion,
+            user.hmap.get(Nutrient.THIAMINE) * convertToOnePortion,
+            user.hmap.get(Nutrient.RIBOFLAVIN) * convertToOnePortion,
+            user.hmap.get(Nutrient.NIACIN) * convertToOnePortion,
+            user.hmap.get(Nutrient.NIACIN_EQ) * convertToOnePortion,
+            user.hmap.get(Nutrient.FOLATE) * convertToOnePortion,
+            user.hmap.get(Nutrient.PHOSPHORUS) * convertToOnePortion,
+            user.hmap.get(Nutrient.IODINE) * convertToOnePortion,
+            user.hmap.get(Nutrient.IRON) * convertToOnePortion,
+            user.hmap.get(Nutrient.CALCIUM) * convertToOnePortion,
+            user.hmap.get(Nutrient.POTASSIUM) * convertToOnePortion,
+            user.hmap.get(Nutrient.MAGNESIUM) * convertToOnePortion,
+            user.hmap.get(Nutrient.SODIUM) * convertToOnePortion,
+            user.hmap.get(Nutrient.SELENIUM) * convertToOnePortion,
+            user.hmap.get(Nutrient.ZINC) * convertToOnePortion
+            );
+
+        Ingredient perfectIngredient = new Ingredient(perfectFood, amount);
         ingredients.add(perfectIngredient);
 
         return new Recipe(user.firstName + "Recipe", 1, ingredients);

@@ -9,6 +9,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import me.tongfei.progressbar.ProgressBar;
 import models.food.*;
+import models.food.fineli.Food;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
@@ -41,7 +42,7 @@ public class DatabaseSeeder {
 
     private static final String CSV_PATH = "resources/lmv_food/FoodDB_201702061629.csv";
     private static final String MOD_CSV_PATH = "resources/lmv_food/foodDB_modified.csv";
-    private static final String MOCK_PATH = "resources/recipes/recipes.csv";
+    private static final String MOCK_PATH = "resources/recipes/recipes_fineli.csv";
 
     private static final String GREEN = "\u001B[32m";
     private static final String YELLOW = "\u001B[33m";
@@ -408,7 +409,7 @@ public class DatabaseSeeder {
             for (String ingCsv : ingredientsCsv) {
 
                 String[] part = ingCsv.split("_");
-                long lmvFoodNumber = Long.parseLong(part[0]);
+                long fineliId = Long.parseLong(part[0]);
                 double amount = Double.parseDouble(part[1]);
                 Amount.Unit unit = null;
                 for (Amount.Unit u : Amount.Unit.values()) {
@@ -421,10 +422,10 @@ public class DatabaseSeeder {
                     throw new RuntimeException("Wrong unit in recipes.csv");
                 }
 
-                FoodItem food = db.find(FoodItem.class).where().eq("lmvFoodNumber", lmvFoodNumber).findUnique();
+                Food food = db.find(Food.class).where().eq("fineliId", fineliId).findUnique();
 
                 if (food == null) {
-                    throw new RuntimeException("No food with food number " + lmvFoodNumber);
+                    throw new RuntimeException("No food with food number " + fineliId);
                 }
 
                 ingredients.add(new Ingredient(food, new Amount(amount, unit)));
