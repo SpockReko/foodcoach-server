@@ -8,6 +8,7 @@ import java.util.*;
 
 import static models.user.User.Sex.FEMALE;
 import static models.user.User.Sex.MALE;
+import models.food.fineli.Nutrient;
 
 
 /**
@@ -63,31 +64,30 @@ public class User extends Model {
 
     public User() {
 
-        hmap.put(Nutrient.CaloriKcal, 2000D);
-        hmap.put(Nutrient.Protein, 0.15*hmap.get(Nutrient.CaloriKcal)/4);
-        hmap.put(Nutrient.Carbohydrates, 0.55*hmap.get(Nutrient.CaloriKcal)/4);
-        hmap.put(Nutrient.Fat, 0.30*hmap.get(Nutrient.CaloriKcal)/9);
-        hmap.put(Nutrient.Fibre, 30D);
+        hmap.put(models.food.fineli.Nutrient.KCAL, 2000D);
+        hmap.put(Nutrient.PROTEIN, 0.15*hmap.get(Nutrient.KCAL)/4);
+        hmap.put(Nutrient.CARBOHYDRATES, 0.55*hmap.get(Nutrient.KCAL)/4);
+        hmap.put(Nutrient.FAT, 0.30*hmap.get(Nutrient.KCAL)/9);
+        hmap.put(Nutrient.FIBRE, 30D);
 
-        hmap.put(Nutrient.VitaminAUG, 800D);
-        hmap.put(Nutrient.VitaminDUG, 20D);
-        hmap.put(Nutrient.VitaminEMG, 9D);
-        hmap.put(Nutrient.ThiamineMG, 1.2D);
-        hmap.put(Nutrient.RiboflavinMG, 1.35D);
-        hmap.put(Nutrient.NiacinMG, 16D);
-        hmap.put(Nutrient.VitaminB6MG, 1.4D);
-        hmap.put(Nutrient.FolateUG, 300D);
-        hmap.put(Nutrient.VitaminB12UG, 2D);
-        hmap.put(Nutrient.VitaminCMG, 75D);
-        hmap.put(Nutrient.CalciumMG, 800D);
-        hmap.put(Nutrient.PhosphorusMG, 600D);
-        hmap.put(Nutrient.PotassiumMG, 3300D);
-        hmap.put(Nutrient.MagnesiumMG, 315D);
-        hmap.put(Nutrient.IronMG, 9D);
-        hmap.put(Nutrient.ZinkMG, 8D);
-        hmap.put(Nutrient.CopperMG, 0.9D); //TODO: Don't exist on our database! Maybe under another name?
-        hmap.put(Nutrient.IodineUG, 150D);
-        hmap.put(Nutrient.SeleniumUG, 55D);
+        hmap.put(Nutrient.VITAMIN_A, 800D);
+        hmap.put(Nutrient.VITAMIN_D, 20D);
+        hmap.put(Nutrient.VITAMIN_E, 9D);
+        hmap.put(Nutrient.THIAMINE, 1.2D);
+        hmap.put(Nutrient.RIBOFLAVIN, 1.35D);
+        hmap.put(Nutrient.NIACIN, 16D);
+        hmap.put(Nutrient.VITAMIN_B6, 1.4D);
+        hmap.put(Nutrient.FOLATE, 300D);
+        hmap.put(Nutrient.VITAMIN_B12, 2D);
+        hmap.put(Nutrient.VITAMIN_C, 75D);
+        hmap.put(Nutrient.CALCIUM, 800D);
+        hmap.put(Nutrient.PHOSPHORUS, 600D);
+        hmap.put(Nutrient.POTASSIUM, 3300D);
+        hmap.put(Nutrient.MAGNESIUM, 315D);
+        hmap.put(Nutrient.IRON, 9D);
+        hmap.put(Nutrient.ZINC, 8D);
+        hmap.put(Nutrient.IODINE, 150D);
+        hmap.put(Nutrient.SELENIUM, 55D);
 
         calculateOverdoseValues(30);
     }
@@ -137,14 +137,13 @@ public class User extends Model {
             double fatNeed = 0.3 * dc / 9;
             double carbohydratesNeed = 0.55 * dc / 9;
 
-            hmap.put(Nutrient.CaloriKcal, dc);
-            hmap.put(Nutrient.Protein, proteinNeed);
-            hmap.put(Nutrient.Carbohydrates, carbohydratesNeed);
-            hmap.put(Nutrient.Fat, fatNeed);
-            hmap.put(Nutrient.Fibre, 30D);
-
-
+            hmap.put(Nutrient.KCAL, dc);
+            hmap.put(Nutrient.PROTEIN, proteinNeed);
+            hmap.put(Nutrient.CARBOHYDRATES, carbohydratesNeed);
+            hmap.put(Nutrient.FAT, fatNeed);
+            hmap.put(Nutrient.FIBRE, 30D);
         }
+
         if (sex == MALE) {
             dc = (activityLevel * (66.5 + (13.7516 * weight) + (5.0033 * height) - (6.7550 * age)) + goal.getGoal());
 
@@ -152,11 +151,11 @@ public class User extends Model {
             double fatNeed = 0.3 * dc / 9;
             double carbohydratesNeed = 0.55 * dc / 9;
 
-            hmap.put(Nutrient.CaloriKcal, dc);
-            hmap.put(Nutrient.Protein, proteinNeed);
-            hmap.put(Nutrient.Carbohydrates, carbohydratesNeed);
-            hmap.put(Nutrient.Fat, fatNeed);
-            hmap.put(Nutrient.Fibre, 30D);
+            hmap.put(Nutrient.KCAL, dc);
+            hmap.put(Nutrient.PROTEIN, proteinNeed);
+            hmap.put(Nutrient.CARBOHYDRATES, carbohydratesNeed);
+            hmap.put(Nutrient.FAT, fatNeed);
+            hmap.put(Nutrient.FIBRE, 30D);
         }
         getRDI();
     }
@@ -174,96 +173,90 @@ public class User extends Model {
     private void getChildRDI(int age) {
 
         if (age < 1) {
-            hmap.put(Nutrient.VitaminAUG, 300D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 3D);
-            hmap.put(Nutrient.ThiamineMG, 0.4D);
-            hmap.put(Nutrient.RiboflavinMG, 0.5D);
-            hmap.put(Nutrient.NiacinMG, 5D);
-            hmap.put(Nutrient.VitaminB6MG, 0.4D);
-            hmap.put(Nutrient.FolateUG, 50D);
-            hmap.put(Nutrient.VitaminB12UG, 0.5D);
-            hmap.put(Nutrient.VitaminCMG, 20D);
-            hmap.put(Nutrient.CalciumMG, 540D);
-            hmap.put(Nutrient.PhosphorusMG, 420D);
-            hmap.put(Nutrient.PotassiumMG, 1100D);
-            hmap.put(Nutrient.MagnesiumMG, 80D);
-            hmap.put(Nutrient.IronMG, 8D);
-            hmap.put(Nutrient.ZinkMG, 5D);
-            hmap.put(Nutrient.CopperMG, 0.3D);
-            hmap.put(Nutrient.IodineUG, 50D);
-            hmap.put(Nutrient.SeleniumUG, 15D);
+            hmap.put(Nutrient.VITAMIN_A, 300D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 3D);
+            hmap.put(Nutrient.THIAMINE, 0.4D);
+            hmap.put(Nutrient.RIBOFLAVIN, 0.5D);
+            hmap.put(Nutrient.NIACIN, 5D);
+            hmap.put(Nutrient.VITAMIN_B6, 0.4D);
+            hmap.put(Nutrient.FOLATE, 50D);
+            hmap.put(Nutrient.VITAMIN_B12, 0.5D);
+            hmap.put(Nutrient.VITAMIN_C, 20D);
+            hmap.put(Nutrient.CALCIUM, 540D);
+            hmap.put(Nutrient.PHOSPHORUS, 420D);
+            hmap.put(Nutrient.POTASSIUM, 1100D);
+            hmap.put(Nutrient.MAGNESIUM, 80D);
+            hmap.put(Nutrient.IRON, 8D);
+            hmap.put(Nutrient.ZINC, 5D);
+            hmap.put(Nutrient.IODINE, 50D);
+            hmap.put(Nutrient.SELENIUM, 15D);
 
 
         } else if (age < 2) {
 
-            hmap.put(Nutrient.VitaminAUG, 300D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 4D);
-            hmap.put(Nutrient.ThiamineMG, 0.5D);
-            hmap.put(Nutrient.RiboflavinMG, 0.6D);
-            hmap.put(Nutrient.NiacinMG, 7D);
-            hmap.put(Nutrient.VitaminB6MG, 0.5D);
-            hmap.put(Nutrient.FolateUG, 60D);
-            hmap.put(Nutrient.VitaminB12UG, 0.6D);
-            hmap.put(Nutrient.VitaminCMG, 25D);
-            hmap.put(Nutrient.CalciumMG, 600D);
-            hmap.put(Nutrient.PhosphorusMG, 470D);
-            hmap.put(Nutrient.PotassiumMG, 1400D);
-            hmap.put(Nutrient.MagnesiumMG, 85D);
-            hmap.put(Nutrient.IronMG, 8D);
-            hmap.put(Nutrient.ZinkMG, 5D);
-            hmap.put(Nutrient.CopperMG, 0.3D);
-            hmap.put(Nutrient.IodineUG, 70D);
-            hmap.put(Nutrient.SeleniumUG, 20D);
+            hmap.put(Nutrient.VITAMIN_A, 300D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 4D);
+            hmap.put(Nutrient.THIAMINE, 0.5D);
+            hmap.put(Nutrient.RIBOFLAVIN, 0.6D);
+            hmap.put(Nutrient.NIACIN, 7D);
+            hmap.put(Nutrient.VITAMIN_B6, 0.5D);
+            hmap.put(Nutrient.FOLATE, 60D);
+            hmap.put(Nutrient.VITAMIN_B12, 0.6D);
+            hmap.put(Nutrient.VITAMIN_C, 25D);
+            hmap.put(Nutrient.CALCIUM, 600D);
+            hmap.put(Nutrient.PHOSPHORUS, 470D);
+            hmap.put(Nutrient.POTASSIUM, 1400D);
+            hmap.put(Nutrient.MAGNESIUM, 85D);
+            hmap.put(Nutrient.IRON, 8D);
+            hmap.put(Nutrient.ZINC, 5D);
+            hmap.put(Nutrient.IODINE, 70D);
+            hmap.put(Nutrient.SELENIUM, 20D);
 
 
         } else if (age < 5) {
 
-            hmap.put(Nutrient.VitaminAUG, 350D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 5D);
-            hmap.put(Nutrient.ThiamineMG, 0.6D);
-            hmap.put(Nutrient.RiboflavinMG, 0.7D);
-            hmap.put(Nutrient.NiacinMG, 9D);
-            hmap.put(Nutrient.VitaminB6MG, 0.7D);
-            hmap.put(Nutrient.FolateUG, 80D);
-            hmap.put(Nutrient.VitaminB12UG, 0.8D);
-            hmap.put(Nutrient.VitaminCMG, 30D);
-            hmap.put(Nutrient.CalciumMG, 600D);
-            hmap.put(Nutrient.PhosphorusMG, 470D);
-            hmap.put(Nutrient.PotassiumMG, 1800D);
-            hmap.put(Nutrient.MagnesiumMG, 120D);
-            hmap.put(Nutrient.IronMG, 8D);
-            hmap.put(Nutrient.ZinkMG, 6D);
-            hmap.put(Nutrient.CopperMG, 0.4D);
-            hmap.put(Nutrient.IodineUG, 90D);
-            hmap.put(Nutrient.SeleniumUG, 25D);
+            hmap.put(Nutrient.VITAMIN_A, 350D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 5D);
+            hmap.put(Nutrient.THIAMINE, 0.6D);
+            hmap.put(Nutrient.RIBOFLAVIN, 0.7D);
+            hmap.put(Nutrient.NIACIN, 9D);
+            hmap.put(Nutrient.VITAMIN_B6, 0.7D);
+            hmap.put(Nutrient.FOLATE, 80D);
+            hmap.put(Nutrient.VITAMIN_B12, 0.8D);
+            hmap.put(Nutrient.VITAMIN_C, 30D);
+            hmap.put(Nutrient.CALCIUM, 600D);
+            hmap.put(Nutrient.PHOSPHORUS, 470D);
+            hmap.put(Nutrient.POTASSIUM, 1800D);
+            hmap.put(Nutrient.MAGNESIUM, 120D);
+            hmap.put(Nutrient.IRON, 8D);
+            hmap.put(Nutrient.ZINC, 6D);
+            hmap.put(Nutrient.IODINE, 90D);
+            hmap.put(Nutrient.SELENIUM, 25D);
 
 
         } else if (age <= 10) {
 
-            hmap.put(Nutrient.VitaminAUG, 400D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 6D);
-            hmap.put(Nutrient.ThiamineMG, 0.9D);
-            hmap.put(Nutrient.RiboflavinMG, 1.1D);
-            hmap.put(Nutrient.NiacinMG, 12D);
-            hmap.put(Nutrient.VitaminB6MG, 1D);
-            hmap.put(Nutrient.FolateUG, 130D);
-            hmap.put(Nutrient.VitaminB12UG, 1.3D);
-            hmap.put(Nutrient.VitaminCMG, 40D);
-            hmap.put(Nutrient.CalciumMG, 700D);
-            hmap.put(Nutrient.PhosphorusMG, 540D);
-            hmap.put(Nutrient.PotassiumMG, 2000D);
-            hmap.put(Nutrient.MagnesiumMG, 200D);
-            hmap.put(Nutrient.IronMG, 9D);
-            hmap.put(Nutrient.ZinkMG, 7D);
-            hmap.put(Nutrient.CopperMG, 0.5D);
-            hmap.put(Nutrient.IodineUG, 120D);
-            hmap.put(Nutrient.SeleniumUG, 30D);
-
-
+            hmap.put(Nutrient.VITAMIN_A, 400D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 6D);
+            hmap.put(Nutrient.THIAMINE, 0.9D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.1D);
+            hmap.put(Nutrient.NIACIN, 12D);
+            hmap.put(Nutrient.VITAMIN_B6, 1D);
+            hmap.put(Nutrient.FOLATE, 130D);
+            hmap.put(Nutrient.VITAMIN_B12, 1.3D);
+            hmap.put(Nutrient.VITAMIN_C, 40D);
+            hmap.put(Nutrient.CALCIUM, 700D);
+            hmap.put(Nutrient.PHOSPHORUS, 540D);
+            hmap.put(Nutrient.POTASSIUM, 2000D);
+            hmap.put(Nutrient.MAGNESIUM, 200D);
+            hmap.put(Nutrient.IRON, 9D);
+            hmap.put(Nutrient.ZINC, 7D);
+            hmap.put(Nutrient.IODINE, 120D);
+            hmap.put(Nutrient.SELENIUM, 30D);
         }
 
     }
@@ -272,330 +265,302 @@ public class User extends Model {
 
         if (age >= 10 && age < 13) {
 
-            hmap.put(Nutrient.VitaminAUG, 600D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 8D);
-            hmap.put(Nutrient.ThiamineMG, 1.1D);
-            hmap.put(Nutrient.RiboflavinMG, 1.3D);
-            hmap.put(Nutrient.NiacinMG, 15D);
-            hmap.put(Nutrient.VitaminB6MG, 1.3D);
-            hmap.put(Nutrient.FolateUG, 200D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 50D);
-            hmap.put(Nutrient.CalciumMG, 900D);
-            hmap.put(Nutrient.PhosphorusMG, 700D);
-            hmap.put(Nutrient.PotassiumMG, 3300D);
-            hmap.put(Nutrient.MagnesiumMG, 280D);
-            hmap.put(Nutrient.IronMG, 11D);
-            hmap.put(Nutrient.ZinkMG, 11D);
-            hmap.put(Nutrient.CopperMG, 0.7D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 40D);
+            hmap.put(Nutrient.VITAMIN_A, 600D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 8D);
+            hmap.put(Nutrient.THIAMINE, 1.1D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.3D);
+            hmap.put(Nutrient.NIACIN, 15D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.3D);
+            hmap.put(Nutrient.FOLATE, 200D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 50D);
+            hmap.put(Nutrient.CALCIUM, 900D);
+            hmap.put(Nutrient.PHOSPHORUS, 700D);
+            hmap.put(Nutrient.POTASSIUM, 3300D);
+            hmap.put(Nutrient.MAGNESIUM, 280D);
+            hmap.put(Nutrient.IRON, 11D);
+            hmap.put(Nutrient.ZINC, 11D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 40D);
 
 
         } else if (age < 17) {
 
-            hmap.put(Nutrient.VitaminAUG, 900D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 10D);
-            hmap.put(Nutrient.ThiamineMG, 1.4D);
-            hmap.put(Nutrient.RiboflavinMG, 1.7D);
-            hmap.put(Nutrient.NiacinMG, 19D);
-            hmap.put(Nutrient.VitaminB6MG, 1.6D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 900D);
-            hmap.put(Nutrient.PhosphorusMG, 700D);
-            hmap.put(Nutrient.PotassiumMG, 3500D);
-            hmap.put(Nutrient.MagnesiumMG, 350D);
-            hmap.put(Nutrient.IronMG, 11D);
-            hmap.put(Nutrient.ZinkMG, 12D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 60D);
+            hmap.put(Nutrient.VITAMIN_A, 900D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 10D);
+            hmap.put(Nutrient.THIAMINE, 1.4D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.7D);
+            hmap.put(Nutrient.NIACIN, 19D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.6D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 900D);
+            hmap.put(Nutrient.PHOSPHORUS, 700D);
+            hmap.put(Nutrient.POTASSIUM, 3500D);
+            hmap.put(Nutrient.MAGNESIUM, 350D);
+            hmap.put(Nutrient.IRON, 11D);
+            hmap.put(Nutrient.ZINC, 12D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 60D);
 
 
         } else if (age < 30) {
 
-            hmap.put(Nutrient.VitaminAUG, 900D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 10D);
-            hmap.put(Nutrient.ThiamineMG, 1.4D);
-            hmap.put(Nutrient.RiboflavinMG, 1.6D);
-            hmap.put(Nutrient.NiacinMG, 19D);
-            hmap.put(Nutrient.VitaminB6MG, 1.6D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3500D);
-            hmap.put(Nutrient.MagnesiumMG, 350D);
-            hmap.put(Nutrient.IronMG, 9D);
-            hmap.put(Nutrient.ZinkMG, 9D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 60D);
+            hmap.put(Nutrient.VITAMIN_A, 900D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 10D);
+            hmap.put(Nutrient.THIAMINE, 1.4D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.6D);
+            hmap.put(Nutrient.NIACIN, 19D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.6D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3500D);
+            hmap.put(Nutrient.MAGNESIUM, 350D);
+            hmap.put(Nutrient.IRON, 9D);
+            hmap.put(Nutrient.ZINC, 9D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 60D);
 
 
         } else if (age < 60) {
 
-            hmap.put(Nutrient.VitaminAUG, 900D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 10D);
-            hmap.put(Nutrient.ThiamineMG, 1.3D);
-            hmap.put(Nutrient.RiboflavinMG, 1.5D);
-            hmap.put(Nutrient.NiacinMG, 18D);
-            hmap.put(Nutrient.VitaminB6MG, 1.6D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3500D);
-            hmap.put(Nutrient.MagnesiumMG, 350D);
-            hmap.put(Nutrient.IronMG, 9D);
-            hmap.put(Nutrient.ZinkMG, 9D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 60D);
+            hmap.put(Nutrient.VITAMIN_A, 900D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 10D);
+            hmap.put(Nutrient.THIAMINE, 1.3D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.5D);
+            hmap.put(Nutrient.NIACIN, 18D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.6D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3500D);
+            hmap.put(Nutrient.MAGNESIUM, 350D);
+            hmap.put(Nutrient.IRON, 9D);
+            hmap.put(Nutrient.ZINC, 9D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 60D);
 
 
         } else if (age < 74) {
 
-            hmap.put(Nutrient.VitaminAUG, 900D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 10D);
-            hmap.put(Nutrient.ThiamineMG, 1.2D);
-            hmap.put(Nutrient.RiboflavinMG, 1.4D);
-            hmap.put(Nutrient.NiacinMG, 16D);
-            hmap.put(Nutrient.VitaminB6MG, 1.6D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3500D);
-            hmap.put(Nutrient.MagnesiumMG, 350D);
-            hmap.put(Nutrient.IronMG, 9D);
-            hmap.put(Nutrient.ZinkMG, 9D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 60D);
+            hmap.put(Nutrient.VITAMIN_A, 900D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 10D);
+            hmap.put(Nutrient.THIAMINE, 1.2D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.4D);
+            hmap.put(Nutrient.NIACIN, 16D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.6D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3500D);
+            hmap.put(Nutrient.MAGNESIUM, 350D);
+            hmap.put(Nutrient.IRON, 9D);
+            hmap.put(Nutrient.ZINC, 9D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 60D);
 
 
         } else if (age >= 74) {
 
-            hmap.put(Nutrient.VitaminAUG, 900D);
-            hmap.put(Nutrient.VitaminDUG, 20D);
-            hmap.put(Nutrient.VitaminEMG, 10D);
-            hmap.put(Nutrient.ThiamineMG, 1.2D);
-            hmap.put(Nutrient.RiboflavinMG, 1.3D);
-            hmap.put(Nutrient.NiacinMG, 15D);
-            hmap.put(Nutrient.VitaminB6MG, 1.6D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3500D);
-            hmap.put(Nutrient.MagnesiumMG, 350D);
-            hmap.put(Nutrient.IronMG, 9D);
-            hmap.put(Nutrient.ZinkMG, 9D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 60D);
+            hmap.put(Nutrient.VITAMIN_A, 900D);
+            hmap.put(Nutrient.VITAMIN_D, 20D);
+            hmap.put(Nutrient.VITAMIN_E, 10D);
+            hmap.put(Nutrient.THIAMINE, 1.2D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.3D);
+            hmap.put(Nutrient.NIACIN, 15D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.6D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3500D);
+            hmap.put(Nutrient.MAGNESIUM, 350D);
+            hmap.put(Nutrient.IRON, 9D);
+            hmap.put(Nutrient.ZINC, 9D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 60D);
 
         }
-
-
     }
 
     private void getFemaleRDI(int age) {
 
         if (age >= 10 && age < 13) {
 
-            hmap.put(Nutrient.VitaminAUG, 600D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 7D);
-            hmap.put(Nutrient.ThiamineMG, 1D);
-            hmap.put(Nutrient.RiboflavinMG, 1.2D);
-            hmap.put(Nutrient.NiacinMG, 14D);
-            hmap.put(Nutrient.VitaminB6MG, 1.1D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 50D);
-            hmap.put(Nutrient.CalciumMG, 900D);
-            hmap.put(Nutrient.PhosphorusMG, 700D);
-            hmap.put(Nutrient.PotassiumMG, 2900D);
-            hmap.put(Nutrient.MagnesiumMG, 280D);
-            hmap.put(Nutrient.IronMG, 11D);
-            hmap.put(Nutrient.ZinkMG, 8D);
-            hmap.put(Nutrient.CopperMG, 0.7D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 40D);
+            hmap.put(Nutrient.VITAMIN_A, 600D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 7D);
+            hmap.put(Nutrient.THIAMINE, 1D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.2D);
+            hmap.put(Nutrient.NIACIN, 14D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.1D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 50D);
+            hmap.put(Nutrient.CALCIUM, 900D);
+            hmap.put(Nutrient.PHOSPHORUS, 700D);
+            hmap.put(Nutrient.POTASSIUM, 2900D);
+            hmap.put(Nutrient.MAGNESIUM, 280D);
+            hmap.put(Nutrient.IRON, 11D);
+            hmap.put(Nutrient.ZINC, 8D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 40D);
 
 
         } else if (age < 17) {
 
-            hmap.put(Nutrient.VitaminAUG, 900D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 8D);
-            hmap.put(Nutrient.ThiamineMG, 1.2D);
-            hmap.put(Nutrient.RiboflavinMG, 1.4D);
-            hmap.put(Nutrient.NiacinMG, 16D);
-            hmap.put(Nutrient.VitaminB6MG, 1.3D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 900D);
-            hmap.put(Nutrient.PhosphorusMG, 700D);
-            hmap.put(Nutrient.PotassiumMG, 3100D);
-            hmap.put(Nutrient.MagnesiumMG, 280D);
-            hmap.put(Nutrient.IronMG, 15D);
-            hmap.put(Nutrient.ZinkMG, 7D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 50D);
+            hmap.put(Nutrient.VITAMIN_A, 900D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 8D);
+            hmap.put(Nutrient.THIAMINE, 1.2D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.4D);
+            hmap.put(Nutrient.NIACIN, 16D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.3D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 900D);
+            hmap.put(Nutrient.PHOSPHORUS, 700D);
+            hmap.put(Nutrient.POTASSIUM, 3100D);
+            hmap.put(Nutrient.MAGNESIUM, 280D);
+            hmap.put(Nutrient.IRON, 15D);
+            hmap.put(Nutrient.ZINC, 7D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 50D);
 
         } else if (age < 30) {
 
-            hmap.put(Nutrient.VitaminAUG, 700D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 8D);
-            hmap.put(Nutrient.ThiamineMG, 1.1D);
-            hmap.put(Nutrient.RiboflavinMG, 1.3D);
-            hmap.put(Nutrient.NiacinMG, 15D);
-            hmap.put(Nutrient.VitaminB6MG, 1.3D);
-            hmap.put(Nutrient.FolateUG, 400D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3100D);
-            hmap.put(Nutrient.MagnesiumMG, 280D);
-            hmap.put(Nutrient.IronMG, 15D);
-            hmap.put(Nutrient.ZinkMG, 7D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 50D);
+            hmap.put(Nutrient.VITAMIN_A, 700D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 8D);
+            hmap.put(Nutrient.THIAMINE, 1.1D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.3D);
+            hmap.put(Nutrient.NIACIN, 15D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.3D);
+            hmap.put(Nutrient.FOLATE, 400D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3100D);
+            hmap.put(Nutrient.MAGNESIUM, 280D);
+            hmap.put(Nutrient.IRON, 15D);
+            hmap.put(Nutrient.ZINC, 7D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 50D);
 
 
         } else if (age < 60) {
 
-            hmap.put(Nutrient.VitaminAUG, 700D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 8D);
-            hmap.put(Nutrient.ThiamineMG, 1.1D);
-            hmap.put(Nutrient.RiboflavinMG, 1.2D);
-            hmap.put(Nutrient.NiacinMG, 14D);
-            hmap.put(Nutrient.VitaminB6MG, 1.2D);
-            hmap.put(Nutrient.FolateUG, 400D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3100D);
-            hmap.put(Nutrient.MagnesiumMG, 280D);
-            hmap.put(Nutrient.IronMG, 15D);
-            hmap.put(Nutrient.ZinkMG, 7D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 50D);
+            hmap.put(Nutrient.VITAMIN_A, 700D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 8D);
+            hmap.put(Nutrient.THIAMINE, 1.1D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.2D);
+            hmap.put(Nutrient.NIACIN, 14D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.2D);
+            hmap.put(Nutrient.FOLATE, 400D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3100D);
+            hmap.put(Nutrient.MAGNESIUM, 280D);
+            hmap.put(Nutrient.IRON, 15D);
+            hmap.put(Nutrient.ZINC, 7D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 50D);
 
 
         } else if (age < 74) {
 
-            hmap.put(Nutrient.VitaminAUG, 700D);
-            hmap.put(Nutrient.VitaminDUG, 10D);
-            hmap.put(Nutrient.VitaminEMG, 8D);
-            hmap.put(Nutrient.ThiamineMG, 1D);
-            hmap.put(Nutrient.RiboflavinMG, 1.2D);
-            hmap.put(Nutrient.NiacinMG, 13D);
-            hmap.put(Nutrient.VitaminB6MG, 1.2D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3100D);
-            hmap.put(Nutrient.MagnesiumMG, 280D);
-            hmap.put(Nutrient.IronMG, 9D);
-            hmap.put(Nutrient.ZinkMG, 7D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 50D);
+            hmap.put(Nutrient.VITAMIN_A, 700D);
+            hmap.put(Nutrient.VITAMIN_D, 10D);
+            hmap.put(Nutrient.VITAMIN_E, 8D);
+            hmap.put(Nutrient.THIAMINE, 1D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.2D);
+            hmap.put(Nutrient.NIACIN, 13D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.2D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3100D);
+            hmap.put(Nutrient.MAGNESIUM, 280D);
+            hmap.put(Nutrient.IRON, 9D);
+            hmap.put(Nutrient.ZINC, 7D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 50D);
 
 
         } else if (age >= 74) {
 
-            hmap.put(Nutrient.VitaminAUG, 700D);
-            hmap.put(Nutrient.VitaminDUG, 20D);
-            hmap.put(Nutrient.VitaminEMG, 8D);
-            hmap.put(Nutrient.ThiamineMG, 1D);
-            hmap.put(Nutrient.RiboflavinMG, 1.2D);
-            hmap.put(Nutrient.NiacinMG, 13D);
-            hmap.put(Nutrient.VitaminB6MG, 1.2D);
-            hmap.put(Nutrient.FolateUG, 300D);
-            hmap.put(Nutrient.VitaminB12UG, 2D);
-            hmap.put(Nutrient.VitaminCMG, 75D);
-            hmap.put(Nutrient.CalciumMG, 800D);
-            hmap.put(Nutrient.PhosphorusMG, 600D);
-            hmap.put(Nutrient.PotassiumMG, 3100D);
-            hmap.put(Nutrient.MagnesiumMG, 280D);
-            hmap.put(Nutrient.IronMG, 9D);
-            hmap.put(Nutrient.ZinkMG, 7D);
-            hmap.put(Nutrient.CopperMG, 0.9D);
-            hmap.put(Nutrient.IodineUG, 150D);
-            hmap.put(Nutrient.SeleniumUG, 50D);
+            hmap.put(Nutrient.VITAMIN_A, 700D);
+            hmap.put(Nutrient.VITAMIN_D, 20D);
+            hmap.put(Nutrient.VITAMIN_E, 8D);
+            hmap.put(Nutrient.THIAMINE, 1D);
+            hmap.put(Nutrient.RIBOFLAVIN, 1.2D);
+            hmap.put(Nutrient.NIACIN, 13D);
+            hmap.put(Nutrient.VITAMIN_B6, 1.2D);
+            hmap.put(Nutrient.FOLATE, 300D);
+            hmap.put(Nutrient.VITAMIN_B12, 2D);
+            hmap.put(Nutrient.VITAMIN_C, 75D);
+            hmap.put(Nutrient.CALCIUM, 800D);
+            hmap.put(Nutrient.PHOSPHORUS, 600D);
+            hmap.put(Nutrient.POTASSIUM, 3100D);
+            hmap.put(Nutrient.MAGNESIUM, 280D);
+            hmap.put(Nutrient.IRON, 9D);
+            hmap.put(Nutrient.ZINC, 7D);
+            hmap.put(Nutrient.IODINE, 150D);
+            hmap.put(Nutrient.SELENIUM, 50D);
 
         }
-
-
     }
 
     private void calculateOverdoseValues(int age) {
-        overdoseValues.put(Nutrient.CaloriKcal,hmap.get(Nutrient.CaloriKcal)*1.2D);
-        overdoseValues.put(Nutrient.Protein,hmap.get(Nutrient.Protein)*2D);
-        overdoseValues.put(Nutrient.Carbohydrates,hmap.get(Nutrient.Carbohydrates)*2D);
-        overdoseValues.put(Nutrient.Fat,hmap.get(Nutrient.Fat)*2D);
-        overdoseValues.put(Nutrient.Fibre,hmap.get(Nutrient.Fibre)*2D);
 
-        overdoseValues.put(Nutrient.VitaminAUG,7500D);
-        overdoseValues.put(Nutrient.VitaminDUG,100D);
-        overdoseValues.put(Nutrient.VitaminEMG,Double.POSITIVE_INFINITY);
-        overdoseValues.put(Nutrient.ThiamineMG,500D);
-        overdoseValues.put(Nutrient.RiboflavinMG,300D);
-        overdoseValues.put(Nutrient.NiacinMG,50D);
-        overdoseValues.put(Nutrient.VitaminB6MG,200D);
-        overdoseValues.put(Nutrient.FolateUG,Double.POSITIVE_INFINITY);
-        overdoseValues.put(Nutrient.VitaminB12UG,Double.POSITIVE_INFINITY);
-        overdoseValues.put(Nutrient.VitaminCMG,Double.POSITIVE_INFINITY);
-        overdoseValues.put(Nutrient.CalciumMG,2500D);
-        overdoseValues.put(Nutrient.PhosphorusMG,4000D);
-        overdoseValues.put(Nutrient.PotassiumMG,15000D);
-        overdoseValues.put(Nutrient.MagnesiumMG,1000D);
-        overdoseValues.put(Nutrient.IronMG,100D);
-        overdoseValues.put(Nutrient.CopperMG,5D);
-        overdoseValues.put(Nutrient.IodineUG,10000D);
-        overdoseValues.put(Nutrient.SeleniumUG,300D);
+        overdoseValues.put(Nutrient.KCAL,hmap.get(Nutrient.KCAL)*1.2D);
+        overdoseValues.put(Nutrient.PROTEIN,hmap.get(Nutrient.PROTEIN)*2D);
+        overdoseValues.put(Nutrient.CARBOHYDRATES,hmap.get(Nutrient.CARBOHYDRATES)*2D);
+        overdoseValues.put(Nutrient.FAT,hmap.get(Nutrient.FAT)*2D);
+        overdoseValues.put(Nutrient.FIBRE,hmap.get(Nutrient.FIBRE)*2D);
 
-        if(age <= 17) {
-            overdoseValues.put(Nutrient.CopperMG,4D);
-        }
+        overdoseValues.put(Nutrient.VITAMIN_A,7500D);
+        overdoseValues.put(Nutrient.VITAMIN_D,100D);
+        overdoseValues.put(Nutrient.VITAMIN_E,Double.POSITIVE_INFINITY);
+        overdoseValues.put(Nutrient.THIAMINE,500D);
+        overdoseValues.put(Nutrient.RIBOFLAVIN,300D);
+        overdoseValues.put(Nutrient.NIACIN,50D);
+        overdoseValues.put(Nutrient.VITAMIN_B6,200D);
+        overdoseValues.put(Nutrient.FOLATE,Double.POSITIVE_INFINITY);
+        overdoseValues.put(Nutrient.VITAMIN_B12,Double.POSITIVE_INFINITY);
+        overdoseValues.put(Nutrient.VITAMIN_C,Double.POSITIVE_INFINITY);
+        overdoseValues.put(Nutrient.CALCIUM,2500D);
+        overdoseValues.put(Nutrient.PHOSPHORUS,4000D);
+        overdoseValues.put(Nutrient.POTASSIUM,15000D);
+        overdoseValues.put(Nutrient.MAGNESIUM,1000D);
+        overdoseValues.put(Nutrient.IRON,100D);
+        overdoseValues.put(Nutrient.IODINE,10000D);
+        overdoseValues.put(Nutrient.SELENIUM,300D);
 
         if(age <= 10) {
-            overdoseValues.put(Nutrient.VitaminAUG,200D*weight);
-            overdoseValues.put(Nutrient.VitaminDUG,50D);
-
-            if(age <= 3) {
-                overdoseValues.put(Nutrient.CopperMG,1D);
-            } else if(age <= 6) {
-                overdoseValues.put(Nutrient.CopperMG,2D);
-            } else {
-                overdoseValues.put(Nutrient.CopperMG,3D);
-            }
+            overdoseValues.put(Nutrient.VITAMIN_A,200D*weight);
+            overdoseValues.put(Nutrient.VITAMIN_D,50D);
         }
     }
 

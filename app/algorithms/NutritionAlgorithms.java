@@ -1,9 +1,9 @@
 package algorithms;
 import java.util.*;
 
-import models.food.FoodItem;
+import models.food.fineli.Food;
 import models.recipe.*;
-import models.user.Nutrient;
+import models.food.fineli.Nutrient;
 
 /**
  * Created by louiserost on 2017-03-06.
@@ -62,30 +62,30 @@ public class NutritionAlgorithms {
         HashMap<Nutrient, Double> nutrientsContent = new HashMap<Nutrient, Double>();
 
         for( Recipe recipe : menu.getRecipeList() ) {
-            addToHashMap(nutrientsContent, Nutrient.CaloriKcal, recipe.getEnergyKcal() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Fat, recipe.getFat() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Protein, recipe.getProtein() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Carbohydrates, recipe.getCarbohydrates() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.Fibre, recipe.getFibre() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.KCAL, recipe.getEnergyKcal() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.FAT, recipe.getFat() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.PROTEIN, recipe.getProtein() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.CARBOHYDRATES, recipe.getCarbohydrates() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.FIBRE, recipe.getFibre() / recipe.getPortions());
 
-            addToHashMap(nutrientsContent, Nutrient.VitaminAUG, recipe.getVitaminA() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminB6MG, recipe.getVitaminB6() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminB12UG, recipe.getVitaminB12() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminCMG, recipe.getVitaminC() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminDUG, recipe.getVitaminD() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VitaminEMG, recipe.getVitaminE() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.ThiamineMG, recipe.getThiamine() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.RiboflavinMG, recipe.getRiboflavin() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.NiacinMG, recipe.getNiacin() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.FolateUG, recipe.getFolate() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.CalciumMG, recipe.getCalcium() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.PhosphorusMG, recipe.getPhosphorus() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.PotassiumMG, recipe.getPotassium() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.MagnesiumMG, recipe.getMagnesium() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.IronMG, recipe.getIron() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.ZinkMG, recipe.getZink() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.IodineUG, recipe.getIodine() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.SeleniumUG, recipe.getSelenium() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_A, recipe.getVitaminA() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_B6, recipe.getVitaminB6() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_B12, recipe.getVitaminB12() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_C, recipe.getVitaminC() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_D, recipe.getVitaminD() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_E, recipe.getVitaminE() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.THIAMINE, recipe.getThiamine() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.RIBOFLAVIN, recipe.getRiboflavin() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.NIACIN, recipe.getNiacin() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.FOLATE, recipe.getFolate() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.CALCIUM, recipe.getCalcium() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.PHOSPHORUS, recipe.getPhosphorus() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.POTASSIUM, recipe.getPotassium() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.MAGNESIUM, recipe.getMagnesium() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.IRON, recipe.getIron() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.ZINC, recipe.getZink() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.IODINE, recipe.getIodine() / recipe.getPortions());
+            addToHashMap(nutrientsContent, Nutrient.SELENIUM, recipe.getSelenium() / recipe.getPortions());
         }
 
         return nutrientsContent;
@@ -126,15 +126,15 @@ public class NutritionAlgorithms {
     }
 
     //TODO: Använd dessa metoderna någonstans!
-    public static List<FoodItem> SortByTheDifference(Ingredient ingredient){
+    public static List<Food> SortByTheDifference(Ingredient ingredient){
 
-        List<FoodItem> foods = FoodItem.find.all();
+        List<Food> foods = Food.find.all();
         foods = QuicksortFoodItem.sort(foods, ingredient.getFood());
         return foods;
 
     }
 
-    public static Recipe changeIngredient(Recipe recipe, Ingredient ingredient, FoodItem foodItem){
+    public static Recipe changeIngredient(Recipe recipe, Ingredient ingredient, Food foodItem){
 
         List<Ingredient> recipeIngredient = recipe.ingredients;
         recipeIngredient.remove(ingredient);

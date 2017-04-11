@@ -1,10 +1,9 @@
 package algorithms;
 
-import models.food.FoodItem;
+import models.food.fineli.Food;
+import models.food.fineli.Nutrient;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,37 +11,37 @@ import java.util.List;
  */
 
 public class QuicksortFoodItem {
-    private static List<FoodItem> foodItems;
+    private static List<Food> foods;
     private static int number;
-    private static FoodItem foodItemWeCompare;
+    private static Food foodWeCompare;
 
-    public static List<FoodItem> sort(List<FoodItem> values, FoodItem food) {
+    public static List<Food> sort(List<Food> values, Food food) {
         // check for empty or null array
         if (values == null || values.size() == 0){
             return new ArrayList<>();
         }
-        foodItemWeCompare = food;
-        foodItems = new ArrayList<>(values);
+        foodWeCompare = food;
+        foods = new ArrayList<>(values);
         number = values.size();
         quicksort(0, number - 1);
-        return foodItems;
+        return foods;
     }
 
     private static void quicksort(int low, int high) {
         int i = low, j = high;
         // Get the pivot element from the middle of the list
-        FoodItem pivot = foodItems.get(low + (high-low)/2);
+        Food pivot = foods.get(low + (high-low)/2);
 
         // Divide into two lists
         while (i <= j) {
             // If the current value from the left list is smaller than the pivot
             // element then get the next element from the left list
-            while (diff(foodItems.get(i)) < diff(pivot)) {
+            while (diff(foods.get(i)) < diff(pivot)) {
                 i++;
             }
             // If the current value from the right list is larger than the pivot
             // element then get the next element from the right list
-            while (diff(foodItems.get(j)) > diff(pivot)) {
+            while (diff(foods.get(j)) > diff(pivot)) {
                 j--;
             }
 
@@ -66,75 +65,75 @@ public class QuicksortFoodItem {
 
     private static void exchange(int i, int j) {
 
-        foodItems.set(i, foodItems.set(j, foodItems.get(i)));
+        foods.set(i, foods.set(j, foods.get(i)));
 
     }
 
 
-    private static Float diff(FoodItem foodItem1) {
+    private static Float diff(Food food1) {
 
         float sum = 0f;
 
-        sum += Math.abs(foodItem1.getEnergyKcal() - foodItemWeCompare.getEnergyKcal());
-        sum += Math.abs(foodItem1.getCarbohydrates() - foodItemWeCompare.getCarbohydrates());
-        sum += Math.abs(foodItem1.getFats().getFat() - foodItemWeCompare.getFats().getFat());
-        sum += Math.abs(foodItem1.getProtein() - foodItemWeCompare.getProtein());
-        sum += Math.abs(foodItem1.getFibre() - foodItemWeCompare.getFibre());
+        sum += Math.abs(food1.getNutrient(Nutrient.KCAL) - foodWeCompare.getNutrient(Nutrient.KCAL));
+        sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES));
+        sum += Math.abs(food1.getNutrient(Nutrient.FAT) - foodWeCompare.getNutrient(Nutrient.FAT));
+        sum += Math.abs(food1.getNutrient(Nutrient.PROTEIN) - foodWeCompare.getNutrient(Nutrient.PROTEIN));
+        sum += Math.abs(food1.getNutrient(Nutrient.FIBRE) - foodWeCompare.getNutrient(Nutrient.FIBRE));
 
-        sum += Math.abs(foodItem1.getVitamins().getVitaminA() - foodItemWeCompare.getVitamins().getVitaminA());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminD() - foodItemWeCompare.getVitamins().getVitaminD());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminE() - foodItemWeCompare.getVitamins().getVitaminE());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminB6() - foodItemWeCompare.getVitamins().getVitaminB6());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminB12() - foodItemWeCompare.getVitamins().getVitaminB12());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminC() - foodItemWeCompare.getVitamins().getVitaminC());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminK() - foodItemWeCompare.getVitamins().getVitaminK());
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_A) - foodWeCompare.getNutrient(Nutrient.VITAMIN_A));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_D) - foodWeCompare.getNutrient(Nutrient.VITAMIN_D));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_E) - foodWeCompare.getNutrient(Nutrient.VITAMIN_E));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B6) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B6));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B12) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B12));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_C) - foodWeCompare.getNutrient(Nutrient.VITAMIN_C));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_K) - foodWeCompare.getNutrient(Nutrient.VITAMIN_K));
 
-        sum += Math.abs(foodItem1.getMinerals().getCalcium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getFolate() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getIodine() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getIron() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getMagnesium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getPhosphorus() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getPotassium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getSalt() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getSelenium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getSodium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getZink() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getSugars().getSugars() - foodItemWeCompare.getSugars().getSugars());
+        sum += Math.abs(food1.getNutrient(Nutrient.CALCIUM) - foodWeCompare.getNutrient(Nutrient.CALCIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.FOLATE) - foodWeCompare.getNutrient(Nutrient.FOLATE));
+        sum += Math.abs(food1.getNutrient(Nutrient.IODINE) - foodWeCompare.getNutrient(Nutrient.IODINE));
+        sum += Math.abs(food1.getNutrient(Nutrient.IRON) - foodWeCompare.getNutrient(Nutrient.IRON));
+        sum += Math.abs(food1.getNutrient(Nutrient.MAGNESIUM) - foodWeCompare.getNutrient(Nutrient.MAGNESIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.PHOSPHORUS) - foodWeCompare.getNutrient(Nutrient.PHOSPHORUS));
+        sum += Math.abs(food1.getNutrient(Nutrient.POTASSIUM) - foodWeCompare.getNutrient(Nutrient.POTASSIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.SALT) - foodWeCompare.getNutrient(Nutrient.SALT));
+        sum += Math.abs(food1.getNutrient(Nutrient.SELENIUM) - foodWeCompare.getNutrient(Nutrient.SELENIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.SODIUM) - foodWeCompare.getNutrient(Nutrient.SODIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.ZINC) - foodWeCompare.getNutrient(Nutrient.ZINC));
+        //sum += Math.abs(food1.getSugars().getSugars() - foodWeCompare.getSugars().getSugars()); // TODO Fix getSugars in Food
 
         return sum;
     }
 
-    public static Float diff(FoodItem foodItem1, FoodItem foodItemWeCompare) {
+    public static Float diff(Food food1, Food foodWeCompare) {
 
         float sum = 0f;
 
-        sum += Math.abs(foodItem1.getEnergyKcal() - foodItemWeCompare.getEnergyKcal());
-        sum += Math.abs(foodItem1.getCarbohydrates() - foodItemWeCompare.getCarbohydrates());
-        sum += Math.abs(foodItem1.getFats().getFat() - foodItemWeCompare.getFats().getFat());
-        sum += Math.abs(foodItem1.getProtein() - foodItemWeCompare.getProtein());
-        sum += Math.abs(foodItem1.getFibre() - foodItemWeCompare.getFibre());
+        sum += Math.abs(food1.getNutrient(Nutrient.KCAL) - foodWeCompare.getNutrient(Nutrient.KCAL));
+        sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES));
+        sum += Math.abs(food1.getNutrient(Nutrient.FAT) - foodWeCompare.getNutrient(Nutrient.FAT));
+        sum += Math.abs(food1.getNutrient(Nutrient.PROTEIN) - foodWeCompare.getNutrient(Nutrient.PROTEIN));
+        sum += Math.abs(food1.getNutrient(Nutrient.FIBRE) - foodWeCompare.getNutrient(Nutrient.FIBRE));
 
-        sum += Math.abs(foodItem1.getVitamins().getVitaminA() - foodItemWeCompare.getVitamins().getVitaminA());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminD() - foodItemWeCompare.getVitamins().getVitaminD());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminE() - foodItemWeCompare.getVitamins().getVitaminE());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminB6() - foodItemWeCompare.getVitamins().getVitaminB6());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminB12() - foodItemWeCompare.getVitamins().getVitaminB12());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminC() - foodItemWeCompare.getVitamins().getVitaminC());
-        sum += Math.abs(foodItem1.getVitamins().getVitaminK() - foodItemWeCompare.getVitamins().getVitaminK());
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_A) - foodWeCompare.getNutrient(Nutrient.VITAMIN_A));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_D) - foodWeCompare.getNutrient(Nutrient.VITAMIN_D));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_E) - foodWeCompare.getNutrient(Nutrient.VITAMIN_E));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B6) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B6));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B12) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B12));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_C) - foodWeCompare.getNutrient(Nutrient.VITAMIN_C));
+        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_K) - foodWeCompare.getNutrient(Nutrient.VITAMIN_K));
 
-        sum += Math.abs(foodItem1.getMinerals().getCalcium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getFolate() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getIodine() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getIron() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getMagnesium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getPhosphorus() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getPotassium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getSalt() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getSelenium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getSodium() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getMinerals().getZink() - foodItemWeCompare.getMinerals().getCalcium());
-        sum += Math.abs(foodItem1.getSugars().getSugars() - foodItemWeCompare.getSugars().getSugars());
+        sum += Math.abs(food1.getNutrient(Nutrient.CALCIUM) - foodWeCompare.getNutrient(Nutrient.CALCIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.FOLATE) - foodWeCompare.getNutrient(Nutrient.FOLATE));
+        sum += Math.abs(food1.getNutrient(Nutrient.IODINE) - foodWeCompare.getNutrient(Nutrient.IODINE));
+        sum += Math.abs(food1.getNutrient(Nutrient.IRON) - foodWeCompare.getNutrient(Nutrient.IRON));
+        sum += Math.abs(food1.getNutrient(Nutrient.MAGNESIUM) - foodWeCompare.getNutrient(Nutrient.MAGNESIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.PHOSPHORUS) - foodWeCompare.getNutrient(Nutrient.PHOSPHORUS));
+        sum += Math.abs(food1.getNutrient(Nutrient.POTASSIUM) - foodWeCompare.getNutrient(Nutrient.POTASSIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.SALT) - foodWeCompare.getNutrient(Nutrient.SALT));
+        sum += Math.abs(food1.getNutrient(Nutrient.SELENIUM) - foodWeCompare.getNutrient(Nutrient.SELENIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.SODIUM) - foodWeCompare.getNutrient(Nutrient.SODIUM));
+        sum += Math.abs(food1.getNutrient(Nutrient.ZINC) - foodWeCompare.getNutrient(Nutrient.ZINC));
+        //sum += Math.abs(food1.getSugars().getSugars() - foodWeCompare.getSugars().getSugars());
 
         return sum;
     }
