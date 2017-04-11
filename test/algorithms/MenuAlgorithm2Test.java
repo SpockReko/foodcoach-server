@@ -51,13 +51,10 @@ public class MenuAlgorithm2Test {
         foods.add(food3);
         foods.add(food4);
 
-        MenuAlgorithm2 algorithm=new MenuAlgorithm2(foods, recList);
-        System.out.println(algorithm.calculateWeekMenu().getRecipeList().size());
-        Menu menu = algorithm.calculateWeekMenu();
-        System.out.println(menu.recipeListToString(menu));
-        System.out.print("hej");
+        MenuAlgorithms algorithm=new MenuAlgorithms(foods, recList);
+        algorithm.setNrOfRecipes(3);
+        //System.out.println(algorithm.calculateWeekMenuFromIngredientList(new ArrayList<Recipe>()).getRecipeList().size());
+        Menu menu = algorithm.calculateWeekMenuFromIngredientList(new ArrayList<Recipe>());
+        System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
     }
-
-
-
 }

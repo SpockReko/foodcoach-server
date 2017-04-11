@@ -4,9 +4,7 @@ import models.food.FoodItem;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -46,7 +44,7 @@ public class MenuAlgorithm2 {
                 optimalMenu = menu;
             }
         }
-        System.out.println(optimalMenu.recipeListToString(optimalMenu));
+       // System.out.println(MenuAlgorithms.recipeListToString(optimalMenu));
         return optimalMenu;
     }
 

@@ -20,7 +20,6 @@ GET     /user/:alder                        controllers.UserController.getRDI(al
 # Week menu options from client
 POST    /weekmenu                           controllers.MenuAlgorithmsController.weekmenu
 GET     /weekmenu                           controllers.MenuAlgorithmsController.weekmenu()
-GET     /weekmenu2                          controllers.MenuAlgorithm2Controller.weekmenu2()
 
 # Optimize recipe
 GET     /recipe/:number                     controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
