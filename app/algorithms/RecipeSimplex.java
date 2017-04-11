@@ -31,30 +31,31 @@ public class RecipeSimplex {
     public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed) {
 
         for( int i=0; i<ingredients.size(); i++) {
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(models.food.fineli.Nutrient.KCAL), nutritionNeed.get(Nutrient.KCAL), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(models.food.fineli.Nutrient.CARBOHYDRATES), nutritionNeed.get(Nutrient.CARBOHYDRATES), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(models.food.fineli.Nutrient.FAT), nutritionNeed.get(Nutrient.FAT), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(models.food.fineli.Nutrient.PROTEIN), nutritionNeed.get(Nutrient.PROTEIN), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.FIBRE), nutritionNeed.get(Nutrient.FIBRE), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getEnergyKcal().doubleValue(), nutritionNeed.get(Nutrient.CaloriKcal), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getCarbohydrates().doubleValue(), nutritionNeed.get(Nutrient.Carbohydrates), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getFats().getFat().doubleValue(), nutritionNeed.get(Nutrient.Fat), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getProtein().doubleValue(), nutritionNeed.get(Nutrient.Protein), ingredients.size());
+            /*setEachConstraintNutrition(ingredients.get(i).getFoodItem().getFibre().doubleValue(), nutritionNeed.get(Nutrient.Fibre), ingredients.size());
 
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.VITAMIN_A), nutritionNeed.get(Nutrient.VITAMIN_A), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.VITAMIN_D), nutritionNeed.get(Nutrient.VITAMIN_D), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.VITAMIN_E), nutritionNeed.get(Nutrient.VITAMIN_E), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.THIAMINE), nutritionNeed.get(Nutrient.THIAMINE), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.RIBOFLAVIN), nutritionNeed.get(Nutrient.RIBOFLAVIN), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.NIACIN), nutritionNeed.get(Nutrient.NIACIN), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.VITAMIN_B6), nutritionNeed.get(Nutrient.VITAMIN_B6), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.FOLATE), nutritionNeed.get(Nutrient.FOLATE), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.VITAMIN_B12), nutritionNeed.get(Nutrient.VITAMIN_B12), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.VITAMIN_C), nutritionNeed.get(Nutrient.VITAMIN_C), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.CALCIUM), nutritionNeed.get(Nutrient.CALCIUM), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.PHOSPHORUS), nutritionNeed.get(Nutrient.PHOSPHORUS), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.POTASSIUM), nutritionNeed.get(Nutrient.POTASSIUM), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.MAGNESIUM), nutritionNeed.get(Nutrient.MAGNESIUM), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.IRON), nutritionNeed.get(Nutrient.IRON), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.ZINC), nutritionNeed.get(Nutrient.ZINC), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.IODINE), nutritionNeed.get(Nutrient.IODINE), ingredients.size());
-            setEachConstraintNutrition(ingredients.get(i).getFood().getNutrient(Nutrient.SELENIUM), nutritionNeed.get(Nutrient.SELENIUM), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminA().doubleValue(), nutritionNeed.get(Nutrient.VitaminAUG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminD().doubleValue(), nutritionNeed.get(Nutrient.VitaminDUG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminE().doubleValue(), nutritionNeed.get(Nutrient.VitaminEMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getThiamine().doubleValue(), nutritionNeed.get(Nutrient.ThiamineMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getRiboflavin().doubleValue(), nutritionNeed.get(Nutrient.RiboflavinMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getNiacin().doubleValue(), nutritionNeed.get(Nutrient.NiacinMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminB6().doubleValue(), nutritionNeed.get(Nutrient.VitaminB6MG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getFolate().doubleValue(), nutritionNeed.get(Nutrient.FolateUG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminB12().doubleValue(), nutritionNeed.get(Nutrient.VitaminB12UG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminC().doubleValue(), nutritionNeed.get(Nutrient.VitaminCMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getCalcium().doubleValue(), nutritionNeed.get(Nutrient.CalciumMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getPhosphorus().doubleValue(), nutritionNeed.get(Nutrient.PhosphorusMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getPotassium().doubleValue(), nutritionNeed.get(Nutrient.PotassiumMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getMagnesium().doubleValue(), nutritionNeed.get(Nutrient.MagnesiumMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getIron().doubleValue(), nutritionNeed.get(Nutrient.IronMG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getZink().doubleValue(), nutritionNeed.get(Nutrient.ZinkMG), ingredients.size());
+            //setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getIodine().doubleValue(), nutritionNeed.get(Nutrient.IodineUG), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getSelenium().doubleValue(), nutritionNeed.get(Nutrient.SeleniumUG), ingredients.size());
+            */
         }
 
         constraints = new LinearConstraintSet(constraintsCollection);
@@ -69,7 +70,7 @@ public class RecipeSimplex {
     }
 
     /*
-    Sets linear objective function to minimize waste from each ingredient
+    Sets linear objective function to minimize total amount of waste
      */
     public void setLinearObjectiveFunction(List<Ingredient> ingredients) {
         double[] objFcn = new double[ingredients.size()];
