@@ -60,28 +60,13 @@ public class Recipe extends Model {
     public Double getFibre() {
         return ingredients.stream().mapToDouble(Ingredient::getFibre).sum();
     }
-    public Double getWholeGrain() {
-        return ingredients.stream().mapToDouble(Ingredient::getWholeGrain).sum();
-    }
-    public Double getCholesterol() {
-        return ingredients.stream().mapToDouble(Ingredient::getCholesterol).sum();
-    }
-    public Double getWater() {
-        return ingredients.stream().mapToDouble(Ingredient::getWater).sum();
-    }
     public Double getAlcohol() {
         return ingredients.stream().mapToDouble(Ingredient::getAlcohol).sum();
-    }
-    public Double getAsh() {
-        return ingredients.stream().mapToDouble(Ingredient::getAsh).sum();
     }
 
     /*
     Extra nutrition data
      */
-    public Double getSugars() {
-        return ingredients.stream().mapToDouble(Ingredient::getSugars).sum();
-    }
     public Double getVitaminA() {
         return ingredients.stream().mapToDouble(Ingredient::getVitaminA).sum();
     }
@@ -166,8 +151,8 @@ public class Recipe extends Model {
     public String recipeToString(Recipe recipe){
         String text = recipe.getTitle()+"\n\n";
         for( Ingredient i : recipe.ingredients ){
-            text += i.getFood().getName();
-            int stringLength = i.getFood().getName().length();
+            text += i.getFood().name;
+            int stringLength = i.getFood().name.length();
             if(stringLength<8) {
                 text += "\t\t\t\t\t";
             } else if(stringLength>=8 && stringLength<16) {
