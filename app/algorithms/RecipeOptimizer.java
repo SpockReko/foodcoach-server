@@ -32,8 +32,17 @@ public class RecipeOptimizer {
         List<Double> leastAmountOfIngredients = leastAmountOfIngredients(ingredients);
 
         RecipeSimplex recipeSimplex = new RecipeSimplex();
+<<<<<<< Updated upstream
         recipeSimplex.addLinearObjectiveFunction(ingredients);
         recipeSimplex.addConstraint(leastAmountOfIngredients);
+=======
+        recipeSimplex.setLinearObjectiveFunction(ingredients);
+        recipeSimplex.setConstraintsIngredients(leastAmountOfIngredients);
+        HashMap<Nutrient,Double> nutritionNeed = NutritionAlgorithms.nutrientsNeedScaled(user.hmap,1);
+        recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed);
+
+
+>>>>>>> Stashed changes
         double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
         List<Ingredient> newIngredients = new ArrayList<>();

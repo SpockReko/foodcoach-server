@@ -8,7 +8,11 @@ import org.apache.commons.math3.optim.nonlinear.scalar.noderiv.SimplexOptimizer;
 import org.apache.commons.math3.optimization.GoalType;
 import models.recipe.Ingredient;
 
+<<<<<<< Updated upstream
 import javax.swing.*;
+=======
+import java.lang.reflect.Array;
+>>>>>>> Stashed changes
 import java.util.*;
 
 /**
