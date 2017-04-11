@@ -48,15 +48,13 @@ public class RecipeController extends Controller {
         ArrayNode array = json.putArray("ingredients");
         for (Ingredient i : recipe.ingredients) {
             ObjectNode node = Json.newObject();
-            node.put("name", i.getFood().getName());
+            node.put("name", i.getFood().name);
             node.put("amount", i.getAmount().getAmount() + " " + i.getAmount().getUnit().name());
             node.put("energyKcal", Math.round(i.getEnergyKcal()));
             node.put("energyKj", Math.round(i.getEnergyKj()));
             node.put("carbohydrates", Math.round(i.getCarbohydrates()));
             node.put("protein", Math.round(i.getProtein()));
             node.put("fibre", Math.round(i.getFibre()));
-            node.put("wholeGrain", Math.round(i.getWholeGrain()));
-            node.put("water", Math.round(i.getWater()));
             array.add(node);
         }
         return json;
