@@ -168,4 +168,26 @@ public class Recipe extends Model {
         return getEnergyKcal()/getPortions();
     }
 
+    public String recipeToString(Recipe recipe){
+        String text = recipe.getTitle()+"\n\n";
+        for( Ingredient i : recipe.ingredients ){
+            text += i.getFoodItem().getName();
+            int stringLength = i.getFoodItem().getName().length();
+            if(stringLength<8) {
+                text += "\t\t\t\t\t";
+            } else if(stringLength>=8 && stringLength<16) {
+                text += "\t\t\t\t";
+            } else if(stringLength>=16 && stringLength<24) {
+                text += "\t\t\t";
+            } else if (stringLength>=24 && stringLength <32) {
+                text +="\t\t";
+            } else {
+                text +="\t";
+            }
+            text += i.getAmount().getAmount()+" "+i.getAmount().getUnit()+"\n";
+        }
+        text = text + "\n\n";
+        return text;
+    }
+
 }

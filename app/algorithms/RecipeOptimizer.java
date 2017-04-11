@@ -3,7 +3,6 @@ package algorithms;
 import models.food.FoodItem;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
-import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
@@ -32,20 +31,16 @@ public class RecipeOptimizer {
         List<Double> leastAmountOfIngredients = leastAmountOfIngredients(ingredients);
 
         RecipeSimplex recipeSimplex = new RecipeSimplex();
-<<<<<<< Updated upstream
-        recipeSimplex.addLinearObjectiveFunction(ingredients);
-        recipeSimplex.addConstraint(leastAmountOfIngredients);
-=======
         recipeSimplex.setLinearObjectiveFunction(ingredients);
         recipeSimplex.setConstraintsIngredients(leastAmountOfIngredients);
         HashMap<Nutrient,Double> nutritionNeed = NutritionAlgorithms.nutrientsNeedScaled(user.hmap,1);
         recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed);
 
 
->>>>>>> Stashed changes
         double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
         List<Ingredient> newIngredients = new ArrayList<>();
+        // Changes amount of each ingredient in the recipe to the optimal amount
         for( int i=0; i<optimalAmountOfIngredients.length; i++ ){
             FoodItem foodItem = ingredients.get(i).getFoodItem();
             Amount amount = new Amount(optimalAmountOfIngredients[i], ingredients.get(i).getAmount().getUnit());
@@ -56,7 +51,9 @@ public class RecipeOptimizer {
         return newRecipe;
     }
 
-
+    /*
+    To set a lowest amount of each ingredient in the recipe
+     */
     private List<Double> leastAmountOfIngredients(List<Ingredient> ingredients) {
         List<Double> leastAmountOfIngredients = new ArrayList<>();
         for( int i=0; i<ingredients.size(); i++ ) {
@@ -74,27 +71,6 @@ public class RecipeOptimizer {
 
     public Double getLowestPercentageOfIngredient(){
         return lowestPercentageOfIngredient;
-    }
-
-    public String recipeToString(Recipe recipe){
-        String text = recipe.getTitle()+"\n\n";
-        for( Ingredient i : recipe.ingredients ){
-            text += i.getFoodItem().getName();
-            if(i.getFoodItem().getName().length()<8) {
-                text += "\t\t\t\t\t";
-            } else if(i.getFoodItem().getName().length()>=8 && i.getFoodItem().getName().length()<16) {
-                text += "\t\t\t\t";
-            } else if(i.getFoodItem().getName().length()>=16 && i.getFoodItem().getName().length()<24) {
-                text += "\t\t\t";
-            } else if (i.getFoodItem().getName().length()>=24 && i.getFoodItem().getName().length() <32) {
-                text +="\t\t";
-            } else {
-                text +="\t";
-            }
-            text += i.getAmount().getAmount()+" "+i.getAmount().getUnit()+"\n";
-        }
-        text = text + "\n\n";
-        return text;
     }
 
 }
