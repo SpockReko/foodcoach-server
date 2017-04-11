@@ -31,4 +31,6 @@ public class FoodGeneral extends Model {
     public FoodGeneral(String name) {
         this.name = name;
     }
+
+    public static Finder<Long, FoodGeneral> find = new Finder<>(FoodGeneral.class);
 }
