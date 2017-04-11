@@ -1,7 +1,10 @@
-package models.recipe;
+package models;
 
 import algorithms.QuicksortFoodItem;
 import models.food.*;
+import models.recipe.Amount;
+import models.recipe.Ingredient;
+import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
 import org.jetbrains.annotations.NotNull;

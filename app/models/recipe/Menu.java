@@ -27,4 +27,16 @@ public class Menu {
         commentList.add(comment);
     }
 
+    public String recipeListToString(Menu menu){
+        String text = "";
+        for(Recipe r : menu.getRecipeList()){
+            text = text + r.getTitle() + "\n";
+        }
+        text = text + "\n\n";
+        for(String comment : menu.getCommentList()){
+            text = text + comment + "\n";
+        }
+        return text;
+    }
+
 }
