@@ -109,8 +109,11 @@ public class ShoppingList {
     // remover amount from ingredients
     public void removeAmountToIngredient(Ingredient ingredient, double amount){
         Iterator iterator = map.keySet().iterator();
+        //for(int i =0; i<size(); i++){
         while(iterator.hasNext()) {
-            Ingredient indexIngredient = map.keySet().iterator().next();
+            System.out.println(3);
+
+            Ingredient indexIngredient = (Ingredient) iterator.next();
             if(indexIngredient.getFoodItem().equals(ingredient.getFoodItem())){
                 map.remove(indexIngredient);
                 Ingredient newIngredient;
@@ -173,6 +176,7 @@ public class ShoppingList {
         System.out.println(shoppingList.map.entrySet().size());
         String text = "Shoppinglist!\n";
         while(iterator.hasNext()){
+            System.out.println(2);
             Map.Entry<Ingredient,Boolean> entry = (Map.Entry) iterator.next();
             boolean marked = entry.getValue();
             String amount = entry.getKey().getAmount().getAmount() + "";
