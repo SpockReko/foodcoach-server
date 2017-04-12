@@ -27,19 +27,23 @@ public class ShoppingList {
 
     public ShoppingList(List<Ingredient> list, Boolean check){
         ingredients=list;
+        System.out.println("ingredients: "+ingredients.size());
         for (Ingredient ingredient: list ) {
             if(map.containsKey(ingredient)){
                 totalWaste -= ingredient.getWaste();
                 putTogetherIngredients(check, ingredient);
+                System.out.println(":)");
             }else {
+                System.out.println(":)");
                 this.map.put(ingredient, check);
             }
             totalWaste += ingredient.getWaste();
         }
+        System.out.println(map.entrySet().size());
     }
-
+/*
     public ShoppingList(Menu menu, List<FoodItem> foodItemList, List<Amount> amountList, Boolean check){
-        //System.out.println(foodItemList.size());
+        //System.out.println("foodItemList: "+foodItemList.size());
         List<Recipe> recipes=menu.getRecipeList();
         List<Ingredient> ingredients= new ArrayList<>();
         for(Recipe recipe: recipes){
@@ -54,12 +58,18 @@ public class ShoppingList {
             }
             totalWaste += ingredient.getWaste();
         }
+        System.out.println("ingredients: "+ingredients.size());
+        System.out.println("foodItemList: "+foodItemList.size());
         for(int i=0; i<foodItemList.size(); i++){
-            //System.out.println(foodItemList.get(i).getName()+" "+amountList.get(i).getAmount());
+
+            System.out.println("foodItem  "+foodItemList.get(i).getName()+" "+amountList.get(i).getAmount());
             removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)), amountList.get(i).getAmount());
+            System.out.println("ingredients: "+ingredients.size());
 
         }
+        System.out.println("ingredients: "+ingredients.size());
     }
+    */
 
     private Ingredient getKey(Ingredient ingredient){
         Iterator iterator = map.keySet().iterator();
@@ -157,6 +167,7 @@ public class ShoppingList {
     // Print out the shoppinglist
     public static String toString(ShoppingList shoppingList){
         Iterator iterator = shoppingList.map.entrySet().iterator();
+        System.out.println(shoppingList.map.entrySet().size());
         String text = "Shoppinglist!\n";
         while(iterator.hasNext()){
             Map.Entry<Ingredient,Boolean> entry = (Map.Entry) iterator.next();

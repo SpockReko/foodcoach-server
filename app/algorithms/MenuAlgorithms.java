@@ -43,8 +43,8 @@ public class MenuAlgorithms {
 
     //Listorna måste vara lika stora
     public MenuAlgorithms(List<FoodItem> foodItemList, List<Amount> amountList, List<Recipe> recipeList){
-        this.foodItemList=foodItemList;
-        this.amountList=amountList;
+        this.foodItemList=new ArrayList<>(foodItemList);
+        this.amountList=new ArrayList<>(amountList);
         this.allRecipes=recipeList;
     }
 
@@ -160,7 +160,6 @@ public class MenuAlgorithms {
 
                 //Hur gör man med enheter??
 
-                System.out.println("nbr of foods: "+foodItemsLeft.size()+" nbr of amounts: "+amountLeft.size());
                     int index = foodItemsLeft.indexOf(food);
                     if(index!=-1){
                         double a=amountLeft.get(index).getAmount()-amount.getAmount();

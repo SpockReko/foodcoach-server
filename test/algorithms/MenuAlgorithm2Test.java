@@ -44,12 +44,12 @@ public class MenuAlgorithm2Test {
         recList.add(rec4);
 
         List<FoodItem> foods=new ArrayList<FoodItem>();
-        foods.add(food2);
+        //foods.add(food2);
         foods.add(food3);
         foods.add(food4);
 
         List<Amount> amountList=new ArrayList<>();
-        amountList.add(new Amount(100, GRAM));
+        //amountList.add(new Amount(100, GRAM));
         amountList.add(new Amount(100, GRAM));
         amountList.add(new Amount(100, GRAM));
 
@@ -57,11 +57,19 @@ public class MenuAlgorithm2Test {
         algorithm.setNrOfRecipes(3);
         //System.out.println(algorithm.calculateWeekMenuFromIngredientList(new ArrayList<Recipe>()).getRecipeList().size());
         Menu menu = algorithm.weekMenuFromIngredientList(new ArrayList<Recipe>());
-        System.out.println("test "+foods.size());
+        //System.out.println("test "+foods.size());
 
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
+        //System.out.println("test "+foods.size());
+        //ShoppingList shoppingList=new ShoppingList(menu, foods, amountList, true);
+        //System.out.println(shoppingList.toString(shoppingList));
 
-        ShoppingList shoppingList=new ShoppingList(menu, foods, amountList, true);
+        ShoppingList shoppingList=new ShoppingList(menu);
+        System.out.println("before "+shoppingList.toString(shoppingList));
+        for(int i=0; i<foods.size(); i++){
+            shoppingList.removeAmountToIngredient(new Ingredient(foods.get(i), amountList.get(i)), amountList.get(i).getAmount());
+        }
         System.out.println(shoppingList.toString(shoppingList));
+
     }
 }
