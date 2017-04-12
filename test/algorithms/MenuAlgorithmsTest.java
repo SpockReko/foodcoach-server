@@ -2,7 +2,7 @@ package algorithms;
 
 import models.GlobalDummyModels;
 import models.recipe.*;
-import models.user.Nutrient;
+import models.food.fineli.Nutrient;
 import models.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
