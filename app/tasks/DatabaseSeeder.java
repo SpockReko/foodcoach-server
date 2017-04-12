@@ -42,7 +42,7 @@ public class DatabaseSeeder {
 
     private static final String CSV_PATH = "resources/lmv_food/FoodDB_201702061629.csv";
     private static final String MOD_CSV_PATH = "resources/lmv_food/foodDB_modified.csv";
-    private static final String MOCK_PATH = "resources/recipes/recipes_fineli.csv";
+    private static final String MOCK_PATH = "resources/recipes/recipes.csv";
 
     private static final String GREEN = "\u001B[32m";
     private static final String YELLOW = "\u001B[33m";
