@@ -74,13 +74,11 @@ public class QuicksortFoodItem {
 
         double sum = 0d;
 
-        System.out.println(food1.toString() + foodWeCompare.toString());
-
         sum += Math.abs(food1.getNutrient(Nutrient.KJ) - foodWeCompare.getNutrient(Nutrient.KJ))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.FAT) - foodWeCompare.getNutrient(Nutrient.FAT))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.PROTEIN) - foodWeCompare.getNutrient(Nutrient.PROTEIN))*20;
-        sum += Math.abs(food1.getNutrient(Nutrient.FIBRE) - foodWeCompare.getNutrient(Nutrient.FIBRE))*20;
+        sum += Math.abs(food1.getNutrient(Nutrient.FIBRE) - foodWeCompare.getNutrient(Nutrient.FIBRE));
 
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_A) - foodWeCompare.getNutrient(Nutrient.VITAMIN_A));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_D) - foodWeCompare.getNutrient(Nutrient.VITAMIN_D));
