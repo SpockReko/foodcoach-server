@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
+import static models.recipe.Amount.Unit.GRAM;
+
 /**
  * Created by stefa on 2017-02-28.
  */
@@ -27,6 +29,7 @@ public class MenuAlgorithms {
     private List<Menu> weekMenuList = new ArrayList<>();
     private User user = new User();
     private List<FoodItem> foodItemList;
+    private List<Amount> amountList;
     private List<Ingredient> notTheeseIngredients = new ArrayList<>();
 
     public MenuAlgorithms(User user, List<Recipe> recipeList){
@@ -35,6 +38,13 @@ public class MenuAlgorithms {
     }
     public MenuAlgorithms(List<FoodItem> foodItemList, List<Recipe> recipeList){
         this.foodItemList=foodItemList;
+        this.allRecipes=recipeList;
+    }
+
+    //Listorna måste vara lika stora
+    public MenuAlgorithms(List<FoodItem> foodItemList, List<Amount> amountList, List<Recipe> recipeList){
+        this.foodItemList=foodItemList;
+        this.amountList=amountList;
         this.allRecipes=recipeList;
     }
 
@@ -82,7 +92,7 @@ public class MenuAlgorithms {
     }
 
 
-    public Menu calculateWeekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
+    public Menu weekMenuFromFoodItemList(List<Recipe> notThisRecipes)  {
         reset();
         filterRecipes(notTheeseIngredients,notThisRecipes);
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
@@ -90,6 +100,21 @@ public class MenuAlgorithms {
             int value = nbrOfFoodsUsed(menu);
             if(value > optimalValue){
                 optimalValue = value;
+                optimalMenu = menu;
+            }
+        }
+        return optimalMenu;
+    }
+
+    public Menu weekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
+        reset();
+        double optVal=100000;
+        filterRecipes(notTheeseIngredients,notThisRecipes);
+        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
+        for(Menu menu : weekMenuList){
+            double value = amountOfFoodNotUsed(menu);
+            if(value < optVal){
+                optVal = value;
                 optimalMenu = menu;
             }
         }
@@ -118,6 +143,46 @@ public class MenuAlgorithms {
         }
         return usedFood.size();
     }
+
+    private double amountOfFoodNotUsed(Menu menu){
+        List<FoodItem> foodItemsLeft=foodItemList;
+        List<Amount> amountLeft=amountList;
+        double usedFood=0;
+        for( Recipe recipe : menu.getRecipeList() ) {
+
+            //Snabbara att sätta ihop menyn till en ingredienslista?
+            //Avbryta om listor tomma?
+
+            for(int i=0; i<recipe.ingredients.size(); i++){
+                Ingredient ingredient = recipe.ingredients.get(i);
+                FoodItem food=ingredient.getFoodItem();
+                Amount amount=ingredient.getAmount();
+
+                //Hur gör man med enheter??
+
+                System.out.println("nbr of foods: "+foodItemsLeft.size()+" nbr of amounts: "+amountLeft.size());
+                    int index = foodItemsLeft.indexOf(food);
+                    if(index!=-1){
+                        double a=amountLeft.get(index).getAmount()-amount.getAmount();
+                        if(a>0){
+                            amountLeft.set(index,new Amount(amountLeft.get(index).getAmount()-amount.getAmount(), GRAM));
+                        }
+                        else{
+                            foodItemsLeft.remove(index);
+                            amountLeft.remove(index);
+                        }
+                    }
+            }
+        }
+        double sum=0;
+        for(int i=0; i<amountLeft.size(); i++){
+            sum=sum+amountLeft.get(i).getAmount();
+        }
+        return sum;
+    }
+
+
+
 
     public String recipeListToString(Menu menu){
         String text = "";
@@ -166,7 +231,7 @@ public class MenuAlgorithms {
             }
             if( foods != null){
                 for (FoodItem fi: foods) {
-                    ingredientList.add(new Ingredient(fi,new Amount(100.0, Amount.Unit.GRAM)));
+                    ingredientList.add(new Ingredient(fi,new Amount(100.0, GRAM)));
                 }
             }
         }
