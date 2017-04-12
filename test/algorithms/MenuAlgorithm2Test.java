@@ -65,7 +65,7 @@ public class MenuAlgorithm2Test {
         //System.out.println(shoppingList.toString(shoppingList));
 
         ShoppingList shoppingList=new ShoppingList(menu);
-        System.out.println("before "+shoppingList.toString(shoppingList));
+        System.out.println("before "+shoppingList.size());
         for(int i=0; i<foods.size(); i++){
             shoppingList.removeAmountToIngredient(new Ingredient(foods.get(i), amountList.get(i)), amountList.get(i).getAmount());
         }

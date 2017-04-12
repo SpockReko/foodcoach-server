@@ -22,12 +22,15 @@ public class ShoppingList {
         for(Recipe recipe: recipes){
             ingredients.addAll(recipe.getIngredients());
         }
-        new ShoppingList(ingredients, false);
+        addList(ingredients, false);
     }
 
     public ShoppingList(List<Ingredient> list, Boolean check){
+        addList(list, check);
+    }
+
+    private void addList(List<Ingredient> list, Boolean check) {
         ingredients=list;
-        System.out.println("ingredients: "+ingredients.size());
         for (Ingredient ingredient: list ) {
             if(map.containsKey(ingredient)){
                 totalWaste -= ingredient.getWaste();
@@ -39,7 +42,7 @@ public class ShoppingList {
             }
             totalWaste += ingredient.getWaste();
         }
-        System.out.println(map.entrySet().size());
+        System.out.println("map: " + map.entrySet().size());
     }
 /*
     public ShoppingList(Menu menu, List<FoodItem> foodItemList, List<Amount> amountList, Boolean check){

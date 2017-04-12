@@ -60,6 +60,8 @@ public class MenuAlgorithms {
     }
 
 
+    // Building Menus with recursion!
+
     public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
         if (currentList.size() == nrOfRecipes){
             weekMenuList.add(new Menu(currentList));
@@ -112,7 +114,7 @@ public class MenuAlgorithms {
         filterRecipes(notTheeseIngredients,notThisRecipes);
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
         for(Menu menu : weekMenuList){
-            double value = amountOfFoodNotUsed(menu);
+            double value = amountOfFoodNotUsed(menu); //The idea was to use menu.size() method
             if(value < optVal){
                 optVal = value;
                 optimalMenu = menu;
