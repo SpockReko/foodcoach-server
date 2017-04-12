@@ -32,7 +32,7 @@ public class QuicksortTest {
     @BeforeClass
     public static void init(){
         food1 = GlobalDummyModels.getFoodDummyCarrot();
-        food1 = GlobalDummyModels.getFoodDummyParsnip();
+        food2 = GlobalDummyModels.getFoodDummyParsnip();
         food3 = GlobalDummyModels.getFoodDummyChicken();
         food4 = GlobalDummyModels.getFoodDummySteak();
         food5 = GlobalDummyModels.getFoodDummyRedLenses();
@@ -70,7 +70,7 @@ public class QuicksortTest {
     }
 
     @Test
-    public void testOrderOfTheList(){
+    public void testOrderOfOrginalTheList(){
         Food f0 = sortedFoodList.get(0);
         Food f1 = sortedFoodList.get(1);
         Food f2 = sortedFoodList.get(2);
