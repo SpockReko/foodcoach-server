@@ -1,10 +1,7 @@
 package algorithms;
 
 import models.food.FoodItem;
-import models.recipe.Amount;
-import models.recipe.Ingredient;
-import models.recipe.Menu;
-import models.recipe.Recipe;
+import models.recipe.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +57,11 @@ public class MenuAlgorithm2Test {
         algorithm.setNrOfRecipes(3);
         //System.out.println(algorithm.calculateWeekMenuFromIngredientList(new ArrayList<Recipe>()).getRecipeList().size());
         Menu menu = algorithm.weekMenuFromIngredientList(new ArrayList<Recipe>());
+        System.out.println("test "+foods.size());
+
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
+
+        ShoppingList shoppingList=new ShoppingList(menu, foods, amountList, true);
+        System.out.println(shoppingList.toString(shoppingList));
     }
 }

@@ -1,8 +1,11 @@
 package models.recipe;
 
+import models.food.FoodItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+
+import static models.recipe.Amount.Unit.GRAM;
 
 /**
  * Created by stefa on 2017-03-31.
@@ -32,6 +35,29 @@ public class ShoppingList {
                 this.map.put(ingredient, check);
             }
             totalWaste += ingredient.getWaste();
+        }
+    }
+
+    public ShoppingList(Menu menu, List<FoodItem> foodItemList, List<Amount> amountList, Boolean check){
+        //System.out.println(foodItemList.size());
+        List<Recipe> recipes=menu.getRecipeList();
+        List<Ingredient> ingredients= new ArrayList<>();
+        for(Recipe recipe: recipes){
+            ingredients.addAll(recipe.getIngredients());
+        }
+        for (Ingredient ingredient: ingredients ) {
+            if(map.containsKey(ingredient)){
+                totalWaste -= ingredient.getWaste();
+                putTogetherIngredients(check, ingredient);
+            }else {
+                this.map.put(ingredient, check);
+            }
+            totalWaste += ingredient.getWaste();
+        }
+        for(int i=0; i<foodItemList.size(); i++){
+            //System.out.println(foodItemList.get(i).getName()+" "+amountList.get(i).getAmount());
+            removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)), amountList.get(i).getAmount());
+
         }
     }
 
