@@ -89,7 +89,7 @@ public class MenuAlgorithms {
                 "\nnrOfRecipe: " + nrOfRecipes +
                 "\nallRecipes size: " + allRecipes.size() +
                 "\nweekMenuList size: " + weekMenuList.size() +
-                "\nUser: " + user.firstName);
+                "\nUser: " );
         System.out.println("*********************************************************start");
 
         System.out.println("#IngredientList in weekmenu at row 88 has size: " + ingredientList.size());

@@ -8,6 +8,8 @@ import java.util.*;
 
 import static models.user.User.Sex.FEMALE;
 import static models.user.User.Sex.MALE;
+
+import helpers.Constants;
 import models.food.fineli.Nutrient;
 
 
@@ -65,6 +67,7 @@ public class User extends Model {
     public User() {
 
         hmap.put(models.food.fineli.Nutrient.KCAL, 2000D);
+        hmap.put(models.food.fineli.Nutrient.KJ, 2000D* Constants.KCAL_FACTOR);
         hmap.put(Nutrient.PROTEIN, 0.15*hmap.get(Nutrient.KCAL)/4);
         hmap.put(Nutrient.CARBOHYDRATES, 0.55*hmap.get(Nutrient.KCAL)/4);
         hmap.put(Nutrient.FAT, 0.30*hmap.get(Nutrient.KCAL)/9);
@@ -132,32 +135,23 @@ public class User extends Model {
 
         if (sex == FEMALE) {
             dc = (activityLevel * (655.0955 + (9.5634 * weight) + (1.8496 * height) - (4.6756 * age)) + goal.getGoal());
-
-            double proteinNeed = 0.15 * dc / 4;
-            double fatNeed = 0.3 * dc / 9;
-            double carbohydratesNeed = 0.55 * dc / 9;
-
-            hmap.put(Nutrient.KCAL, dc);
-            hmap.put(Nutrient.PROTEIN, proteinNeed);
-            hmap.put(Nutrient.CARBOHYDRATES, carbohydratesNeed);
-            hmap.put(Nutrient.FAT, fatNeed);
-            hmap.put(Nutrient.FIBRE, 30D);
-        }
-
-        if (sex == MALE) {
+        }else{
             dc = (activityLevel * (66.5 + (13.7516 * weight) + (5.0033 * height) - (6.7550 * age)) + goal.getGoal());
-
-            double proteinNeed = 0.15 * dc / 4;
-            double fatNeed = 0.3 * dc / 9;
-            double carbohydratesNeed = 0.55 * dc / 9;
-
-            hmap.put(Nutrient.KCAL, dc);
-            hmap.put(Nutrient.PROTEIN, proteinNeed);
-            hmap.put(Nutrient.CARBOHYDRATES, carbohydratesNeed);
-            hmap.put(Nutrient.FAT, fatNeed);
-            hmap.put(Nutrient.FIBRE, 30D);
         }
+
+        double proteinNeed = 0.15 * dc / 4;
+        double fatNeed = 0.3 * dc / 9;
+        double carbohydratesNeed = 0.55 * dc / 9;
+
+        hmap.put(Nutrient.KCAL, dc);
+        hmap.put(Nutrient.KJ, dc*Constants.KCAL_FACTOR);
+        hmap.put(Nutrient.PROTEIN, proteinNeed);
+        hmap.put(Nutrient.CARBOHYDRATES, carbohydratesNeed);
+        hmap.put(Nutrient.FAT, fatNeed);
+        hmap.put(Nutrient.FIBRE, 30D);
+
         getRDI();
+    
     }
 
     private void getRDI() {

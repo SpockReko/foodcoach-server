@@ -30,9 +30,7 @@ public class MenuAlgorithmsTest {
     public static void init() {
 
         User user = new User();
-        user.firstName = "User";
         User stefan = new User(1);
-        stefan.firstName = "Stefan";
 
         userRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(user);
         Recipe stefanRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(stefan);
