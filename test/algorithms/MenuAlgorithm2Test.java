@@ -12,7 +12,9 @@ import static models.recipe.Amount.Unit.GRAM;
  * Created by macbookl on 11/04/17.
  */
 public class MenuAlgorithm2Test {
+
     public static void main(String[] args){
+
         FoodItem food1=new FoodItem("food1", 1);
         FoodItem food2=new FoodItem("food2", 2);
         FoodItem food3=new FoodItem("food3", 3);
@@ -65,11 +67,14 @@ public class MenuAlgorithm2Test {
         //System.out.println(shoppingList.toString(shoppingList));
 
         ShoppingList shoppingList=new ShoppingList(menu);
-        System.out.println("before "+shoppingList.size());
+
+        System.out.println("before " + shoppingList.size());
+
         for(int i=0; i<foods.size(); i++){
             shoppingList.removeAmountToIngredient(new Ingredient(foods.get(i), amountList.get(i)), amountList.get(i).getAmount());
         }
-        System.out.println(shoppingList.toString(shoppingList));
+
+        System.out.println("after " + shoppingList.toString());
 
     }
 }
