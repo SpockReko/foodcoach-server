@@ -27,7 +27,7 @@ public class GlobalDummyModels {
         Amount amount = new Amount(100, Amount.Unit.GRAM);
 
         Food perfectFood = new Food(
-            "perfectFoodFor",
+            "perfectFoodFor"+user.firstName,
             9999,
             user.hmap.get(Nutrient.KJ) * convertToOnePortion,
             user.hmap.get(Nutrient.CARBOHYDRATES) * convertToOnePortion,
@@ -62,7 +62,7 @@ public class GlobalDummyModels {
         Ingredient perfectIngredient = new Ingredient(perfectFood, amount);
         ingredients.add(perfectIngredient);
 
-        return new Recipe("Recipe", 1, ingredients);
+        return new Recipe("Recipe"+user.firstName, 1, ingredients);
     }
 
 

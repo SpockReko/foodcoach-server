@@ -66,6 +66,7 @@ public class User extends Model {
 
     public User() {
 
+        firstName = "user";
         hmap.put(models.food.fineli.Nutrient.KCAL, 2000D);
         hmap.put(models.food.fineli.Nutrient.KJ, 2000D* Constants.KCAL_FACTOR);
         hmap.put(Nutrient.PROTEIN, 0.15*hmap.get(Nutrient.KCAL)/4);
@@ -96,6 +97,7 @@ public class User extends Model {
     }
 
     public User(int dummyNr){
+        firstName = "Stefan";
         if(dummyNr==1) {
         this.sex = Sex.MALE;
         this.activityLevel = 1.2;
@@ -151,7 +153,7 @@ public class User extends Model {
         hmap.put(Nutrient.FIBRE, 30D);
 
         getRDI();
-    
+
     }
 
     private void getRDI() {

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class MenuAlgorithms {
 
-    boolean noPrint = false;
+    boolean noPrint = true;
 
     public void setNoPrint(boolean noPrint) {
         this.noPrint = noPrint;
@@ -71,7 +71,7 @@ public class MenuAlgorithms {
         optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
         for(Menu menu : weekMenuList){
             double value = nutritionValueCalculation(menu);
-            System.out.println("Nutrients for " + menu.recipeListToString(menu) + "\n... has the value: " + value);
+            nutrientPrint(menu, value);
             if(value <= optimalMenuNutrition){
                 optimalMenuNutrition = value;
                 optimalMenu = menu;
@@ -80,13 +80,13 @@ public class MenuAlgorithms {
         return optimalMenu;
     }
 
-
     public Double nutritionValueCalculation(Menu chosenMenu){
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
         HashMap<Nutrient,Double> nutrientsContent = NutritionAlgorithms.nutrientsContent(chosenMenu);
         return NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
     }
+
 
     private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList){
                                                                     // help testPrint methods!
@@ -140,9 +140,17 @@ public class MenuAlgorithms {
         this.nrOfRecipes = nrOfRecipes;
     }
 
+
     ///////////////////////////////////////////////////////////////////////
     //////// Test print help functions! ///////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+
+
+    private void nutrientPrint(Menu menu, double value) {
+        if (!noPrint) {
+            System.out.println("Nutrients for " + menu.recipeListToString(menu) + "\n... has the value: " + value);
+        }
+    }
 
     private void testEnd() {
         if(!noPrint)
