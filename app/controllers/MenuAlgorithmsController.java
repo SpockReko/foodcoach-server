@@ -74,7 +74,7 @@ public class MenuAlgorithmsController extends Controller {
         Menu resultingWeekMenu = menuAlgorithmsInstant.calculateWeekMenu(removeRecipeList);
 
         if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingWeekMenu.recipeListToString(resultingWeekMenu));
+            return ok(resultingWeekMenu.recipeListToString());
         return ok("nothing found!");
 
     }

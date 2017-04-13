@@ -69,10 +69,10 @@ public class MenuAlgorithms {
         if (currentList.size() == nrOfRecipes){
             Menu menu = new Menu(currentList);
             double value = optimize.apply(menu);
-            int optimizeMenuIndex = getOptimalMenuIndex(optimize);
-            Menu optimizeMenu = menus[optimizeMenuIndex] == null ? menu : menus[optimizeMenuIndex];
-            if(value <= optimize.apply(optimizeMenu)) {
-
+            //int optimizeMenuIndex = getOptimalMenuIndex(optimize);
+            //Menu optimizeMenu = menus[optimizeMenuIndex] == null ? menu : menus[optimizeMenuIndex];
+            //if(value <= optimize.apply(optimizeMenu)) {
+            if(value <= optimalMenuNutrition){
                 optimalMenuNutrition = value;
                 optimalMenu = menu;
             }
