@@ -1,8 +1,11 @@
 package controllers;
 
 import algorithms.MenuAlgorithms;
+import models.food.FoodItem;
+import models.recipe.Amount;
 import models.recipe.Menu;
 import models.recipe.Recipe;
+import models.recipe.ShoppingList;
 import models.user.User;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -77,6 +80,27 @@ public class MenuAlgorithmsController extends Controller {
             return ok(resultingWeekMenu.recipeListToString(resultingWeekMenu));
         return ok("nothing found!");
 
+    }
+    public Result weekmenu2(){
+        List<Recipe> removeRecipeList = new ArrayList<>();
+        int nrOfRecipes = 3;
+        List<Recipe> allRecipes = Recipe.find.all();
+        List<FoodItem> foods = new ArrayList<FoodItem>();
+        List<Amount> amounts = new ArrayList<Amount>();
+
+        foods.add(FoodItem.find.byId(120L));
+        foods.add(FoodItem.find.byId(12L));
+        amounts.add(new Amount(100, Amount.Unit.GRAM));
+        amounts.add(new Amount(150, Amount.Unit.GRAM));
+
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(foods, amounts, allRecipes);
+        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+        Menu resultingWeekMenu = menuAlgorithmsInstant.weekMenuFromIngredientList(removeRecipeList);
+        ShoppingList shoppingList=new ShoppingList(resultingWeekMenu, foods, amounts);
+
+        if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingWeekMenu.recipeListToString(resultingWeekMenu)+shoppingList.toString());
+        return ok("nothing found!");
     }
 
 

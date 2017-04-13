@@ -67,11 +67,7 @@ public class MenuAlgorithm2Test {
         //ShoppingList shoppingList=new ShoppingList(menu, foods, amountList, true);
         //System.out.println(shoppingList.toString(shoppingList));
 
-        ShoppingList shoppingList=new ShoppingList(menu);
-
-        for(int i=0; i<foods.size(); i++){
-            shoppingList.removeAmountToIngredient(new Ingredient(foods.get(i), amountList.get(i)), amountList.get(i).getAmount());
-        }
+        ShoppingList shoppingList=new ShoppingList(menu, foods, amountList);
 
         System.out.println(shoppingList.toString());
 

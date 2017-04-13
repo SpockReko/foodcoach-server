@@ -36,6 +36,17 @@ public class ShoppingList {
         addList(list, check);
     }
 
+    public ShoppingList(Menu menu, List<FoodItem> food, List<Amount> amount){
+        List<Recipe> recipes = menu.getRecipeList();
+        List<Ingredient> ingredients = new ArrayList<>();
+        leftovers=new ArrayList<Ingredient>();
+        for (Recipe recipe : recipes) {
+            ingredients.addAll(recipe.getIngredients());
+        }
+        addList(ingredients, false);
+        removeAmountOfIngredients(food, amount);
+    }
+
     private void addList(List<Ingredient> list, Boolean check) {
         ingredients = list;
         for (Ingredient ingredient : list) {
@@ -80,8 +91,11 @@ public class ShoppingList {
         map.put(newIngredient, check);
     }
 
-
-
+    public void removeAmountOfIngredients(List<FoodItem> foods, List<Amount> amount){
+        for(int i=0; i<foods.size(); i++){
+            removeAmountToIngredient(new Ingredient(foods.get(i), amount.get(i)), amount.get(i).getAmount());
+        }
+    }
 
     // remover amount from ingredients
     public void removeAmountToIngredient(Ingredient ingredient, double amount) {

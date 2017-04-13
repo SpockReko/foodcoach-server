@@ -28,7 +28,7 @@ public class Menu {
     }
 
     public String recipeListToString(Menu menu){
-        String text = "";
+        String text = "Menu:\n";
         for(Recipe r : menu.getRecipeList()){
             text = text + r.getTitle() + "\n";
         }
