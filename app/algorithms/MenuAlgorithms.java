@@ -1,10 +1,7 @@
 package algorithms;
 
 import models.food.FoodItem;
-import models.recipe.Amount;
-import models.recipe.Ingredient;
-import models.recipe.Menu;
-import models.recipe.Recipe;
+import models.recipe.*;
 import models.user.Nutrient;
 import models.user.User;
 
@@ -114,7 +111,7 @@ public class MenuAlgorithms {
         filterRecipes(notTheeseIngredients,notThisRecipes);
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
         for(Menu menu : weekMenuList){
-            double value = amountOfFoodNotUsed(menu); //The idea was to use menu.size() method
+            double value = lengthOfShoppingList(menu); //The idea was to use menu.size() method
             if(value < optVal){
                 optVal = value;
                 optimalMenu = menu;
@@ -146,44 +143,15 @@ public class MenuAlgorithms {
         return usedFood.size();
     }
 
-    private double amountOfFoodNotUsed(Menu menu){
-        List<FoodItem> foodItemsLeft=foodItemList;
-        List<Amount> amountLeft=amountList;
-        double usedFood=0;
-        for( Recipe recipe : menu.getRecipeList() ) {
+    private int lengthOfShoppingList(Menu menu){
+        ShoppingList shoppingList=new ShoppingList(menu);
 
-            //Snabbara att sätta ihop menyn till en ingredienslista?
-            //Avbryta om listor tomma?
-
-            for(int i=0; i<recipe.ingredients.size(); i++){
-                Ingredient ingredient = recipe.ingredients.get(i);
-                FoodItem food=ingredient.getFoodItem();
-                Amount amount=ingredient.getAmount();
-
-                //Hur gör man med enheter??
-
-                    int index = foodItemsLeft.indexOf(food);
-                    if(index!=-1){
-                        double a=amountLeft.get(index).getAmount()-amount.getAmount();
-                        if(a>0){
-                            amountLeft.set(index,new Amount(amountLeft.get(index).getAmount()-amount.getAmount(), GRAM));
-                        }
-                        else{
-                            foodItemsLeft.remove(index);
-                            amountLeft.remove(index);
-                        }
-                    }
-            }
+        for(int i=0; i<foodItemList.size(); i++){
+            shoppingList.removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
+                    amountList.get(i).getAmount());
         }
-        double sum=0;
-        for(int i=0; i<amountLeft.size(); i++){
-            sum=sum+amountLeft.get(i).getAmount();
-        }
-        return sum;
+        return shoppingList.size();
     }
-
-
-
 
     public String recipeListToString(Menu menu){
         String text = "";
