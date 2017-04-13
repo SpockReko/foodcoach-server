@@ -40,7 +40,7 @@ public class MenuAlgorithm2Test {
         Recipe rec5=new Recipe("rec5", 1, iList5);
 
         List<Recipe> recList =new ArrayList<Recipe>();
-        recList.add(rec5);
+        //recList.add(rec5);
         recList.add(rec2);
         recList.add(rec3);
         recList.add(rec4);
@@ -49,9 +49,10 @@ public class MenuAlgorithm2Test {
         //foods.add(food2);
         foods.add(food3);
         foods.add(food4);
+        foods.add(food5);
 
         List<Amount> amountList=new ArrayList<>();
-        //amountList.add(new Amount(100, GRAM));
+        amountList.add(new Amount(200, GRAM));
         amountList.add(new Amount(100, GRAM));
         amountList.add(new Amount(100, GRAM));
 
@@ -73,6 +74,12 @@ public class MenuAlgorithm2Test {
         }
 
         System.out.println(shoppingList.toString());
+
+        List<Ingredient> leftovers=shoppingList.getLeftovers();
+
+
+        System.out.println(shoppingList.leftoversToString());
+
 
     }
 }

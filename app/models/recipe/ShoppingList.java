@@ -15,6 +15,8 @@ public class ShoppingList {
     private Map<Ingredient, Boolean> map = new HashMap<>();
     private Double totalWaste = 0.0;
     private static List<Ingredient> ingredients;
+    private List<Ingredient> leftovers;
+
 
     public ShoppingList() {
     }
@@ -23,6 +25,7 @@ public class ShoppingList {
     public ShoppingList(Menu menu) {
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
+        leftovers=new ArrayList<Ingredient>();
         for (Recipe recipe : recipes) {
             ingredients.addAll(recipe.getIngredients());
         }
@@ -78,24 +81,35 @@ public class ShoppingList {
     }
 
 
+
+
     // remover amount from ingredients
     public void removeAmountToIngredient(Ingredient ingredient, double amount) {
         String name = ingredient.getFoodItem().getName();
         Ingredient[] ingredients = new Ingredient[map.size()];
         ingredients = map.keySet().toArray(ingredients);
+        boolean inList=false;
         for (Ingredient i : ingredients) {
             if (i.getFoodItem().getName().equals(name)) {
                 if (!map.remove(i)) {
+                    inList=true;
                     if (i.getAmount().getAmount() > amount) {
                         double newValue = i.getAmount().getAmount() - amount;
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
                         Ingredient newIngredient = new Ingredient(i.getFoodItem(), newAmount);
                         map.put(newIngredient, false);
-                    } else {
+                    } else if (i.getAmount().getAmount() < amount) {
+                        double newValue =amount - i.getAmount().getAmount();
+                        Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
+                        Ingredient newIngredient = new Ingredient(i.getFoodItem(), newAmount);
+                        leftovers.add(newIngredient);
                     }
 
                 }
             }
+        }
+        if(!inList){
+            leftovers.add(ingredient);
         }
 
     }
@@ -140,6 +154,10 @@ public class ShoppingList {
         return totalWaste;
     }
 
+    public List<Ingredient> getLeftovers(){
+        return leftovers;
+    }
+
 
     // check or uncheck a value.
     public boolean changeAndGetCheck(Ingredient ingredient) {
@@ -170,4 +188,20 @@ public class ShoppingList {
             return text + "\n";
         }
     }
+
+    public String leftoversToString(){
+        if(leftovers.size()==0){
+            return "No leftovers!\n";
+        }
+        else {
+            String text = "Leftovers:\n";
+            for(Ingredient ingredient:leftovers){
+                String unit=ingredient.getAmount().getUnit().toString();
+                text+=ingredient.getAmount().getAmount()+" "+unit+" "+ingredient.getFoodItem().getName()+"\n";
+            }
+            return text + "\n";
+        }
+    }
+
+
 }
