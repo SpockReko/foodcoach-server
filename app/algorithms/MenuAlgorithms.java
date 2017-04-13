@@ -19,6 +19,7 @@ import static models.recipe.Amount.Unit.GRAM;
 public class MenuAlgorithms {
 
     private final Double LARGE_DISTANCE = 999999999.9999;
+    private final int DEFAULT_VALUE_MENUS = 3;
     private Double optimalMenuNutrition;
     private int optimalValue;
     private Menu optimalMenu = new Menu(new ArrayList<>());
@@ -34,17 +35,13 @@ public class MenuAlgorithms {
     public MenuAlgorithms(User user, List<Recipe> recipeList){
         this.user = user;
         this.allRecipes = recipeList;
-        menus = new Menu[1];
+        menus = new Menu[DEFAULT_VALUE_MENUS];
     }
 
     public MenuAlgorithms(User user, List<Recipe> recipeList, int numberOfMenus){
         this.user = user;
         this.allRecipes = recipeList;
-        menus = new Menu[numberOfMenus];  //An extenstion to have more than one menu.
-        for (Menu m: menus) {
-            m = null;
-        }
-
+        menus = new Menu[numberOfMenus];
     }
     public MenuAlgorithms(List<FoodItem> foodItemList, List<Recipe> recipeList){
         this.foodItemList=foodItemList;
@@ -86,8 +83,14 @@ public class MenuAlgorithms {
             Menu optimizeMenu = menus[optimizeMenuIndex] == null ? menu : menus[optimizeMenuIndex];
             if(value <= optimize.apply(optimizeMenu)) {
 
-                optimalMenuNutrition = value;
-                optimalMenu = menu;
+                //saves a list of menus
+                menus[optimizeMenuIndex] = menu;
+
+                // To get one the optimal menu
+                if(value <= optimalMenuNutrition) {
+                    optimalMenuNutrition = value;
+                    optimalMenu = menu;
+                }
             }
             return value;
         }else if(indexOfRecipes < 0){
@@ -98,12 +101,11 @@ public class MenuAlgorithms {
             return Math.min(returnAllWeekMenus(indexOfRecipes-1, currentList, optimize),
                     returnAllWeekMenus(indexOfRecipes-1, newList, optimize));
         }
-
     }
 
 
     /**
-     * returns the least optimized value in menus
+     * Returns the least optimized value in menus
      * @param optimize
      * @return menu;
      */
@@ -125,18 +127,17 @@ public class MenuAlgorithms {
         return returnIndex;
     }
 
-    public Menu calculateWeekMenu(List<Recipe> notThisRecipes) {
+    public Menu MenuFrom(List<Recipe> notThisRecipes) {
         reset();
         filterRecipes(notTheeseIngredients,notThisRecipes);
-        returnAllWeekMenus(
-                allRecipes.size()-1,
-                new ArrayList<>(),
-                this::nutritionValueCalculation);
+        returnAllWeekMenus(allRecipes.size()-1, new ArrayList<>(), this::nutritionValueCalculation);
         return optimalMenu;
     }
 
 
-    public Menu weekMenuFromFoodItemList(List<Recipe> notThisRecipes)  {
+
+
+/*    public Menu weekMenuFromFoodItemList(List<Recipe> notThisRecipes)  {
         reset();
         filterRecipes(notTheeseIngredients,notThisRecipes);
         returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),null);
@@ -149,8 +150,17 @@ public class MenuAlgorithms {
         }
         return optimalMenu;
     }
+  */
 
-    public Menu weekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
+
+    public Menu weekMenuFromFoodItemList(List<Recipe> notThisRecipes)  {
+        reset();
+        filterRecipes(notTheeseIngredients,notThisRecipes);
+        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),this::nbrOfFoodsUsed);
+        return optimalMenu;
+    }
+
+/*    public Menu weekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
         reset();
         double optVal=100000;
         filterRecipes(notTheeseIngredients,notThisRecipes);
@@ -163,6 +173,16 @@ public class MenuAlgorithms {
             }
         }
         return optimalMenu;
+    }*/
+
+
+
+    public Menu weekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
+        reset();
+        double optVal=100000;
+        filterRecipes(notTheeseIngredients,notThisRecipes);
+        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),this::lengthOfShoppingList);
+        return optimalMenu;
     }
 
 
@@ -173,7 +193,7 @@ public class MenuAlgorithms {
         return NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
     }
 
-    private int nbrOfFoodsUsed(Menu menu){
+    private double nbrOfFoodsUsed(Menu menu){
         List<FoodItem> foodItemsLeft=foodItemList;
         List<FoodItem> usedFood=new ArrayList<FoodItem>();
         for( Recipe recipe : menu.getRecipeList() ) {
@@ -188,14 +208,14 @@ public class MenuAlgorithms {
         return usedFood.size();
     }
 
-    private int lengthOfShoppingList(Menu menu){
+    private Double lengthOfShoppingList(Menu menu){
         ShoppingList shoppingList=new ShoppingList(menu);
 
         for(int i=0; i<foodItemList.size(); i++){
             shoppingList.removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
                     amountList.get(i).getAmount());
         }
-        return shoppingList.size();
+        return shoppingList.size()+0.0;
     }
 
     public String recipeListToString(Menu menu){
