@@ -12,6 +12,7 @@ import models.user.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.function.Function;
 
 /**
  * Created by stefa on 2017-02-28.
@@ -43,35 +44,39 @@ public class MenuAlgorithms {
         notThisIngredients.add(ingredient);
     }
 
-    public int returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList){
+    /**
+     * Recursiv method with 2 base cases and a minimization of the value.
+     * In the case we get a size that is good then we can
+     * @param indexOfRecipes
+     * @param currentList
+     * @return
+     */
+    public double returnAllWeekMenus(
+            int indexOfRecipes, List<Recipe> currentList, Function<Menu,Double> optimize){
+
         if (currentList.size() == nrOfRecipes){
-            weekMenuList.add(new Menu(currentList));
-            return 1;
+            Menu menu = new Menu(currentList);
+            double value = optimize.apply(menu);
+            if(value <= optimalMenuNutrition) {
+                optimalMenuNutrition = value;
+                optimalMenu = menu;
+            }
+            return value;
         }else if(indexOfRecipes < 0){
-            return 0;
+            return optimalMenuNutrition+1.0;
         }else{
             List<Recipe> newList = new ArrayList<>(currentList);
             currentList.add(allRecipes.get(indexOfRecipes));
-            return returnAllWeekMenus(indexOfRecipes-1, currentList) +
-                    returnAllWeekMenus(indexOfRecipes-1, newList);
+            return Math.min(returnAllWeekMenus(indexOfRecipes-1, currentList, optimize),
+                    returnAllWeekMenus(indexOfRecipes-1, newList, optimize));
         }
 
     }
 
-
     public Menu calculateWeekMenu(List<Recipe> notThisRecipes) {
         reset();
         filterRecipes(notThisIngredients,notThisRecipes);
-        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>());
-        optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
-        for(Menu menu : weekMenuList){
-            double value = nutritionValueCalculation(menu);
-            System.out.println("Nutrients for " + menu.recipeListToString(menu) + "\n... has the value: " + value);
-            if(value <= optimalMenuNutrition){
-                optimalMenuNutrition = value;
-                optimalMenu = menu;
-            }
-        }
+        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),this::nutritionValueCalculation);
         return optimalMenu;
     }
 
