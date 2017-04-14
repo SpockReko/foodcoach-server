@@ -20,8 +20,6 @@ public class MenuAlgorithm2Test {
 
     public static void main(String[] args) {
         build();
-        test2();
-
     }
 
     private static void build(){
@@ -87,13 +85,5 @@ public class MenuAlgorithm2Test {
         List<Ingredient> leftovers=shoppingList.getLeftovers();
 
         System.out.println(shoppingList.leftoversToString());
-    }
-
-    private static void test2() {
-        MenuAlgorithms algorithm=new MenuAlgorithms(new User(), recList);
-        algorithm.setNrOfRecipes(3);
-        Menu menu = algorithm.MenuFromNutrients(new ArrayList<Recipe>());
-        System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
-
     }
 }

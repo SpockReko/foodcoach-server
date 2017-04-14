@@ -68,7 +68,7 @@ public class MenuAlgorithms {
         this.menus = new Menu[numberOfMenus];
     }
 
-    //Listorna måste vara lika stora //TODO: Varför behöver dem vara lika stora?
+    //(ändrat) foodItemList och amountList måste vara lika stora //TODO: Varför behöver dem vara lika stora?
     public MenuAlgorithms(List<FoodItem> foodItemList, List<Amount> amountList, List<Recipe> recipeList){
         this.foodItemList=new ArrayList<>(foodItemList);
         this.amountList=new ArrayList<>(amountList);
