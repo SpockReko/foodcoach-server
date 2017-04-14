@@ -9,6 +9,7 @@ GET     /                                   controllers.ApplicationController.in
 GET     /food/:id                           controllers.FoodController.get(id: Int)
 GET     /food/name/:name                    controllers.FoodController.getByName(name: String)
 GET     /food/group/:code                   controllers.FoodController.getByGroup(code: String)
+GET     /food/sort/:id                      controllers.FoodController.sortById(id: Int)
 
 # Recipe items
 GET     /recipes                            controllers.RecipeController.getAll

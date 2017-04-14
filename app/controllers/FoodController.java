@@ -1,5 +1,6 @@
 package controllers;
 
+import algorithms.QuicksortFoodItem;
 import models.food.FoodGroup;
 import models.food.FoodItem;
 import play.libs.Json;
@@ -48,5 +49,26 @@ public class FoodController extends Controller {
             return badRequest("No food group with code '" + code + "' in table FoodGroups");
         }
         return ok(Json.toJson(groups));
+    }
+
+    // GET /food/sort/:id
+    public Result sortById(int id){
+        FoodItem food;
+        List<FoodItem> allFoodItems;
+        try {
+            food = FoodItem.find.where().eq("lmv_food_number", id).findUnique();
+            allFoodItems = FoodItem.find.all();
+        } catch (PersistenceException e) {
+            return badRequest("No food with food number '" + id + "' in table FoodItems");
+        }
+
+        List<FoodItem> sortedFood = QuicksortFoodItem.sort(allFoodItems, food);
+        // To get a good outprint on the webpage!
+        String foodlist = food.getLmvFoodNumber() + " " + food.getName() + "\n\n";
+        for (FoodItem f: sortedFood) {
+            foodlist = foodlist + f.getLmvFoodNumber() + " " +f.getName() +
+                    " with diff: " + QuicksortFoodItem.diff(f,food) + "\n";
+        }
+        return ok(foodlist, "UTF-8");
     }
 }
