@@ -2,6 +2,7 @@ package algorithms;
 
 import models.food.FoodItem;
 import models.recipe.*;
+import models.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +13,18 @@ import static models.recipe.Amount.Unit.GRAM;
  * Created by macbookl on 11/04/17.
  */
 public class MenuAlgorithm2Test {
+    private static List<Recipe> recList;
+    private static List<FoodItem> foods;
+    private static List<Amount> amountList;
 
-    public static void main(String[] args){
 
+    public static void main(String[] args) {
+        build();
+        test2();
+
+    }
+
+    private static void build(){
         FoodItem food1=new FoodItem("food1", 1);
         FoodItem food2=new FoodItem("food2", 2);
         FoodItem food3=new FoodItem("food3", 3);
@@ -39,23 +49,26 @@ public class MenuAlgorithm2Test {
         Recipe rec4=new Recipe("rec4", 1, iList4);
         Recipe rec5=new Recipe("rec5", 1, iList5);
 
-        List<Recipe> recList =new ArrayList<Recipe>();
+        recList =new ArrayList<Recipe>();
         //recList.add(rec5);
         recList.add(rec2);
         recList.add(rec3);
         recList.add(rec4);
 
-        List<FoodItem> foods=new ArrayList<FoodItem>();
+        foods=new ArrayList<FoodItem>();
         //foods.add(food2);
         foods.add(food3);
         foods.add(food4);
         foods.add(food5);
 
-        List<Amount> amountList=new ArrayList<>();
+        amountList=new ArrayList<>();
         amountList.add(new Amount(200, GRAM));
         amountList.add(new Amount(100, GRAM));
         amountList.add(new Amount(100, GRAM));
+    }
 
+
+    private static void test1() {
         MenuAlgorithms algorithm=new MenuAlgorithms(foods, amountList, recList);
         algorithm.setNrOfRecipes(3);
         //System.out.println(algorithm.calculateWeekMenuFromIngredientList(new ArrayList<Recipe>()).getRecipeList().size());
@@ -73,9 +86,14 @@ public class MenuAlgorithm2Test {
 
         List<Ingredient> leftovers=shoppingList.getLeftovers();
 
-
         System.out.println(shoppingList.leftoversToString());
+    }
 
+    private static void test2() {
+        MenuAlgorithms algorithm=new MenuAlgorithms(new User(), recList);
+        algorithm.setNrOfRecipes(3);
+        Menu menu = algorithm.MenuFromNutrients(new ArrayList<Recipe>());
+        System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
 
     }
 }

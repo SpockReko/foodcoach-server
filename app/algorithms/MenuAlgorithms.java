@@ -209,10 +209,10 @@ public class MenuAlgorithms {
 
 
     /**
-     * TODO: Explain this method!
+     * Calculates a week menu using user specified ingredients.
      *
      * @param notThisRecipes
-     * @return
+     * @return the menu that generates the shortest shopping list.
      */
     public Menu weekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
         reset();
