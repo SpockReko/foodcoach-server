@@ -1,9 +1,14 @@
 package controllers;
 
 import algorithms.MenuAlgorithms;
+import com.fasterxml.jackson.databind.JsonNode;
+import models.food.FoodItem;
+import models.recipe.Amount;
 import models.recipe.Menu;
 import models.recipe.Recipe;
+import models.recipe.ShoppingList;
 import models.user.User;
+import play.api.libs.json.Json;
 import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -31,8 +36,7 @@ public class MenuAlgorithmsController extends Controller {
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
 
-        if (requestData.get("sex") != null) {  // If there exist input from client.
-
+        if (requestData.data().size() != 0) {  // If there exist input from client.
 
             //Change the format to suit user constructor variables.
             Integer age =
@@ -48,35 +52,65 @@ public class MenuAlgorithmsController extends Controller {
                 goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
             String allergy = requestData.get("allergy");// sträng
             ArrayList<String> allergyList = new ArrayList<>();
-            for (String n : allergy.split(" ")) {
-                allergyList.add(n);
-            }
+            //for (String n : allergy.split(" ")) {
+            //    allergyList.add(n);
+            //}
 
             user = new User(sexEnum, activityLevel, weight, length, age, goalEnum, allergyList);
             nrOfRecipes = Integer.parseInt(requestData.get("nrOfRecipe"));
-            String recipe = requestData.get("removeRecipe");
+            //String recipe = requestData.get("removeRecipe");
 
-            for (String n : recipe.split(" ")) {
-                removeRecipeList.add(Recipe.find.where().contains("title", n).findUnique());
-            }
+            //for (String n : recipe.split(" ")) {
+            //    removeRecipeList.add(Recipe.find.where().contains("title", n).findUnique());
+            //}
+            List<Recipe> allRecipes = Recipe.find.all();
+            MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(user, allRecipes);
+            menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+
+            Menu resultingWeekMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
+
+            return ok((JsonNode) Json.parse(resultingWeekMenu.recipeListToString()));
+
         } else { // If we run it from the "Server"
 
             user = new User();
             nrOfRecipes = 3;
 
+            List<Recipe> allRecipes = Recipe.find.all();
+            MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(user, allRecipes);
+            menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+
+            Menu resultingWeekMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
+
+            if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+                return ok(resultingWeekMenu.recipeListToString());
+            return ok("nothing found!");
+
         }
 
 
-        List<Recipe> allRecipes = Recipe.find.all();
-        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(user, allRecipes);
-        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-        Menu resultingWeekMenu = menuAlgorithmsInstant.calculateWeekMenu(removeRecipeList);
+    }
+    public Result weekmenu2(){
+        List<Recipe> removeRecipeList = new ArrayList<>();
+        int nrOfRecipes = 3;
+        List<Recipe> allRecipes = Recipe.find.all();
+        List<FoodItem> foods = new ArrayList<FoodItem>();
+        List<Amount> amounts = new ArrayList<Amount>();
+
+        foods.add(FoodItem.find.byId(120L));
+        foods.add(FoodItem.find.byId(12L));
+        amounts.add(new Amount(100, Amount.Unit.GRAM));
+        amounts.add(new Amount(150, Amount.Unit.GRAM));
+
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(foods, amounts, allRecipes);
+        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+        Menu resultingWeekMenu = menuAlgorithmsInstant.weekMenuFromIngredientList(removeRecipeList);
+        ShoppingList shoppingList=new ShoppingList(resultingWeekMenu, foods, amounts);
 
         if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingWeekMenu.recipeListToString());
         return ok("nothing found!");
-
     }
 
 

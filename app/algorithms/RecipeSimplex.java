@@ -4,7 +4,6 @@ import models.user.Nutrient;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 import models.recipe.Ingredient;
-
 import java.util.*;
 
 /**

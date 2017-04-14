@@ -63,7 +63,7 @@ public class GlobalDummyModels {
                         0F, 0F, 0F, 0F, sugars, fats, vitamins, minerals), amount);
         ingredients.add(perfectIngredient);
 
-        return new Recipe(user.firstName + "Recipe", 1, ingredients);
+        return new Recipe("Recipe", 1, ingredients);
     }
 
     public static List<FoodItem> getFoodItemDummy() {

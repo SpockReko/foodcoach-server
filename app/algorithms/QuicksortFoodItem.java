@@ -13,7 +13,7 @@ import java.util.List;
 
 public class QuicksortFoodItem {
     private static List<FoodItem> foodItems;
-    private static int number;
+    private static int number ;
     private static FoodItem foodItemWeCompare;
 
     public static List<FoodItem> sort(List<FoodItem> values, FoodItem food) {

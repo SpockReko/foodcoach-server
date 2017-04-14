@@ -30,9 +30,7 @@ public class MenuAlgorithmsTest {
     public static void init() {
 
         User user = new User();
-        user.firstName = "User";
         User stefan = new User(1);
-        stefan.firstName = "Stefan";
 
         userRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(user);
         Recipe stefanRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(stefan);
@@ -43,7 +41,7 @@ public class MenuAlgorithmsTest {
 
         MenuAlgorithms menuAlgorithms = new MenuAlgorithms(user,recipes);
         menuAlgorithms.setNrOfRecipes(1);
-        resultingMenu = menuAlgorithms.calculateWeekMenu(new ArrayList<>());
+        resultingMenu = menuAlgorithms.MenuFromNutrients(new ArrayList<>());
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -52,11 +50,11 @@ public class MenuAlgorithmsTest {
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         menuAlgorithms.addAllergies(usersPerfectIngrediense);
-        resultingMenuFilterIngrediense = menuAlgorithms.calculateWeekMenu(new ArrayList<>());
+        resultingMenuFilterIngrediense = menuAlgorithms.MenuFromNutrients(new ArrayList<>());
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
-        resultingMenuFilterRecipe = menuAlgorithms.calculateWeekMenu(filterList);
+        resultingMenuFilterRecipe = menuAlgorithms.MenuFromNutrients(filterList);
 
     }
 
