@@ -29,7 +29,7 @@ public class NutritionAlgorithms {
                                         nutrient,
                                         nutrientsContent.get(nutrient),
                                         nutrientsNeed.get(nutrient),
-                                        overdoseValues.get(nutrient));
+                                        overdoseValues.get(nutrient), menu);
                 sum += L2NormTerm(percentageOfRDI);
                 addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
             }
@@ -40,16 +40,19 @@ public class NutritionAlgorithms {
     /*
     If RDI of the nutrient is fulfilled, percentage is set to optimal value (100%). Also informs if the nutrient is overdosed.
      */
-    public static Double filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose) {
+    public static Double filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose, Menu menu) {
         Double percentageNutrient = nutrientContent/nutrientNeed;
 
         if( percentageNutrient > 1D && nutrientContent < overdose ) {
             percentageNutrient = 1D;
         } else if (nutrientContent > overdose ){
             // TODO lägga till meddelande om att det är för mycket av näringsämnet
+            menu.addComment("Overdose on " + nutrient + ", contains " + percentageNutrient);
+            System.out.print(menu.recipeListToString());
             System.out.print("\nOBS!!! Överdosering av ");
             System.out.print(nutrient);
             System.out.print("\nInnehåll: "+nutrientContent+". Behov: "+nutrientNeed+"\n\n");
+
         }
         return percentageNutrient;
     }

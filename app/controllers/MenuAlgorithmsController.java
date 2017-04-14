@@ -69,7 +69,7 @@ public class MenuAlgorithmsController extends Controller {
 
             Menu resultingWeekMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
 
-            return ok((JsonNode) Json.parse(resultingWeekMenu.recipeListToString(resultingWeekMenu)));
+            return ok((JsonNode) Json.parse(resultingWeekMenu.recipeListToString()));
 
         } else { // If we run it from the "Server"
 
@@ -83,7 +83,7 @@ public class MenuAlgorithmsController extends Controller {
             Menu resultingWeekMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
 
             if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-                return ok(resultingWeekMenu.recipeListToString(resultingWeekMenu));
+                return ok(resultingWeekMenu.recipeListToString());
             return ok("nothing found!");
 
         }
@@ -109,7 +109,7 @@ public class MenuAlgorithmsController extends Controller {
         ShoppingList shoppingList=new ShoppingList(resultingWeekMenu, foods, amounts);
 
         if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingWeekMenu.recipeListToString(resultingWeekMenu)+shoppingList.toString());
+            return ok(resultingWeekMenu.recipeListToString());
         return ok("nothing found!");
     }
 
