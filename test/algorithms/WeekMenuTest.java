@@ -7,7 +7,6 @@ import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.user.Nutrient;
 import models.user.User;
-import org.intellij.lang.annotations.Flow;
 import org.jetbrains.annotations.NotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,9 +45,9 @@ public class WeekMenuTest {
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
-        MenuAlgorithms weekMenu = new MenuAlgorithms(user,recipes);
-        weekMenu.setNrOfRecipes(1);
-        resultingMenu = weekMenu.MenuFromNutrients(new ArrayList<>());
+        MenuAlgorithms weekMenu = new MenuAlgorithms(recipes, new ArrayList<>(), 1);
+
+        resultingMenu = weekMenu.CalculateWeekMenu(user);
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -57,11 +56,13 @@ public class WeekMenuTest {
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         weekMenu.addAllergies(usersPerfectIngrediense);
-        resultingMenuFilterIngrediense = weekMenu.MenuFromNutrients(new ArrayList<>());
+
+        resultingMenuFilterIngrediense = weekMenu.CalculateWeekMenu(user);
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
-        resultingMenuFilterRecipe = weekMenu.MenuFromNutrients(filterList);
+        weekMenu = new MenuAlgorithms(recipes, filterList, 1);
+        resultingMenuFilterRecipe = weekMenu.CalculateWeekMenu(user);
 
     }
 
@@ -103,28 +104,28 @@ public class WeekMenuTest {
 
         Sugars sugars = new Sugars(0F, 0F, 0F, 0F);
         Fats fats =
-            new Fats(Float.parseFloat(user.hmap.get(Nutrient.Fat) + "") * convertToOnePortion, 0F, 0F,
-                0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F);
+                new Fats(Float.parseFloat(user.hmap.get(Nutrient.Fat) + "") * convertToOnePortion, 0F, 0F,
+                        0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F);
         Vitamins vitamins = new Vitamins(0F, 0F,
-            Float.parseFloat(user.hmap.get(Nutrient.VitaminAUG) + "") * convertToOnePortion,
-            Float.parseFloat(user.hmap.get(Nutrient.VitaminB6MG) + "") * convertToOnePortion,
-            Float.parseFloat(user.hmap.get(Nutrient.VitaminB12UG) + "") * convertToOnePortion,
-            Float.parseFloat(user.hmap.get(Nutrient.VitaminCMG) + "") * convertToOnePortion,
-            Float.parseFloat(user.hmap.get(Nutrient.VitaminDUG) + "") * convertToOnePortion,
-            Float.parseFloat(user.hmap.get(Nutrient.VitaminEMG) + "") * convertToOnePortion, 0F,
-            Float.parseFloat(user.hmap.get(Nutrient.ThiamineMG) + "") * convertToOnePortion,
-            Float.parseFloat(user.hmap.get(Nutrient.RiboflavinMG) + "") * convertToOnePortion,
-            Float.parseFloat(user.hmap.get(Nutrient.NiacinMG) + "") * convertToOnePortion, 0F);
+                Float.parseFloat(user.hmap.get(Nutrient.VitaminAUG) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VitaminB6MG) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VitaminB12UG) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VitaminCMG) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VitaminDUG) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.VitaminEMG) + "") * convertToOnePortion, 0F,
+                Float.parseFloat(user.hmap.get(Nutrient.ThiamineMG) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.RiboflavinMG) + "") * convertToOnePortion,
+                Float.parseFloat(user.hmap.get(Nutrient.NiacinMG) + "") * convertToOnePortion, 0F);
         Minerals minerals =
-            new Minerals(Float.parseFloat(user.hmap.get(Nutrient.FolateUG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.PhosphorusMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.IodineUG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.IronMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.CalciumMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.PotassiumMG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.MagnesiumMG) + "") * convertToOnePortion, 0F, 0F,
-                Float.parseFloat(user.hmap.get(Nutrient.SeleniumUG) + "") * convertToOnePortion,
-                Float.parseFloat(user.hmap.get(Nutrient.ZinkMG) + "") * convertToOnePortion);
+                new Minerals(Float.parseFloat(user.hmap.get(Nutrient.FolateUG) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.PhosphorusMG) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.IodineUG) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.IronMG) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.CalciumMG) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.PotassiumMG) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.MagnesiumMG) + "") * convertToOnePortion, 0F, 0F,
+                        Float.parseFloat(user.hmap.get(Nutrient.SeleniumUG) + "") * convertToOnePortion,
+                        Float.parseFloat(user.hmap.get(Nutrient.ZinkMG) + "") * convertToOnePortion);
         Amount amount = new Amount(100, Amount.Unit.GRAM);
 
         Ingredient perfectIngredient = new Ingredient(
@@ -132,7 +133,7 @@ public class WeekMenuTest {
                         Float.parseFloat(user.hmap.get(Nutrient.CaloriKcal) + "") * convertToOnePortion, 0F,
                         Float.parseFloat(user.hmap.get(Nutrient.Carbohydrates) + "") * convertToOnePortion,
                         Float.parseFloat(user.hmap.get(Nutrient.Protein) + "") * convertToOnePortion,
-                        Float.parseFloat(user.hmap.get(Nutrient.Fibre) + "")* convertToOnePortion, 0F, 0F,
+                        Float.parseFloat(user.hmap.get(Nutrient.Fibre) + "") * convertToOnePortion, 0F, 0F,
                         0F, 0F, 0F, 0F, sugars, fats, vitamins, minerals), amount);
         ingredients.add(perfectIngredient);
 

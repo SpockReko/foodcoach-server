@@ -2,7 +2,6 @@ package algorithms;
 
 import models.food.FoodItem;
 import models.recipe.*;
-import models.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ public class MenuAlgorithm2Test {
 
     public static void main(String[] args) {
         build();
+        test1();
     }
 
     private static void build(){
@@ -67,10 +67,9 @@ public class MenuAlgorithm2Test {
 
 
     private static void test1() {
-        MenuAlgorithms algorithm=new MenuAlgorithms(foods, amountList, recList);
-        algorithm.setNrOfRecipes(3);
+        MenuAlgorithms algorithm=new MenuAlgorithms(recList, new ArrayList<Recipe>(), 3);
         //System.out.println(algorithm.calculateWeekMenuFromIngredientList(new ArrayList<Recipe>()).getRecipeList().size());
-        Menu menu = algorithm.weekMenuFromIngredientList(new ArrayList<Recipe>());
+        Menu menu = algorithm.CalculateWeekMenu(foods, amountList);
         //System.out.println("test "+foods.size());
 
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));

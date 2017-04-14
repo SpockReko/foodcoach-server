@@ -39,9 +39,8 @@ public class MenuAlgorithmsTest {
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
-        MenuAlgorithms menuAlgorithms = new MenuAlgorithms(user,recipes);
-        menuAlgorithms.setNrOfRecipes(1);
-        resultingMenu = menuAlgorithms.MenuFromNutrients(new ArrayList<>());
+        MenuAlgorithms menuAlgorithms = new MenuAlgorithms(recipes, new ArrayList<>(), 1);
+        resultingMenu = menuAlgorithms.CalculateWeekMenu(user);
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -50,11 +49,12 @@ public class MenuAlgorithmsTest {
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         menuAlgorithms.addAllergies(usersPerfectIngrediense);
-        resultingMenuFilterIngrediense = menuAlgorithms.MenuFromNutrients(new ArrayList<>());
+        resultingMenuFilterIngrediense = menuAlgorithms.CalculateWeekMenu(user);
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
-        resultingMenuFilterRecipe = menuAlgorithms.MenuFromNutrients(filterList);
+        menuAlgorithms=new MenuAlgorithms(recipes, filterList, 1);
+        resultingMenuFilterRecipe = menuAlgorithms.CalculateWeekMenu(user);
 
     }
 
