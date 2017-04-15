@@ -101,7 +101,19 @@ public class RecipeSimplex {
             System.out.println(arr[i]);
         }
         System.out.println();
-        constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, nutritionNeed));
+
+        if( !isZero(arr) ) {
+            constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, nutritionNeed));
+        }
+    }
+
+    private boolean isZero(double[] arr) {
+        for(int i=0; i<arr.length; i++) {
+            if(arr[i]!=0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*
