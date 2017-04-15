@@ -28,13 +28,45 @@ public class RecipeSimplex {
     }
 
     public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed) {
+        List<Double> kcalPer100grams = Arrays.asList(new Double[ingredients.size()]);
+        List<Double> proteinPer100grams = Arrays.asList(new Double[ingredients.size()]);
+        List<Double> fatPer100grams = Arrays.asList(new Double[ingredients.size()]);
+        List<Double> carbohydratesPer100grams = Arrays.asList(new Double[ingredients.size()]);
+        List<Double> vitaminAPer100grams = Arrays.asList(new Double[ingredients.size()]);
+        List<Double> vitaminDPer100grams = Arrays.asList(new Double[ingredients.size()]);
+        List<Double> vitaminCPer100grams = Arrays.asList(new Double[ingredients.size()]);
 
         for( int i=0; i<ingredients.size(); i++) {
-            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getEnergyKcal().doubleValue(), nutritionNeed.get(Nutrient.CaloriKcal), ingredients.size());
+            if(kcalPer100grams.get(i)==null){
+                kcalPer100grams.set(i,0D);
+                proteinPer100grams.set(i,0D);
+                fatPer100grams.set(i,0D);
+                carbohydratesPer100grams.set(i,0D);
+                vitaminAPer100grams.set(i,0D);
+                vitaminDPer100grams.set(i,0D);
+                vitaminCPer100grams.set(i,0D);
+            }
+            kcalPer100grams.set(i, ingredients.get(i).getFoodItem().getEnergyKcal().doubleValue());
+            proteinPer100grams.set(i, ingredients.get(i).getFoodItem().getProtein().doubleValue());
+            fatPer100grams.set(i, ingredients.get(i).getFoodItem().getFats().getFat().doubleValue());
+            carbohydratesPer100grams.set(i, ingredients.get(i).getFoodItem().getCarbohydrates().doubleValue());
+            vitaminAPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminA().doubleValue());
+            vitaminDPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminD().doubleValue());
+            vitaminCPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminC().doubleValue());
+        }
+
+        setEachConstraintNutrition(kcalPer100grams, nutritionNeed.get(Nutrient.CaloriKcal), ingredients.size());
+        setEachConstraintNutrition(proteinPer100grams, nutritionNeed.get(Nutrient.Protein), ingredients.size());
+        setEachConstraintNutrition(fatPer100grams, nutritionNeed.get(Nutrient.Fat), ingredients.size());
+        setEachConstraintNutrition(carbohydratesPer100grams, nutritionNeed.get(Nutrient.Carbohydrates), ingredients.size());
+        setEachConstraintNutrition(vitaminAPer100grams, nutritionNeed.get(Nutrient.VitaminAUG), ingredients.size());
+        setEachConstraintNutrition(vitaminDPer100grams, nutritionNeed.get(Nutrient.VitaminDUG), ingredients.size());
+        setEachConstraintNutrition(vitaminCPer100grams, nutritionNeed.get(Nutrient.VitaminCMG), ingredients.size());
+            /*setEachConstraintNutrition(ingredients.get(i).getFoodItem().getEnergyKcal().doubleValue(), nutritionNeed.get(Nutrient.CaloriKcal), ingredients.size());
             setEachConstraintNutrition(ingredients.get(i).getFoodItem().getCarbohydrates().doubleValue(), nutritionNeed.get(Nutrient.Carbohydrates), ingredients.size());
             setEachConstraintNutrition(ingredients.get(i).getFoodItem().getFats().getFat().doubleValue(), nutritionNeed.get(Nutrient.Fat), ingredients.size());
             setEachConstraintNutrition(ingredients.get(i).getFoodItem().getProtein().doubleValue(), nutritionNeed.get(Nutrient.Protein), ingredients.size());
-            /*setEachConstraintNutrition(ingredients.get(i).getFoodItem().getFibre().doubleValue(), nutritionNeed.get(Nutrient.Fibre), ingredients.size());
+            setEachConstraintNutrition(ingredients.get(i).getFoodItem().getFibre().doubleValue(), nutritionNeed.get(Nutrient.Fibre), ingredients.size());
 
             setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminA().doubleValue(), nutritionNeed.get(Nutrient.VitaminAUG), ingredients.size());
             setEachConstraintNutrition(ingredients.get(i).getFoodItem().getVitamins().getVitaminD().doubleValue(), nutritionNeed.get(Nutrient.VitaminDUG), ingredients.size());
@@ -55,16 +87,20 @@ public class RecipeSimplex {
             //setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getIodine().doubleValue(), nutritionNeed.get(Nutrient.IodineUG), ingredients.size());
             setEachConstraintNutrition(ingredients.get(i).getFoodItem().getMinerals().getSelenium().doubleValue(), nutritionNeed.get(Nutrient.SeleniumUG), ingredients.size());
             */
-        }
 
         constraints = new LinearConstraintSet(constraintsCollection);
     }
 
-    private void setEachConstraintNutrition(Double per100grams, Double nutritionNeed, int nrOfIngredients) {
+    private void setEachConstraintNutrition(List<Double> per100grams, Double nutritionNeed, int nrOfIngredients) {
         double[] arr = new double[nrOfIngredients];
         for (int i = 0; i < nrOfIngredients; i++) {
-            arr[i] = per100grams / 100;
+            arr[i] = per100grams.get(i) / 100D;
         }
+        for(int i =0;i<arr.length;i++)
+        {
+            System.out.println(arr[i]);
+        }
+        System.out.println();
         constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, nutritionNeed));
     }
 
