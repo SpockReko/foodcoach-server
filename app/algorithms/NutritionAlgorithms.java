@@ -10,6 +10,7 @@ import models.food.fineli.Nutrient;
  */
 public class NutritionAlgorithms {
 
+
     public static Double L2NormTerm(Double percentageOfRDI) {
         return Math.pow(1 - percentageOfRDI, 2);
     }

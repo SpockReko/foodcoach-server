@@ -2,7 +2,7 @@ package algorithms;
 
 import models.GlobalDummyModels;
 import models.recipe.*;
-import models.user.Nutrient;
+import models.food.fineli.Nutrient;
 import models.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,20 +30,19 @@ public class MenuAlgorithmsTest {
     public static void init() {
 
         User user = new User();
-        user.firstName = "User";
         User stefan = new User(1);
-        stefan.firstName = "Stefan";
 
         userRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(user);
         Recipe stefanRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(stefan);
-
 
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
         MenuAlgorithms menuAlgorithms = new MenuAlgorithms(user,recipes);
         menuAlgorithms.setNrOfRecipes(1);
+        menuAlgorithms.setNoPrint(false);
         resultingMenu = menuAlgorithms.calculateWeekMenu(new ArrayList<>());
+        menuAlgorithms.setNoPrint(true);
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -83,12 +82,6 @@ public class MenuAlgorithmsTest {
 
     @Test
     public void filterRecipeTest(){
-        System.out.println("Listan innehåller: " );
-        for (Recipe i : resultingMenuFilterRecipe.getRecipeList()) {
-
-            System.out.println("inlkuderar: " +i.getTitle());
-
-        }
         assertTrue(!resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
     }
 

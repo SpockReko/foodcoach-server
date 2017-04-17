@@ -1,12 +1,17 @@
 package tasks;
 
 import com.avaje.ebean.EbeanServer;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 import models.food.fineli.FoodGeneral;
 import models.food.fineli.Processing;
 import models.food.fineli.Diet;
 import models.food.fineli.Food;
+import models.recipe.Amount;
+import models.recipe.Ingredient;
+import models.recipe.Recipe;
 
 import javax.persistence.PersistenceException;
 import java.io.BufferedReader;
@@ -14,6 +19,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.*;
+
+import static tasks.CommonTools.CYAN;
+import static tasks.CommonTools.YELLOW;
 
 /**
  * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
@@ -32,6 +40,7 @@ public class DatabaseFineliSeeder {
 
     private static final String GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods_Complete.tsv";
     private static final String SPECIFIC_TSV = "resources/fineli_food/Fineli_SpecificFoods.tsv";
+    private static final String MOCK_PATH = "resources/recipes/recipes_fineli.csv";
 
     private static final int GEN_ID = 0;
     private static final int GEN_NAME = 1;
@@ -99,7 +108,7 @@ public class DatabaseFineliSeeder {
         try {
             db.find(Food.class).where().eq("id", "1").findUnique();
         } catch (PersistenceException e) {
-            System.out.println(CommonTools.YELLOW
+            System.out.println(YELLOW
                 + "No database tables present. Please start server and run evolution script first!\n"
                 + CommonTools.RESET);
             return;
@@ -109,8 +118,11 @@ public class DatabaseFineliSeeder {
             idRowNumbers.put(Integer.parseInt(specificRows.get(i)[SPEC_ID]), i);
         }
 
-        System.out.print(CommonTools.CYAN + "Importing foods from Fineli..." + CommonTools.RESET);
+        System.out.print(CYAN + "Importing foods from Fineli..." + CommonTools.RESET);
         importFoods(generalRows, specificRows);
+
+        System.out.print(CYAN + "\nAdding mocked recipes... " + CommonTools.RESET);
+        mockRecipes();
         printDone();
 
         System.out.println();
@@ -338,5 +350,55 @@ public class DatabaseFineliSeeder {
 
     private static void printDone() {
         System.out.println(CommonTools.GREEN + "Done" + CommonTools.RESET);
+    }
+
+
+    private static void mockRecipes() {
+        CsvParserSettings settings = new CsvParserSettings();
+        settings.getFormat().setLineSeparator("\n");
+        settings.setNumberOfRowsToSkip(1);
+
+        CsvParser parser = new CsvParser(settings);
+        List<String[]> allRows = parser.parseAll(getReader(MOCK_PATH));
+
+        for (String[] row : allRows) {
+
+            String title = row[0];
+            int portions = Integer.parseInt(row[1]);
+            List<Ingredient> ingredients = new LinkedList<>();
+            String[] ingredientsCsv = row[2].split(";");
+
+            for (String ingCsv : ingredientsCsv) {
+
+                String[] part = ingCsv.split("_");
+                long fineliId = Long.parseLong(part[0]);
+                double amount = Double.parseDouble(part[1]);
+                Amount.Unit unit = null;
+                for (Amount.Unit u : Amount.Unit.values()) {
+                    if (u.name().toLowerCase().equals(part[2])) {
+                        unit = u;
+                    }
+                }
+
+                if (unit == null) {
+                    throw new RuntimeException("Wrong unit in recipes.csv");
+                }
+
+                Food food = db.find(Food.class).where().eq("fineliId", fineliId).findUnique();
+
+                if (food == null) {
+                    throw new RuntimeException("No food with food number " + fineliId);
+                }
+
+                ingredients.add(new Ingredient(food, new Amount(amount, unit)));
+            }
+
+            Recipe recipe = new Recipe(title, portions, ingredients);
+            if (db.find(Recipe.class).where().eq("title", title).findCount() == 0) {
+                db.save(recipe);
+            } else {
+                System.out.println("\n" + YELLOW + title + " already exists!");
+            }
+        }
     }
 }

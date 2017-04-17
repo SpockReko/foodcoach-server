@@ -17,6 +17,12 @@ import java.util.List;
  */
 public class MenuAlgorithms {
 
+    boolean noPrint = true;
+
+    public void setNoPrint(boolean noPrint) {
+        this.noPrint = noPrint;
+    }
+
     private final Double LARGE_DISTANCE = 999999999.9999;
     private Double optimalMenuNutrition;
     private Menu optimalMenu = new Menu(new ArrayList<>());
@@ -65,7 +71,7 @@ public class MenuAlgorithms {
         optimalMenuNutrition = nutritionValueCalculation(weekMenuList.get(0));
         for(Menu menu : weekMenuList){
             double value = nutritionValueCalculation(menu);
-            System.out.println("Nutrients for " + menu.recipeListToString(menu) + "\n... has the value: " + value);
+            nutrientPrint(menu, value);
             if(value <= optimalMenuNutrition){
                 optimalMenuNutrition = value;
                 optimalMenu = menu;
@@ -74,7 +80,6 @@ public class MenuAlgorithms {
         return optimalMenu;
     }
 
-
     public Double nutritionValueCalculation(Menu chosenMenu){
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -82,46 +87,31 @@ public class MenuAlgorithms {
         return NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
     }
 
+
     private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList){
-
-        System.out.println("optimalMenuNutrition: " + optimalMenuNutrition +
-                "\noptimalMenu size: " + optimalMenu.getRecipeList().size() +
-                "\nnrOfRecipe: " + nrOfRecipes +
-                "\nallRecipes size: " + allRecipes.size() +
-                "\nweekMenuList size: " + weekMenuList.size() +
-                "\nUser: " + user.firstName);
-        System.out.println("*********************************************************start");
-
-        System.out.println("#IngredientList in weekmenu at row 88 has size: " + ingredientList.size());
-        List<Recipe> filteredRecipes = new ArrayList<>();
-        System.out.println("#recipesList in weekmenu at parameter has size: " + recipeList.size());
-        System.out.println("For loop starts! nr of Recepies: " + allRecipes.size());
-        for (Recipe recipe : allRecipes){
-            System.out.println("\nLoop for recipe " + recipe.getTitle());
+                                                                    // help testPrint methods!
+                                                                    test1(ingredientList);
+        List<Recipe> filteredRecipes = new ArrayList<>();           test2(recipeList);
+        for (Recipe recipe : allRecipes){                           test3(recipe);
             boolean badRecipe = false;
-            for (Ingredient ingredient :ingredientList) {
-                System.out.println("\t"+recipe.getTitle() + " see if if it have ingredient: " + ingredient);
+            for (Ingredient ingredient :ingredientList) {           test4(recipe, ingredient);
                 if(recipe.ingredients.contains(ingredient)){
-                    badRecipe = true;
-                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! Ingredient " + ingredient + "exist in allergies!!!**!!!");
+                    badRecipe = true;                               test5(recipe, ingredient);
                 }
             }
             for (Recipe r: recipeList) {
                 if(recipe.equals(r)){
                     badRecipe = true;
-                    System.out.println("\t" + recipe.getTitle() + "is a bad recipe! You don't want this recepie!");
+                                                                    test6(recipe);
                 }
             }
             if(!badRecipe) filteredRecipes.add(recipe);
-            System.out.println("Now is the size of the filteredRecipes: " + filteredRecipes.size());
+                                                                    test7(filteredRecipes);
         }
-        System.out.println("Now has all loops ended! the filterdList has size: " + filteredRecipes.size());
-        for (Recipe r: filteredRecipes) {
-            System.out.println("recipe: " + r.getTitle());
-        }
+                                                                    test8(filteredRecipes);
+                                                                    test9(filteredRecipes);
         allRecipes = filteredRecipes;
-
-        System.out.println("************************************************************slut");
+                                                                    testEnd();
     }
 
     private List<Ingredient> getIngredientsFromString(List<String> stringList) {
@@ -148,5 +138,81 @@ public class MenuAlgorithms {
 
     public void setNrOfRecipes(int nrOfRecipes) {
         this.nrOfRecipes = nrOfRecipes;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////
+    //////// Test print help functions! ///////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+
+
+    private void nutrientPrint(Menu menu, double value) {
+        if (!noPrint) {
+            System.out.println("Nutrients for " + menu.recipeListToString(menu) + "\n... has the value: " + value);
+        }
+    }
+
+    private void testEnd() {
+        if(!noPrint)
+            System.out.println("************************************************************slut");
+    }
+
+    private void test9(List<Recipe> filteredRecipes) {
+        if (!noPrint) {
+            for (Recipe r : filteredRecipes) {
+                System.out.println("recipe: " + r.getTitle());
+            }
+        }
+    }
+
+    private void test8(List<Recipe> filteredRecipes) {
+        if(!noPrint)
+            System.out.println("Now has all loops ended! the filterdList has size: " + filteredRecipes.size());
+    }
+
+    private void test7(List<Recipe> filteredRecipes) {
+        if(!noPrint)
+            System.out.println("Now is the size of the filteredRecipes: " + filteredRecipes.size());
+    }
+
+    private void test6(Recipe recipe) {
+        if(!noPrint)
+            System.out.println("\t" + recipe.getTitle() + "is a bad recipe! You don't want this recepie!");
+    }
+
+    private void test5(Recipe recipe, Ingredient ingredient) {
+        if(!noPrint)
+            System.out.println("\t" + recipe.getTitle() + "is a bad recipe! Ingredient " + ingredient + "exist in allergies!!!**!!!");
+    }
+
+    private void test4(Recipe recipe, Ingredient ingredient) {
+        if(!noPrint)
+            System.out.println("\t"+recipe.getTitle() + " see if if it have ingredient: " + ingredient);
+    }
+
+    private void test3(Recipe recipe) {
+        if(!noPrint)
+            System.out.println("\nLoop for recipe " + recipe.getTitle());
+    }
+
+    private void test2(List<Recipe> recipeList) {
+        if (!noPrint) {
+            System.out.println("#recipesList in weekmenu at parameter has size: " + recipeList.size());
+            System.out.println("For loop starts! nr of Recepies: " + allRecipes.size());
+        }
+    }
+
+    private void test1(List<Ingredient> ingredientList) {
+        if (!noPrint) {
+            System.out.println("optimalMenuNutrition: " + optimalMenuNutrition +
+                    "\noptimalMenu size: " + optimalMenu.getRecipeList().size() +
+                    "\nnrOfRecipe: " + nrOfRecipes +
+                    "\nallRecipes size: " + allRecipes.size() +
+                    "\nweekMenuList size: " + weekMenuList.size() +
+                    "\nUser: " + user.firstName);
+            System.out.println("*********************************************************start");
+
+            System.out.println("#IngredientList in weekmenu at row 88 has size: " + ingredientList.size());
+        }
     }
 }

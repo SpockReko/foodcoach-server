@@ -2,6 +2,7 @@ package algorithms;
 
 import models.GlobalDummyModels;
 import models.food.*;
+import models.food.fineli.Food;
 import models.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,43 +16,27 @@ import static org.junit.Assert.*;
  */
 public class QuicksortTest {
 
-    private static FoodItem food1;
-    private static FoodItem food2;
-    private static FoodItem food3;
-    private static FoodItem food4;
-    private static FoodItem food5;
+    private static Food food1;
+    private static Food food2;
+    private static Food food3;
+    private static Food food4;
+    private static Food food5;
+    private static Food food6;
     private static Fats fat;
     private static Vitamins vit;
     private static Minerals min;
     private static Sugars sug;
-    private static List<FoodItem> foodList = new ArrayList<>();
-    private static List<FoodItem> sortedFoodList = new ArrayList<>();
+    private static List<Food> foodList = new ArrayList<>();
+    private static List<Food> sortedFoodList = new ArrayList<>();
     private static int foodSize = 0;
     @BeforeClass
     public static void init(){
-        fat = new Fats(1f,0f,0f,0f,0f,0f,0f,
-                0f,0f,0f,0f,0f,0f,0f,0f,0f,
-                0f,0f);
-        vit = new Vitamins(1F, 1F, 1F, 1F, 1F, 1F, 1F, 1F, 1F,
-                1F,1F, 1F, 1F);
-        min = new Minerals(1F, 1F, 1F, 1F, 1F, 1F, 1F, 1F, 1F,
-                1F,1F);
-        sug = new Sugars(1f,1f,1f,1f);
-
-        food1 = new FoodItem("food1", "h", 1, "GH", 100F,
-                1F, 1F, 1F, 1F, 1F, 1F, 1F, 1F, 1F,
-                1F, sug, fat, vit, min);
-
-        food2 = new FoodItem("food2", "h", 1, "GH", 200F,
-                2F, 2F, 2F, 2F, 2F, 2F, 2F, 2F, 2F,
-                2F, sug,fat,vit,min);
-
-        food3 = new FoodItem("food3", "h", 3, "GH", 300F,
-                3F, 3F, 3F, 3F, 3F, 3F, 3F, 3F, 3F,
-                3F, sug,fat,vit,min);
-        food4 =GlobalDummyModels.createOptimalRecipeForSpecificUser(new User()).ingredients.get(0).getFood();
-        food5 =GlobalDummyModels.createOptimalRecipeForSpecificUser(new User(1)).ingredients.get(0).getFood();
-
+        food1 = GlobalDummyModels.getFoodDummyCarrot();
+        food2 = GlobalDummyModels.getFoodDummyParsnip();
+        food3 = GlobalDummyModels.getFoodDummyChicken();
+        food4 = GlobalDummyModels.getFoodDummySteak();
+        food5 = GlobalDummyModels.getFoodDummyRedLenses();
+        food6 = GlobalDummyModels.getFoodDummyBean();
         foodList.add(food1);
         foodList.add(food2);
         foodList.add(food3);
@@ -85,24 +70,24 @@ public class QuicksortTest {
     }
 
     @Test
-    public void testOrderOfTheList(){
-        FoodItem f0 = sortedFoodList.get(0);
-        FoodItem f1 = sortedFoodList.get(1);
-        FoodItem f2 = sortedFoodList.get(2);
-        FoodItem f3 = sortedFoodList.get(3);
-        FoodItem f4 = sortedFoodList.get(4);
+    public void testOrderOfOrginalTheList(){
+        Food f0 = sortedFoodList.get(0);
+        Food f1 = sortedFoodList.get(1);
+        Food f2 = sortedFoodList.get(2);
+        Food f3 = sortedFoodList.get(3);
+        Food f4 = sortedFoodList.get(4);
         assertTrue(QuicksortFoodItem.diff(f1,f0) <= QuicksortFoodItem.diff(f2,f0) &&
                 QuicksortFoodItem.diff(f2,f0) <= QuicksortFoodItem.diff(f3,f0) &&
                 QuicksortFoodItem.diff(f3,f0) <= QuicksortFoodItem.diff(f4,f0));
     }
 
-    private static void printList(List<FoodItem> list) {
-        List<FoodItem> listCopy = new ArrayList<>(list);
+    private static void printList(List<Food> list) {
+        List<Food> listCopy = new ArrayList<>(list);
         Iterator ite = listCopy.iterator();
         System.out.println("New Foodlist! ");
         while(ite.hasNext()){
-            FoodItem f = (FoodItem) ite.next();
-            System.out.println(".\t\t: " + f.getName() + " with diff " +  QuicksortFoodItem.diff(f,food2));
+            Food f = (Food) ite.next();
+            System.out.println(".\t\t: " + f.name + " with diff " +  QuicksortFoodItem.diff(f,food2));
             ite.remove();
         }
         System.out.println("Foodlist ended\n");
