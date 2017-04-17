@@ -31,7 +31,7 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 28947	Bacon		filé, fett 18 g, baconfilé	Baconfilé						Rökt	Gris	100 %	
 530	Bakmargarin		bageriindustrimargarin 80% fett, bakning	Bakmargarin						Industriellt	Matlagnings- och industrifett	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, LACSFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 593	Bakmargarin	TRUE	80% fett	Bakmargarin	bakmargarin					Industriellt	Matlagnings- och industrifett	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
-74	Bakpulver			Bakpulver	bakpulver		1			Torkat	Hjälpämnen vid tillverkning	100 %	UNSWEET, SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+74	Bakpulver	TRUE		Bakpulver	bakpulver		1			Torkat	Hjälpämnen vid tillverkning	100 %	UNSWEET, SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 30274	Balkankorv	TRUE	21,5% fett	Balkankorv						Industriellt	Korv	100 %	NAGLUFRE, MILKFREE, LACSFREE, LOWCHOL, HIGHSALT, GLUTFREE, EGGFREE
 30295	Balkankorv		lätt, 10% fett	Balkankorv						Industriellt	Korv	100 %	NAGLUFRE, LACSFREE, MILKFREE, LOWCHOL, LOWFAT, HIGHSALT, GLUTFREE, EGGFREE
 11135	Bambuskott	TRUE		Bambuskott	bambuskott				Phyllostachys spp.	Konserverat	Grönsakskonserver	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
@@ -106,8 +106,8 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 7	Chokladkonfekt		marmeladfyllning	Chokladkonfekt med marmeladfyllning						Industriellt	Choklad	100 %	LACOVEGE,
 31254	Chokladrussin	TRUE		Chokladrussin	chokladrussin, chokladöverdraget russin					Industriellt	Övrig frukt	100 %	
 63	Chokladbar		låg fetthalt	Chokladbar						Industriellt	Choklad	100 %	LACOVEGE,
-14	Chokladbar	TRUE	med choklad, medelvärde	Chokladbar						Industriellt	Choklad	100 %	LACOVEGE,
-44	Chokladbar		med chokladfyllning, medelvärde	Chokladbar med chokladfyllning	chokladstång, chokladbit					Industriellt	Choklad	100 %	LACOVEGE,
+14	Chokladbar	TRUE	med choklad, medelvärde	Chokladbar	chokladstång, chokladbit					Industriellt	Choklad	100 %	LACOVEGE,
+44	Chokladbar		med chokladfyllning, medelvärde	Chokladbar med chokladfyllning						Industriellt	Choklad	100 %	LACOVEGE,
 30636	Cider		lätt, 4,7 vol-% alkohol	Cider			1			Industriellt	Övriga alkoholdrycker	100 %	SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 939	Cider		söt, 4,7 vol-% alkohol	Cider			1			Industriellt	Övriga alkoholdrycker	100 %	SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, FATFREE, EGGFREE
 29135	Cider		torr, 4,7 vol-% alkohol	Cider			1			Industriellt	Övriga alkoholdrycker	100 %	SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, FATFREE, EGGFREE

@@ -61,7 +61,8 @@ public class IngredientParser {
 
     private Ingredient findIngredient() throws IngredientNotFoundException {
         Amount amount = findAmount();
-        Food food = findFoodGeneral().defaultFood;
+        FoodGeneral foodGeneral = findFoodGeneral();
+        Food food = foodGeneral.defaultFood;
 
         if (food != null) {
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
@@ -141,24 +142,25 @@ public class IngredientParser {
     private FoodGeneral findFoodGeneral() {
         StringBuilder builder = new StringBuilder(" ");
         for (TaggedWord taggedWord : taggedWords) {
-            builder.append(taggedWord.getLemma()).append(" ");
+            builder.append(taggedWord.getWord()).append(" ");
         }
 
         String line = builder.toString();
         String matchingTag = "";
         int matchingTagLength = 0;
-        FoodGeneral food = null;
+        FoodGeneral foodGeneral = null;
         List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
 
         for (FoodGeneral general : items) {
             List<String> tags = general.searchTags;
+            tags.add(general.name.toLowerCase());
             for (String tag : tags) {
                 if (line.contains(" " + tag + " ")||
                     line.contains(" " + tag + ",") ||
                     line.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
                         Logger.trace("Found \"" + general.name + "\"");
-                        food = general;
+                        foodGeneral = general;
                         matchingTag = tag;
                         matchingTagLength = tag.length();
                     }
@@ -167,7 +169,7 @@ public class IngredientParser {
         }
 
         leftover = line.replace(matchingTag, "");
-        return food;
+        return foodGeneral;
     }
 
     /**
@@ -179,7 +181,7 @@ public class IngredientParser {
      */
     private JsonNode retrieveWordInfo(String webString) throws IOException {
         WSClient ws = WS.newClient(9000);
-        CompletionStage<WSResponse> request = ws.url("http://json-tagger.herokuapp.com/tag")
+        CompletionStage<WSResponse> request = ws.url("https://json-tagger.com/tag")
             .setContentType("application/x-www-form-urlencoded").post(webString);
         CompletionStage<JsonNode> jsonPromise = request.thenApply(WSResponse::asJson);
         try {

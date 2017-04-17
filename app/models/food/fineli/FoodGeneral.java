@@ -2,11 +2,9 @@ package models.food.fineli;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.DbArray;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class FoodGeneral extends Model {
 
     @DbArray(length = 255) public List<String> searchTags = new ArrayList<>();
 
-    @NotNull public Food defaultFood;
+    @OneToOne @JsonManagedReference public Food defaultFood;
 
     @OneToMany(mappedBy = "general") public List<Food> foods = new ArrayList<>();
 

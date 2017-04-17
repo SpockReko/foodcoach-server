@@ -2,6 +2,7 @@ package models.food.fineli;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.DbArray;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import helpers.Constants;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Food extends Model {
     private final int fineliId;
 
     @NotNull public String name;
+    @JsonBackReference
     @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public FoodGeneral general;
     @DbArray(length = 255) public List<String> tags = new ArrayList<>();
 

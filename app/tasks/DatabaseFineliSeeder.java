@@ -86,6 +86,7 @@ public class DatabaseFineliSeeder {
     private static final int SPEC_ZINK = 42;
 
     private static Set<FoodGeneral> generalFoods = new HashSet<>();
+    private static Map<FoodGeneral, Food> defaultFoods = new HashMap<>();
     private static List<Food> foods = new ArrayList<>();
     private static List<Diet> diets = new ArrayList<>();
     private static Map<Integer, Integer> idRowNumbers = new HashMap<>();
@@ -136,6 +137,10 @@ public class DatabaseFineliSeeder {
 
         db.saveAll(generalFoods);
         db.saveAll(foods);
+        for (FoodGeneral generalFood : generalFoods) {
+            generalFood.defaultFood = defaultFoods.get(generalFood);
+            db.save(generalFood);
+        }
     }
 
     private static void readGeneralRow(String[] cols, List<String[]> specificRows) {
@@ -209,12 +214,14 @@ public class DatabaseFineliSeeder {
             }
         }
 
-        if (cols[GEN_DEFAULT] != null && cols[GEN_EXTRA_TAGS] != null) {
-            String[] tags = cols[GEN_EXTRA_TAGS].split(",");
-            for (String tag : tags) {
-                generalFood.searchTags.add(tag.trim());
+        if (cols[GEN_DEFAULT] != null) {
+            if (cols[GEN_EXTRA_TAGS] != null) {
+                String[] tags = cols[GEN_EXTRA_TAGS].split(",");
+                for (String tag : tags) {
+                    generalFood.searchTags.add(tag.trim());
+                }
             }
-            generalFood.defaultFood = specificFood;
+            defaultFoods.put(generalFood, specificFood);
         } else {
             generalFood.foods.add(specificFood);
         }
@@ -222,6 +229,55 @@ public class DatabaseFineliSeeder {
         specificFood.general = generalFood;
         generalFoods.add(generalFood);
         foods.add(specificFood);
+    }
+
+    private static void mockRecipes() {
+        CsvParserSettings settings = new CsvParserSettings();
+        settings.getFormat().setLineSeparator("\n");
+        settings.setNumberOfRowsToSkip(1);
+
+        CsvParser parser = new CsvParser(settings);
+        List<String[]> allRows = parser.parseAll(getReader(MOCK_PATH));
+
+        for (String[] row : allRows) {
+
+            String title = row[0];
+            int portions = Integer.parseInt(row[1]);
+            List<Ingredient> ingredients = new LinkedList<>();
+            String[] ingredientsCsv = row[2].split(";");
+
+            for (String ingCsv : ingredientsCsv) {
+
+                String[] part = ingCsv.split("_");
+                long fineliId = Long.parseLong(part[0]);
+                double amount = Double.parseDouble(part[1]);
+                Amount.Unit unit = null;
+                for (Amount.Unit u : Amount.Unit.values()) {
+                    if (u.name().toLowerCase().equals(part[2])) {
+                        unit = u;
+                    }
+                }
+
+                if (unit == null) {
+                    throw new RuntimeException("Wrong unit in recipes.csv");
+                }
+
+                Food food = db.find(Food.class).where().eq("fineliId", fineliId).findUnique();
+
+                if (food == null) {
+                    throw new RuntimeException("No food with food number " + fineliId);
+                }
+
+                ingredients.add(new Ingredient(food, new Amount(amount, unit)));
+            }
+
+            Recipe recipe = new Recipe(title, portions, ingredients);
+            if (db.find(Recipe.class).where().eq("title", title).findCount() == 0) {
+                db.save(recipe);
+            } else {
+                System.out.println("\n" + YELLOW + title + " already exists!");
+            }
+        }
     }
 
 	/*
@@ -350,55 +406,5 @@ public class DatabaseFineliSeeder {
 
     private static void printDone() {
         System.out.println(CommonTools.GREEN + "Done" + CommonTools.RESET);
-    }
-
-
-    private static void mockRecipes() {
-        CsvParserSettings settings = new CsvParserSettings();
-        settings.getFormat().setLineSeparator("\n");
-        settings.setNumberOfRowsToSkip(1);
-
-        CsvParser parser = new CsvParser(settings);
-        List<String[]> allRows = parser.parseAll(getReader(MOCK_PATH));
-
-        for (String[] row : allRows) {
-
-            String title = row[0];
-            int portions = Integer.parseInt(row[1]);
-            List<Ingredient> ingredients = new LinkedList<>();
-            String[] ingredientsCsv = row[2].split(";");
-
-            for (String ingCsv : ingredientsCsv) {
-
-                String[] part = ingCsv.split("_");
-                long fineliId = Long.parseLong(part[0]);
-                double amount = Double.parseDouble(part[1]);
-                Amount.Unit unit = null;
-                for (Amount.Unit u : Amount.Unit.values()) {
-                    if (u.name().toLowerCase().equals(part[2])) {
-                        unit = u;
-                    }
-                }
-
-                if (unit == null) {
-                    throw new RuntimeException("Wrong unit in recipes.csv");
-                }
-
-                Food food = db.find(Food.class).where().eq("fineliId", fineliId).findUnique();
-
-                if (food == null) {
-                    throw new RuntimeException("No food with food number " + fineliId);
-                }
-
-                ingredients.add(new Ingredient(food, new Amount(amount, unit)));
-            }
-
-            Recipe recipe = new Recipe(title, portions, ingredients);
-            if (db.find(Recipe.class).where().eq("title", title).findCount() == 0) {
-                db.save(recipe);
-            } else {
-                System.out.println("\n" + YELLOW + title + " already exists!");
-            }
-        }
     }
 }
