@@ -50,7 +50,7 @@ public class IngredientParser {
 
         Ingredient ingredient;
         try {
-            ingredient = findIngredient();
+            ingredient = findIngredient(webString);
         } catch (IngredientNotFoundException e) {
             Logger.error("No match \"" + webString + "\"");
             return null;
@@ -59,10 +59,31 @@ public class IngredientParser {
         return ingredient;
     }
 
-    private Ingredient findIngredient() throws IngredientNotFoundException {
+    private Ingredient findIngredient(String webString) throws IngredientNotFoundException {
         Amount amount = findAmount();
         FoodGeneral foodGeneral = findFoodGeneral();
+        List<String> tags;
         Food food = foodGeneral.defaultFood;
+        int tagAmount = 100;
+        int currentTagAmount;
+        int matchingTagAmount = 0;
+        int currentMatchingTagAmount = 0;
+
+        for(Food f: foodGeneral.foods) {
+            tags = f.tags;
+            for(String tag : tags){
+                currentTagAmount = tags.size();
+                if (webString.contains(tag)){
+                    currentMatchingTagAmount ++;
+                    if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount){
+                        food = f;
+                        tagAmount = currentTagAmount;
+                        matchingTagAmount = currentMatchingTagAmount;
+                    }
+                }
+            }
+            currentMatchingTagAmount = 0;
+        }
 
         if (food != null) {
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {

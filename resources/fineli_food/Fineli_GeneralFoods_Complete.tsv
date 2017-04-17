@@ -1229,7 +1229,7 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 29501	Tonic	TRUE	tonicvatten	Tonic	tonicvatten		1			Industriellt	Läskedrycker	100 %	SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 427	Torkad frukt	TRUE	blandad frukt, torkad	Torkad frukt						Torkat	Övrig frukt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 33568	Torkad frukt och nötter	TRUE	salta nötter och torkad frukt, blandning	Torkad frukt och nötter						Blandat	Snacks	100 %	CHOLFREE, MILKFREE, LACSFREE, LOWCHOL, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE, HIGHFIBR
-336	Torkad lök	TRUE	lök, torkad	Torkad lök	lök, torkad				Allium cepa	Torkat	Lökgrönsaker	100 %	SOYAFREE, UNSWEET, LOWPROT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+336	Lök		lök, torkad	Torkad lök					Allium cepa	Torkat	Lökgrönsaker	100 %	SOYAFREE, UNSWEET, LOWPROT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 804	Torsk	TRUE		Torsk					Gadus morhua	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 441	Tranbär	TRUE		Tranbär					Vaccinium oxycoccos, v. macrocarpon	Obehandlat	Bär	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LOWCHOL, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN
 30395	Tranbärsjuice	TRUE	Juice, tranbär-lingonjuice	Tranbärsjuice	tranbärs juice		1			Industriellt	Juicer	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, LOWCHOL, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN
