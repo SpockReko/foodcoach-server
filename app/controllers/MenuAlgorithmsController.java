@@ -26,6 +26,7 @@ public class MenuAlgorithmsController extends Controller {
     @Inject FormFactory formFactory;
 
     // POST /weekmenu
+    // GET  /weekmenu
     public Result weekmenu() {
 
         // TODO: Refractor: Logic should not be in a controller
@@ -87,11 +88,11 @@ public class MenuAlgorithmsController extends Controller {
             return ok("nothing found!");
 
         }
-
-
-
     }
+
+    // GET     /weekmenu2
     public Result weekmenu2(){
+
         List<Recipe> removeRecipeList = new ArrayList<>();
         int nrOfRecipes = 3;
         List<Recipe> allRecipes = Recipe.find.all();
@@ -112,6 +113,4 @@ public class MenuAlgorithmsController extends Controller {
             return ok(resultingWeekMenu.recipeListToString());
         return ok("nothing found!");
     }
-
-
 }
