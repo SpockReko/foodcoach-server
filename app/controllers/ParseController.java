@@ -1,6 +1,7 @@
 package controllers;
 
 import models.food.FoodItem;
+import models.food.fineli.FoodGeneral;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import parsers.FoodItemParser;
@@ -24,8 +25,8 @@ public class ParseController extends Controller {
 
     public Result parseIngredient(String str) {
         FoodItemParser foodItemParser = new FoodItemParser();
-        FoodItem item = foodItemParser.findMatch(str);
-        if (item.example != null) {
+        FoodGeneral item = foodItemParser.findMatch(str);
+        /*if (item.example != null) {
             return ok("<font size=\"4\" color=\"blue\">"
                     + "#" + item.getLmvFoodNumber() + " - "
                     + item.screenName + " (exempelvis "
@@ -40,14 +41,17 @@ public class ParseController extends Controller {
             return ok("<font size=\"4\" color=\"red\">"
                     + item.getName() + "</font>")
                     .as("text/html");
-        }
+        }*/
+        return  ok(item.name);
     }
 
     public Result parseFull(String input) {
         IngredientParser ingredientParser = new IngredientParser();
         Ingredient ingredient = ingredientParser.parse(input);
-
-        return ok(Json.toJson(ingredient));
+        if (ingredient != null) {
+            return ok(Json.toJson(ingredient));
+        }
+        else { return ok("Did not find ingredient");}
     }
 
     public Result recipeInfo(String recipe) {

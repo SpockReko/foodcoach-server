@@ -63,26 +63,31 @@ public class IngredientParser {
         Amount amount = findAmount();
         FoodGeneral foodGeneral = findFoodGeneral();
         List<String> tags;
-        Food food = foodGeneral.defaultFood;
+        Food food;
         int tagAmount = 100;
         int currentTagAmount;
         int matchingTagAmount = 0;
         int currentMatchingTagAmount = 0;
 
-        for(Food f: foodGeneral.foods) {
-            tags = f.tags;
-            for(String tag : tags){
-                currentTagAmount = tags.size();
-                if (webString.contains(tag)){
-                    currentMatchingTagAmount ++;
-                    if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount){
-                        food = f;
-                        tagAmount = currentTagAmount;
-                        matchingTagAmount = currentMatchingTagAmount;
+        if (foodGeneral == null){
+            food = null;
+        } else {
+            food = foodGeneral.defaultFood;
+            for (Food f: foodGeneral.foods) {
+                tags = f.tags;
+                for (String tag : tags) {
+                    currentTagAmount = tags.size();
+                    if (webString.contains(tag)){
+                        currentMatchingTagAmount ++;
+                        if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount){
+                            food = f;
+                            tagAmount = currentTagAmount;
+                            matchingTagAmount = currentMatchingTagAmount;
+                        }
                     }
                 }
+                currentMatchingTagAmount = 0;
             }
-            currentMatchingTagAmount = 0;
         }
 
         if (food != null) {
@@ -163,7 +168,7 @@ public class IngredientParser {
     private FoodGeneral findFoodGeneral() {
         StringBuilder builder = new StringBuilder(" ");
         for (TaggedWord taggedWord : taggedWords) {
-            builder.append(taggedWord.getWord()).append(" ");
+            builder.append(taggedWord.getLemma()).append(" ");
         }
 
         String line = builder.toString();
@@ -171,12 +176,14 @@ public class IngredientParser {
         int matchingTagLength = 0;
         FoodGeneral foodGeneral = null;
         List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
+        System.out.println(line);
 
         for (FoodGeneral general : items) {
             List<String> tags = general.searchTags;
             tags.add(general.name.toLowerCase());
             for (String tag : tags) {
-                if (line.contains(" " + tag + " ")||
+                if (line.contains(tag) ||
+                        line.contains(" " + tag + " ")||
                     line.contains(" " + tag + ",") ||
                     line.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
@@ -190,6 +197,20 @@ public class IngredientParser {
         }
 
         leftover = line.replace(matchingTag, "");
+
+        if (foodGeneral == null){
+            System.out.println("FOOD GENERAL NULL");
+            FoodItemParser parser = new FoodItemParser();
+            System.out.println("LINE: " + line);
+            String[] listLine = line.trim().split("\\s++");
+            for (String word : listLine){
+                System.out.println("Word in line: " + word);
+                if (parser.autoCorrect(word) != null){
+                    foodGeneral = parser.autoCorrect(word);
+                }
+            }
+        }
+
         return foodGeneral;
     }
 
