@@ -21,12 +21,11 @@ public class MenuAlgorithms {
     private final Double LARGE_DISTANCE = 999999999.9999;
     private final int DEFAULT_VALUE_MENUS = 3;
     private Double optimalMenuNutrition;
-    private int optimalValue;
     private Menu optimalMenu = new Menu(new ArrayList<>());
     private Menu[] menus;
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
-    private List<Menu> weekMenuList = new ArrayList<>();
+    private List<Menu> menuList = new ArrayList<>();
     private User user = new User();
     private List<FoodItem> foodItemList;
     private List<Amount> amountList;
@@ -81,7 +80,7 @@ public class MenuAlgorithms {
     private void reset(){
         optimalMenuNutrition = LARGE_DISTANCE;
         optimalMenu = new Menu(new ArrayList<>());
-        weekMenuList = new ArrayList<>();
+        menuList = new ArrayList<>();
     }
 
     /**
@@ -100,7 +99,7 @@ public class MenuAlgorithms {
      * @param optimize The method we want to evaluate the menu on
      * @return
      */
-    public double returnAllWeekMenus(int indexOfRecipes, List<Recipe> currentList, Function<Menu,Double> optimize){
+    public double returnAllMenus(int indexOfRecipes, List<Recipe> currentList, Function<Menu,Double> optimize){
 
         if (currentList.size() == nrOfRecipes){
             Menu menu = new Menu(currentList);
@@ -133,8 +132,8 @@ public class MenuAlgorithms {
         }else{
             List<Recipe> newList = new ArrayList<>(currentList);
             currentList.add(allRecipes.get(indexOfRecipes));
-            return Math.min(returnAllWeekMenus(indexOfRecipes-1, currentList, optimize),
-                    returnAllWeekMenus(indexOfRecipes-1, newList, optimize));
+            return Math.min(returnAllMenus(indexOfRecipes-1, currentList, optimize),
+                    returnAllMenus(indexOfRecipes-1, newList, optimize));
         }
     }
 
@@ -170,15 +169,15 @@ public class MenuAlgorithms {
     public Menu MenuFromNutrients(List<Recipe> notThisRecipes) {
         reset();
         filterRecipes(notTheseIngredients,notThisRecipes);
-        returnAllWeekMenus(allRecipes.size()-1, new ArrayList<>(), this::nutritionValueCalculation);
+        returnAllMenus(allRecipes.size()-1, new ArrayList<>(), this::nutritionValueCalculation);
         return optimalMenu;
     }
 
-/*    public Menu weekMenuFromFoodItemList(List<Recipe> notThisRecipes)  {
+/*    public Menu menuFromFoodItemList(List<Recipe> notThisRecipes)  {
         reset();
         filterRecipes(notTheseIngredients,notThisRecipes);
-        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),null);
-        for(Menu menu : weekMenuList){
+        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),null);
+        for(Menu menu : menuList){
             int value = nbrOfFoodsUsed(menu);
             if(value > optimalValue){
                 optimalValue = value;
@@ -194,19 +193,19 @@ public class MenuAlgorithms {
      * @param notThisRecipes
      * @return
      */
-    public Menu weekMenuFromFoodItemList(List<Recipe> notThisRecipes)  {
+    public Menu menuFromFoodItemList(List<Recipe> notThisRecipes)  {
         reset();
         filterRecipes(notTheseIngredients,notThisRecipes);
-        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),this::nbrOfFoodsUsed);
+        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::nbrOfFoodsUsed);
         return optimalMenu;
     }
 
-/*    public Menu weekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
+/*    public Menu menuFromIngredientList(List<Recipe> notThisRecipes)  {
         reset();
         double optVal=100000;
         filterRecipes(notTheseIngredients,notThisRecipes);
-        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),null);
-        for(Menu menu : weekMenuList){
+        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),null);
+        for(Menu menu : menuList){
             double value = lengthOfShoppingList(menu); //The idea was to use menu.size() method
             if(value < optVal){
                 optVal = value;
@@ -218,15 +217,15 @@ public class MenuAlgorithms {
 
 
     /**
-     * Calculates a week menu using user specified ingredients.
+     * Calculates a menu using user specified ingredients.
      *
      * @param notThisRecipes
      * @return the menu that generates the shortest shopping list.
      */
-    public Menu weekMenuFromIngredientList(List<Recipe> notThisRecipes)  {
+    public Menu menuFromIngredientList(List<Recipe> notThisRecipes)  {
         reset();
         filterRecipes(notTheseIngredients,notThisRecipes);
-        returnAllWeekMenus(allRecipes.size()-1,new ArrayList<>(),this::lengthOfShoppingList);
+        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::lengthOfShoppingList);
         return optimalMenu;
     }
 

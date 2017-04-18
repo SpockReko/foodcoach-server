@@ -25,9 +25,9 @@ public class MenuAlgorithmsController extends Controller {
 
     @Inject FormFactory formFactory;
 
-    // POST /weekmenu
-    // GET  /weekmenu
-    public Result weekmenu() {
+    // POST /menu
+    // GET  /menu
+    public Result menu() {
 
         // TODO: Refractor: Logic should not be in a controller
 
@@ -68,9 +68,9 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(user, allRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingWeekMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
+            Menu resultingMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
 
-            return ok((JsonNode) Json.parse(resultingWeekMenu.recipeListToString()));
+            return ok((JsonNode) Json.parse(resultingMenu.recipeListToString()));
 
         } else { // If we run it from the "Server"
 
@@ -81,17 +81,17 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(user, allRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingWeekMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
+            Menu resultingMenu = menuAlgorithmsInstant.MenuFromNutrients(removeRecipeList);
 
-            if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-                return ok(resultingWeekMenu.recipeListToString());
+            if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+                return ok(resultingMenu.recipeListToString());
             return ok("nothing found!");
 
         }
     }
 
-    // GET     /weekmenu2
-    public Result weekmenu2(){
+    // GET     /menu2
+    public Result menu2(){
 
         List<Recipe> removeRecipeList = new ArrayList<>();
         int nrOfRecipes = 3;
@@ -106,11 +106,11 @@ public class MenuAlgorithmsController extends Controller {
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(foods, amounts, allRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
-        Menu resultingWeekMenu = menuAlgorithmsInstant.weekMenuFromIngredientList(removeRecipeList);
-        ShoppingList shoppingList=new ShoppingList(resultingWeekMenu, foods, amounts);
+        Menu resultingMenu = menuAlgorithmsInstant.menuFromIngredientList(removeRecipeList);
+        ShoppingList shoppingList=new ShoppingList(resultingMenu, foods, amounts);
 
-        if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingWeekMenu.recipeListToString());
+        if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingMenu.recipeListToString());
         return ok("nothing found!");
     }
 }
