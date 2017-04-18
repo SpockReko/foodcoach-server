@@ -36,7 +36,6 @@ public class RecipeOptimizer {
         HashMap<Nutrient,Double> nutritionNeed = NutritionAlgorithms.nutrientsNeedScaled(user.hmap,1);
         recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed);
 
-
         double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
         List<Ingredient> newIngredients = new ArrayList<>();

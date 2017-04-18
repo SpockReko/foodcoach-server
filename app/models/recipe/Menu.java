@@ -32,10 +32,18 @@ public class Menu {
         for(Recipe r : this.getRecipeList()){
             text = text + r.getTitle() + "\n";
         }
-        text = text + "\n\n";
+        text = text + "\n\nNäringsvärden i procent av användarens behov! (1 betyder näringsvärdet är uppfyllt)\n\n";
         for(String comment : this.getCommentList()){
             text = text + comment + "\n";
         }
+        text = text + "\n\nInköpslista till menyerna:\n\n";
+        ShoppingList shop = new ShoppingList(this);
+        text = text + shop.toString();
+
+        text = text + "\n\nNågot värde, troligtvis totalta koldioxidutsläppet för din meny! Just nu totalt matsvinn\n\n";
+
+        text = text + shop.getTotalWaste();
+
         return text;
     }
 

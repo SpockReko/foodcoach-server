@@ -68,21 +68,11 @@ public class MenuAlgorithm2Test {
 
     private static void test1() {
         MenuAlgorithms algorithm=new MenuAlgorithms(recList, new ArrayList<Recipe>(), 3);
-        //System.out.println(algorithm.calculateWeekMenuFromIngredientList(new ArrayList<Recipe>()).getRecipeList().size());
         Menu menu = algorithm.CalculateWeekMenu(foods, amountList);
-        //System.out.println("test "+foods.size());
-
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
-        //System.out.println("test "+foods.size());
-        //ShoppingList shoppingList=new ShoppingList(menu, foods, amountList, true);
-        //System.out.println(shoppingList.toString(shoppingList));
-
         ShoppingList shoppingList=new ShoppingList(menu, foods, amountList);
-
         System.out.println(shoppingList.toString());
-
         List<Ingredient> leftovers=shoppingList.getLeftovers();
-
         System.out.println(shoppingList.leftoversToString());
     }
 }
