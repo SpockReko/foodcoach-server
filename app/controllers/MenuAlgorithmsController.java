@@ -99,9 +99,9 @@ public class MenuAlgorithmsController extends Controller {
         List<FoodItem> foods = new ArrayList<FoodItem>();
         List<Amount> amounts = new ArrayList<Amount>();
 
-        foods.add(FoodItem.find.byId(120L));
+        foods.add(FoodItem.find.byId(1164L));
         foods.add(FoodItem.find.byId(12L));
-        amounts.add(new Amount(100, Amount.Unit.GRAM));
+        amounts.add(new Amount(300, Amount.Unit.GRAM));
         amounts.add(new Amount(150, Amount.Unit.GRAM));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
@@ -109,7 +109,29 @@ public class MenuAlgorithmsController extends Controller {
         ShoppingList shoppingList=new ShoppingList(resultingWeekMenu, foods, amounts);
 
         if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingWeekMenu.recipeListToString());
+            return ok(resultingWeekMenu.toString()+shoppingList.toString()+"\n waste:"+shoppingList.getTotalWaste()+"\n"+shoppingList.leftoversToString());
+        return ok("nothing found!");
+    }
+    // GET     /weekmenu3
+    public Result weekmenu3(){
+
+        List<Recipe> removeRecipeList = new ArrayList<>();
+        int nrOfRecipes = 3;
+        List<Recipe> allRecipes = Recipe.find.all();
+        List<FoodItem> foods = new ArrayList<FoodItem>();
+        List<Amount> amounts = new ArrayList<Amount>();
+
+        foods.add(FoodItem.find.byId(1164L));
+        foods.add(FoodItem.find.byId(12L));
+        amounts.add(new Amount(300, Amount.Unit.GRAM));
+        amounts.add(new Amount(150, Amount.Unit.GRAM));
+
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        Menu resultingWeekMenu = menuAlgorithmsInstant.CalculateWeekMenuMinimalWaste(foods, amounts);
+        ShoppingList shoppingList=new ShoppingList(resultingWeekMenu, foods, amounts);
+
+        if (resultingWeekMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingWeekMenu.toString()+shoppingList.toString()+"\n waste:"+shoppingList.getTotalWaste()+"\n"+shoppingList.leftoversToString());
         return ok("nothing found!");
     }
 }

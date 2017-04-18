@@ -157,6 +157,14 @@ public class MenuAlgorithms {
         return optimalMenu;
     }
 
+    public Menu CalculateWeekMenuMinimalWaste(List<FoodItem> foodItemList, List<Amount> amountList) {
+         reset();
+         this.foodItemList=new ArrayList<>(foodItemList);
+         this.amountList=new ArrayList<>(amountList);
+         returnAllWeekMenus(allRecipes.size() - 1, new ArrayList<>(), this::getWaste);
+         return optimalMenu;
+    }
+
     /**
      *
      * @param chosenMenu
@@ -201,7 +209,17 @@ public class MenuAlgorithms {
             shoppingList.removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
                     amountList.get(i).getAmount());
         }
-        return shoppingList.size()+0.0;
+        //return shoppingList.size()+0.0;
+        return shoppingList.getLeftovers().size()+0.0;
+    }
+
+    private Double getWaste(Menu menu){
+        ShoppingList shoppingList=new ShoppingList(menu);
+        for(int i=0; i<foodItemList.size(); i++){
+            shoppingList.removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
+                    amountList.get(i).getAmount());
+        }
+        return shoppingList.getTotalWaste();
     }
 
     /**

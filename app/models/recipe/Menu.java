@@ -46,5 +46,14 @@ public class Menu {
 
         return text;
     }
+    public String toString(){
+        String text = "";
+        for(Recipe r : this.getRecipeList()){
+            text = text + r.getTitle() + "\n";
+        }
+        return text;
+    }
+
+
 
 }
