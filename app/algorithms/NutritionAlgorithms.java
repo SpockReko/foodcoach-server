@@ -31,7 +31,7 @@ public class NutritionAlgorithms {
                                         nutrientsNeed.get(nutrient),
                                         overdoseValues.get(nutrient), menu);
                 sum += L2NormTerm(percentageOfRDI);
-                addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
+                addNutrionInfoToMenu(menu, nutrient, percentageOfRDI);
             }
         }
         return Math.sqrt(sum);
@@ -118,7 +118,7 @@ public class NutritionAlgorithms {
     }
 
 
-    private static void addNutrionInfoToWeekMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
+    private static void addNutrionInfoToMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
         if((nutrient + "").length() < 7) {
             menu.addComment(nutrient + ":\t\t" +
                     percentageOfRDI);
