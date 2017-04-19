@@ -55,8 +55,6 @@ public class ShoppingList {
                 this.map.put(ingredient, check);
             }
             totalWaste += ingredient.getWaste();
-
-            System.out.println(ingredient.getFoodItem().getName()+": \t Waste för ingredient: "+ingredient.getWaste() + ". Waste för foodItem:" + ingredient.getFoodItem().getWaste());
         }
     }
 

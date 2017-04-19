@@ -123,7 +123,11 @@ public class RecipeSimplex {
         double[] objFcn = new double[ingredients.size()];
 
         for( int i=0; i<ingredients.size(); i++ ) {
-            objFcn[i] = ingredients.get(i).getFoodItem().getWaste()/100;
+            if(ingredients.get(i).getFoodItem().getWaste()!=null) {
+                objFcn[i] = ingredients.get(i).getWaste() / 100;
+            } else {
+                objFcn[i]=0;
+            }
         }
 
         f = new LinearObjectiveFunction(objFcn,0);
