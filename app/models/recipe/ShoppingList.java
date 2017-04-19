@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static models.recipe.Amount.Unit.GRAM;
 
 /**
  * Created by stefa on 2017-03-31.
@@ -21,11 +20,10 @@ public class ShoppingList {
     public ShoppingList() {
     }
 
-
     public ShoppingList(Menu menu) {
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
-        leftovers=new ArrayList<Ingredient>();
+        leftovers=new ArrayList<>();
         for (Recipe recipe : recipes) {
             ingredients.addAll(recipe.getIngredients());
         }
@@ -57,6 +55,8 @@ public class ShoppingList {
                 this.map.put(ingredient, check);
             }
             totalWaste += ingredient.getWaste();
+
+            System.out.println(ingredient.getFoodItem().getName()+": \t Waste för ingredient: "+ingredient.getWaste() + ". Waste för foodItem:" + ingredient.getFoodItem().getWaste());
         }
     }
 
@@ -87,7 +87,7 @@ public class ShoppingList {
     private void putTogetherIngredients(Boolean check, Ingredient ingredient) {
         Ingredient oldIngredient = getKey(ingredient);
         map.remove(oldIngredient);
-        Ingredient newIngredient = ChangeAmountOfIngredient(ingredient.getAmount().getAmount(), oldIngredient);
+        Ingredient newIngredient = changeAmountOfIngredient(ingredient.getAmount().getAmount(), oldIngredient);
         map.put(newIngredient, check);
     }
 
@@ -97,7 +97,7 @@ public class ShoppingList {
         }
     }
 
-    // remover amount from ingredients
+    // remove amount from ingredients
     public void removeAmountToIngredient(Ingredient ingredient, double amount) {
         String name = ingredient.getFoodItem().getName();
         Ingredient[] ingredients = new Ingredient[map.size()];
@@ -149,7 +149,7 @@ public class ShoppingList {
 
     // help method
     @NotNull
-    private Ingredient ChangeAmountOfIngredient(double amount, Ingredient indexIngredient) {
+    private Ingredient changeAmountOfIngredient(double amount, Ingredient indexIngredient) {
         return new Ingredient(
                 indexIngredient.getFoodItem(),
                 new Amount(
@@ -182,10 +182,10 @@ public class ShoppingList {
     @Override
     public String toString() {
         if (map.size() == 0) {
-            return "Nothing in the Shoppinglist yet!\n";
+            return "Inköpslistan är tom just nu!\n";
         } else {
             Iterator iterator = map.entrySet().iterator();
-            String text = "Shoppinglist!\n";
+            String text = "\n\n\nInköpslista:\n\n";
             while (iterator.hasNext()) {
                 Map.Entry<Ingredient, Boolean> entry = (Map.Entry) iterator.next();
                 boolean marked = entry.getValue();
@@ -205,10 +205,10 @@ public class ShoppingList {
 
     public String leftoversToString(){
         if(leftovers.size()==0){
-            return "No leftovers!\n";
+            return "Inga rester!\n";
         }
         else {
-            String text = "Leftovers:\n";
+            String text = "Rester:\n";
             for(Ingredient ingredient:leftovers){
                 String unit=ingredient.getAmount().getUnit().toString();
                 text+=ingredient.getAmount().getAmount()+" "+unit+" "+ingredient.getFoodItem().getName()+"\n";

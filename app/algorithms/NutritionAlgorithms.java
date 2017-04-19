@@ -47,7 +47,7 @@ public class NutritionAlgorithms {
             percentageNutrient = 1D;
         } else if (nutrientContent > overdose ){
             // TODO lägga till meddelande om att det är för mycket av näringsämnet
-            menu.addComment("Overdose on " + nutrient + ", contains " + percentageNutrient);
+            menu.addComment("Överdosering av " + nutrient + ", innehåller " + percentageNutrient);
             System.out.print(menu.recipeListToString());
             System.out.print("\nOBS!!! Överdosering av ");
             System.out.print(nutrient);
@@ -129,7 +129,7 @@ public class NutritionAlgorithms {
     }
 
     //TODO: Använd dessa metoderna någonstans!
-    public static List<FoodItem> SortByTheDifference(Ingredient ingredient){
+    public static List<FoodItem> sortByTheDifference(Ingredient ingredient){
 
         List<FoodItem> foods = FoodItem.find.all();
         foods = QuicksortFoodItem.sort(foods, ingredient.getFoodItem());

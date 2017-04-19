@@ -30,7 +30,7 @@ public class MenuAlgorithms {
     private List<FoodItem> foodItemList;
     private List<Amount> amountList;
     private List<Ingredient> notTheseIngredients = new ArrayList<>();
-    private List<Recipe> notTheeseRecipes;
+    private List<Recipe> notTheseRecipes;
 
 
     /**
@@ -42,7 +42,7 @@ public class MenuAlgorithms {
      */
     public MenuAlgorithms(List<Recipe> recipeList, List<Recipe> notThisRecipes, int nrOfRecipes){
         this.allRecipes=recipeList;
-        notTheeseRecipes=notThisRecipes;
+        notTheseRecipes=notThisRecipes;
         this.nrOfRecipes=nrOfRecipes;
     }
 
@@ -52,7 +52,7 @@ public class MenuAlgorithms {
     private void reset(){
         optimalMenuNutrition = LARGE_DISTANCE;
         optimalMenu = new Menu(new ArrayList<>());
-        filterRecipes(notTheseIngredients,notTheeseRecipes);
+        filterRecipes(notTheseIngredients,notTheseRecipes);
         menuList = new ArrayList<>();
     }
 
