@@ -1,6 +1,7 @@
 package algorithms;
 
-import models.food.FoodItem;
+import models.food.DataSource;
+import models.food.Food;
 import models.recipe.*;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import static models.recipe.Amount.Unit.GRAM;
  */
 public class MenuAlgorithm2Test {
     private static List<Recipe> recList;
-    private static List<FoodItem> foods;
+    private static List<Food> foods;
     private static List<Amount> amountList;
 
 
@@ -23,11 +24,11 @@ public class MenuAlgorithm2Test {
     }
 
     private static void build(){
-        FoodItem food1=new FoodItem("food1", 1);
-        FoodItem food2=new FoodItem("food2", 2);
-        FoodItem food3=new FoodItem("food3", 3);
-        FoodItem food4=new FoodItem("food4", 4);
-        FoodItem food5=new FoodItem("food5", 5);
+        Food food1=new Food("food1", 1, DataSource.LMV);
+        Food food2=new Food("food2", 2, DataSource.LMV);
+        Food food3=new Food("food3", 3, DataSource.LMV);
+        Food food4=new Food("food4", 4, DataSource.LMV);
+        Food food5=new Food("food5", 5, DataSource.LMV);
         List<Ingredient> iList1=new ArrayList<Ingredient>();
         List<Ingredient> iList2=new ArrayList<Ingredient>();
         List<Ingredient> iList3=new ArrayList<Ingredient>();
@@ -53,7 +54,7 @@ public class MenuAlgorithm2Test {
         recList.add(rec3);
         recList.add(rec4);
 
-        foods=new ArrayList<FoodItem>();
+        foods=new ArrayList<Food>();
         //foods.add(food2);
         foods.add(food3);
         foods.add(food4);

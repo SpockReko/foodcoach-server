@@ -30,8 +30,5 @@ resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 lazy val seed = taskKey[Unit]("Database seeder")
 fullRunTask(seed, Compile, "tasks.DatabaseSeeder")
 
-lazy val finland = taskKey[Unit]("Database fineli seeder")
-fullRunTask(finland, Compile, "tasks.DatabaseFineliSeeder")
-
 lazy val parse = taskKey[Unit]("Recipe page parser")
 fullRunTask(parse, Compile, "tasks.RecipePageParser")

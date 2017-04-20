@@ -1,9 +1,7 @@
 package controllers;
 
 import algorithms.QuicksortFoodItem;
-import models.food.FoodGroup;
-import models.food.FoodItem;
-import models.food.fineli.Food;
+import models.food.Food;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -25,31 +23,20 @@ public class FoodController extends Controller {
         try {
             food = Food.find.where().eq("dataSourceId", id).findUnique();
         } catch (PersistenceException e) {
-            return badRequest("No food with food number '" + id + "' in table FoodItems");
+            return badRequest("No food with food number '" + id + "' in table Foods");
         }
         return ok(Json.toJson(food));
     }
 
     // GET /food/name/:name
     public Result getByName(String name) {
-        List<FoodItem> foods;
+        List<Food> foods;
         try {
-            foods = FoodItem.find.where().contains("name", name).findList();
+            foods = Food.find.where().contains("name", name).findList();
         } catch (PersistenceException e) {
-            return badRequest("No food called '" + name + "' in table FoodItems");
+            return badRequest("No food called '" + name + "' in table Foods");
         }
         return ok(Json.toJson(foods));
-    }
-
-    // GET /food/group/:code
-    public Result getByGroup(String code) {
-        List<FoodGroup> groups;
-        try {
-            groups = FoodGroup.find.where().eq("langualCode", code).findList();
-        } catch (PersistenceException e) {
-            return badRequest("No food group with code '" + code + "' in table FoodGroups");
-        }
-        return ok(Json.toJson(groups));
     }
 
     // GET /food/sort/:id

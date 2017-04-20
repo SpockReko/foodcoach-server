@@ -1,18 +1,16 @@
 package parsers;
 
-import models.food.FoodItem;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import info.debatty.java.stringsimilarity.*;
-import models.food.fineli.FoodGeneral;
+import models.food.Food;
+import models.food.FoodGeneral;
 import play.Logger;
 
 /**
  * Created by emmafahlen on 2017-02-14.
  */
-public class FoodItemParser {
+public class FoodParser {
 
     private int maxDistance = 1;
 
@@ -26,16 +24,16 @@ public class FoodItemParser {
         shortestDistance = Double.MAX_VALUE;
         int matchingTagLength = 0;
         FoodGeneral food = null;
-        List<FoodItem> items = FoodItem.find.select("searchTags").findList();
+        List<Food> items = Food.find.select("tags").findList();
 
-        for (FoodItem item : items) {
-            List<String> tags = item.searchTags;
+        for (Food item : items) {
+            List<String> tags = item.tags;
             for (String tag : tags) {
                 if (ingredient.contains(" " + tag + " ") ||
                     ingredient.contains(" " + tag + ",") ||
                     ingredient.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
-                        Logger.debug("Found \"" + item.getName() + "\" for string '" + input + "'");
+                        Logger.debug("Found \"" + item.name + "\" for string '" + input + "'");
                         //food = item;
                         matchingTagLength = tag.length();
                     }

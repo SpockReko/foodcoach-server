@@ -1,9 +1,7 @@
 package algorithms;
 
 import models.GlobalDummyModels;
-import models.food.*;
-import models.food.fineli.Food;
-import models.user.User;
+import models.food.Food;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -22,10 +20,6 @@ public class QuicksortTest {
     private static Food food4;
     private static Food food5;
     private static Food food6;
-    private static Fats fat;
-    private static Vitamins vit;
-    private static Minerals min;
-    private static Sugars sug;
     private static List<Food> foodList = new ArrayList<>();
     private static List<Food> sortedFoodList = new ArrayList<>();
     private static int foodSize = 0;

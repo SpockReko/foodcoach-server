@@ -2,7 +2,7 @@ package algorithms;
 
 import models.GlobalDummyModels;
 import models.recipe.*;
-import models.food.fineli.Nutrient;
+import models.food.Nutrient;
 import models.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,14 +17,13 @@ import static org.junit.Assert.assertTrue;
 public class MenuAlgorithmsTest {
 
     //TODO: Add a user and recepie ith identical recepie and se if week menu chose this.
-
+    /*
     private static Double result;
     private static Menu resultingMenu;
     private static Menu resultingMenuFilterIngrediense;
     private static Menu resultingMenuFilterRecipe;
     private static Recipe userRecipe;
     private static List<Recipe> recipes = new ArrayList<>();
-
 
     @BeforeClass
     public static void init() {
@@ -86,5 +85,5 @@ public class MenuAlgorithmsTest {
         assertTrue(!resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
     }
 
-
+*/
 }

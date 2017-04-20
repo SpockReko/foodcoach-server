@@ -1,9 +1,8 @@
 package models.recipe;
 
 import com.avaje.ebean.Model;
-import models.food.*;
-import models.food.fineli.Food;
-import models.food.fineli.Nutrient;
+import models.food.Food;
+import models.food.Nutrient;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

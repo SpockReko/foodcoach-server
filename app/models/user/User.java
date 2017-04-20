@@ -7,10 +7,9 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static models.user.User.Sex.FEMALE;
-import static models.user.User.Sex.MALE;
 
 import helpers.Constants;
-import models.food.fineli.Nutrient;
+import models.food.Nutrient;
 
 
 /**
@@ -67,8 +66,8 @@ public class User extends Model {
     public User() {
 
         firstName = "user";
-        hmap.put(models.food.fineli.Nutrient.KCAL, 2000D);
-        hmap.put(models.food.fineli.Nutrient.KJ, 2000D* Constants.KCAL_FACTOR);
+        hmap.put(Nutrient.KCAL, 2000D);
+        hmap.put(Nutrient.KJ, 2000D* Constants.KCAL_FACTOR);
         hmap.put(Nutrient.PROTEIN, 0.15*hmap.get(Nutrient.KCAL)/4);
         hmap.put(Nutrient.CARBOHYDRATES, 0.55*hmap.get(Nutrient.KCAL)/4);
         hmap.put(Nutrient.FAT, 0.30*hmap.get(Nutrient.KCAL)/9);

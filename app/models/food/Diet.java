@@ -1,4 +1,4 @@
-package models.food.fineli;
+package models.food;
 
 import javax.persistence.*;
 

@@ -1,0 +1,79 @@
+0 Namn
+1 Livsmedelsnummer
+2 Energi (kcal)
+3 Energi (kJ)
+4 Kolhydrater (g)
+5 Fett (g)
+6 Protein (g)
+7 Fibrer (g)
+8 Vatten (g)
+9 Alkohol (g)
+10 Aska (g)
+11 Monosackarider (g)
+12 Disackarider (g)
+13 Sackaros (g)
+14 Fullkorn totalt (g)
+15 Sockerarter (g)
+16 Summa mättade fettsyror (g)
+17 Fettsyra 4:0-10:0 (g)
+18 Fettsyra 12:0 (g)
+19 Fettsyra 14:0 (g)
+20 Fettsyra 16:0 (g)
+21 Fettsyra 18:0 (g)
+22 Fettsyra 20:0 (g)
+23 Summa enkelomättade fettsyror (g)
+24 Fettsyra 16:1 (g)
+25 Fettsyra 18:1 (g)
+26 Summa fleromättade fettsyror (g)
+27 Fettsyra 18:2 (g)
+28 Fettsyra 18:3 (g)
+29 Fettsyra 20:4 (g)
+30 EPA (Fettsyra 20:5) (g)
+31 DPA (Fettsyra 22:5) (g)
+32 DHA (Fettsyra 22:6) (g)
+33 Kolesterol (mg)
+34 Retinol (µg)
+35 Vitamin A (µg)
+36 β-Karoten (µg)
+37 Vitamin D (µg)
+38 Vitamin E (mg)
+39 Vitamin K (µg)
+40 Tiamin (mg)
+41 Riboflavin (mg)
+42 Vitamin C (mg)
+43 Niacin (mg)
+44 Niacinekvivalenter (mg)
+45 Vitamin B6 (mg)
+46 Vitamin B12 (µg)
+47 Folat (µg)
+48 Fosfor (mg)
+49 Jod (µg)
+50 Järn (mg)
+51 Kalcium (mg)
+52 Kalium (mg)
+53 Magnesium (mg)
+54 Natrium (mg)
+55 Salt (g)
+56 Selen (µg)
+57 Zink (mg)
+58 Avfall (skal etc.) (%)
+59 Projekt
+60 Vetenskapligt namn
+61 Livsmedelsgrupp enligt EuroFIR
+62 Artklassificering
+63 Del av växt/djur
+64 Fysisk form
+65 Värmebehandling
+66 Tillagningsmetod
+67 Industriell process
+68 Konserveringsmetod
+69 Förpackningsmedium
+70 Förpackningstyp
+71 Förpackningsmaterial
+72 Etikettinformation
+73 Ursprung
+74 Utmärkande drag
+75 Exempelvis
+76 Visningsnamn
+77 Söksträngar
+78 Densitet

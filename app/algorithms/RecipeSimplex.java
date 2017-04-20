@@ -3,7 +3,7 @@ package algorithms;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 import models.recipe.Ingredient;
-import models.food.fineli.Nutrient;
+import models.food.Nutrient;
 import java.util.*;
 
 /**

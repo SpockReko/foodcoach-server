@@ -1,4 +1,4 @@
-package models.food.fineli;
+package models.food;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.DbArray;
