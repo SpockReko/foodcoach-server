@@ -27,16 +27,22 @@ public class Menu {
         commentList.add(comment);
     }
 
-    public String recipeListToString(Menu menu){
-
-        String text = "";
-        for(Recipe r : menu.getRecipeList()){
+    public String recipeListToString(){
+        String text = "Meny:\n\n";
+        for(Recipe r : this.getRecipeList()){
             text = text + r.getTitle() + "\n";
         }
-        text = text + "\n\n";
-        for(String comment : menu.getCommentList()){
+        text = text + "\n\nNäringsvärden i procent av användarens behov: (1 betyder näringsbehovet är uppfyllt)\n\n";
+        for(String comment : this.getCommentList()){
             text = text + comment + "\n";
         }
+        ShoppingList shop = new ShoppingList(this);
+        text = text + shop.toString();
+
+        text = text + "\n\nTotalta matsvinnet för din meny: (ska ändras till koldioxidutsläpp)\n\n";
+
+        text = text + shop.getTotalWaste() + " gram";
+
         return text;
     }
 

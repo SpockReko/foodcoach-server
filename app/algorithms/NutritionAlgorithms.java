@@ -30,9 +30,9 @@ public class NutritionAlgorithms {
                                         nutrient,
                                         nutrientsContent.get(nutrient),
                                         nutrientsNeed.get(nutrient),
-                                        overdoseValues.get(nutrient));
+                                        overdoseValues.get(nutrient), menu);
                 sum += L2NormTerm(percentageOfRDI);
-                addNutrionInfoToWeekMenu(menu, nutrient, percentageOfRDI);
+                addNutrionInfoToMenu(menu, nutrient, percentageOfRDI);
             }
         }
         return Math.sqrt(sum);
@@ -41,16 +41,19 @@ public class NutritionAlgorithms {
     /*
     If RDI of the nutrient is fulfilled, percentage is set to optimal value (100%). Also informs if the nutrient is overdosed.
      */
-    public static Double filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose) {
+    public static Double filterLimit (Nutrient nutrient, Double nutrientContent, Double nutrientNeed, Double overdose, Menu menu) {
         Double percentageNutrient = nutrientContent/nutrientNeed;
 
         if( percentageNutrient > 1D && nutrientContent < overdose ) {
             percentageNutrient = 1D;
         } else if (nutrientContent > overdose ){
             // TODO lägga till meddelande om att det är för mycket av näringsämnet
+            menu.addComment("Överdosering av " + nutrient + ", innehåller " + percentageNutrient);
+            System.out.print(menu.recipeListToString());
             System.out.print("\nOBS!!! Överdosering av ");
             System.out.print(nutrient);
             System.out.print("\nInnehåll: "+nutrientContent+". Behov: "+nutrientNeed+"\n\n");
+
         }
         return percentageNutrient;
     }
@@ -116,7 +119,7 @@ public class NutritionAlgorithms {
     }
 
 
-    private static void addNutrionInfoToWeekMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
+    private static void addNutrionInfoToMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
         if((nutrient + "").length() < 7) {
             menu.addComment(nutrient + ":\t\t" +
                     percentageOfRDI);

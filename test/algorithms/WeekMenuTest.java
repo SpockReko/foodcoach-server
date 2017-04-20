@@ -1,14 +1,11 @@
 package algorithms;
 
 import models.GlobalDummyModels;
-import models.food.*;
-import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.food.fineli.Nutrient;
 import models.user.User;
-import org.jetbrains.annotations.NotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -44,9 +41,9 @@ public class WeekMenuTest {
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
-        MenuAlgorithms weekMenu = new MenuAlgorithms(user,recipes);
-        weekMenu.setNrOfRecipes(1);
-        resultingMenu = weekMenu.calculateWeekMenu(new ArrayList<>());
+        MenuAlgorithms weekMenu = new MenuAlgorithms(recipes, new ArrayList<>(), 1);
+
+        resultingMenu = weekMenu.calculateWeekMenu(user);
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -55,11 +52,13 @@ public class WeekMenuTest {
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         weekMenu.addAllergies(usersPerfectIngrediense);
-        resultingMenuFilterIngrediense = weekMenu.calculateWeekMenu(new ArrayList<>());
+
+        resultingMenuFilterIngrediense = weekMenu.calculateWeekMenu(user);
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
-        resultingMenuFilterRecipe = weekMenu.calculateWeekMenu(filterList);
+        weekMenu = new MenuAlgorithms(recipes, filterList, 1);
+        resultingMenuFilterRecipe = weekMenu.calculateWeekMenu(user);
 
     }
 
@@ -93,5 +92,4 @@ public class WeekMenuTest {
         }
         assertFalse(resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
     }
-
 }

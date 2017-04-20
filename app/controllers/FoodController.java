@@ -1,7 +1,9 @@
 package controllers;
 
+import algorithms.QuicksortFoodItem;
 import models.food.FoodGroup;
 import models.food.FoodItem;
+import models.food.fineli.Food;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -18,12 +20,12 @@ import java.util.List;
 public class FoodController extends Controller {
 
     // GET /food/:id
-    public Result get(int lmvNumber) {
-        FoodItem food;
+    public Result get(int id) {
+        Food food;
         try {
-            food = FoodItem.find.where().eq("lmv_food_number", lmvNumber).findUnique();
+            food = Food.find.where().eq("dataSourceId", id).findUnique();
         } catch (PersistenceException e) {
-            return badRequest("No food with food number '" + lmvNumber + "' in table FoodItems");
+            return badRequest("No food with food number '" + id + "' in table FoodItems");
         }
         return ok(Json.toJson(food));
     }
@@ -48,5 +50,26 @@ public class FoodController extends Controller {
             return badRequest("No food group with code '" + code + "' in table FoodGroups");
         }
         return ok(Json.toJson(groups));
+    }
+
+    // GET /food/sort/:id
+    public Result sortById(int id){
+        Food food;
+        List<Food> allFoodItems;
+        try {
+            food = Food.find.where().eq("dataSourceId", id).findUnique();
+            allFoodItems = Food.find.all();
+        } catch (PersistenceException e) {
+            return badRequest("No food with food number '" + id + "' in table FoodItems");
+        }
+
+        List<Food> sortedFood = QuicksortFoodItem.sort(allFoodItems, food);
+        // To get a good outprint on the webpage!
+        String foodlist = food.getDataSourceId() + " " + food.name + "\n\n";
+        for (Food f: sortedFood) {
+            foodlist = foodlist + f.getDataSourceId() + " " +f.name +
+                    " with diff: " + QuicksortFoodItem.diff(f,food) + "\n";
+        }
+        return ok(foodlist, "UTF-8");
     }
 }
