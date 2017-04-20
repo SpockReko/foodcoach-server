@@ -17,6 +17,10 @@ import java.util.List;
  */
 public class ReceptFavoriterParser implements RecipeParser {
 
+    private List<String> afterEller = new ArrayList<>();
+    private List<String> afterOch = new ArrayList<>();
+    private String beforeColon = "";
+
     @Override
     public Recipe parse(String html) {
         IngredientParser ingredientParser = new IngredientParser();
@@ -32,6 +36,7 @@ public class ReceptFavoriterParser implements RecipeParser {
         for (Element ingredientString : ingredientStrings) {
             Ingredient ingredient;
             String webString = ingredientString.text().toLowerCase().trim();
+            webString = handleEdgeCases(webString);
             ingredient = ingredientParser.parse(webString);
             if (ingredient != null) {
                 ingredients.add(ingredient);
@@ -41,6 +46,49 @@ public class ReceptFavoriterParser implements RecipeParser {
         }
 
         return new Recipe(title, portions, ingredients);
+    }
+
+    private String handleEdgeCases(String webString) {
+        //Handle ":"
+        if (webString.contains(":")){
+            String[] split = webString.toLowerCase().split(":");
+            webString = split[1];
+            beforeColon = split[0];
+            System.out.println("AFTER COLON: " + split[1]);
+            System.out.println("TOTAL LINE: " + webString);
+            System.out.println("BEFORE COLON: " + split[0]);
+        }
+
+        //Handle "eller"
+        if (webString.toLowerCase().contains(" " + "eller" + " ") ||
+                webString.toLowerCase().contains(" " + "eller" + ",") ||
+                webString.toLowerCase().contains(" " + "eller" + ".")) {
+            String[] split = webString.toLowerCase().split(" eller");
+            webString = split[0];
+            for (int i = 1; i<split.length; i++) {
+                afterEller.add(split[i]);
+                System.out.println("AFTER ELLER: " + split[i]);
+            }
+            System.out.println("TOTAL LINE: " + webString);
+            System.out.println("BEFORE ELLER: " + split[0]);
+        }
+
+        //Handle "och"
+        if (webString.toLowerCase().contains(" " + "och" + " ") ||
+                webString.toLowerCase().contains(" " + "och" + ",") ||
+                webString.toLowerCase().contains(" " + "och" + ".")) {
+            String[] split = webString.toLowerCase().split(" och");
+            webString = split[0];
+            for (int i = 1; i<split.length; i++) {
+                afterOch.add(split[i]);
+                System.out.println("AFTER OCH: " + split[i]);
+            }
+            System.out.println("TOTAL LINE: " + webString);
+            System.out.println("BEFORE OCH: " + split[0]);
+        }
+
+        System.out.println("WEBSTRING: " + webString);
+        return webString;
     }
 
     @Override

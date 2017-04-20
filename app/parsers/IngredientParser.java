@@ -32,6 +32,7 @@ public class IngredientParser {
     private String insideParenthesis = "";
 
     public Ingredient parse(String webString) {
+        Ingredient ingredient;
 
         String[] parenthesis = extractParenthesis(webString);
         String line = parenthesis[0];
@@ -48,7 +49,6 @@ public class IngredientParser {
             e.printStackTrace();
         }
 
-        Ingredient ingredient;
         try {
             ingredient = findIngredient(webString);
         } catch (IngredientNotFoundException e) {
@@ -64,34 +64,30 @@ public class IngredientParser {
         FoodGeneral foodGeneral = findFoodGeneral();
         List<String> tags;
         Food food;
-        int tagAmount = 100;
+        String currentTag = null;
+        Boolean hasTag = false;
+        int tagAmount = Integer.MAX_VALUE;
         int currentTagAmount;
         int matchingTagAmount = 0;
         int currentMatchingTagAmount = 0;
-        String currentTag = null;
 
         if (foodGeneral == null){
             food = null;
         } else {
             food = foodGeneral.defaultFood;
-            for (TaggedWord tagged : taggedWords
-                 ) {
-                System.out.println(tagged.getWord());
-            }
             for (Food f: foodGeneral.foods) {
                 tags = f.tags;
                 for (String tag : tags) {
                     currentTagAmount = tags.size();
-                    System.out.println("TAG: " + tag);
                     for (TaggedWord tagged : taggedWords) {
                         if (webString.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord().equals(tag)) {
                             currentMatchingTagAmount++;
-                            System.out.println("TAG: " + tag);
                             if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount) {
                                 food = f;
                                 tagAmount = currentTagAmount;
                                 matchingTagAmount = currentMatchingTagAmount;
                                 currentTag = tag;
+                                hasTag = true;
                             }
                         }
                     }
@@ -100,13 +96,8 @@ public class IngredientParser {
             }
         }
 
-        if (currentTag != null){
-            if (webString.contains(" " + currentTag + " ")||
-                    leftover.contains(" " + currentTag + ",") ||
-                    leftover.contains(" " + currentTag + ".")){
-                System.out.println("IN IF OSV OSV");
-                leftover = leftover.replace(currentTag, "");
-            }
+        if (hasTag) {
+            leftover = leftover.replace(currentTag, "");
         }
 
         if (food != null) {
@@ -195,14 +186,12 @@ public class IngredientParser {
         int matchingTagLength = 0;
         FoodGeneral foodGeneral = null;
         List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
-        System.out.println("HEJ!!!!!!!!!!!!: " + line);
 
         for (FoodGeneral general : items) {
             List<String> tags = general.searchTags;
             tags.add(general.name.toLowerCase());
             for (String tag : tags) {
-                if (// SKA VI HA DETTA???   line.contains(tag) ||
-                        line.contains(" " + tag + " ")||
+                if (line.contains(" " + tag + " ") ||
                     line.contains(" " + tag + ",") ||
                     line.contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
@@ -215,25 +204,14 @@ public class IngredientParser {
             }
         }
 
-        if (line.contains(" " + matchingTag + " ")||
-                line.contains(" " + matchingTag + ",") ||
-                line.contains(" " + matchingTag + ".")){
-            System.out.println("IN IF OSV OSV");
+        if (leftover.isEmpty()){
             leftover = line.replace(matchingTag, "");
-        }
-        else {
-            leftover = line;
-        }
-
-       // leftover = line.replace(matchingTag, "");
+        } else { leftover = leftover.replace(matchingTag, ""); }
 
         if (foodGeneral == null){
-            System.out.println("FOOD GENERAL NULL");
             FoodItemParser parser = new FoodItemParser();
-            System.out.println("LINE: " + line);
             String[] listLine = line.trim().split("\\s++");
             for (String word : listLine){
-                System.out.println("Word in line: " + word);
                 if (parser.autoCorrect(word) != null){
                     foodGeneral = parser.autoCorrect(word);
                     if (!leftover.isEmpty()) {
