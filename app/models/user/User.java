@@ -99,14 +99,18 @@ public class User extends Model {
     public User(int dummyNr){
         firstName = "Stefan";
         if(dummyNr==1) {
-        this.sex = Sex.MALE;
-        this.activityLevel = 1.2;
-        this.weight = 102.0;
-        this.height = 191.0;
-        this.age = 30;
-        this.goal = Goal.DECREASE;
-        dailyCalories();
-        calculateOverdoseValues(age);
+            this.sex = Sex.MALE;
+            this.activityLevel = 1.2;
+            this.weight = 102.0;
+            this.height = 191.0;
+            this.age = 30;
+            this.goal = Goal.DECREASE;
+            dailyCalories();
+            calculateOverdoseValues(age);
+        }else if(dummyNr==2){
+
+        }else{
+            new User();
         }
     }
 

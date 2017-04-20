@@ -74,23 +74,27 @@ public class QuicksortFoodItem {
 
         double sum = 0d;
 
-        sum += Math.abs(food1.getNutrient(Nutrient.KJ) - foodWeCompare.getNutrient(Nutrient.KJ))*20;
-        sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES))*20;
-        sum += Math.abs(food1.getNutrient(Nutrient.FAT) - foodWeCompare.getNutrient(Nutrient.FAT))*20;
-        sum += Math.abs(food1.getNutrient(Nutrient.PROTEIN) - foodWeCompare.getNutrient(Nutrient.PROTEIN))*20;
+        sum +=
+            Math.abs(food1.getNutrient(Nutrient.KJ) - foodWeCompare.getNutrient(Nutrient.KJ)) * 20;
+        sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES))
+            * 20;
+        sum += Math.abs(food1.getNutrient(Nutrient.FAT) - foodWeCompare.getNutrient(Nutrient.FAT))
+            * 20;
+        sum += Math.abs(food1.getNutrient(Nutrient.PROTEIN) - foodWeCompare.getNutrient(Nutrient.PROTEIN))
+            * 20;
         sum += Math.abs(food1.getNutrient(Nutrient.FIBRE) - foodWeCompare.getNutrient(Nutrient.FIBRE));
 
-        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_A) - foodWeCompare.getNutrient(Nutrient.VITAMIN_A));
+        //sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_A) - foodWeCompare.getNutrient(Nutrient.VITAMIN_A));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_D) - foodWeCompare.getNutrient(Nutrient.VITAMIN_D));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_E) - foodWeCompare.getNutrient(Nutrient.VITAMIN_E));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B6) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B6));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B12) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B12));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_C) - foodWeCompare.getNutrient(Nutrient.VITAMIN_C));
-        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_K) - foodWeCompare.getNutrient(Nutrient.VITAMIN_K));
+        //sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_K) - foodWeCompare.getNutrient(Nutrient.VITAMIN_K));
 
         sum += Math.abs(food1.getNutrient(Nutrient.CALCIUM) - foodWeCompare.getNutrient(Nutrient.CALCIUM));
         sum += Math.abs(food1.getNutrient(Nutrient.FOLATE) - foodWeCompare.getNutrient(Nutrient.FOLATE));
-        sum += Math.abs(food1.getNutrient(Nutrient.IODINE) - foodWeCompare.getNutrient(Nutrient.IODINE));
+        //sum += Math.abs(food1.getNutrient(Nutrient.IODINE) - foodWeCompare.getNutrient(Nutrient.IODINE));
         sum += Math.abs(food1.getNutrient(Nutrient.IRON) - foodWeCompare.getNutrient(Nutrient.IRON));
         sum += Math.abs(food1.getNutrient(Nutrient.MAGNESIUM) - foodWeCompare.getNutrient(Nutrient.MAGNESIUM));
         sum += Math.abs(food1.getNutrient(Nutrient.PHOSPHORUS) - foodWeCompare.getNutrient(Nutrient.PHOSPHORUS));
@@ -99,14 +103,14 @@ public class QuicksortFoodItem {
         sum += Math.abs(food1.getNutrient(Nutrient.SELENIUM) - foodWeCompare.getNutrient(Nutrient.SELENIUM));
         sum += Math.abs(food1.getNutrient(Nutrient.SODIUM) - foodWeCompare.getNutrient(Nutrient.SODIUM));
         sum += Math.abs(food1.getNutrient(Nutrient.ZINC) - foodWeCompare.getNutrient(Nutrient.ZINC));
-        //sum += Math.abs(food1.getSugars().getSugars() - foodWeCompare.getSugars().getSugars()); // TODO Fix getSugars in Food
 
         return sum;
     }
 
-    public static Float diff(Food food1, Food foodWeCompare) {
 
-        float sum = 0f;
+    public static Double diff(Food food1, Food foodWeCompare) {
+
+        double sum = 0f;
 
         sum += Math.abs(food1.getNutrient(Nutrient.KCAL) - foodWeCompare.getNutrient(Nutrient.KCAL))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES))*20;
@@ -114,17 +118,17 @@ public class QuicksortFoodItem {
         sum += Math.abs(food1.getNutrient(Nutrient.PROTEIN) - foodWeCompare.getNutrient(Nutrient.PROTEIN))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.FIBRE) - foodWeCompare.getNutrient(Nutrient.FIBRE))*20;
 
-        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_A) - foodWeCompare.getNutrient(Nutrient.VITAMIN_A));
+        //sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_A) - foodWeCompare.getNutrient(Nutrient.VITAMIN_A));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_D) - foodWeCompare.getNutrient(Nutrient.VITAMIN_D));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_E) - foodWeCompare.getNutrient(Nutrient.VITAMIN_E));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B6) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B6));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_B12) - foodWeCompare.getNutrient(Nutrient.VITAMIN_B12));
         sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_C) - foodWeCompare.getNutrient(Nutrient.VITAMIN_C));
-        sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_K) - foodWeCompare.getNutrient(Nutrient.VITAMIN_K));
+        //sum += Math.abs(food1.getNutrient(Nutrient.VITAMIN_K) - foodWeCompare.getNutrient(Nutrient.VITAMIN_K));
 
         sum += Math.abs(food1.getNutrient(Nutrient.CALCIUM) - foodWeCompare.getNutrient(Nutrient.CALCIUM));
         sum += Math.abs(food1.getNutrient(Nutrient.FOLATE) - foodWeCompare.getNutrient(Nutrient.FOLATE));
-        sum += Math.abs(food1.getNutrient(Nutrient.IODINE) - foodWeCompare.getNutrient(Nutrient.IODINE));
+        //sum += Math.abs(food1.getNutrient(Nutrient.IODINE) - foodWeCompare.getNutrient(Nutrient.IODINE));
         sum += Math.abs(food1.getNutrient(Nutrient.IRON) - foodWeCompare.getNutrient(Nutrient.IRON));
         sum += Math.abs(food1.getNutrient(Nutrient.MAGNESIUM) - foodWeCompare.getNutrient(Nutrient.MAGNESIUM));
         sum += Math.abs(food1.getNutrient(Nutrient.PHOSPHORUS) - foodWeCompare.getNutrient(Nutrient.PHOSPHORUS));
@@ -134,7 +138,6 @@ public class QuicksortFoodItem {
         sum += Math.abs(food1.getNutrient(Nutrient.SODIUM) - foodWeCompare.getNutrient(Nutrient.SODIUM));
         sum += Math.abs(food1.getNutrient(Nutrient.ZINC) - foodWeCompare.getNutrient(Nutrient.ZINC));
         //sum += Math.abs(food1.getSugars().getSugars() - foodWeCompare.getSugars().getSugars());
-
         return sum;
     }
 

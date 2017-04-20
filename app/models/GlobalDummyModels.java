@@ -61,7 +61,7 @@ public class GlobalDummyModels {
         Ingredient perfectIngredient = new Ingredient(perfectFood, amount);
         ingredients.add(perfectIngredient);
 
-        return new Recipe("Recipe" + user.firstName, 1, ingredients);
+        return new Recipe("Recipe", 1, ingredients);
     }
 
 
