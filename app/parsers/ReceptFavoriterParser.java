@@ -43,6 +43,14 @@ public class ReceptFavoriterParser implements RecipeParser {
             } else {
                 Logger.error("Couldn't parse '" + webString + "' moving on...");
             }
+
+            if (!afterOch.isEmpty()){
+                if (ingredient != null) {
+                    ingredients.add(ingredient);
+                } else {
+                    Logger.error("Couldn't parse '" + webString + "' moving on...");
+                }
+            }
         }
 
         return new Recipe(title, portions, ingredients);
@@ -55,7 +63,6 @@ public class ReceptFavoriterParser implements RecipeParser {
             webString = split[1];
             beforeColon = split[0];
             System.out.println("AFTER COLON: " + split[1]);
-            System.out.println("TOTAL LINE: " + webString);
             System.out.println("BEFORE COLON: " + split[0]);
         }
 
@@ -69,7 +76,6 @@ public class ReceptFavoriterParser implements RecipeParser {
                 afterEller.add(split[i]);
                 System.out.println("AFTER ELLER: " + split[i]);
             }
-            System.out.println("TOTAL LINE: " + webString);
             System.out.println("BEFORE ELLER: " + split[0]);
         }
 
@@ -83,7 +89,6 @@ public class ReceptFavoriterParser implements RecipeParser {
                 afterOch.add(split[i]);
                 System.out.println("AFTER OCH: " + split[i]);
             }
-            System.out.println("TOTAL LINE: " + webString);
             System.out.println("BEFORE OCH: " + split[0]);
         }
 

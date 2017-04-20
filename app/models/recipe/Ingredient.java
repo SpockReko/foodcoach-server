@@ -26,6 +26,7 @@ public class Ingredient extends Model {
     @ManyToOne @NotNull private final Food food;
     @Embedded @NotNull private final Amount amount;
     public String comment;
+    public String title;
 
     @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
 
@@ -39,6 +40,14 @@ public class Ingredient extends Model {
         this.amount = amount;
         this.comment = comment;
     }
+
+    public Ingredient(Food food, Amount amount, String comment, String title) {
+        this.food = food;
+        this.amount = amount;
+        this.comment = comment;
+        this.title = title;
+    }
+
 
     public Food getFood() {
         return food;
