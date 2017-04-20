@@ -23,12 +23,8 @@ public class MenuAlgorithms {
 
     boolean noPrint = true;
 
-    public void setNoPrint(boolean noPrint) {
-        this.noPrint = noPrint;
-    }
-
     private final Double LARGE_DISTANCE = 999999999.9999;
-    private final int DEFAULT_VALUE_MENUS = 3;
+
     private Double optimalMenuNutrition;
     private Menu optimalMenu = new Menu(new ArrayList<>());
     private Menu[] menus;
@@ -39,12 +35,10 @@ public class MenuAlgorithms {
     private List<Ingredient> ingredientsToUse;
     private List<Ingredient> notTheseIngredients = new ArrayList<>();
     private List<Recipe> notTheseRecipes;
-
-
     /**
      * Constructor that creates a MenuAlgorithm class that holds recipes and can create
      * optimal menus by different criteria
-     * Nr of menus is limited to 3.
+     *
      *
      * @param
      * @param recipeList The list of recipes you want to chose between
@@ -55,6 +49,7 @@ public class MenuAlgorithms {
         this.nrOfRecipes = nrOfRecipes;
     }
 
+
     /**
      * Every time we want to calculate values we need clean containers for menus
      */
@@ -63,15 +58,6 @@ public class MenuAlgorithms {
         optimalMenu = new Menu(new ArrayList<>());
         filterRecipes(notTheseIngredients, notTheseRecipes);
         menuList = new ArrayList<>();
-    }
-
-    /**
-     * Adds allergies to the calculations
-     *
-     * @param ingredient
-     */
-    public void addAllergies(Ingredient ingredient) {
-        notTheseIngredients.add(ingredient);
     }
 
     /**
@@ -105,45 +91,18 @@ public class MenuAlgorithms {
         }
     }
 
-
     /**
-     * Returns the least optimized value in menus
      *
-     * @param optimize
-     * @return menu;
+     * @param user
+     * @return
      */
-    private int getOptimalMenuIndex(Function<Menu, Double> optimize) {
-        Menu menu = menus[0];
-        int returnIndex = 0;
-        if (menu == null)
-            return 0;
-
-        for (int i = 0; i < menus.length; i++) {
-            if (menus[i] == null)
-                return i;
-
-            double mValue = optimize.apply(menus[i]);
-            double menuValue = optimize.apply(menu);
-
-            if (mValue > menuValue) { //The worse value is better!
-                returnIndex = i;
-            }
-        }
-        return returnIndex;
-    }
-
-
     public Menu calculateMenuNutrition(User user) {
-        return calculateMenuNutrition(user, DEFAULT_VALUE_MENUS);
-    }
-
-    public Menu calculateMenuNutrition(User user, int numberOfMenus) {
         this.user = user;
-        menus = new Menu[numberOfMenus];
         reset();
         returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
         return optimalMenu;
     }
+
 
     /**
      * Calculates a week menu using user specified ingredients.
@@ -158,6 +117,11 @@ public class MenuAlgorithms {
         return optimalMenu;
     }
 
+    /**
+     *
+     * @param ingredientList
+     * @return
+     */
     public Menu CalculateWeekMenuMinimalWaste(List<Ingredient> ingredientList) {
         reset();
         this.ingredientsToUse=ingredientList;
@@ -271,6 +235,24 @@ public class MenuAlgorithms {
         return ingredientList;
     }
 
+
+    /** ///////////////////////////////
+     *  Setters and getters
+     */////////////////////////////////
+
+    /**
+     * Adds allergies to the calculations
+     *
+     * @param ingredient
+     */
+    public void addAllergies(Ingredient ingredient) {
+        notTheseIngredients.add(ingredient);
+    }
+
+    public void setNoPrint(boolean noPrint) {
+        this.noPrint = noPrint;
+    }
+
     /**
      * @return
      */
@@ -290,5 +272,33 @@ public class MenuAlgorithms {
      */
     public Menu[] getMenus() {
         return menus.clone();
+    }
+
+//############### Help-classes ################
+
+    /**
+     * Returns the least optimized value in menus
+     *
+     * @param optimize
+     * @return menu;
+     */
+    private int getOptimalMenuIndex(Function<Menu, Double> optimize) {
+        Menu menu = menus[0];
+        int returnIndex = 0;
+        if (menu == null)
+            return 0;
+
+        for (int i = 0; i < menus.length; i++) {
+            if (menus[i] == null)
+                return i;
+
+            double mValue = optimize.apply(menus[i]);
+            double menuValue = optimize.apply(menu);
+
+            if (mValue > menuValue) { //The worse value is better!
+                returnIndex = i;
+            }
+        }
+        return returnIndex;
     }
 }
