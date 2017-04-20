@@ -32,7 +32,7 @@ public class WeekMenuTest {
     public static void init() {
 
         User user = new User();
-        User stefan = new User(1);
+        User stefan = new User("Stefan");
 
         userRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(user);
         Recipe stefanRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(stefan);
@@ -77,10 +77,10 @@ public class WeekMenuTest {
         assertTrue(result == 0);
     }
 
-//    @Test
-//    public void filterIngredientTest(){
-//        assertTrue(!resultingMenuFilterIngrediense.getRecipeList().contains(userRecipe));
-//    }
+    @Test
+    public void filterIngredientTest(){
+        assertTrue(!resultingMenuFilterIngrediense.getRecipeList().contains(userRecipe));
+    }
 
     @Test
     public void filterRecipeTest(){

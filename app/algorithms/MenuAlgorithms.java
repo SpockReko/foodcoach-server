@@ -55,8 +55,8 @@ public class MenuAlgorithms {
      * @return
      */
     public Menu calculateMenuNutrition(User user) {
-        this.user = user;
         reset();
+        this.user = user;
         returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
         return optimalMenu;
     }
