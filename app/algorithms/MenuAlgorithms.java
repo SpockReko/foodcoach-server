@@ -36,8 +36,7 @@ public class MenuAlgorithms {
     private List<Recipe> allRecipes = new ArrayList<>();
     private List<Menu> menuList = new ArrayList<>();
     private User user = new User();
-    private List<Food> foodItemList;
-    private List<Amount> amountList;
+    private List<Ingredient> ingredientsToUse;
     private List<Ingredient> notTheseIngredients = new ArrayList<>();
     private List<Recipe> notTheseRecipes;
 
@@ -147,31 +146,26 @@ public class MenuAlgorithms {
     }
 
     /**
-     * Calculates a weekmenu using a list of food items
-     *
-     * @param foodItemList
-     * @return the menu that generates the shortest shopping list.
-     */
-    public Menu calculateWeekMenu(List<Food> foodItemList) {
-        reset();
-        this.foodItemList = new ArrayList<>(foodItemList);
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nbrOfFoodsUsed);
-        return optimalMenu;
-    }
-
-    /**
-     * Calculates a menu using user specified ingredients.
+     * Calculates a week menu using user specified ingredients.
      *
      * @param
      * @return the menu that generates the shortest shopping list.
      */
-    public Menu calculateWeekMenu(List<Food> foodItemList, List<Amount> amountList) {
+    public Menu CalculateWeekMenu(List<Ingredient> ingredientList)  {
         reset();
-        this.foodItemList = new ArrayList<>(foodItemList);
-        this.amountList = new ArrayList<>(amountList);
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::lengthOfShoppingList);
+        this.ingredientsToUse=ingredientList;
+        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::lengthOfShoppingList);
         return optimalMenu;
     }
+
+    public Menu CalculateWeekMenuMinimalWaste(List<Ingredient> ingredientList) {
+        reset();
+        this.ingredientsToUse=ingredientList;
+        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getCO2);
+        return optimalMenu;
+    }
+
+
 
     /**
      * @param chosenMenu
@@ -190,35 +184,25 @@ public class MenuAlgorithms {
      * @param menu
      * @return
      */
-    private double nbrOfFoodsUsed(Menu menu) {
-        List<Food> foodItemsLeft = foodItemList;
-        List<Food> usedFood = new ArrayList<>();
-        for (Recipe recipe : menu.getRecipeList()) {
-            for (int i = 0; i < recipe.ingredients.size(); i++) {
-                Food food = recipe.ingredients.get(i).getFood();
-                if (foodItemsLeft.contains(food)) {
-                    foodItemsLeft.remove(food);
-                    usedFood.add(food);
-                }
-            }
+    private Double lengthOfShoppingList(Menu menu){
+        ShoppingList shoppingList=new ShoppingList(menu);
+        for(int i=0; i<ingredientsToUse.size(); i++){
+            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
         }
-        return usedFood.size();
+        //return shoppingList.size()+0.0;
+        return shoppingList.getLeftovers().size()+0.0;
     }
 
     /**
      * @param menu
      * @return
      */
-    private Double lengthOfShoppingList(Menu menu) {
-        ShoppingList shoppingList = new ShoppingList(menu);
-
-        for (int i = 0; i < foodItemList.size(); i++) {
-            shoppingList
-                .removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
-                    amountList.get(i).getAmount());
+    private Double getCO2(Menu menu){
+        ShoppingList shoppingList=new ShoppingList(menu);
+        for(int i=0; i<ingredientsToUse.size(); i++){
+            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
         }
-        nutritionValueCalculation(menu);
-        return shoppingList.size() + 0.0;
+        return shoppingList.getCO2();
     }
 
     /**

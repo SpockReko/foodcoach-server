@@ -287,8 +287,6 @@ public class Food extends Model {
                 break;
         }
 
-
-
         //mejeri
         switch(category) {
             case Mjolk: case Modersmjolksersattningar_och_modersmjolk: case Syrade_mjolkprodukter: case ovrig_mjolk:
@@ -390,8 +388,6 @@ public class Food extends Model {
             value = 00.3;
                 break;
         }
-
-
         switch(category) {
             case Vatten:
                 value = 0.0;
@@ -399,6 +395,4 @@ public class Food extends Model {
         }
         return value;
     }
-
-
 }

@@ -12,7 +12,7 @@ import java.util.*;
 public class ShoppingList {
 
     private Map<Ingredient, Boolean> map = new HashMap<>();
-    private Double totalWaste = 0.0;
+    private Double CO2 = 0.0;
     private static List<Ingredient> ingredients;
     private List<Ingredient> leftovers;
 
@@ -50,12 +50,12 @@ public class ShoppingList {
 
         for (Ingredient ingredient : list) {
             if (map.containsKey(ingredient)) {
-                //totalWaste -= ingredient.getWaste();
+                //CO2 -= ingredient.getCO2();
                 putTogetherIngredients(check, ingredient);
             } else {
                 this.map.put(ingredient, check);
             }
-            //totalWaste += ingredient.getWaste();
+            //CO2 += ingredient.getCO2();
         }
     }
 
@@ -163,8 +163,8 @@ public class ShoppingList {
     }
 
     // get total waste
-    public Double getTotalWaste() {
-        return totalWaste;
+    public Double getCO2() {
+        return CO2;
     }
 
     public List<Ingredient> getLeftovers(){
