@@ -236,6 +236,5 @@ public class IngredientFinder {
         }
     }
 
-    private class IngredientNotFoundException extends Throwable {
-    }
+    private class IngredientNotFoundException extends Throwable {}
 }
