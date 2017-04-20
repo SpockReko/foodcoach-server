@@ -1,6 +1,5 @@
 package parsers;
 
-import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
@@ -18,9 +17,6 @@ import java.util.List;
  */
 public class ReceptFavoriterParser implements RecipeParser {
 
-    private List<String> afterEller = new ArrayList<>();
-    private List<String> afterOch = new ArrayList<>();
-
     @Override
     public Recipe parse(String html) {
         IngredientParser ingredientParser = new IngredientParser();
@@ -34,71 +30,20 @@ public class ReceptFavoriterParser implements RecipeParser {
         List<Ingredient> ingredients = new ArrayList<>();
 
         for (Element ingredientString : ingredientStrings) {
-            Ingredient ingredient;
+            List<Ingredient> newIngredients;
             String webString = ingredientString.text().toLowerCase().trim();
-            webString = handleEdgeCases(webString);
-            ingredient = ingredientParser.parse(webString);
+            newIngredients = ingredientParser.parse(webString);
 
-            if (ingredient != null) {
-                ingredients.add(ingredient);
-            } else {
-                Logger.error("Couldn't parse '" + webString + "' moving on...");
-            }
-
-            if (!afterOch.isEmpty()){
-                for (String och : afterOch) {
-                    if (ingredientParser.hasAmount(och)){
-                        ingredient = ingredientParser.parse(och);
-                        if (ingredient != null) {
-                            ingredients.add(ingredient);
-                        } else {
-                            Logger.error("Couldn't parse '" + och + "' moving on...");
-                        }
-                    } else {
-                        Amount amount = ingredient.getAmount();
-                        ingredient = ingredientParser.parse(och, amount);
-                        if (ingredient != null) {
-                            ingredients.add(ingredient);
-                        } else {
-                            Logger.error("Couldn't parse '" + och + "' moving on...");
-                        }
-                    }
+            for (Ingredient newIngredient : newIngredients) {
+                if (newIngredient != null) {
+                    ingredients.add(newIngredient);
+                } else {
+                    Logger.error("Couldn't parse '" + webString + "' moving on...");
                 }
             }
         }
 
         return new Recipe(title, portions, ingredients);
-    }
-
-    private String handleEdgeCases(String webString) {
-        //Handle "eller"
-        if (webString.toLowerCase().contains(" " + "eller" + " ") ||
-                webString.toLowerCase().contains(" " + "eller" + ",") ||
-                webString.toLowerCase().contains(" " + "eller" + ".")) {
-            String[] split = webString.toLowerCase().split(" eller");
-            webString = split[0];
-            for (int i = 1; i<split.length; i++) {
-                afterEller.add(split[i]);
-                System.out.println("AFTER ELLER: " + split[i]);
-            }
-            System.out.println("BEFORE ELLER: " + split[0]);
-        }
-
-        //Handle "och"
-        if (webString.toLowerCase().contains(" " + "och" + " ") ||
-                webString.toLowerCase().contains(" " + "och" + ",") ||
-                webString.toLowerCase().contains(" " + "och" + ".")) {
-            String[] split = webString.toLowerCase().split(" och");
-            webString = split[0];
-            for (int i = 1; i<split.length; i++) {
-                afterOch.add(split[i]);
-                System.out.println("AFTER OCH: " + split[i]);
-            }
-            System.out.println("BEFORE OCH: " + split[0]);
-        }
-
-        System.out.println("WEBSTRING: " + webString);
-        return webString;
     }
 
     @Override

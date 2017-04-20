@@ -25,51 +25,17 @@ import java.util.regex.Pattern;
  */
 public class IngredientParser {
 
+    private List<String> afterEller = new ArrayList<>();
+    private List<String> afterOch = new ArrayList<>();
+
     private List<TaggedWord> taggedWords;
     private String leftover = "";
     private String insideParenthesis = "";
     private String title = "";
-    private Boolean hasAmount;
+    private boolean hasAmount;
 
-    public Ingredient parse(String webString) {
-        Ingredient ingredient;
-
-        String[] parenthesis = extractParenthesis(webString);
-        String line = parenthesis[0];
-        if (parenthesis[1] != null) {
-            insideParenthesis = " (" + parenthesis[1] + ")";
-        } else {
-            insideParenthesis = "";
-        }
-
-        //Handle ":"
-        if (line.contains(":")){
-            String[] split = line.toLowerCase().split(":");
-            line = split[1];
-            title = split[0];
-            System.out.println("AFTER COLON: " + split[1]);
-            System.out.println("BEFORE COLON: " + split[0]);
-        }
-
-        try {
-            JsonNode jsonNode = retrieveWordInfo(line);
-            taggedWords = JsonHelper.getTaggedWords(jsonNode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            ingredient = findIngredient(webString);
-        } catch (IngredientNotFoundException e) {
-            Logger.error("No match \"" + webString + "\"");
-            return null;
-        }
-
-        return ingredient;
-    }
-
-    public Ingredient parse(String webString, Amount amount) {
-        Ingredient ingredient;
+    public List<Ingredient> parse(String webString) {
+        List<Ingredient> ingredients = new ArrayList<>();
 
         String[] parenthesis = extractParenthesis(webString);
         String line = parenthesis[0];
@@ -80,13 +46,15 @@ public class IngredientParser {
         }
 
         //Handle ":"
-        if (line.contains(":")){
+        if (line.contains(":")) {
             String[] split = line.toLowerCase().split(":");
             line = split[1];
             title = split[0];
             System.out.println("AFTER COLON: " + split[1]);
             System.out.println("BEFORE COLON: " + split[0]);
         }
+
+        line = handleEdgeCases(line);
 
         try {
             JsonNode jsonNode = retrieveWordInfo(line);
@@ -96,64 +64,52 @@ public class IngredientParser {
         }
 
         try {
-            ingredient = findIngredient(webString, amount);
+            Ingredient ingredient = findIngredient(line);
+            ingredients.add(ingredient);
         } catch (IngredientNotFoundException e) {
             Logger.error("No match \"" + webString + "\"");
             return null;
         }
 
-        return ingredient;
-    }
-
-    private Ingredient findIngredient(String webString) throws IngredientNotFoundException {
-        Amount amount = findAmount();
-        FoodGeneral foodGeneral = findFoodGeneral();
-        List<String> tags;
-        Food food;
-        String currentTag = null;
-        Boolean hasTag = false;
-        int tagAmount = Integer.MAX_VALUE;
-        int currentTagAmount;
-        int matchingTagAmount = 0;
-        int currentMatchingTagAmount = 0;
-
-        if (foodGeneral == null){
-            food = null;
-        } else {
-            food = foodGeneral.defaultFood;
-            for (Food f: foodGeneral.foods) {
-                tags = f.tags;
-                for (String tag : tags) {
-                    currentTagAmount = tags.size();
-                    for (TaggedWord tagged : taggedWords) {
-                        if (webString.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord().equals(tag)) {
-                            currentMatchingTagAmount++;
-                            if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount) {
-                                food = f;
-                                tagAmount = currentTagAmount;
-                                matchingTagAmount = currentMatchingTagAmount;
-                                currentTag = tag;
-                                hasTag = true;
-                            }
-                        }
+        if (!afterOch.isEmpty()) {
+            for (String och : afterOch) {
+                if (hasAmount(och)) {
+                    try {
+                        ingredients.add(findIngredient(och));
+                    } catch (IngredientNotFoundException e) {
+                        Logger.error("No match \"" + webString + "\"");
+                    }
+                } else {
+                    Amount amount = ingredients.get(0).getAmount();
+                    try {
+                        ingredients.add(findIngredient(och, amount));
+                    } catch (IngredientNotFoundException e) {
+                        Logger.error("No match \"" + webString + "\"");
                     }
                 }
-                currentMatchingTagAmount = 0;
             }
         }
 
-        if (hasTag) {
-            leftover = leftover.replace(currentTag, "");
-        }
+        return ingredients;
+    }
+
+    private Ingredient findIngredient(String line) throws IngredientNotFoundException {
+        return findIngredient(line, findAmount());
+    }
+
+    private Ingredient findIngredient(String line, Amount amount) throws IngredientNotFoundException {
+        FoodGeneral foodGeneral = findFoodGeneral();
+        Food food = findFood(foodGeneral, line);
 
         if (food != null) {
-            if (!title.equals("")){
+            if (!title.equals("")) {
                 if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                     String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                     comment += insideParenthesis;
                     Logger.trace("Added " + comment.trim() + " as comment");
-                    Logger.info("Ingredient { " + amount.getAmount() + ", " +
-                            amount.getUnit() + ", " + food.name + ", \"" + comment.trim() + "\" }");
+                    Logger.info(
+                        "Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
+                            + food.name + ", \"" + comment.trim() + "\" }");
                     return new Ingredient(food, amount, comment.trim(), title);
                 } else {
                     return new Ingredient(food, amount, null, title);
@@ -163,99 +119,17 @@ public class IngredientParser {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 comment += insideParenthesis;
                 Logger.trace("Added " + comment.trim() + " as comment");
-                Logger.info("Ingredient { " + amount.getAmount() + ", " +
-                    amount.getUnit() + ", " + food.name + ", \"" + comment.trim() + "\" }");
+                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
+                    + food.name + ", \"" + comment.trim() + "\" }");
                 return new Ingredient(food, amount, comment.trim());
             } else {
-                Logger.info("Ingredient { " +
-                    amount.getAmount() + ", " + amount.getUnit() + ", " + food.name + " }");
+                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
+                    + food.name + " }");
                 return new Ingredient(food, amount);
             }
         } else {
             throw new IngredientNotFoundException();
         }
-    }
-
-    private Ingredient findIngredient(String webString, Amount amount) throws IngredientNotFoundException {
-        FoodGeneral foodGeneral = findFoodGeneral();
-        List<String> tags;
-        Food food;
-        String currentTag = null;
-        Boolean hasTag = false;
-        int tagAmount = Integer.MAX_VALUE;
-        int currentTagAmount;
-        int matchingTagAmount = 0;
-        int currentMatchingTagAmount = 0;
-
-        if (foodGeneral == null){
-            food = null;
-        } else {
-            food = foodGeneral.defaultFood;
-            for (Food f: foodGeneral.foods) {
-                tags = f.tags;
-                for (String tag : tags) {
-                    currentTagAmount = tags.size();
-                    for (TaggedWord tagged : taggedWords) {
-                        if (webString.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord().equals(tag)) {
-                            currentMatchingTagAmount++;
-                            if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount) {
-                                food = f;
-                                tagAmount = currentTagAmount;
-                                matchingTagAmount = currentMatchingTagAmount;
-                                currentTag = tag;
-                                hasTag = true;
-                            }
-                        }
-                    }
-                }
-                currentMatchingTagAmount = 0;
-            }
-        }
-
-        if (hasTag) {
-            leftover = leftover.replace(currentTag, "");
-        }
-
-        if (food != null) {
-            if (!title.equals("")){
-                if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
-                    String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
-                    comment += insideParenthesis;
-                    Logger.trace("Added " + comment.trim() + " as comment");
-                    Logger.info("Ingredient { " + amount.getAmount() + ", " +
-                            amount.getUnit() + ", " + food.name + ", \"" + comment.trim() + "\" }");
-                    return new Ingredient(food, amount, comment.trim(), title);
-                } else {
-                    return new Ingredient(food, amount, null, title);
-                }
-            }
-            if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
-                String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
-                comment += insideParenthesis;
-                Logger.trace("Added " + comment.trim() + " as comment");
-                Logger.info("Ingredient { " + amount.getAmount() + ", " +
-                        amount.getUnit() + ", " + food.name + ", \"" + comment.trim() + "\" }");
-                return new Ingredient(food, amount, comment.trim());
-            } else {
-                Logger.info("Ingredient { " +
-                        amount.getAmount() + ", " + amount.getUnit() + ", " + food.name + " }");
-                return new Ingredient(food, amount);
-            }
-        } else {
-            throw new IngredientNotFoundException();
-        }
-    }
-
-    private String[] extractParenthesis(String input) {
-        String[] split = new String[2];
-        Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(input);
-        while(m.find()) {
-            if (m.group(1) != null) {
-                split[1] = m.group(1);
-            }
-        }
-        split[0] = input.replaceAll("\\(([^)]+)\\)", "");
-        return split;
     }
 
     private Amount findAmount() {
@@ -305,11 +179,6 @@ public class IngredientParser {
         }
     }
 
-    public Boolean hasAmount(String webString) {
-        findAmount();
-        return hasAmount;
-    }
-
     private FoodGeneral findFoodGeneral() {
         StringBuilder builder = new StringBuilder(" ");
         for (TaggedWord taggedWord : taggedWords) {
@@ -326,9 +195,8 @@ public class IngredientParser {
             List<String> tags = general.searchTags;
             tags.add(general.name.toLowerCase());
             for (String tag : tags) {
-                if (line.contains(" " + tag + " ") ||
-                    line.contains(" " + tag + ",") ||
-                    line.contains(" " + tag + ".")) {
+                if (line.contains(" " + tag + " ") || line.contains(" " + tag + ",") || line
+                    .contains(" " + tag + ".")) {
                     if (tag.length() > matchingTagLength) {
                         Logger.trace("Found \"" + general.name + "\"");
                         foodGeneral = general;
@@ -339,17 +207,19 @@ public class IngredientParser {
             }
         }
 
-        if (leftover.isEmpty()){
+        if (leftover.isEmpty()) {
             leftover = line.replace(matchingTag, "");
-        } else { leftover = leftover.replace(matchingTag, ""); }
+        } else {
+            leftover = leftover.replace(matchingTag, "");
+        }
 
-        if (foodGeneral == null){
+        if (foodGeneral == null) {
             System.out.println("FOOD GENERAL NULL");
             FoodParser parser = new FoodParser();
             System.out.println("LINE: " + line);
             String[] listLine = line.trim().split("\\s++");
-            for (String word : listLine){
-                if (parser.autoCorrect(word) != null){
+            for (String word : listLine) {
+                if (parser.autoCorrect(word) != null) {
                     foodGeneral = parser.autoCorrect(word);
                     if (!leftover.isEmpty()) {
                         leftover = leftover.replace(word, "");
@@ -364,17 +234,106 @@ public class IngredientParser {
         return foodGeneral;
     }
 
+    private Food findFood(FoodGeneral foodGeneral, String webString) {
+        List<String> tags;
+        Food food;
+        String currentTag = null;
+        Boolean hasTag = false;
+        int tagAmount = Integer.MAX_VALUE;
+        int currentTagAmount;
+        int matchingTagAmount = 0;
+        int currentMatchingTagAmount = 0;
+
+        if (foodGeneral == null) {
+            food = null;
+        } else {
+            food = foodGeneral.defaultFood;
+            for (Food f : foodGeneral.foods) {
+                tags = f.tags;
+                for (String tag : tags) {
+                    currentTagAmount = tags.size();
+                    for (TaggedWord tagged : taggedWords) {
+                        if (webString.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord().equals(tag)) {
+                            currentMatchingTagAmount++;
+                            if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount) {
+                                food = f;
+                                tagAmount = currentTagAmount;
+                                matchingTagAmount = currentMatchingTagAmount;
+                                currentTag = tag;
+                                hasTag = true;
+                            }
+                        }
+                    }
+                }
+                currentMatchingTagAmount = 0;
+            }
+        }
+
+        if (hasTag) {
+            leftover = leftover.replace(currentTag, "");
+        }
+
+        return food;
+    }
+
+    private String handleEdgeCases(String webString) {
+        //Handle "eller"
+        if (webString.toLowerCase().contains(" " + "eller" + " ") || webString.toLowerCase()
+            .contains(" " + "eller" + ",") || webString.toLowerCase()
+            .contains(" " + "eller" + ".")) {
+            String[] split = webString.toLowerCase().split(" eller");
+            webString = split[0];
+            for (int i = 1; i < split.length; i++) {
+                afterEller.add(split[i]);
+                System.out.println("AFTER ELLER: " + split[i]);
+            }
+            System.out.println("BEFORE ELLER: " + split[0]);
+        }
+
+        //Handle "och"
+        if (webString.toLowerCase().contains(" " + "och" + " ") || webString.toLowerCase()
+            .contains(" " + "och" + ",") || webString.toLowerCase().contains(" " + "och" + ".")) {
+            String[] split = webString.toLowerCase().split(" och");
+            webString = split[0];
+            for (int i = 1; i < split.length; i++) {
+                afterOch.add(split[i]);
+                System.out.println("AFTER OCH: " + split[i]);
+            }
+            System.out.println("BEFORE OCH: " + split[0]);
+        }
+
+        System.out.println("WEBSTRING: " + webString);
+        return webString;
+    }
+
+    private String[] extractParenthesis(String input) {
+        String[] split = new String[2];
+        Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(input);
+        while (m.find()) {
+            if (m.group(1) != null) {
+                split[1] = m.group(1);
+            }
+        }
+        split[0] = input.replaceAll("\\(([^)]+)\\)", "");
+        return split;
+    }
+
+    public boolean hasAmount(String webString) {
+        findAmount();
+        return hasAmount;
+    }
+
     /**
      * Calls an external API to get words in a String classified.
      *
-     * @param webString
-     * @return
-     * @throws IOException
+     * @param line String to send to the API.
+     * @return A json respone with info about each word.
+     * @throws IOException When the HTTP request cannot be made.
      */
-    private JsonNode retrieveWordInfo(String webString) throws IOException {
+    private JsonNode retrieveWordInfo(String line) throws IOException {
         WSClient ws = WS.newClient(9000);
         CompletionStage<WSResponse> request = ws.url("https://json-tagger.com/tag")
-            .setContentType("application/x-www-form-urlencoded").post(webString);
+            .setContentType("application/x-www-form-urlencoded").post(line);
         CompletionStage<JsonNode> jsonPromise = request.thenApply(WSResponse::asJson);
         try {
             return jsonPromise.toCompletableFuture().get();
@@ -385,5 +344,6 @@ public class IngredientParser {
         }
     }
 
-    private class IngredientNotFoundException extends Throwable {}
+    private class IngredientNotFoundException extends Throwable {
+    }
 }
