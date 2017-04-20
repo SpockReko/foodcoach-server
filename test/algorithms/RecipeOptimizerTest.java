@@ -1,19 +1,10 @@
 package algorithms;
 
-import models.recipe.Ingredient;
 import models.recipe.Recipe;
-import models.user.Nutrient;
-import models.user.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static algorithms.TestVariables.ingrList1;
-import static models.GlobalDummyModels.createOptimalRecipeForSpecificUser;
 import static org.junit.Assert.*;
 
 /**

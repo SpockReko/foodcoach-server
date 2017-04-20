@@ -1,6 +1,8 @@
 package models.recipe;
 
 import models.GlobalDummyModels;
+import models.food.DataSource;
+import models.food.Food;
 import models.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,16 +49,13 @@ public class ShoppingListTest {
         ingredients.add(i);
         ingredients.add(i2);
 
-
         // Constructure with ingredient as parameters
         shoppingListWithIngredients = new ShoppingList(ingredients, false);
 
         // Constructor with Menu as parameter
         shoppingListWithMenu = new ShoppingList(menu);
 
-        newIngredient = new Ingredient(
-                new FoodItem("newfood",0),new Amount(100, Amount.Unit.GRAM)
-        );
+        newIngredient = new Ingredient(new Food("newfood", 0, DataSource.LMV), new Amount(100, Amount.Unit.GRAM));
     }
 
     @Test
