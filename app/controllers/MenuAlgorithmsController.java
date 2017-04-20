@@ -23,7 +23,8 @@ import java.util.ArrayList;
  */
 public class MenuAlgorithmsController extends Controller {
 
-    @Inject FormFactory formFactory;
+    @Inject
+    FormFactory formFactory;
 
     // POST /menu
     // GET  /menu
@@ -41,7 +42,7 @@ public class MenuAlgorithmsController extends Controller {
 
             //Change the format to suit user constructor variables.
             Integer age =
-                requestData.get("age") != null ? Integer.parseInt(requestData.get("age")) : 25;
+                    requestData.get("age") != null ? Integer.parseInt(requestData.get("age")) : 25;
             String sex = requestData.get("sex"); // output: "women" or "male"
             User.Sex sexEnum = sex.equals("women") ? User.Sex.FEMALE : User.Sex.MALE;
             Double weight = Double.parseDouble(requestData.get("weight"));
@@ -49,8 +50,8 @@ public class MenuAlgorithmsController extends Controller {
             Double activityLevel = Double.parseDouble(requestData.get("activityLevel")); // low: 1.2
             String goal = requestData.get("goal");// low: 1
             User.Goal goalEnum = goal.equals("1") ?
-                User.Goal.DECREASE :
-                goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
+                    User.Goal.DECREASE :
+                    goal.equals("2") ? User.Goal.STAY : User.Goal.INCREASE;
             String allergy = requestData.get("allergy");// sträng
             ArrayList<String> allergyList = new ArrayList<>();
             //for (String n : allergy.split(" ")) {
@@ -90,8 +91,51 @@ public class MenuAlgorithmsController extends Controller {
         }
     }
 
+    public Result menuBengt() {
+        User user;
+        int nrOfRecipes;
+        List<Recipe> removeRecipeList = new ArrayList<>();
+
+        user = new User("Bengt");
+        nrOfRecipes = 3;
+
+        List<Recipe> allRecipes = Recipe.find.all();
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+
+        if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingMenu.recipeListToString());
+        return ok("nothing found!");
+
+
+    }
+
+
+    public Result menuAnna() {
+
+        User user;
+        int nrOfRecipes;
+        List<Recipe> removeRecipeList = new ArrayList<>();
+
+        user = new User("Anna");
+        nrOfRecipes = 3;
+
+        List<Recipe> allRecipes = Recipe.find.all();
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+
+        if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(user.age + "\n" +resultingMenu.recipeListToString());
+        return ok("nothing found!");
+
+
+    }
+
+
     // GET     /menu2
-    public Result menu2(){
+    public Result menu2() {
 
         List<Recipe> removeRecipeList = new ArrayList<>();
         int nrOfRecipes = 3;
@@ -106,7 +150,7 @@ public class MenuAlgorithmsController extends Controller {
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(foods, amounts);
-        ShoppingList shoppingList=new ShoppingList(resultingMenu, foods, amounts);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, foods, amounts);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingMenu.recipeListToString());

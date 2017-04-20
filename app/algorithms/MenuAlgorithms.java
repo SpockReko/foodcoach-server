@@ -217,6 +217,7 @@ public class MenuAlgorithms {
                 .removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
                     amountList.get(i).getAmount());
         }
+        nutritionValueCalculation(menu);
         return shoppingList.size() + 0.0;
     }
 

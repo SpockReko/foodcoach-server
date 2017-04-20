@@ -95,9 +95,9 @@ public class User extends Model {
         calculateOverdoseValues(30);
     }
 
-    public User(int dummyNr){
-        firstName = "Stefan";
-        if(dummyNr==1) {
+    public User(String name){
+
+        if(name.equals("Stefan")) {
             this.sex = Sex.MALE;
             this.activityLevel = 1.2;
             this.weight = 102.0;
@@ -106,11 +106,28 @@ public class User extends Model {
             this.goal = Goal.DECREASE;
             dailyCalories();
             calculateOverdoseValues(age);
-        }else if(dummyNr==2){
-
+        }else if(name.equals("Bengt")){
+            this.sex = Sex.MALE;
+            this.activityLevel = 1.2;
+            this.weight = 102.0;
+            this.height = 180.0;
+            this.age = 76;
+            this.goal = Goal.STAY;
+            dailyCalories();
+            calculateOverdoseValues(age);
+        }else if(name.equals("Anna")){
+            this.sex = Sex.FEMALE;
+            this.activityLevel = 2.0;
+            this.weight = 60.0;
+            this.height = 160.0;
+            this.age = 20;
+            this.goal = Goal.STAY;
+            dailyCalories();
+            calculateOverdoseValues(age);
         }else{
             new User();
         }
+
     }
 
     public User(Sex sex, double activityLevel, double weight, double height, int age, Goal goal, ArrayList<String> allergier){
