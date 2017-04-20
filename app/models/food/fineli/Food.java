@@ -18,7 +18,7 @@ import java.util.List;
 public class Food extends Model {
 
     @Id private long id;
-    @Column(unique = true) private final int dataSourceId;
+    private final int dataSourceId;
 
     @NotNull public String name;
     @JsonBackReference

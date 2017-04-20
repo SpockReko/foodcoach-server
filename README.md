@@ -74,7 +74,7 @@ It is truly awesome. When you are done installing. Go into your terminal and typ
 brew install mysql
 ```
 
-Then, you type all this one row at a time to login to your MySQL and
+Then, you type all this one id at a time to login to your MySQL and
 create a database called **foodcoach**. This is the only name the application will recognize.
 
 ``` bash
@@ -157,7 +157,7 @@ owners.
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql> create database foodcoach;
-Query OK, 1 row affected (0.00 sec)
+Query OK, 1 id affected (0.00 sec)
 
 mysql>quit
 Bye

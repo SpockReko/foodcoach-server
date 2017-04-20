@@ -37,7 +37,9 @@ public class DatabaseFineliSeeder {
 
     private static final String FINELI_GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods.tsv";
     private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_FoodData.tsv";
-    private static final String MOCK_PATH = "resources/recipes/recipes_fineli.csv";
+    private static final String LMV_GENERAL_TSV = "resources/lmv_food/LMV_GeneralFoods.tsv";
+    private static final String LMV_DATA_TSV = "resources/lmv_food/LMV_FoodData.tsv";
+    private static final String RECIPES_PATH = "resources/recipes/recipes_fineli.csv";
 
     private enum Fineli {
         GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
@@ -52,10 +54,30 @@ public class DatabaseFineliSeeder {
         DATA_CALCIUM(33), DATA_POTASSIUM(36), DATA_MAGNESIUM(37), DATA_SODIUM(38),
         DATA_SELENIUM(41), DATA_ZINK(42);
 
-        private final int row;
-        
-        Fineli(final int row) {
-            this.row = row;
+        private final int id;
+
+        Fineli(final int id) {
+            this.id = id;
+        }
+    }
+
+    private enum LMV {
+        GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
+        GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
+        GEN_SCIENTIFIC_NAME(9),
+
+        DATA_ID(1), DATA_ENERGY_KJ(3), DATA_CARB(4), DATA_PROTEIN(6), DATA_FAT(5), DATA_FIBRE(7),
+        DATA_ALCOHOL(9), DATA_SALT(55), DATA_VITAMIN_A(35), DATA_VITAMIN_B6(45),
+        DATA_VITAMIN_B12(46), DATA_VITAMIN_C(42), DATA_VITAMIN_D(37), DATA_VITAMIN_E(38),
+        DATA_VITAMIN_K(39), DATA_THIAMINE(40), DATA_RIBOFLAVIN(41), DATA_NIACIN(43),
+        DATA_NIACIN_EQ(44), DATA_FOLATE(47), DATA_PHOSPHORUS(48), DATA_IODINE(49), DATA_IRON(50),
+        DATA_CALCIUM(51), DATA_POTASSIUM(52), DATA_MAGNESIUM(53), DATA_SODIUM(54),
+        DATA_SELENIUM(56), DATA_ZINK(57);
+
+        private final int id;
+
+        LMV(final int id) {
+            this.id = id;
         }
     }
 
@@ -63,19 +85,22 @@ public class DatabaseFineliSeeder {
     private static Map<FoodGeneral, Food> defaultFoods = new HashMap<>();
     private static List<Food> foods = new ArrayList<>();
     private static List<Diet> diets = new ArrayList<>();
-    private static Map<Integer, Integer> idRowNumbers = new HashMap<>();
+    private static Map<Integer, Integer> fineliRowIds = new HashMap<>();
+    private static Map<Integer, Integer> lmvRowIds = new HashMap<>();
 
     public static void main(String[] args) {
 
         db = CommonTools.getDatabase();
-
         TsvParserSettings settings = new TsvParserSettings();
         settings.getFormat().setLineSeparator("\n");
         settings.setNumberOfRowsToSkip(1);
-
         TsvParser parser = new TsvParser(settings);
-        List<String[]> generalRows = parser.parseAll(getReader(FINELI_GENERAL_TSV));
-        List<String[]> specificRows = parser.parseAll(getReader(FINELI_DATA_TSV));
+
+        List<String[]> fineliGeneralRows = parser.parseAll(getReader(FINELI_GENERAL_TSV));
+        List<String[]> fineliDataRows = parser.parseAll(getReader(FINELI_DATA_TSV));
+
+        List<String[]> lmvGeneralRows = parser.parseAll(getReader(LMV_GENERAL_TSV));
+        List<String[]> lmvDataRows = parser.parseAll(getReader(LMV_DATA_TSV));
 
         System.out.println(
             "\n" + CommonTools.PURPLE + "--- (Seeding database) ---\n" + CommonTools.RESET);
@@ -89,115 +114,194 @@ public class DatabaseFineliSeeder {
             return;
         }
 
-        for (int i = 0; i < specificRows.size(); i++) {
-            idRowNumbers.put(Integer.parseInt(specificRows.get(i)[Fineli.DATA_ID.row]), i);
+        for (int i = 0; i < fineliDataRows.size(); i++) {
+            fineliRowIds.put(Integer.parseInt(fineliDataRows.get(i)[Fineli.DATA_ID.id]), i);
+        }
+        for (int i = 0; i < lmvDataRows.size(); i++) {
+            lmvRowIds.put(Integer.parseInt(lmvDataRows.get(i)[LMV.DATA_ID.id]), i);
         }
 
-        System.out.print(CYAN + "Importing foods from Fineli..." + CommonTools.RESET);
-        importFoods(generalRows, specificRows);
+        System.out.print(CYAN + "Parsing foods from Fineli... " + CommonTools.RESET);
+        for (String[] cols : fineliGeneralRows) {
+            readGeneralRow(cols, fineliDataRows);
+        }
         printDone();
 
-        System.out.print(CYAN + "\nAdding mocked recipes... " + CommonTools.RESET);
+        System.out.print(CYAN + "Parsing extra foods from Livsmedelsverket... " + CommonTools.RESET);
+        for (String[] cols : lmvGeneralRows) {
+            readExtraGeneralRow(cols, lmvDataRows);
+        }
+        printDone();
+
+        System.out.print(CYAN + "Persisting to database... " + CommonTools.RESET);
+        db.saveAll(generalFoods);
+        db.saveAll(foods);
+        for (FoodGeneral generalFood : generalFoods) {
+            generalFood.defaultFood = defaultFoods.get(generalFood);
+            db.save(generalFood);
+        }
+        printDone();
+
+        System.out.print(CYAN + "Adding mocked recipes... " + CommonTools.RESET);
         mockRecipes();
         printDone();
 
         System.out.println();
     }
 
-    private static void importFoods(List<String[]> generalRows, List<String[]> specificRows) {
-        for (String[] cols : generalRows) {
-            readGeneralRow(cols, specificRows);
-        }
-
-        db.saveAll(generalFoods);
-        db.saveAll(foods);
-
-        for (FoodGeneral generalFood : generalFoods) {
-            generalFood.defaultFood = defaultFoods.get(generalFood);
-            db.save(generalFood);
-        }
-    }
-
-    private static void importExtraFoods(List<String[]> generalRows, List<String[]> specificRows) {
-        for (String[] cols : generalRows) {
-
-        }
-    }
-
-    private static void readGeneralRow(String[] cols, List<String[]> specificRows) {
+    private static void readGeneralRow(String[] cols, List<String[]> dataRows) {
         FoodGeneral generalFood;
-        if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[Fineli.GEN_NAME.row]))) {
+        if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[Fineli.GEN_NAME.id]))) {
             generalFood = generalFoods.stream()
-                .filter(g -> g.name.equals(cols[Fineli.GEN_NAME.row])).findFirst().get();
+                .filter(g -> g.name.equals(cols[Fineli.GEN_NAME.id])).findFirst().get();
         } else {
-            generalFood = new FoodGeneral(cols[Fineli.GEN_NAME.row]);
+            generalFood = new FoodGeneral(cols[Fineli.GEN_NAME.id]);
         }
 
-        String name = cols[Fineli.GEN_DISPLAY_NAME.row];
-        int fineliId = Integer.parseInt(cols[Fineli.GEN_ID.row]);
-        String[] nutritionCols = specificRows.get(idRowNumbers.get(fineliId));
+        String name = cols[Fineli.GEN_DISPLAY_NAME.id];
+        int fineliId = Integer.parseInt(cols[Fineli.GEN_ID.id]);
+        String[] rows = dataRows.get(fineliRowIds.get(fineliId));
         Food specificFood = new Food(
             name, fineliId, DataSource.FINELI,
-            toDouble(nutritionCols[Fineli.DATA_ENERGY_KJ.row]),
-            toDouble(nutritionCols[Fineli.DATA_CARB.row]),
-            toDouble(nutritionCols[Fineli.DATA_PROTEIN.row]),
-            toDouble(nutritionCols[Fineli.DATA_FAT.row]),
-            toDouble(nutritionCols[Fineli.DATA_FIBRE.row]),
-            toDouble(nutritionCols[Fineli.DATA_ALCOHOL.row]),
-            toDouble(nutritionCols[Fineli.DATA_SALT.row]),
-            toDouble(nutritionCols[Fineli.DATA_VITAMIN_A.row]),
-            toDouble(nutritionCols[Fineli.DATA_VITAMIN_B6.row]),
-            toDouble(nutritionCols[Fineli.DATA_VITAMIN_B12.row]),
-            toDouble(nutritionCols[Fineli.DATA_VITAMIN_C.row]),
-            toDouble(nutritionCols[Fineli.DATA_VITAMIN_D.row]),
-            toDouble(nutritionCols[Fineli.DATA_VITAMIN_E.row]),
-            toDouble(nutritionCols[Fineli.DATA_VITAMIN_K.row]),
-            toDouble(nutritionCols[Fineli.DATA_THIAMINE.row]),
-            toDouble(nutritionCols[Fineli.DATA_RIBOFLAVIN.row]),
-            toDouble(nutritionCols[Fineli.DATA_NIACIN.row]),
-            toDouble(nutritionCols[Fineli.DATA_NIACIN_EQ.row]),
-            toDouble(nutritionCols[Fineli.DATA_FOLATE.row]),
-            toDouble(nutritionCols[Fineli.DATA_PHOSPHORUS.row]),
-            toDouble(nutritionCols[Fineli.DATA_IODINE.row]),
-            toDouble(nutritionCols[Fineli.DATA_IRON.row]),
-            toDouble(nutritionCols[Fineli.DATA_CALCIUM.row]),
-            toDouble(nutritionCols[Fineli.DATA_POTASSIUM.row]),
-            toDouble(nutritionCols[Fineli.DATA_MAGNESIUM.row]),
-            toDouble(nutritionCols[Fineli.DATA_SODIUM.row]),
-            toDouble(nutritionCols[Fineli.DATA_SELENIUM.row]),
-            toDouble(nutritionCols[Fineli.DATA_ZINK.row])
+            toDouble(rows[Fineli.DATA_ENERGY_KJ.id]),
+            toDouble(rows[Fineli.DATA_CARB.id]),
+            toDouble(rows[Fineli.DATA_PROTEIN.id]),
+            toDouble(rows[Fineli.DATA_FAT.id]),
+            toDouble(rows[Fineli.DATA_FIBRE.id]),
+            toDouble(rows[Fineli.DATA_ALCOHOL.id]),
+            toDouble(rows[Fineli.DATA_SALT.id]),
+            toDouble(rows[Fineli.DATA_VITAMIN_A.id]),
+            toDouble(rows[Fineli.DATA_VITAMIN_B6.id]),
+            toDouble(rows[Fineli.DATA_VITAMIN_B12.id]),
+            toDouble(rows[Fineli.DATA_VITAMIN_C.id]),
+            toDouble(rows[Fineli.DATA_VITAMIN_D.id]),
+            toDouble(rows[Fineli.DATA_VITAMIN_E.id]),
+            toDouble(rows[Fineli.DATA_VITAMIN_K.id]),
+            toDouble(rows[Fineli.DATA_THIAMINE.id]),
+            toDouble(rows[Fineli.DATA_RIBOFLAVIN.id]),
+            toDouble(rows[Fineli.DATA_NIACIN.id]),
+            toDouble(rows[Fineli.DATA_NIACIN_EQ.id]),
+            toDouble(rows[Fineli.DATA_FOLATE.id]),
+            toDouble(rows[Fineli.DATA_PHOSPHORUS.id]),
+            toDouble(rows[Fineli.DATA_IODINE.id]),
+            toDouble(rows[Fineli.DATA_IRON.id]),
+            toDouble(rows[Fineli.DATA_CALCIUM.id]),
+            toDouble(rows[Fineli.DATA_POTASSIUM.id]),
+            toDouble(rows[Fineli.DATA_MAGNESIUM.id]),
+            toDouble(rows[Fineli.DATA_SODIUM.id]),
+            toDouble(rows[Fineli.DATA_SELENIUM.id]),
+            toDouble(rows[Fineli.DATA_ZINK.id])
         );
 
-        if (cols[Fineli.GEN_SPECIFIC_TAGS.row] != null) {
-            String[] tags = cols[Fineli.GEN_SPECIFIC_TAGS.row].split(",");
+        if (cols[Fineli.GEN_SPECIFIC_TAGS.id] != null) {
+            String[] tags = cols[Fineli.GEN_SPECIFIC_TAGS.id].split(",");
             Arrays.setAll(tags, i -> tags[i].trim());
             Collections.addAll(specificFood.tags, tags);
         }
-        if (cols[Fineli.GEN_PIECE_WEIGHT.row] != null) {
-            specificFood.pieceWeightGrams = Integer.parseInt(cols[Fineli.GEN_PIECE_WEIGHT.row]);
+        if (cols[Fineli.GEN_PIECE_WEIGHT.id] != null) {
+            specificFood.pieceWeightGrams = Integer.parseInt(cols[Fineli.GEN_PIECE_WEIGHT.id]);
         }
-        if (cols[Fineli.GEN_DENSITY_CONSTANT.row] != null) {
-            specificFood.densityConstant = Double.parseDouble(cols[Fineli.GEN_DENSITY_CONSTANT.row]);
+        if (cols[Fineli.GEN_DENSITY_CONSTANT.id] != null) {
+            specificFood.densityConstant = Double.parseDouble(cols[Fineli.GEN_DENSITY_CONSTANT.id]);
         }
-        if (cols[Fineli.GEN_EXAMPLE_BRANDS.row] != null) {
-            specificFood.exampleBrands = cols[Fineli.GEN_EXAMPLE_BRANDS.row].trim();
+        if (cols[Fineli.GEN_EXAMPLE_BRANDS.id] != null) {
+            specificFood.exampleBrands = cols[Fineli.GEN_EXAMPLE_BRANDS.id].trim();
         }
-        if (cols[Fineli.GEN_SCIENTIFIC_NAME.row] != null) {
-            specificFood.scientificName = cols[Fineli.GEN_SCIENTIFIC_NAME.row].trim();
+        if (cols[Fineli.GEN_SCIENTIFIC_NAME.id] != null) {
+            specificFood.scientificName = cols[Fineli.GEN_SCIENTIFIC_NAME.id].trim();
         }
-        if (cols[Fineli.GEN_PROCESSING.row] != null) {
-            specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.row].trim());
+        if (cols[Fineli.GEN_PROCESSING.id] != null) {
+            specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.id].trim());
         }
-        if (cols[Fineli.GEN_SPECIAL_DIETS.row] != null) {
-            String[] diets = cols[Fineli.GEN_SPECIAL_DIETS.row].split(",");
+        if (cols[Fineli.GEN_SPECIAL_DIETS.id] != null) {
+            String[] diets = cols[Fineli.GEN_SPECIAL_DIETS.id].split(",");
             for (String diet : diets) {
                 specificFood.diets.add(getDiet(diet.trim()));
             }
         }
 
-        if (cols[Fineli.GEN_DEFAULT.row] != null) {
-            if (cols[Fineli.GEN_EXTRA_TAGS.row] != null) {
-                String[] tags = cols[Fineli.GEN_EXTRA_TAGS.row].split(",");
+        if (cols[Fineli.GEN_DEFAULT.id] != null) {
+            if (cols[Fineli.GEN_EXTRA_TAGS.id] != null) {
+                String[] tags = cols[Fineli.GEN_EXTRA_TAGS.id].split(",");
+                for (String tag : tags) {
+                    generalFood.searchTags.add(tag.trim());
+                }
+            }
+            defaultFoods.put(generalFood, specificFood);
+        } else {
+            generalFood.foods.add(specificFood);
+        }
+
+        specificFood.general = generalFood;
+        generalFoods.add(generalFood);
+        foods.add(specificFood);
+    }
+
+    private static void readExtraGeneralRow(String[] cols, List<String[]> dataRows) {
+        FoodGeneral generalFood;
+        if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[LMV.GEN_NAME.id]))) {
+            generalFood = generalFoods.stream()
+                .filter(g -> g.name.equals(cols[LMV.GEN_NAME.id])).findFirst().get();
+        } else {
+            generalFood = new FoodGeneral(cols[LMV.GEN_NAME.id]);
+        }
+
+        String name = cols[LMV.GEN_DISPLAY_NAME.id];
+        int lmvId = Integer.parseInt(cols[LMV.GEN_ID.id]);
+        String[] rows = dataRows.get(lmvRowIds.get(lmvId));
+        Food specificFood = new Food(
+            name, lmvId, DataSource.LMV,
+            toDouble(rows[LMV.DATA_ENERGY_KJ.id]),
+            toDouble(rows[LMV.DATA_CARB.id]),
+            toDouble(rows[LMV.DATA_PROTEIN.id]),
+            toDouble(rows[LMV.DATA_FAT.id]),
+            toDouble(rows[LMV.DATA_FIBRE.id]),
+            toDouble(rows[LMV.DATA_ALCOHOL.id]),
+            toDouble(rows[LMV.DATA_SALT.id]),
+            toDouble(rows[LMV.DATA_VITAMIN_A.id]),
+            toDouble(rows[LMV.DATA_VITAMIN_B6.id]),
+            toDouble(rows[LMV.DATA_VITAMIN_B12.id]),
+            toDouble(rows[LMV.DATA_VITAMIN_C.id]),
+            toDouble(rows[LMV.DATA_VITAMIN_D.id]),
+            toDouble(rows[LMV.DATA_VITAMIN_E.id]),
+            toDouble(rows[LMV.DATA_VITAMIN_K.id]),
+            toDouble(rows[LMV.DATA_THIAMINE.id]),
+            toDouble(rows[LMV.DATA_RIBOFLAVIN.id]),
+            toDouble(rows[LMV.DATA_NIACIN.id]),
+            toDouble(rows[LMV.DATA_NIACIN_EQ.id]),
+            toDouble(rows[LMV.DATA_FOLATE.id]),
+            toDouble(rows[LMV.DATA_PHOSPHORUS.id]),
+            toDouble(rows[LMV.DATA_IODINE.id]),
+            toDouble(rows[LMV.DATA_IRON.id]),
+            toDouble(rows[LMV.DATA_CALCIUM.id]),
+            toDouble(rows[LMV.DATA_POTASSIUM.id]),
+            toDouble(rows[LMV.DATA_MAGNESIUM.id]),
+            toDouble(rows[LMV.DATA_SODIUM.id]),
+            toDouble(rows[LMV.DATA_SELENIUM.id]),
+            toDouble(rows[LMV.DATA_ZINK.id])
+        );
+
+        if (cols[LMV.GEN_SPECIFIC_TAGS.id] != null) {
+            String[] tags = cols[LMV.GEN_SPECIFIC_TAGS.id].split(",");
+            Arrays.setAll(tags, i -> tags[i].trim());
+            Collections.addAll(specificFood.tags, tags);
+        }
+        if (cols[LMV.GEN_PIECE_WEIGHT.id] != null) {
+            specificFood.pieceWeightGrams = Integer.parseInt(cols[LMV.GEN_PIECE_WEIGHT.id]);
+        }
+        if (cols[LMV.GEN_DENSITY_CONSTANT.id] != null) {
+            specificFood.densityConstant = Double.parseDouble(cols[LMV.GEN_DENSITY_CONSTANT.id]);
+        }
+        if (cols[LMV.GEN_EXAMPLE_BRANDS.id] != null) {
+            specificFood.exampleBrands = cols[LMV.GEN_EXAMPLE_BRANDS.id].trim();
+        }
+        if (cols[LMV.GEN_SCIENTIFIC_NAME.id] != null) {
+            specificFood.scientificName = cols[LMV.GEN_SCIENTIFIC_NAME.id].trim();
+        }
+
+        if (cols[LMV.GEN_DEFAULT.id] != null) {
+            if (cols[LMV.GEN_EXTRA_TAGS.id] != null) {
+                String[] tags = cols[LMV.GEN_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
                     generalFood.searchTags.add(tag.trim());
                 }
@@ -218,7 +322,7 @@ public class DatabaseFineliSeeder {
         settings.setNumberOfRowsToSkip(1);
 
         CsvParser parser = new CsvParser(settings);
-        List<String[]> allRows = parser.parseAll(getReader(MOCK_PATH));
+        List<String[]> allRows = parser.parseAll(getReader(RECIPES_PATH));
 
         for (String[] row : allRows) {
 
@@ -370,7 +474,7 @@ public class DatabaseFineliSeeder {
             return 0.09;
         } else if (col.equals("<0.01")) {
             return 0.009;
-        } else if (col != null && !col.equals("N/A")) {
+        } else if (col != null && !col.equals("N/A") && !col.equals("NULL")) {
             return Double.parseDouble(col);
         } else {
             return null;
