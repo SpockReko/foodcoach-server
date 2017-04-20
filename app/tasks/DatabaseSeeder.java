@@ -458,6 +458,85 @@ public class DatabaseSeeder {
         }
     }
 
+    private static Category getCat(String str) {
+        switch (str) {
+            case "Baljväxter": return Category.Baljvaxter;
+            case "Övrig frukt": return Category.ovrig_frukt;
+            case "Fruktkonserver": return Category.Fruktkonserver;
+            case "Juicer": return Category.Juicer;
+            case "Saftdrycker": return Category.Saftdrycker;
+            case "Fiskprodukter": return Category.Fiskprodukter;
+            case "Citrusfrukter": return Category.Citrusfrukter;
+            case "Äppelfrukt": return Category.appelfrukt;
+            case "Bladgrönsaker": return Category.Bladgronsaker;
+            case "Grönsaksfrukt": return Category.Gronsaksfrukt;
+            case "Rot- och knölväxter": return Category.Rot_och_knolvaxter;
+            case "Olja": return Category.Olja;
+            case "Gris": return Category.Gris;
+            case "Matlagnings- och industrifett": return Category.Matlagnings_och_industrifett;
+            case "Hjälpämnen vid tillverkning": return Category.Hjalpamnen_vid_tillverkning;
+            case "Korv": return Category.Korv;
+            case "Grönsakskonserver": return Category.Gronsakskonserver;
+            case "Bär": return Category.Bar;
+            case "Mjölk": return Category.Mjolk;
+            case "Torkade örter": return Category.Torkade_orter;
+            case "Skaldjur": return Category.Skaldjur;
+            case "Ost": return Category.Ost;
+            case "Nöt": return Category.Not;
+            case "Organ": return Category.Organ;
+            case "Kål": return Category.Kal;
+            case "Övrigt spannmål": return Category.ovrigt_spannmal;
+            case "Fisk": return Category.Fisk;
+            case "Köttprodukter": return Category.Kottprodukter;
+            case "Fåglar": return Category.Faglar;
+            case "Modersmjölksersättningar och modersmjölk": return Category.Modersmjolksersattningar_och_modersmjolk;
+            case "Kaffe": return Category.Kaffe;
+            case "Nötter, frön": return Category.Notter_fron;
+            case "Svamp": return Category.Svamp;
+            case "Choklad": return Category.Choklad;
+            case "Övriga alkoholdrycker": return Category.ovriga_alkoholdrycker;
+            case "Vete": return Category.Vete;
+            case "Grädde/creme": return Category.Gradde_creme;
+            case "Kryddsåser": return Category.Kryddsaser;
+            case "Syrade mjölkprodukter": return Category.Syrade_mjolkprodukter;
+            case "Socker, sirap": return Category.Socker_sirap;
+            case "Sötsaker": return Category.Sotsaker;
+            case "Läskedrycker": return Category.Laskedrycker;
+            case "Pasta, makaroner": return Category.Pasta_makaroner;
+            case "Glass": return Category.Glass;
+            case "Ris": return Category.Ris;
+            case "Lökgrönsaker": return Category.Lokgronsaker;
+            case "Övriga fetter, fettprodukter": return Category.ovriga_fetter_fettprodukter;
+            case "Vilt": return Category.Vilt;
+            case "Havre, korn": return Category.Havre_korn;
+            case "Starksprit": return Category.Starksprit;
+            case "Stärkelse": return Category.Starkelse;
+            case "Lamm": return Category.Lamm;
+            case "Kliniska näringspreparat": return Category.Kliniska_naringspreparat;
+            case "Margarin och matfett >55 %": return Category.Margarin_och_matfett_over_55;
+            case "Margarin och matfett <55 %": return Category.Margarin_och_matfett_under_55;
+            case "Smör, mjölkfettblandningar": return Category.Smor_mjolkfettblandningar;
+            case "Vatten": return Category.Vatten;
+            case "Råg": return Category.Rag;
+            case "Övrig mjölk": return Category.ovrig_mjolk;
+            case "Diverse godis": return Category.Diverse_godis;
+            case "Öl": return Category.ol;
+            case "Torkade kryddor": return Category.Torkade_kryddor;
+            case "Potatisprodukter": return Category.Potatisprodukter;
+            case "Potatis": return Category.Potatis;
+            case "Vin": return Category.Vin;
+            case "Salt": return Category.Salt;
+            case "Torrt bröd": return Category.Torrt_brod;
+            case "Sojaprodukter": return Category.Sojaprodukter;
+            case "Sötningsmedel": return Category.Sotningsmedel;
+            case "Animaliskt fett": return Category.Animaliskt_fett;
+            case "Te": return Category.Te;
+            case "Snacks": return Category.Snacks;
+            case "Ägg av andra fåglar": return Category.agg_honsagg;
+            case "Ägg, hönsägg": return Category.agg_honsagg;
+            default: return null;
+        }
+    }
     private static Diet addOrGetDiet(Diet.Type type) {
         Optional<Diet> opt = diets.stream().filter(d -> d.type == type).findFirst();
         if (opt.isPresent()) {
