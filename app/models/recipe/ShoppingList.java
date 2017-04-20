@@ -88,6 +88,7 @@ public class ShoppingList {
         map.put(newIngredient, check);
     }
 
+
     public void removeAmountOfIngredients(List<Ingredient> ingredientList){
         for(int i=0; i<ingredientList.size(); i++){
             removeAmountToIngredient(ingredientList.get(i), ingredientList.get(i).getAmount().getAmount());
@@ -177,11 +178,12 @@ public class ShoppingList {
 
     @Override
     public String toString() {
+        String text = "";
         if (map.size() == 0) {
             return "Inköpslistan är tom just nu!\n";
         } else {
             Iterator iterator = map.entrySet().iterator();
-            String text = "\n\n\nInköpslista:\n\n";
+            text = "\n\n\nInköpslista:\n\n";
             while (iterator.hasNext()) {
                 Map.Entry<Ingredient, Boolean> entry = (Map.Entry) iterator.next();
                 boolean marked = entry.getValue();
@@ -195,8 +197,13 @@ public class ShoppingList {
                 }
                 text += amount + " " + unit + " " + foodItem + "\n";
             }
-            return text + "\n";
         }
+        if(leftovers.size() > 0 ){
+            for (Ingredient i: leftovers) {
+                text = text + i.getFood().name + " " + i.getAmount().getAmount() + "\n";
+            }
+        }
+        return text;
     }
 
     public String leftoversToString(){
