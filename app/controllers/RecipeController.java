@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
+import parsers.ReceptFavoriterParser;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
