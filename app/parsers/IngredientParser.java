@@ -36,7 +36,7 @@ public class IngredientParser {
         String[] parenthesis = extractParenthesis(webString);
         String line = parenthesis[0];
         if (parenthesis[1] != null) {
-            insideParenthesis = parenthesis[1];
+            insideParenthesis = " (" + parenthesis[1] + ")";
         } else {
             insideParenthesis = "";
         }
@@ -195,13 +195,13 @@ public class IngredientParser {
         int matchingTagLength = 0;
         FoodGeneral foodGeneral = null;
         List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
-        System.out.println(line);
+        System.out.println("HEJ!!!!!!!!!!!!: " + line);
 
         for (FoodGeneral general : items) {
             List<String> tags = general.searchTags;
             tags.add(general.name.toLowerCase());
             for (String tag : tags) {
-                if (line.contains(tag) ||
+                if (// SKA VI HA DETTA???   line.contains(tag) ||
                         line.contains(" " + tag + " ")||
                     line.contains(" " + tag + ",") ||
                     line.contains(" " + tag + ".")) {
