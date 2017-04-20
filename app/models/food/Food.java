@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static models.food.Category.Sotsaker;
+
 /**
  * Created by fredrikkindstrom on 2017-04-04.
  */
@@ -216,4 +218,188 @@ public class Food extends Model {
         }
         return value != null ? value : 0d;
     }
+    public double getCO2(Category category){
+        Double value;
+        //frukt, gronsaker
+        switch(category) {
+            case appelfrukt : case Citrusfrukter : case ovrig_frukt : case Fruktkonserver : case  Bladgronsaker :
+                case Gronsaksfrukt: case Gronsakskonserver: case Bar: case Kal: case Svamp : case Lokgronsaker:
+                value = 0.1;
+                break;
+        }
+
+        switch(category) {
+            case Rot_och_knolvaxter:
+                value = 0.02;
+                break;
+        }
+
+        //drycker
+        switch(category) {
+            case Saftdrycker: case  Juicer:
+                value = 0.1;
+                break;
+        }
+        switch(category) {
+            case Kaffe: case Te:
+                value = 0.3;
+                break;
+        }
+        switch(category) {
+            case ovriga_alkoholdrycker: case Starksprit: case ol: case Vin:
+                value = 0.3;
+                break;
+        }
+
+
+        switch(category) {
+            case Baljvaxter :
+                value = 0.07;
+                break;
+        }
+        switch(category) {
+            case Notter_fron :
+                value = 0.15;
+                break;
+        }
+        //kolhydrat
+
+        switch(category) {
+            case ovrigt_spannmal: case Vete : case Havre_korn
+                : case Socker_sirap: case Starkelse: case Sotningsmedel: case
+                    Torrt_brod: case Rag:
+                value = 0.06;
+                break;
+        }
+        switch(category) {
+            case Ris :
+            value = 0.2;
+                break;
+        }
+        switch(category) {
+            case Pasta_makaroner:
+                value = 0.08;
+                break;
+        }
+        switch(category) {
+            case Potatis case Potatisprodukter:
+                value = 0.01;
+                break;
+        }
+
+
+
+        //mejeri
+        switch(category) {
+            case Mjolk: case Modersmjolksersattningar_och_modersmjolk: case Syrade_mjolkprodukter: case ovrig_mjolk:
+                value = 0.1;
+                break;
+        }
+        switch(category) {
+            case agg_honsagg: case agg_av_andra_faglar:
+                value = 0.15;
+                break;
+        }
+        switch(category) {
+            case Ost:
+                value = 0.8;
+                break;
+        }
+        switch(category) {
+            case Smor_mjolkfettblandningar: case Animaliskt_fett:
+                value = 0.8;
+                break;
+        }
+        switch(category) {
+            case Margarin_och_matfett_under_55: case Margarin_och_matfett_over_55: case ovriga_fetter_fettprodukter:
+                value = 0.15;
+                break;
+        }
+        switch(category) {
+            case Gradde_creme :
+                value = 0.4;
+                break;
+        }
+
+        //sas, krydda
+
+        switch(category) {
+            case Kryddsaser: case Torkade_orter:case Hjalpamnen_vid_tillverkning: case Torkade_kryddor: case
+                    Salt: case Kliniska_naringspreparat:
+                value = 0.1;
+                break;
+        }
+
+
+        switch(category) {
+            case Olja: case Matlagnings_och_industrifett:
+                value = 0.15;
+                break;
+        }
+       //kott
+        switch(category) {
+            case Fisk :case  Fiskprodukter: case Skaldjur:
+                value = 0.3;
+                break;
+        }
+        switch(category) {
+            case Not:
+                value = 2.6;
+                break;
+        }
+        switch(category) {
+            case Gris : case  Kottprodukter : case  Organ;
+                value = 0.6;
+                break;
+        }
+        switch(category) {
+            case Lamm:
+                value = 2.1;
+                break;
+        }
+        switch(category) {
+            case Faglar:
+                value = 0.3;
+                break;
+        }
+        switch(category) {
+            case Korv:
+                value = 0.7;
+                break;
+        }
+        switch(category) {
+            case Vilt:
+                value = 0.05;
+                break;
+        }
+        switch(category) {
+            case Sojaprodukter:
+                value = 0.4;
+                break;
+        }
+
+        //godis
+
+        switch(category) {
+            case Choklad: case Glass : case Sotsaker: case Diverse_godis: case Snacks:
+                value = 0.2;
+                break;
+        }
+        switch(category) {
+            case Laskedrycker:
+            value = 00.3;
+                break;
+        }
+
+
+        switch(category) {
+            case Vatten:
+                value = 0.0;
+                break;
+        }
+
+
+    }
+
+
 }
