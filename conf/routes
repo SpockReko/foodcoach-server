@@ -35,11 +35,8 @@ GET     /anna/recipe/optimize/:number        controllers.RecipeOptimizationContr
 
 
 # Parse ingredient string to food item
-GET     /parseIng/:ingredient               controllers.ParseController.parseIngredient(ingredient: String)
+GET     /parse/:input                       controllers.ParseController.parse(input: String)
 GET     /parseFull/:input                   controllers.ParseController.parseFull(input: String)
-GET     /runParse                           controllers.ParseController.runParse
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                       controllers.Assets.at(path="/public", file)
-
-GET     /parseRec/:taggedRecipe             controllers.ParseController.recipeInfo(taggedRecipe: String)

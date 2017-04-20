@@ -37,7 +37,7 @@ public class RecipeCrawler extends WebCrawler {
                 throw new IllegalStateException("No parser for site: " + url);
             }
 
-            parseNotLinkedRecipe(url, html, parser);
+            parseRecipe(url, html, parser);
         }
     }
 
