@@ -41,7 +41,7 @@ public class Menu {
 
         text = text + "\n\nTotalta matsvinnet för din meny: (ska ändras till koldioxidutsläpp)\n\n";
 
-        text = text + shop.getTotalWaste() + " gram";
+        text = text + shop.getCO2() + " gram";
 
         return text;
     }

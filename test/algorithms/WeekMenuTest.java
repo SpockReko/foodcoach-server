@@ -32,7 +32,7 @@ public class WeekMenuTest {
     public static void init() {
 
         User user = new User();
-        User stefan = new User(1);
+        User stefan = new User("Anna");
 
         userRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(user);
         Recipe stefanRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(stefan);

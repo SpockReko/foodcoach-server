@@ -110,7 +110,7 @@ public class MenuAlgorithms {
      * @param
      * @return the menu that generates the shortest shopping list.
      */
-    public Menu CalculateWeekMenu(List<Ingredient> ingredientList)  {
+    public Menu calculateWeekMenu(List<Ingredient> ingredientList)  {
         reset();
         this.ingredientsToUse=ingredientList;
         returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::lengthOfShoppingList);

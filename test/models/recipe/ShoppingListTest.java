@@ -33,7 +33,7 @@ public class ShoppingListTest {
         emptyList = new ShoppingList();
 
         Recipe r = GlobalDummyModels.createOptimalRecipeForSpecificUser(new User());
-        Recipe r2 = GlobalDummyModels.createOptimalRecipeForSpecificUser(new User(1));
+        Recipe r2 = GlobalDummyModels.createOptimalRecipeForSpecificUser(new User("Stefan"));
 
         recipes = new ArrayList<>();
         System.out.println(r.getTitle() + r2.getTitle());
@@ -65,7 +65,7 @@ public class ShoppingListTest {
 
     @Test
     public void emptyListWasteTest(){
-        assertTrue(emptyList.getTotalWaste() == 0.0);
+        assertTrue(emptyList.getCO2() == 0.0);
     }
 
     @Test

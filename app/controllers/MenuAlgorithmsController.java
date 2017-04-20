@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.ArrayList;
 
+import static models.recipe.Amount.Unit.GRAM;
+
 /**
  * Created by fredrikkindstrom on 2017-03-15.
  */
@@ -135,17 +137,17 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> removeRecipeList = new ArrayList<>();
         int nrOfRecipes = 3;
         List<Recipe> allRecipes = Recipe.find.all();
-        List<Food> foods = new ArrayList<>();
-        List<Amount> amounts = new ArrayList<Amount>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
-        foods.add(Food.find.byId(120L));
-        foods.add(Food.find.byId(12L));
-        amounts.add(new Amount(100, Amount.Unit.GRAM));
-        amounts.add(new Amount(150, Amount.Unit.GRAM));
+        ingredients=new ArrayList<Ingredient>();
+        //foods.add(food2);
+        ingredients.add(new Ingredient(Food.find.byId(120L),new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(12L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(10L),new Amount(100, GRAM)));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(foods, amounts);
-        ShoppingList shoppingList = new ShoppingList(resultingMenu, foods, amounts);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredients);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingMenu.recipeListToString());

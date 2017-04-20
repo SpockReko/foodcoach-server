@@ -14,9 +14,7 @@ import static models.recipe.Amount.Unit.GRAM;
  */
 public class MenuAlgorithm2Test {
     private static List<Recipe> recList;
-    private static List<Food> foods;
-    private static List<Amount> amountList;
-
+    private static List<Ingredient> ingredients;
 
     public static void main(String[] args) {
         build();
@@ -54,24 +52,19 @@ public class MenuAlgorithm2Test {
         recList.add(rec3);
         recList.add(rec4);
 
-        foods=new ArrayList<Food>();
+        ingredients=new ArrayList<Ingredient>();
         //foods.add(food2);
-        foods.add(food3);
-        foods.add(food4);
-        foods.add(food5);
-
-        amountList=new ArrayList<>();
-        amountList.add(new Amount(200, GRAM));
-        amountList.add(new Amount(100, GRAM));
-        amountList.add(new Amount(100, GRAM));
+        ingredients.add(new Ingredient(food3,new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(food4,new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(food5,new Amount(100, GRAM)));
     }
 
 
     private static void test1() {
         MenuAlgorithms algorithm=new MenuAlgorithms(recList, new ArrayList<Recipe>(), 3);
-        Menu menu = algorithm.calculateWeekMenu(foods, amountList);
+        Menu menu = algorithm.calculateWeekMenu(ingredients);
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
-        ShoppingList shoppingList=new ShoppingList(menu, foods, amountList);
+        ShoppingList shoppingList=new ShoppingList(menu, ingredients);
         System.out.println(shoppingList.toString());
         List<Ingredient> leftovers=shoppingList.getLeftovers();
         System.out.println(shoppingList.leftoversToString());

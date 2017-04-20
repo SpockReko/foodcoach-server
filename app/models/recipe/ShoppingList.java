@@ -16,7 +16,6 @@ public class ShoppingList {
     private static List<Ingredient> ingredients;
     private List<Ingredient> leftovers;
 
-
     public ShoppingList() {
     }
 
@@ -34,7 +33,7 @@ public class ShoppingList {
         addList(list, check);
     }
 
-    public ShoppingList(Menu menu, List<Food> food, List<Amount> amount){
+    public ShoppingList(Menu menu, List<Ingredient> ingredientList){
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
         leftovers=new ArrayList<Ingredient>();
@@ -42,7 +41,7 @@ public class ShoppingList {
             ingredients.addAll(recipe.getIngredients());
         }
         addList(ingredients, false);
-        removeAmountOfIngredients(food, amount);
+        removeAmountOfIngredients(ingredientList);
     }
 
     private void addList(List<Ingredient> list, Boolean check) {
@@ -90,9 +89,9 @@ public class ShoppingList {
         map.put(newIngredient, check);
     }
 
-    public void removeAmountOfIngredients(List<Food> foods, List<Amount> amount){
-        for(int i=0; i<foods.size(); i++){
-            removeAmountToIngredient(new Ingredient(foods.get(i), amount.get(i)), amount.get(i).getAmount());
+    public void removeAmountOfIngredients(List<Ingredient> ingredientList){
+        for(int i=0; i<ingredientList.size(); i++){
+            removeAmountToIngredient(ingredientList.get(i), ingredientList.get(i).getAmount().getAmount());
         }
     }
 
