@@ -1,7 +1,6 @@
 package models.recipe;
 
 import models.GlobalDummyModels;
-import models.food.FoodItem;
 import models.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;

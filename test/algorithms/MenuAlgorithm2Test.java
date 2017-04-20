@@ -1,6 +1,5 @@
 package algorithms;
 
-import models.food.FoodItem;
 import models.recipe.*;
 
 import java.util.ArrayList;

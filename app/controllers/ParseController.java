@@ -1,6 +1,6 @@
 package controllers;
 
-import models.food.fineli.FoodGeneral;
+import models.food.FoodGeneral;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import parsers.FoodParser;

@@ -1,7 +1,6 @@
 package models.recipe;
 
-import models.food.FoodItem;
-import models.food.fineli.Food;
+import models.food.Food;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

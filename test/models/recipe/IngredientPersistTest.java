@@ -1,9 +1,6 @@
 package models.recipe;
 
-import com.avaje.ebean.Ebean;
 import helpers.FakeApplicationInMemoryDB;
-import models.food.FoodItem;
-import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

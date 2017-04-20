@@ -1,6 +1,6 @@
 package controllers;
 
-import models.food.fineli.Nutrient;
+import models.food.Nutrient;
 import models.user.User;
 import play.mvc.Controller;
 import play.mvc.Result;

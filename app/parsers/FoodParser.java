@@ -1,13 +1,10 @@
 package parsers;
 
-import models.food.FoodItem;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import info.debatty.java.stringsimilarity.*;
-import models.food.fineli.Food;
-import models.food.fineli.FoodGeneral;
+import models.food.Food;
+import models.food.FoodGeneral;
 import play.Logger;
 
 /**

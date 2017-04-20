@@ -1,9 +1,7 @@
 package controllers;
 
 import algorithms.QuicksortFoodItem;
-import models.food.FoodGroup;
-import models.food.FoodItem;
-import models.food.fineli.Food;
+import models.food.Food;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;

@@ -1,9 +1,5 @@
 package algorithms;
 
-import models.food.Fats;
-import models.food.FoodItem;
-import models.food.Sugars;
-import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
 import models.user.User;
@@ -11,7 +7,6 @@ import models.user.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import static models.recipe.Amount.Unit.GRAM;
 import static models.user.User.Sex.FEMALE;
 
 /**

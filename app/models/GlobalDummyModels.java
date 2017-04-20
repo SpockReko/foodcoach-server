@@ -1,16 +1,14 @@
 package models;
 
-import models.food.*;
-import models.food.fineli.DataSource;
-import models.food.fineli.Food;
-import models.food.fineli.Nutrient;
+import models.food.DataSource;
+import models.food.Food;
+import models.food.Nutrient;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
 import models.user.User;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 

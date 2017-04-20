@@ -4,7 +4,7 @@ import models.GlobalDummyModels;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
-import models.food.fineli.Nutrient;
+import models.food.Nutrient;
 import models.user.User;
 import org.junit.BeforeClass;
 import org.junit.Test;

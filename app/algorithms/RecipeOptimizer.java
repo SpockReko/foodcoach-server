@@ -1,7 +1,7 @@
 package algorithms;
 
-import models.food.fineli.Food;
-import models.food.fineli.Nutrient;
+import models.food.Food;
+import models.food.Nutrient;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;

@@ -1,9 +1,9 @@
 package algorithms;
 import java.util.*;
 
-import models.food.fineli.Food;
+import models.food.Food;
 import models.recipe.*;
-import models.food.fineli.Nutrient;
+import models.food.Nutrient;
 
 /**
  * Created by louiserost on 2017-03-06.

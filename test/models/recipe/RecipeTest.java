@@ -1,16 +1,6 @@
 package models.recipe;
 
-import models.food.FoodItem;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
 import static play.test.Helpers.running;

@@ -1,9 +1,7 @@
 package algorithms;
 
 import models.GlobalDummyModels;
-import models.food.*;
-import models.food.fineli.Food;
-import models.user.User;
+import models.food.Food;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -2,8 +2,7 @@ package controllers;
 
 import algorithms.MenuAlgorithms;
 import com.fasterxml.jackson.databind.JsonNode;
-import models.food.FoodItem;
-import models.food.fineli.Food;
+import models.food.Food;
 import models.recipe.Amount;
 import models.recipe.Menu;
 import models.recipe.Recipe;
