@@ -219,7 +219,7 @@ public class Food extends Model {
         return value != null ? value : 0d;
     }
     public double getCO2(Category category){
-        Double value;
+        Double value=0.0;
         //frukt, gronsaker
         switch(category) {
             case appelfrukt : case Citrusfrukter : case ovrig_frukt : case Fruktkonserver : case  Bladgronsaker :
@@ -282,7 +282,7 @@ public class Food extends Model {
                 break;
         }
         switch(category) {
-            case Potatis case Potatisprodukter:
+            case Potatis: case Potatisprodukter:
                 value = 0.01;
                 break;
         }
@@ -348,7 +348,7 @@ public class Food extends Model {
                 break;
         }
         switch(category) {
-            case Gris : case  Kottprodukter : case  Organ;
+            case Gris : case  Kottprodukter :case  Organ:
                 value = 0.6;
                 break;
         }
@@ -397,8 +397,7 @@ public class Food extends Model {
                 value = 0.0;
                 break;
         }
-
-
+        return value;
     }
 
 
