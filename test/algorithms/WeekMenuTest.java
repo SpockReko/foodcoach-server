@@ -43,7 +43,7 @@ public class WeekMenuTest {
 
         MenuAlgorithms weekMenu = new MenuAlgorithms(recipes, new ArrayList<>(), 1);
 
-        resultingMenu = weekMenu.calculateWeekMenu(user);
+        resultingMenu = weekMenu.calculateMenuNutrition(user);
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
         HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
@@ -53,12 +53,12 @@ public class WeekMenuTest {
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         weekMenu.addAllergies(usersPerfectIngrediense);
 
-        resultingMenuFilterIngrediense = weekMenu.calculateWeekMenu(user);
+        resultingMenuFilterIngrediense = weekMenu.calculateMenuNutrition(user);
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
         weekMenu = new MenuAlgorithms(recipes, filterList, 1);
-        resultingMenuFilterRecipe = weekMenu.calculateWeekMenu(user);
+        resultingMenuFilterRecipe = weekMenu.calculateMenuNutrition(user);
 
     }
 

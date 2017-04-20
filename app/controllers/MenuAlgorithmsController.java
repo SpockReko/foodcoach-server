@@ -3,10 +3,7 @@ package controllers;
 import algorithms.MenuAlgorithms;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.food.Food;
-import models.recipe.Amount;
-import models.recipe.Menu;
-import models.recipe.Recipe;
-import models.recipe.ShoppingList;
+import models.recipe.*;
 import models.user.User;
 import play.api.libs.json.Json;
 import play.data.DynamicForm;
@@ -69,7 +66,7 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+            Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
             return ok((JsonNode) Json.parse(resultingMenu.recipeListToString()));
 
@@ -82,7 +79,7 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+            Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
             if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
                 return ok(resultingMenu.recipeListToString());
@@ -102,7 +99,7 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingMenu.recipeListToString());
@@ -124,13 +121,11 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(user.age + "\n" +resultingMenu.recipeListToString());
         return ok("nothing found!");
-
-
     }
 
 
