@@ -35,8 +35,8 @@ public class DatabaseFineliSeeder {
 
     private static EbeanServer db;
 
-    private static final String FINELI_GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods_Complete.tsv";
-    private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_SpecificFoods.tsv";
+    private static final String FINELI_GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods.tsv";
+    private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_FoodData.tsv";
     private static final String MOCK_PATH = "resources/recipes/recipes_fineli.csv";
 
     private static final int GEN_ID = 0;
@@ -52,35 +52,35 @@ public class DatabaseFineliSeeder {
     private static final int GEN_PROCESSING = 10;
     private static final int GEN_SPECIAL_DIETS = 13;
 
-    private static final int SPEC_ID = 0;
-    private static final int SPEC_ENERGY_KJ = 2;
-    private static final int SPEC_CARB = 3;
-    private static final int SPEC_PROTEIN = 5;
-    private static final int SPEC_FAT = 4;
-    private static final int SPEC_FIBRE = 7;
-    private static final int SPEC_ALCOHOL = 6;
-    private static final int SPEC_SALT = 39;
-    private static final int SPEC_VITAMIN_A = 52;
-    private static final int SPEC_VITAMIN_B6 = 47;
-    private static final int SPEC_VITAMIN_B12 = 50;
-    private static final int SPEC_VITAMIN_C = 51;
-    private static final int SPEC_VITAMIN_D = 54;
-    private static final int SPEC_VITAMIN_E = 55;
-    private static final int SPEC_VITAMIN_K = 56;
-    private static final int SPEC_THIAMINE = 49;
-    private static final int SPEC_RIBOFLAVIN = 48;
-    private static final int SPEC_NIACIN = 46;
-    private static final int SPEC_NIACIN_EQ = 45;
-    private static final int SPEC_FOLATE = 44;
-    private static final int SPEC_PHOSPHORUS = 40;
-    private static final int SPEC_IODINE = 35;
-    private static final int SPEC_IRON = 34;
-    private static final int SPEC_CALCIUM = 33;
-    private static final int SPEC_POTASSIUM = 36;
-    private static final int SPEC_MAGNESIUM = 37;
-    private static final int SPEC_SODIUM = 38;
-    private static final int SPEC_SELENIUM = 41;
-    private static final int SPEC_ZINK = 42;
+    private static final int DATA_ID = 0;
+    private static final int DATA_ENERGY_KJ = 2;
+    private static final int DATA_CARB = 3;
+    private static final int DATA_PROTEIN = 5;
+    private static final int DATA_FAT = 4;
+    private static final int DATA_FIBRE = 7;
+    private static final int DATA_ALCOHOL = 6;
+    private static final int DATA_SALT = 39;
+    private static final int DATA_VITAMIN_A = 52;
+    private static final int DATA_VITAMIN_B6 = 47;
+    private static final int DATA_VITAMIN_B12 = 50;
+    private static final int DATA_VITAMIN_C = 51;
+    private static final int DATA_VITAMIN_D = 54;
+    private static final int DATA_VITAMIN_E = 55;
+    private static final int DATA_VITAMIN_K = 56;
+    private static final int DATA_THIAMINE = 49;
+    private static final int DATA_RIBOFLAVIN = 48;
+    private static final int DATA_NIACIN = 46;
+    private static final int DATA_NIACIN_EQ = 45;
+    private static final int DATA_FOLATE = 44;
+    private static final int DATA_PHOSPHORUS = 40;
+    private static final int DATA_IODINE = 35;
+    private static final int DATA_IRON = 34;
+    private static final int DATA_CALCIUM = 33;
+    private static final int DATA_POTASSIUM = 36;
+    private static final int DATA_MAGNESIUM = 37;
+    private static final int DATA_SODIUM = 38;
+    private static final int DATA_SELENIUM = 41;
+    private static final int DATA_ZINK = 42;
 
     private static Set<FoodGeneral> generalFoods = new HashSet<>();
     private static Map<FoodGeneral, Food> defaultFoods = new HashMap<>();
@@ -113,7 +113,7 @@ public class DatabaseFineliSeeder {
         }
 
         for (int i = 0; i < specificRows.size(); i++) {
-            idRowNumbers.put(Integer.parseInt(specificRows.get(i)[SPEC_ID]), i);
+            idRowNumbers.put(Integer.parseInt(specificRows.get(i)[DATA_ID]), i);
         }
 
         System.out.print(CYAN + "Importing foods from Fineli..." + CommonTools.RESET);
@@ -141,6 +141,10 @@ public class DatabaseFineliSeeder {
         }
     }
 
+    private static void importExtraFoods(List<String[]> generalRows, List<String[]> specificRows) {
+
+    }
+
     private static void readGeneralRow(String[] cols, List<String[]> specificRows) {
         FoodGeneral generalFood;
         if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[GEN_NAME]))) {
@@ -155,34 +159,34 @@ public class DatabaseFineliSeeder {
         String[] nutritionCols = specificRows.get(idRowNumbers.get(fineliId));
         Food specificFood = new Food(
             name, fineliId, DataSource.FINELI,
-            toDouble(nutritionCols[SPEC_ENERGY_KJ]),
-            toDouble(nutritionCols[SPEC_CARB]),
-            toDouble(nutritionCols[SPEC_PROTEIN]),
-            toDouble(nutritionCols[SPEC_FAT]),
-            toDouble(nutritionCols[SPEC_FIBRE]),
-            toDouble(nutritionCols[SPEC_ALCOHOL]),
-            toDouble(nutritionCols[SPEC_SALT]),
-            toDouble(nutritionCols[SPEC_VITAMIN_A]),
-            toDouble(nutritionCols[SPEC_VITAMIN_B6]),
-            toDouble(nutritionCols[SPEC_VITAMIN_B12]),
-            toDouble(nutritionCols[SPEC_VITAMIN_C]),
-            toDouble(nutritionCols[SPEC_VITAMIN_D]),
-            toDouble(nutritionCols[SPEC_VITAMIN_E]),
-            toDouble(nutritionCols[SPEC_VITAMIN_K]),
-            toDouble(nutritionCols[SPEC_THIAMINE]),
-            toDouble(nutritionCols[SPEC_RIBOFLAVIN]),
-            toDouble(nutritionCols[SPEC_NIACIN]),
-            toDouble(nutritionCols[SPEC_NIACIN_EQ]),
-            toDouble(nutritionCols[SPEC_FOLATE]),
-            toDouble(nutritionCols[SPEC_PHOSPHORUS]),
-            toDouble(nutritionCols[SPEC_IODINE]),
-            toDouble(nutritionCols[SPEC_IRON]),
-            toDouble(nutritionCols[SPEC_CALCIUM]),
-            toDouble(nutritionCols[SPEC_POTASSIUM]),
-            toDouble(nutritionCols[SPEC_MAGNESIUM]),
-            toDouble(nutritionCols[SPEC_SODIUM]),
-            toDouble(nutritionCols[SPEC_SELENIUM]),
-            toDouble(nutritionCols[SPEC_ZINK])
+            toDouble(nutritionCols[DATA_ENERGY_KJ]),
+            toDouble(nutritionCols[DATA_CARB]),
+            toDouble(nutritionCols[DATA_PROTEIN]),
+            toDouble(nutritionCols[DATA_FAT]),
+            toDouble(nutritionCols[DATA_FIBRE]),
+            toDouble(nutritionCols[DATA_ALCOHOL]),
+            toDouble(nutritionCols[DATA_SALT]),
+            toDouble(nutritionCols[DATA_VITAMIN_A]),
+            toDouble(nutritionCols[DATA_VITAMIN_B6]),
+            toDouble(nutritionCols[DATA_VITAMIN_B12]),
+            toDouble(nutritionCols[DATA_VITAMIN_C]),
+            toDouble(nutritionCols[DATA_VITAMIN_D]),
+            toDouble(nutritionCols[DATA_VITAMIN_E]),
+            toDouble(nutritionCols[DATA_VITAMIN_K]),
+            toDouble(nutritionCols[DATA_THIAMINE]),
+            toDouble(nutritionCols[DATA_RIBOFLAVIN]),
+            toDouble(nutritionCols[DATA_NIACIN]),
+            toDouble(nutritionCols[DATA_NIACIN_EQ]),
+            toDouble(nutritionCols[DATA_FOLATE]),
+            toDouble(nutritionCols[DATA_PHOSPHORUS]),
+            toDouble(nutritionCols[DATA_IODINE]),
+            toDouble(nutritionCols[DATA_IRON]),
+            toDouble(nutritionCols[DATA_CALCIUM]),
+            toDouble(nutritionCols[DATA_POTASSIUM]),
+            toDouble(nutritionCols[DATA_MAGNESIUM]),
+            toDouble(nutritionCols[DATA_SODIUM]),
+            toDouble(nutritionCols[DATA_SELENIUM]),
+            toDouble(nutritionCols[DATA_ZINK])
         );
 
         if (cols[GEN_SPECIFIC_TAGS] != null) {

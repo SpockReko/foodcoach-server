@@ -1,0 +1,16 @@
+lmv_id	general_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name
+829	Bulgur	TRUE		Bulgur			0.8		Triticum aestivum L.
+3564	Bulgur		fullkorn, kokta	Bulgur					Triticum ispahanicum Heslot ssp. durum
+3136	Bulgur		kokta	Bulgur					Triticum aestivum L. ssp. aestivum
+2477	Jasminris	TRUE		Jasminris			0.85		
+2514	Jasminris		kokt	Jasminris					
+2475	Basmatiris	TRUE		Basmatiris			0.85		
+2513	Basmatiris		kokt	Basmatiris					
+1895	Farinsocker	TRUE	brunt	Farinsocker			0.75		
+554	Björnbär	TRUE		Björnbär		6	0.5		
+591	Björnbär		frysta	Björnbär		6	0.5		
+592	Björnbär		frysta, sockrade	Björnbär		6	0.5		
+1802	Björnbärssylt	TRUE		Björnbärssylt			1.25		
+572	Lime	TRUE		Lime		85			
+652	Limejuice	TRUE	färskpressad	Limejuice			1		
+657	Limejuice		konserv, koncentrerad	Limejuice			1		
