@@ -18,13 +18,13 @@ GET     /notlinked_recipes                  controllers.RecipeController.getAllN
 GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
 
 # Menu options from client
-POST    /menu                               controllers.MenuAlgorithmsController.menu
-GET     /menu                               controllers.MenuAlgorithmsController.menu()
-GET     /menu2                              controllers.MenuAlgorithmsController.menu2()
+POST    /menu/nutrient                               controllers.MenuAlgorithmsController.menu
+GET     /menu/nutrient                               controllers.MenuAlgorithmsController.menu()
+GET     /menu/economi                              controllers.MenuAlgorithmsController.menu2()
 
 # Optimize recipe
-GET     /recipe/:number                     controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
-GET     /recipe/title/:title                controllers.RecipeOptimizationController.optimizeByTitle(title: String)
+GET     /recipe/optimize/:number                     controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
+GET     /recipe/optimize/title/:title                controllers.RecipeOptimizationController.optimizeByTitle(title: String)
 
 # Parse ingredient string to food item
 GET     /parseIng/:ingredient               controllers.ParseController.parseIngredient(ingredient: String)
