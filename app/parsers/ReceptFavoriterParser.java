@@ -1,5 +1,6 @@
 package parsers;
 
+import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
@@ -19,7 +20,6 @@ public class ReceptFavoriterParser implements RecipeParser {
 
     private List<String> afterEller = new ArrayList<>();
     private List<String> afterOch = new ArrayList<>();
-    private String beforeColon = "";
 
     @Override
     public Recipe parse(String html) {
@@ -38,6 +38,7 @@ public class ReceptFavoriterParser implements RecipeParser {
             String webString = ingredientString.text().toLowerCase().trim();
             webString = handleEdgeCases(webString);
             ingredient = ingredientParser.parse(webString);
+
             if (ingredient != null) {
                 ingredients.add(ingredient);
             } else {
@@ -45,10 +46,23 @@ public class ReceptFavoriterParser implements RecipeParser {
             }
 
             if (!afterOch.isEmpty()){
-                if (ingredient != null) {
-                    ingredients.add(ingredient);
-                } else {
-                    Logger.error("Couldn't parse '" + webString + "' moving on...");
+                for (String och : afterOch) {
+                    if (ingredientParser.hasAmount(och)){
+                        ingredient = ingredientParser.parse(och);
+                        if (ingredient != null) {
+                            ingredients.add(ingredient);
+                        } else {
+                            Logger.error("Couldn't parse '" + och + "' moving on...");
+                        }
+                    } else {
+                        Amount amount = ingredient.getAmount();
+                        ingredient = ingredientParser.parse(och, amount);
+                        if (ingredient != null) {
+                            ingredients.add(ingredient);
+                        } else {
+                            Logger.error("Couldn't parse '" + och + "' moving on...");
+                        }
+                    }
                 }
             }
         }
@@ -57,15 +71,6 @@ public class ReceptFavoriterParser implements RecipeParser {
     }
 
     private String handleEdgeCases(String webString) {
-        //Handle ":"
-        if (webString.contains(":")){
-            String[] split = webString.toLowerCase().split(":");
-            webString = split[1];
-            beforeColon = split[0];
-            System.out.println("AFTER COLON: " + split[1]);
-            System.out.println("BEFORE COLON: " + split[0]);
-        }
-
         //Handle "eller"
         if (webString.toLowerCase().contains(" " + "eller" + " ") ||
                 webString.toLowerCase().contains(" " + "eller" + ",") ||
