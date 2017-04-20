@@ -2,6 +2,7 @@ package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import helpers.JsonHelper;
+import helpers.StringHelper;
 import helpers.TaggedWord;
 import models.food.Food;
 import models.food.FoodGeneral;
@@ -23,38 +24,13 @@ import java.util.regex.Pattern;
 /**
  * Created by emmafahlen on 2017-03-23.
  */
-public class IngredientParser {
-
-    private List<String> afterEller = new ArrayList<>();
-    private List<String> afterOch = new ArrayList<>();
+public class IngredientFinder {
 
     private List<TaggedWord> taggedWords;
     private String leftover = "";
-    private String insideParenthesis = "";
-    private String title = "";
-    private boolean hasAmount;
 
-    public List<Ingredient> parse(String webString) {
-        List<Ingredient> ingredients = new ArrayList<>();
-
-        String[] parenthesis = extractParenthesis(webString);
-        String line = parenthesis[0];
-        if (parenthesis[1] != null) {
-            insideParenthesis = " (" + parenthesis[1] + ")";
-        } else {
-            insideParenthesis = "";
-        }
-
-        //Handle ":"
-        if (line.contains(":")) {
-            String[] split = line.toLowerCase().split(":");
-            line = split[1];
-            title = split[0];
-            System.out.println("AFTER COLON: " + split[1]);
-            System.out.println("BEFORE COLON: " + split[0]);
-        }
-
-        line = handleEdgeCases(line);
+    public Ingredient find(String line) {
+        Ingredient ingredient;
 
         try {
             JsonNode jsonNode = retrieveWordInfo(line);
@@ -64,72 +40,13 @@ public class IngredientParser {
         }
 
         try {
-            Ingredient ingredient = findIngredient(line);
-            ingredients.add(ingredient);
+            ingredient = findIngredient(line);
         } catch (IngredientNotFoundException e) {
-            Logger.error("No match \"" + webString + "\"");
+            Logger.error("No match \"" + line + "\"");
             return null;
         }
 
-        if (!afterOch.isEmpty()) {
-            for (String och : afterOch) {
-                if (hasAmount(och)) {
-                    try {
-                        ingredients.add(findIngredient(och));
-                    } catch (IngredientNotFoundException e) {
-                        Logger.error("No match \"" + webString + "\"");
-                    }
-                } else {
-                    Amount amount = ingredients.get(0).getAmount();
-                    try {
-                        ingredients.add(findIngredient(och, amount));
-                    } catch (IngredientNotFoundException e) {
-                        Logger.error("No match \"" + webString + "\"");
-                    }
-                }
-            }
-        }
-
-        return ingredients;
-    }
-
-    private Ingredient findIngredient(String line) throws IngredientNotFoundException {
-        return findIngredient(line, findAmount());
-    }
-
-    private Ingredient findIngredient(String line, Amount amount) throws IngredientNotFoundException {
-        FoodGeneral foodGeneral = findFoodGeneral();
-        Food food = findFood(foodGeneral, line);
-
-        if (food != null) {
-            if (!title.equals("")) {
-                if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
-                    String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
-                    comment += insideParenthesis;
-                    Logger.trace("Added " + comment.trim() + " as comment");
-                    Logger.info(
-                        "Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
-                            + food.name + ", \"" + comment.trim() + "\" }");
-                    return new Ingredient(food, amount, comment.trim(), title);
-                } else {
-                    return new Ingredient(food, amount, null, title);
-                }
-            }
-            if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
-                String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
-                comment += insideParenthesis;
-                Logger.trace("Added " + comment.trim() + " as comment");
-                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
-                    + food.name + ", \"" + comment.trim() + "\" }");
-                return new Ingredient(food, amount, comment.trim());
-            } else {
-                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
-                    + food.name + " }");
-                return new Ingredient(food, amount);
-            }
-        } else {
-            throw new IngredientNotFoundException();
-        }
+        return ingredient;
     }
 
     private Amount findAmount() {
@@ -171,11 +88,34 @@ public class IngredientParser {
         taggedWords = filteredWords;
 
         if (numeric != null) {
-            hasAmount = true;
             return new Amount(numeric, unit);
         } else {
-            hasAmount = false;
             return new Amount(0.0, Amount.Unit.EMPTY);
+        }
+    }
+
+    private Ingredient findIngredient(String line) throws IngredientNotFoundException {
+        return findIngredient(line, findAmount());
+    }
+
+    private Ingredient findIngredient(String line, Amount amount) throws IngredientNotFoundException {
+        FoodGeneral foodGeneral = findFoodGeneral();
+        Food food = findFood(foodGeneral, line);
+
+        if (food != null) {
+            if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
+                String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
+                Logger.trace("Added " + comment.trim() + " as comment");
+                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
+                    + food.name + ", \"" + comment.trim() + "\" }");
+                return new Ingredient(food, amount, comment.trim());
+            } else {
+                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
+                    + food.name + " }");
+                return new Ingredient(food, amount);
+            }
+        } else {
+            throw new IngredientNotFoundException();
         }
     }
 
@@ -195,8 +135,7 @@ public class IngredientParser {
             List<String> tags = general.searchTags;
             tags.add(general.name.toLowerCase());
             for (String tag : tags) {
-                if (line.contains(" " + tag + " ") || line.contains(" " + tag + ",") || line
-                    .contains(" " + tag + ".")) {
+                if (StringHelper.containsWord(line, tag)) {
                     if (tag.length() > matchingTagLength) {
                         Logger.trace("Found \"" + general.name + "\"");
                         foodGeneral = general;
@@ -274,53 +213,6 @@ public class IngredientParser {
         }
 
         return food;
-    }
-
-    private String handleEdgeCases(String webString) {
-        //Handle "eller"
-        if (webString.toLowerCase().contains(" " + "eller" + " ") || webString.toLowerCase()
-            .contains(" " + "eller" + ",") || webString.toLowerCase()
-            .contains(" " + "eller" + ".")) {
-            String[] split = webString.toLowerCase().split(" eller");
-            webString = split[0];
-            for (int i = 1; i < split.length; i++) {
-                afterEller.add(split[i]);
-                System.out.println("AFTER ELLER: " + split[i]);
-            }
-            System.out.println("BEFORE ELLER: " + split[0]);
-        }
-
-        //Handle "och"
-        if (webString.toLowerCase().contains(" " + "och" + " ") || webString.toLowerCase()
-            .contains(" " + "och" + ",") || webString.toLowerCase().contains(" " + "och" + ".")) {
-            String[] split = webString.toLowerCase().split(" och");
-            webString = split[0];
-            for (int i = 1; i < split.length; i++) {
-                afterOch.add(split[i]);
-                System.out.println("AFTER OCH: " + split[i]);
-            }
-            System.out.println("BEFORE OCH: " + split[0]);
-        }
-
-        System.out.println("WEBSTRING: " + webString);
-        return webString;
-    }
-
-    private String[] extractParenthesis(String input) {
-        String[] split = new String[2];
-        Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(input);
-        while (m.find()) {
-            if (m.group(1) != null) {
-                split[1] = m.group(1);
-            }
-        }
-        split[0] = input.replaceAll("\\(([^)]+)\\)", "");
-        return split;
-    }
-
-    public boolean hasAmount(String webString) {
-        findAmount();
-        return hasAmount;
     }
 
     /**
