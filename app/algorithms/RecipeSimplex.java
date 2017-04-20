@@ -3,11 +3,7 @@ package algorithms;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 import models.recipe.Ingredient;
-<<<<<<< HEAD
 import models.food.fineli.Nutrient;
-
-=======
->>>>>>> master
 import java.util.*;
 
 /**
@@ -50,19 +46,19 @@ public class RecipeSimplex {
                 vitaminDPer100grams.set(i,0D);
                 vitaminCPer100grams.set(i,0D);*/
             }
-            kcalPer100grams.set(i, ingredients.get(i).getFoodItem().getEnergyKcal().doubleValue());
-            proteinPer100grams.set(i, ingredients.get(i).getFoodItem().getProtein().doubleValue());
-            fatPer100grams.set(i, ingredients.get(i).getFoodItem().getFats().getFat().doubleValue());
-            carbohydratesPer100grams.set(i, ingredients.get(i).getFoodItem().getCarbohydrates().doubleValue());
+            kcalPer100grams.set(i, ingredients.get(i).getFood().getNutrient(Nutrient.KCAL));
+            proteinPer100grams.set(i, ingredients.get(i).getFood().getNutrient(Nutrient.PROTEIN));
+            fatPer100grams.set(i, ingredients.get(i).getFood().getNutrient(Nutrient.FAT));
+            carbohydratesPer100grams.set(i, ingredients.get(i).getFood().getNutrient(Nutrient.CARBOHYDRATES));
             /*vitaminAPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminA().doubleValue());
             vitaminDPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminD().doubleValue());
             vitaminCPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminC().doubleValue());*/
         }
 
-        setEachConstraintNutrition(kcalPer100grams, nutritionNeed.get(Nutrient.CaloriKcal), ingredients.size());
-        setEachConstraintNutrition(proteinPer100grams, nutritionNeed.get(Nutrient.Protein), ingredients.size());
-        setEachConstraintNutrition(fatPer100grams, nutritionNeed.get(Nutrient.Fat), ingredients.size());
-        setEachConstraintNutrition(carbohydratesPer100grams, nutritionNeed.get(Nutrient.Carbohydrates), ingredients.size());
+        setEachConstraintNutrition(kcalPer100grams, nutritionNeed.get(Nutrient.KCAL), ingredients.size());
+        setEachConstraintNutrition(proteinPer100grams, nutritionNeed.get(Nutrient.PROTEIN), ingredients.size());
+        setEachConstraintNutrition(fatPer100grams, nutritionNeed.get(Nutrient.FAT), ingredients.size());
+        setEachConstraintNutrition(carbohydratesPer100grams, nutritionNeed.get(Nutrient.CARBOHYDRATES), ingredients.size());
         /*setEachConstraintNutrition(vitaminAPer100grams, nutritionNeed.get(Nutrient.VitaminAUG), ingredients.size());
         setEachConstraintNutrition(vitaminDPer100grams, nutritionNeed.get(Nutrient.VitaminDUG), ingredients.size());
         setEachConstraintNutrition(vitaminCPer100grams, nutritionNeed.get(Nutrient.VitaminCMG), ingredients.size());
@@ -125,13 +121,15 @@ public class RecipeSimplex {
     public void setLinearObjectiveFunction(List<Ingredient> ingredients) {
         double[] objFcn = new double[ingredients.size()];
 
+        /*
         for (int i = 0; i < ingredients.size(); i++) {
-            if (ingredients.get(i).getFoodItem().getWaste() != null) {
+            if (ingredients.get(i).getFood().getWaste() != null) {
                 objFcn[i] = ingredients.get(i).getWaste() / 100;
             } else {
                 objFcn[i] = 0;
             }
         }
+        */
 
         f = new LinearObjectiveFunction(objFcn,0);
     }

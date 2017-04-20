@@ -1,6 +1,7 @@
 package models.recipe;
 
 import models.food.FoodItem;
+import models.food.fineli.Food;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -34,7 +35,7 @@ public class ShoppingList {
         addList(list, check);
     }
 
-    public ShoppingList(Menu menu, List<FoodItem> food, List<Amount> amount){
+    public ShoppingList(Menu menu, List<Food> food, List<Amount> amount){
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
         leftovers=new ArrayList<Ingredient>();
@@ -47,23 +48,23 @@ public class ShoppingList {
 
     private void addList(List<Ingredient> list, Boolean check) {
         ingredients = list;
+
         for (Ingredient ingredient : list) {
             if (map.containsKey(ingredient)) {
-                totalWaste -= ingredient.getWaste();
+                //totalWaste -= ingredient.getWaste();
                 putTogetherIngredients(check, ingredient);
             } else {
                 this.map.put(ingredient, check);
             }
-            totalWaste += ingredient.getWaste();
+            //totalWaste += ingredient.getWaste();
         }
-        */
     }
 
     private Ingredient getKey(Ingredient ingredient) {
         Ingredient[] ingredientList = new Ingredient[map.size()];
         ingredientList = map.keySet().toArray(ingredientList);
         for (Ingredient i : ingredientList) {
-            if (i.getFoodItem().getName().equals(ingredient.getFoodItem().getName())) {
+            if (i.getFood().name.equals(ingredient.getFood().name)) {
                 return i;
             }
         }
@@ -90,7 +91,7 @@ public class ShoppingList {
         map.put(newIngredient, check);
     }
 
-    public void removeAmountOfIngredients(List<FoodItem> foods, List<Amount> amount){
+    public void removeAmountOfIngredients(List<Food> foods, List<Amount> amount){
         for(int i=0; i<foods.size(); i++){
             removeAmountToIngredient(new Ingredient(foods.get(i), amount.get(i)), amount.get(i).getAmount());
         }
@@ -98,23 +99,23 @@ public class ShoppingList {
 
     // remove amount from ingredients
     public void removeAmountToIngredient(Ingredient ingredient, double amount) {
-        String name = ingredient.getFoodItem().getName();
+        String name = ingredient.getFood().name;
         Ingredient[] ingredients = new Ingredient[map.size()];
         ingredients = map.keySet().toArray(ingredients);
         boolean inList=false;
         for (Ingredient i : ingredients) {
-            if (i.getFoodItem().getName().equals(name)) {
+            if (i.getFood().name.equals(name)) {
                 if (!map.remove(i)) {
                     inList=true;
                     if (i.getAmount().getAmount() > amount) {
                         double newValue = i.getAmount().getAmount() - amount;
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
-                        Ingredient newIngredient = new Ingredient(i.getFoodItem(), newAmount);
+                        Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                         map.put(newIngredient, false);
                     } else if (i.getAmount().getAmount() < amount) {
                         double newValue =amount - i.getAmount().getAmount();
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
-                        Ingredient newIngredient = new Ingredient(i.getFoodItem(), newAmount);
+                        Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                         leftovers.add(newIngredient);
                     }
 
@@ -129,15 +130,15 @@ public class ShoppingList {
 
     // add amount to ingredients
     public void addAmountToIngredient(Ingredient ingredient, double amount) {
-        String name = ingredient.getFoodItem().getName();
+        String name = ingredient.getFood().name;
         Ingredient[] ingredients = new Ingredient[map.size()];
         ingredients = map.keySet().toArray(ingredients);
         for (Ingredient i : ingredients) {
-            if (i.getFoodItem().getName().equals(name)) {
+            if (i.getFood().name.equals(name)) {
                 if (!map.remove(i)) {
                     double newValue = i.getAmount().getAmount() + amount;
                     Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
-                    Ingredient newIngredient = new Ingredient(i.getFoodItem(), newAmount);
+                    Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                     map.put(newIngredient, false);
                 }
             }
@@ -190,7 +191,7 @@ public class ShoppingList {
                 boolean marked = entry.getValue();
                 String amount = entry.getKey().getAmount().getAmount() + "";
                 String unit = entry.getKey().getAmount().getUnit().toString();
-                String foodItem = entry.getKey().getFoodItem().getName();
+                String foodItem = entry.getKey().getFood().name;
                 if (marked) {
                     text += "[x] ";
                 } else {
@@ -210,7 +211,7 @@ public class ShoppingList {
             String text = "Rester:\n";
             for(Ingredient ingredient:leftovers){
                 String unit=ingredient.getAmount().getUnit().toString();
-                text+=ingredient.getAmount().getAmount()+" "+unit+" "+ingredient.getFoodItem().getName()+"\n";
+                text+=ingredient.getAmount().getAmount()+" "+unit+" "+ingredient.getFood().name+"\n";
             }
             return text + "\n";
         }

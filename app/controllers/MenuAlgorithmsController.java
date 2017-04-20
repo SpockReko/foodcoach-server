@@ -3,6 +3,7 @@ package controllers;
 import algorithms.MenuAlgorithms;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.food.FoodItem;
+import models.food.fineli.Food;
 import models.recipe.Amount;
 import models.recipe.Menu;
 import models.recipe.Recipe;
@@ -68,7 +69,7 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingMenu = menuAlgorithmsInstant.CalculateWeekMenu(user);
+            Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
 
             return ok((JsonNode) Json.parse(resultingMenu.recipeListToString()));
 
@@ -81,7 +82,7 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingMenu = menuAlgorithmsInstant.CalculateWeekMenu(user);
+            Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
 
             if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
                 return ok(resultingMenu.recipeListToString());
@@ -96,16 +97,16 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> removeRecipeList = new ArrayList<>();
         int nrOfRecipes = 3;
         List<Recipe> allRecipes = Recipe.find.all();
-        List<FoodItem> foods = new ArrayList<FoodItem>();
+        List<Food> foods = new ArrayList<>();
         List<Amount> amounts = new ArrayList<Amount>();
 
-        foods.add(FoodItem.find.byId(120L));
-        foods.add(FoodItem.find.byId(12L));
+        foods.add(Food.find.byId(120L));
+        foods.add(Food.find.byId(12L));
         amounts.add(new Amount(100, Amount.Unit.GRAM));
         amounts.add(new Amount(150, Amount.Unit.GRAM));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.CalculateWeekMenu(foods, amounts);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(foods, amounts);
         ShoppingList shoppingList=new ShoppingList(resultingMenu, foods, amounts);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())

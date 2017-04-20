@@ -51,12 +51,12 @@ public class MenuAlgorithmsTest {
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         menuAlgorithms.addAllergies(usersPerfectIngrediense);
-        resultingMenuFilterIngrediense = menuAlgorithms.CalculateWeekMenu(user);
+        resultingMenuFilterIngrediense = menuAlgorithms.calculateWeekMenu(user);
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
         menuAlgorithms=new MenuAlgorithms(recipes, filterList, 1);
-        resultingMenuFilterRecipe = menuAlgorithms.CalculateWeekMenu(user);
+        resultingMenuFilterRecipe = menuAlgorithms.calculateWeekMenu(user);
 
     }
 

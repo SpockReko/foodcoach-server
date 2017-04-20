@@ -37,7 +37,7 @@ public class MenuAlgorithms {
     private List<Recipe> allRecipes = new ArrayList<>();
     private List<Menu> menuList = new ArrayList<>();
     private User user = new User();
-    private List<FoodItem> foodItemList;
+    private List<Food> foodItemList;
     private List<Amount> amountList;
     private List<Ingredient> notTheseIngredients = new ArrayList<>();
     private List<Recipe> notTheseRecipes;
@@ -47,27 +47,29 @@ public class MenuAlgorithms {
      * Constructor that creates a MenuAlgorithm class that holds recipes and can create
      * optimal menus by different criteria
      * Nr of menus is limited to 3.
+     *
      * @param
      * @param recipeList The list of recipes you want to chose between
      */
-    public MenuAlgorithms(List<Recipe> recipeList, List<Recipe> notThisRecipes, int nrOfRecipes){
-        this.allRecipes=recipeList;
-        notTheseRecipes=notThisRecipes;
-        this.nrOfRecipes=nrOfRecipes;
+    public MenuAlgorithms(List<Recipe> recipeList, List<Recipe> notThisRecipes, int nrOfRecipes) {
+        this.allRecipes = recipeList;
+        notTheseRecipes = notThisRecipes;
+        this.nrOfRecipes = nrOfRecipes;
     }
 
     /**
      * Every time we want to calculate values we need clean containers for menus
      */
-    private void reset(){
+    private void reset() {
         optimalMenuNutrition = LARGE_DISTANCE;
         optimalMenu = new Menu(new ArrayList<>());
-        filterRecipes(notTheseIngredients,notTheseRecipes);
+        filterRecipes(notTheseIngredients, notTheseRecipes);
         menuList = new ArrayList<>();
     }
 
     /**
      * Adds allergies to the calculations
+     *
      * @param ingredient
      */
     public void addAllergies(Ingredient ingredient) {
@@ -77,51 +79,55 @@ public class MenuAlgorithms {
     /**
      * Recursiv method with 2 base cases and a minimization of the value.
      * In the case we get a size that is good then we can
+     *
      * @param indexOfRecipes where in the recurtion we ar at
-     * @param currentList the list we have at each recurtion
-     * @param optimize The method we want to evaluate the menu on
+     * @param currentList    the list we have at each recurtion
+     * @param optimize       The method we want to evaluate the menu on
      * @return
      */
-    public double returnAllMenus(int indexOfRecipes, List<Recipe> currentList, Function<Menu,Double> optimize){
+    public double returnAllMenus(int indexOfRecipes, List<Recipe> currentList,
+        Function<Menu, Double> optimize) {
 
-        if (currentList.size() == nrOfRecipes){
+        if (currentList.size() == nrOfRecipes) {
             Menu menu = new Menu(currentList);
             double value = optimize.apply(menu);
 
-            if(value <= optimalMenuNutrition){
+            if (value <= optimalMenuNutrition) {
                 optimalMenuNutrition = value;
                 optimalMenu = menu;
-
             }
             return value;
-        }else if(indexOfRecipes < 0){
-            return optimalMenuNutrition+1.0;
-        }else{
+        } else if (indexOfRecipes < 0) {
+            return optimalMenuNutrition + 1.0;
+        } else {
             List<Recipe> newList = new ArrayList<>(currentList);
             currentList.add(allRecipes.get(indexOfRecipes));
-            return Math.min(returnAllMenus(indexOfRecipes-1, currentList, optimize),
-                    returnAllMenus(indexOfRecipes-1, newList, optimize));
+            return Math.min(returnAllMenus(indexOfRecipes - 1, currentList, optimize),
+                returnAllMenus(indexOfRecipes - 1, newList, optimize));
         }
     }
 
 
     /**
      * Returns the least optimized value in menus
+     *
      * @param optimize
      * @return menu;
      */
     private int getOptimalMenuIndex(Function<Menu, Double> optimize) {
         Menu menu = menus[0];
         int returnIndex = 0;
-        if( menu == null) return 0;
+        if (menu == null)
+            return 0;
 
         for (int i = 0; i < menus.length; i++) {
-            if(    menus[i] == null) return i;
+            if (menus[i] == null)
+                return i;
 
             double mValue = optimize.apply(menus[i]);
             double menuValue = optimize.apply(menu);
 
-            if(mValue>menuValue){ //The worse value is better!
+            if (mValue > menuValue) { //The worse value is better!
                 returnIndex = i;
             }
         }
@@ -129,27 +135,28 @@ public class MenuAlgorithms {
     }
 
 
-    public Menu CalculateWeekMenu(User user) {
-        return CalculateWeekMenu(user, DEFAULT_VALUE_MENUS);
+    public Menu calculateWeekMenu(User user) {
+        return calculateWeekMenu(user, DEFAULT_VALUE_MENUS);
     }
 
-    public Menu CalculateWeekMenu(User user, int numberOfMenus) {
+    public Menu calculateWeekMenu(User user, int numberOfMenus) {
         this.user = user;
         menus = new Menu[numberOfMenus];
         reset();
-        returnAllMenus(allRecipes.size()-1, new ArrayList<>(), this::nutritionValueCalculation);
+        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
         return optimalMenu;
     }
 
     /**
      * Calculates a weekmenu using a list of food items
+     *
      * @param foodItemList
      * @return the menu that generates the shortest shopping list.
      */
-    public Menu CalculateWeekMenu(List<FoodItem> foodItemList)  {
+    public Menu calculateWeekMenu(List<Food> foodItemList) {
         reset();
-        this.foodItemList=new ArrayList<>(foodItemList);
-        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::nbrOfFoodsUsed);
+        this.foodItemList = new ArrayList<>(foodItemList);
+        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nbrOfFoodsUsed);
         return optimalMenu;
     }
 
@@ -159,38 +166,38 @@ public class MenuAlgorithms {
      * @param
      * @return the menu that generates the shortest shopping list.
      */
-    public Menu CalculateWeekMenu(List<FoodItem> foodItemList, List<Amount> amountList)  {
+    public Menu calculateWeekMenu(List<Food> foodItemList, List<Amount> amountList) {
         reset();
-        this.foodItemList=new ArrayList<>(foodItemList);
-        this.amountList=new ArrayList<>(amountList);
-        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::lengthOfShoppingList);
+        this.foodItemList = new ArrayList<>(foodItemList);
+        this.amountList = new ArrayList<>(amountList);
+        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::lengthOfShoppingList);
         return optimalMenu;
     }
 
     /**
-     *
      * @param chosenMenu
      * @return
      */
-    public Double nutritionValueCalculation(Menu chosenMenu){
-        HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
-        HashMap<Nutrient,Double> nutrientsOverdose = user.overdoseValues;
-        HashMap<Nutrient,Double> nutrientsContent = NutritionAlgorithms.nutrientsContent(chosenMenu);
-        return NutritionAlgorithms.L2Norm(nutrientsNeed,nutrientsContent,nutrientsOverdose,chosenMenu);
+    public Double nutritionValueCalculation(Menu chosenMenu) {
+        HashMap<Nutrient, Double> nutrientsNeed = user.hmap;
+        HashMap<Nutrient, Double> nutrientsOverdose = user.overdoseValues;
+        HashMap<Nutrient, Double> nutrientsContent =
+            NutritionAlgorithms.nutrientsContent(chosenMenu);
+        return NutritionAlgorithms
+            .L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
     }
 
     /**
-     *
      * @param menu
      * @return
      */
-    private double nbrOfFoodsUsed(Menu menu){
-        List<FoodItem> foodItemsLeft=foodItemList;
-        List<FoodItem> usedFood=new ArrayList<FoodItem>();
-        for( Recipe recipe : menu.getRecipeList() ) {
-            for(int i=0; i<recipe.ingredients.size(); i++){
-                FoodItem food=recipe.ingredients.get(i).getFoodItem();
-                if(foodItemsLeft.contains(food)){
+    private double nbrOfFoodsUsed(Menu menu) {
+        List<Food> foodItemsLeft = foodItemList;
+        List<Food> usedFood = new ArrayList<>();
+        for (Recipe recipe : menu.getRecipeList()) {
+            for (int i = 0; i < recipe.ingredients.size(); i++) {
+                Food food = recipe.ingredients.get(i).getFood();
+                if (foodItemsLeft.contains(food)) {
                     foodItemsLeft.remove(food);
                     usedFood.add(food);
                 }
@@ -200,82 +207,80 @@ public class MenuAlgorithms {
     }
 
     /**
-     *
      * @param menu
      * @return
      */
-    private Double lengthOfShoppingList(Menu menu){
-        ShoppingList shoppingList=new ShoppingList(menu);
+    private Double lengthOfShoppingList(Menu menu) {
+        ShoppingList shoppingList = new ShoppingList(menu);
 
-        for(int i=0; i<foodItemList.size(); i++){
-            shoppingList.removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
+        for (int i = 0; i < foodItemList.size(); i++) {
+            shoppingList
+                .removeAmountToIngredient(new Ingredient(foodItemList.get(i), amountList.get(i)),
                     amountList.get(i).getAmount());
         }
-        return shoppingList.size()+0.0;
+        return shoppingList.size() + 0.0;
     }
 
     /**
-     *
      * @param menu
      * @return
      */
-    public String recipeListToString(Menu menu){
+    public String recipeListToString(Menu menu) {
         String text = "";
-        for(Recipe r : menu.getRecipeList()){
+        for (Recipe r : menu.getRecipeList()) {
             text = text + r.getTitle() + "\n";
         }
         text = text + "\n\n";
-        for(String comment : menu.getCommentList()){
+        for (String comment : menu.getCommentList()) {
             text = text + comment + "\n";
         }
         return text;
     }
 
     /**
-     *
      * @param ingredientList
      * @param recipeList
      */
-    private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList){
+    private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList) {
 
         List<Recipe> filteredRecipes = new ArrayList<>();
-        for (Recipe recipe : allRecipes){
+        for (Recipe recipe : allRecipes) {
             boolean badRecipe = false;
-            for (Ingredient ingredient :ingredientList) {
-                if(recipe.ingredients.contains(ingredient)){
+            for (Ingredient ingredient : ingredientList) {
+                if (recipe.ingredients.contains(ingredient)) {
                     badRecipe = true;
                 }
             }
-            for (Recipe r: recipeList) {
-                if(recipe.equals(r)){
+            for (Recipe r : recipeList) {
+                if (recipe.equals(r)) {
                     badRecipe = true;
                 }
             }
-            if(!badRecipe) filteredRecipes.add(recipe);
+            if (!badRecipe)
+                filteredRecipes.add(recipe);
         }
 
         allRecipes = filteredRecipes;
     }
 
     /**
-     *
      * @param stringList
      * @return
      */
     private List<Ingredient> getIngredientsFromString(List<String> stringList) {
         List<Ingredient> ingredientList = new ArrayList<>();
 
-        for (String name: stringList) {
+        for (String name : stringList) {
             //TODO: Fix the error of the MYSQL call!
             List<Food> foods;
             try {
                 foods = Food.find.where().contains("name", name).findList();
-            } catch(Exception e) {
+            } catch (Exception e) {
                 foods = null;
             }
-            if( foods != null){
-                for (FoodItem fi: foods) {
-                    ingredientList.add(new Ingredient(fi,new Amount(100.0, GRAM)));
+            if (foods != null) {
+                for (Food fi : foods) {
+                    ingredientList.add(new Ingredient(fi, new Amount(100.0, GRAM)));
                 }
             }
         }
@@ -283,13 +288,13 @@ public class MenuAlgorithms {
     }
 
     /**
-     *
      * @return
      */
-    public int getNrOfRecipes(){ return nrOfRecipes;}
+    public int getNrOfRecipes() {
+        return nrOfRecipes;
+    }
 
     /**
-     *
      * @param nrOfRecipes
      */
     public void setNrOfRecipes(int nrOfRecipes) {
@@ -297,10 +302,9 @@ public class MenuAlgorithms {
     }
 
     /**
-     *
      * @return
      */
-    public Menu[] getMenus(){
+    public Menu[] getMenus() {
         return menus.clone();
     }
 }
