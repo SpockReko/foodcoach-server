@@ -18,7 +18,7 @@ import java.util.List;
 public class Food extends Model {
 
     @Id private long id;
-    private final int fineliId;
+    @Column(unique = true) private final int dataSourceId;
 
     @NotNull public String name;
     @JsonBackReference
@@ -64,12 +64,15 @@ public class Food extends Model {
     @Column(name = "selenium_ug") private Double selenium;
     @Column(name = "zinc_mg") private Double zinc;
 
-    public Food(String name, int fineliId) {
+    @Enumerated(EnumType.STRING) private final DataSource dataSource;
+
+    public Food(String name, int dataSourceId, DataSource dataSource) {
         this.name = name;
-        this.fineliId = fineliId;
+        this.dataSourceId = dataSourceId;
+        this.dataSource = dataSource;
     }
 
-    public Food(String name, int fineliId, Double energyKj,
+    public Food(String name, int dataSourceId, DataSource dataSource, Double energyKj,
         Double carbohydrates, Double protein, Double fat, Double fibre, Double alcohol, Double salt,
         Double vitaminA, Double vitaminB6, Double vitaminB12, Double vitaminC, Double vitaminD,
         Double vitaminE, Double vitaminK, Double thiamine, Double riboflavin, Double niacin,
@@ -77,7 +80,8 @@ public class Food extends Model {
         Double calcium, Double potassium, Double magnesium, Double sodium, Double selenium,
         Double zinc) {
         this.name = name;
-        this.fineliId = fineliId;
+        this.dataSourceId = dataSourceId;
+        this.dataSource = dataSource;
         this.energyKj = energyKj;
         this.carbohydrates = carbohydrates;
         this.protein = protein;
@@ -113,8 +117,8 @@ public class Food extends Model {
     public long getId() {
         return id;
     }
-    public int getFineliId() {
-        return fineliId;
+    public int getDataSourceId() {
+        return dataSourceId;
     }
     public Double getNutrient(Nutrient nutrient) {
         switch (nutrient) {

@@ -5,10 +5,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
-import models.food.fineli.FoodGeneral;
-import models.food.fineli.Processing;
-import models.food.fineli.Diet;
-import models.food.fineli.Food;
+import models.food.fineli.*;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
@@ -38,8 +35,8 @@ public class DatabaseFineliSeeder {
 
     private static EbeanServer db;
 
-    private static final String GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods_Complete.tsv";
-    private static final String SPECIFIC_TSV = "resources/fineli_food/Fineli_SpecificFoods.tsv";
+    private static final String FINELI_GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods_Complete.tsv";
+    private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_SpecificFoods.tsv";
     private static final String MOCK_PATH = "resources/recipes/recipes_fineli.csv";
 
     private static final int GEN_ID = 0;
@@ -100,8 +97,8 @@ public class DatabaseFineliSeeder {
         settings.setNumberOfRowsToSkip(1);
 
         TsvParser parser = new TsvParser(settings);
-        List<String[]> generalRows = parser.parseAll(getReader(GENERAL_TSV));
-        List<String[]> specificRows = parser.parseAll(getReader(SPECIFIC_TSV));
+        List<String[]> generalRows = parser.parseAll(getReader(FINELI_GENERAL_TSV));
+        List<String[]> specificRows = parser.parseAll(getReader(FINELI_DATA_TSV));
 
         System.out.println(
             "\n" + CommonTools.PURPLE + "--- (Seeding database) ---\n" + CommonTools.RESET);
@@ -121,6 +118,7 @@ public class DatabaseFineliSeeder {
 
         System.out.print(CYAN + "Importing foods from Fineli..." + CommonTools.RESET);
         importFoods(generalRows, specificRows);
+        printDone();
 
         System.out.print(CYAN + "\nAdding mocked recipes... " + CommonTools.RESET);
         mockRecipes();
@@ -156,7 +154,7 @@ public class DatabaseFineliSeeder {
         int fineliId = Integer.parseInt(cols[GEN_ID]);
         String[] nutritionCols = specificRows.get(idRowNumbers.get(fineliId));
         Food specificFood = new Food(
-            name, fineliId,
+            name, fineliId, DataSource.FINELI,
             toDouble(nutritionCols[SPEC_ENERGY_KJ]),
             toDouble(nutritionCols[SPEC_CARB]),
             toDouble(nutritionCols[SPEC_PROTEIN]),
@@ -262,7 +260,7 @@ public class DatabaseFineliSeeder {
                     throw new RuntimeException("Wrong unit in recipes.csv");
                 }
 
-                Food food = db.find(Food.class).where().eq("fineliId", fineliId).findUnique();
+                Food food = db.find(Food.class).where().eq("dataSourceId", fineliId).findUnique();
 
                 if (food == null) {
                     throw new RuntimeException("No food with food number " + fineliId);
