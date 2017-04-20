@@ -120,68 +120,100 @@ public class Food extends Model {
     public int getDataSourceId() {
         return dataSourceId;
     }
-    public Double getNutrient(Nutrient nutrient) {
+    public double getNutrient(Nutrient nutrient) {
+        Double value;
+        // TODO Returning 0 instead of null where no data present for now
         switch (nutrient) {
             case KCAL:
-                return energyKj / Constants.KCAL_FACTOR;
+                value = energyKj / Constants.KCAL_FACTOR;
+                break;
             case KJ:
-                return energyKj;
+                value = energyKj;
+                break;
             case CARBOHYDRATES:
-                return carbohydrates;
+                value = carbohydrates;
+                break;
             case PROTEIN:
-                return protein;
+                value = protein;
+                break;
             case FAT:
-                return fat;
+                value = fat;
+                break;
             case FIBRE:
-                return fibre;
+                value = fibre;
+                break;
             case SALT:
-                return salt;
+                value = salt;
+                break;
             case ALCOHOL:
-                return alcohol;
+                value = alcohol;
+                break;
             case VITAMIN_A:
-                return vitaminA;
+                value = vitaminA;
+                break;
             case VITAMIN_B6:
-                return vitaminB6;
+                value = vitaminB6;
+                break;
             case VITAMIN_B12:
-                return vitaminB12;
+                value = vitaminB12;
+                break;
             case VITAMIN_C:
-                return vitaminC;
+                value = vitaminC;
+                break;
             case VITAMIN_D:
-                return vitaminD;
+                value = vitaminD;
+                break;
             case VITAMIN_E:
-                return vitaminE;
+                value = vitaminE;
+                break;
             case VITAMIN_K:
-                return vitaminK;
+                value = vitaminK;
+                break;
             case THIAMINE:
-                return thiamine;
+                value = thiamine;
+                break;
             case RIBOFLAVIN:
-                return riboflavin;
+                value = riboflavin;
+                break;
             case NIACIN:
-                return niacin;
+                value = niacin;
+                break;
             case NIACIN_EQ:
-                return niacinEquivalents;
+                value = niacinEquivalents;
+                break;
             case FOLATE:
-                return folate;
+                value = folate;
+                break;
             case PHOSPHORUS:
-                return phosphorus;
+                value = phosphorus;
+                break;
             case IODINE:
-                return iodine;
+                value = iodine;
+                break;
             case IRON:
-                return iron;
+                value = iron;
+                break;
             case CALCIUM:
-                return calcium;
+                value = calcium;
+                break;
             case POTASSIUM:
-                return potassium;
+                value = potassium;
+                break;
             case MAGNESIUM:
-                return magnesium;
+                value = magnesium;
+                break;
             case SODIUM:
-                return sodium;
+                value = sodium;
+                break;
             case SELENIUM:
-                return selenium;
+                value = selenium;
+                break;
             case ZINC:
-                return zinc;
+                value = zinc;
+                break;
             default:
                 throw new IllegalArgumentException("No such nutrient for this food");
         }
+        return value != null ? value : 0d;
     }
 }
