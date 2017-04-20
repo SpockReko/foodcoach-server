@@ -27,7 +27,7 @@ public class Menu {
         commentList.add(comment);
     }
 
-    public String recipeListToString(){
+    public String recipeListToString(ShoppingList shop){
         String text = "Meny:\n\n";
         for(Recipe r : this.getRecipeList()){
             text = text + r.getTitle() + "\n";
@@ -36,7 +36,6 @@ public class Menu {
         for(String comment : this.getCommentList()){
             text = text + comment + "\n";
         }
-        ShoppingList shop = new ShoppingList(this);
         text = text + shop.toString();
 
         text = text + "\n\nTotalta matsvinnet för din meny: (ska ändras till koldioxidutsläpp)\n\n";

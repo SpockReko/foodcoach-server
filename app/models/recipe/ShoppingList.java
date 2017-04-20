@@ -14,7 +14,7 @@ public class ShoppingList {
     private Map<Ingredient, Boolean> map = new HashMap<>();
     private Double CO2 = 0.0;
     private static List<Ingredient> ingredients;
-    private List<Ingredient> leftovers;
+    private List<Ingredient> leftovers = new ArrayList<>();
 
     public ShoppingList() {
     }
@@ -22,7 +22,7 @@ public class ShoppingList {
     public ShoppingList(Menu menu) {
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
-        leftovers=new ArrayList<>();
+
         for (Recipe recipe : recipes) {
             ingredients.addAll(recipe.getIngredients());
         }
@@ -36,7 +36,6 @@ public class ShoppingList {
     public ShoppingList(Menu menu, List<Ingredient> ingredientList){
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
-        leftovers=new ArrayList<Ingredient>();
         for (Recipe recipe : recipes) {
             ingredients.addAll(recipe.getIngredients());
         }
@@ -49,12 +48,12 @@ public class ShoppingList {
 
         for (Ingredient ingredient : list) {
             if (map.containsKey(ingredient)) {
-                //CO2 -= ingredient.getCO2();
+                //CO2 -= ingredient.getFood().getCO2();
                 putTogetherIngredients(check, ingredient);
             } else {
                 this.map.put(ingredient, check);
             }
-            //CO2 += ingredient.getCO2();
+            //CO2 += ingredient.getFood().getCO2();
         }
     }
 
@@ -123,7 +122,6 @@ public class ShoppingList {
         if(!inList){
             leftovers.add(ingredient);
         }
-
     }
 
     // add amount to ingredients

@@ -70,7 +70,7 @@ public class MenuAlgorithmsController extends Controller {
 
             Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
-            return ok((JsonNode) Json.parse(resultingMenu.recipeListToString()));
+            return ok((JsonNode) Json.parse(resultingMenu.recipeListToString(new ShoppingList(resultingMenu))));
 
         } else { // If we run it from the "Server"
 
@@ -84,7 +84,7 @@ public class MenuAlgorithmsController extends Controller {
             Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
             if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-                return ok(resultingMenu.recipeListToString());
+                return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
             return ok("nothing found!");
 
         }
@@ -104,7 +104,7 @@ public class MenuAlgorithmsController extends Controller {
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingMenu.recipeListToString());
+            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
 
 
@@ -126,7 +126,7 @@ public class MenuAlgorithmsController extends Controller {
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(user.age + "\n" +resultingMenu.recipeListToString());
+            return ok(user.age + "\n" +resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
     }
 
@@ -141,7 +141,7 @@ public class MenuAlgorithmsController extends Controller {
 
         ingredients=new ArrayList<Ingredient>();
         //foods.add(food2);
-        ingredients.add(new Ingredient(Food.find.byId(120L),new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(529L),new Amount(200, GRAM)));
         ingredients.add(new Ingredient(Food.find.byId(12L),new Amount(100, GRAM)));
         ingredients.add(new Ingredient(Food.find.byId(10L),new Amount(100, GRAM)));
 
@@ -150,7 +150,9 @@ public class MenuAlgorithmsController extends Controller {
         ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingMenu.recipeListToString());
+            return ok(ingredients.get(0).getFood().name + "\n" +
+                    ingredients.get(1).getFood().name + "\n" +
+                    ingredients.get(2).getFood().name + "\n\n" + resultingMenu.recipeListToString(shoppingList));
         return ok("nothing found!");
     }
 }
