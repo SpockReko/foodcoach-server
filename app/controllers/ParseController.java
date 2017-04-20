@@ -1,10 +1,9 @@
 package controllers;
 
-import models.food.FoodItem;
 import models.food.fineli.FoodGeneral;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
-import parsers.FoodItemParser;
+import parsers.FoodParser;
 import parsers.IngredientParser;
 import play.libs.Json;
 import play.libs.ws.WSClient;
@@ -24,8 +23,8 @@ public class ParseController extends Controller {
     static WSClient ws;
 
     public Result parseIngredient(String str) {
-        FoodItemParser foodItemParser = new FoodItemParser();
-        FoodGeneral item = foodItemParser.findMatch(str);
+        FoodParser foodParser = new FoodParser();
+        FoodGeneral item = foodParser.findMatch(str);
         /*if (item.example != null) {
             return ok("<font size=\"4\" color=\"blue\">"
                     + "#" + item.getLmvFoodNumber() + " - "

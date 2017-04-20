@@ -3,10 +3,8 @@ package parsers;
 import com.fasterxml.jackson.databind.JsonNode;
 import helpers.JsonHelper;
 import helpers.TaggedWord;
-import models.food.FoodItem;
 import models.food.fineli.Food;
 import models.food.fineli.FoodGeneral;
-import models.food.fineli.Nutrient;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
@@ -229,7 +227,7 @@ public class IngredientParser {
 
         if (foodGeneral == null){
             System.out.println("FOOD GENERAL NULL");
-            FoodItemParser parser = new FoodItemParser();
+            FoodParser parser = new FoodParser();
             System.out.println("LINE: " + line);
             String[] listLine = line.trim().split("\\s++");
             for (String word : listLine){
