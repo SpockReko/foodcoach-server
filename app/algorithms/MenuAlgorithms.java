@@ -134,11 +134,11 @@ public class MenuAlgorithms {
     }
 
 
-    public Menu calculateWeekMenu(User user) {
-        return calculateWeekMenu(user, DEFAULT_VALUE_MENUS);
+    public Menu calculateMenuNutrition(User user) {
+        return calculateMenuNutrition(user, DEFAULT_VALUE_MENUS);
     }
 
-    public Menu calculateWeekMenu(User user, int numberOfMenus) {
+    public Menu calculateMenuNutrition(User user, int numberOfMenus) {
         this.user = user;
         menus = new Menu[numberOfMenus];
         reset();
