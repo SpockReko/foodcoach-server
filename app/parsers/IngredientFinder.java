@@ -24,8 +24,13 @@ import java.util.concurrent.ExecutionException;
  */
 public class IngredientFinder {
 
+    private List<FoodGeneral> foodGeneralList;
     private List<TaggedWord> taggedWords;
     private String leftover = "";
+
+    public IngredientFinder(List<FoodGeneral> foodGeneralList) {
+        this.foodGeneralList = foodGeneralList;
+    }
 
     /**
      * Tries to find a complete ingredient with amount and food in a string.
@@ -180,9 +185,8 @@ public class IngredientFinder {
         String matchingTag = "";
         int matchingTagLength = 0;
         FoodGeneral foodGeneral = null;
-        List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
 
-        for (FoodGeneral general : items) {
+        for (FoodGeneral general : foodGeneralList) {
             List<String> tags = general.searchTags;
             tags.add(general.name.toLowerCase());
             for (String tag : tags) {

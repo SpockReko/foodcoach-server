@@ -1,10 +1,10 @@
 package parsers;
 
 import helpers.StringHelper;
+import models.food.FoodGeneral;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
-import scala.concurrent.java8.FuturesConvertersImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,12 +17,23 @@ import java.util.regex.Pattern;
  */
 public class IngredientStringParser {
 
-    private IngredientFinder ingredientFinder = new IngredientFinder();
+    private IngredientFinder ingredientFinder;
 
     private String header;
     private String insideParenthesis;
     private List<String> alternatives = new ArrayList<>();
 
+    public IngredientStringParser() {
+        List<FoodGeneral> foodGeneralList = FoodGeneral.find.select("searchTags").findList();
+        ingredientFinder = new IngredientFinder(foodGeneralList);
+    }
+
+    /**
+     * Parses a string and tries to find an ingredient with amount in it.
+     * @param ingredientString The string to parse.
+     * @return An ingredient if found or null otherwise.
+     * @throws IOException If the external API used to parse cannot be reached.
+     */
     public synchronized Ingredient parse(String ingredientString) throws IOException {
         String line = ingredientString;
 

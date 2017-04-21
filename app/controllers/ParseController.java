@@ -22,7 +22,7 @@ import java.io.IOException;
 public class ParseController extends Controller {
 
     private static final String RECIPES_URLS_PATH = "resources/recipe_urls/receptfavoriter_se.txt";
-    private static final int RECIPES_TO_PARSE = 10;
+    private static final int RECIPES_TO_PARSE = 20;
 
     public Result parseLine(String input) {
         IngredientStringParser parser = new IngredientStringParser();
