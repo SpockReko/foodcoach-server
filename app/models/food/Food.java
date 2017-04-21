@@ -33,6 +33,7 @@ public class Food extends Model {
     public Double densityConstant;
 
     @Enumerated(EnumType.STRING) public Processing processing;
+    @Enumerated(EnumType.STRING) public Category category;
     @ManyToMany(cascade = CascadeType.ALL) public List<Diet> diets = new ArrayList<>();
 
     private Double energyKj;
@@ -218,8 +219,9 @@ public class Food extends Model {
         }
         return value != null ? value : 0d;
     }
-    public double getCO2(Category category){
+    public double getCO2(){
         Double value=0.0;
+        Category category=this.category;
         //frukt, gronsaker
         switch(category) {
             case appelfrukt : case Citrusfrukter : case ovrig_frukt : case Fruktkonserver : case  Bladgronsaker :
