@@ -4,6 +4,7 @@ import java.util.*;
 import models.food.Food;
 import models.recipe.*;
 import models.food.Nutrient;
+import org.apache.commons.math3.util.Precision;
 
 /**
  * Created by louiserost on 2017-03-06.
@@ -122,10 +123,10 @@ public class NutritionAlgorithms {
     private static void addNutrionInfoToMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
         if((nutrient + "").length() < 7) {
             menu.addComment(nutrient + ":\t\t" +
-                    percentageOfRDI);
+                    Precision.round(percentageOfRDI, 1));
         }else{
             menu.addComment(nutrient + ":\t" +
-                    percentageOfRDI);
+                    Precision.round(percentageOfRDI, 1));
         }
     }
 

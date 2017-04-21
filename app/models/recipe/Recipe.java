@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import models.food.Food;
 import models.food.Nutrient;
 import models.user.User;
+import org.apache.commons.math3.util.Precision;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -168,8 +169,8 @@ public class Recipe extends Model {
             Ingredient newIngredient = new Ingredient(currentFood, newAmount);
             newIngredients.add(newIngredient);
         }
-        Recipe recepie = new Recipe(this.getTitle(),1,newIngredients);
-        return recepie;
+        Recipe recipe = new Recipe(this.getTitle(),1,newIngredients);
+        return recipe;
     }
     public Recipe getUserRecipe(User user){
         List<Ingredient> ingredients = getIngredients();
@@ -203,7 +204,7 @@ public class Recipe extends Model {
             } else {
                 text +="\t";
             }
-            text += i.getAmount().getAmount()+" "+i.getAmount().getUnit()+"\n";
+            text += Precision.round(i.getAmount().getAmount(),1)+" "+i.getAmount().getUnit()+"\n";
         }
         text = text + "\n\n";
         return text;

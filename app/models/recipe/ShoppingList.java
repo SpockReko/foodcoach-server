@@ -14,6 +14,7 @@ public class ShoppingList {
     private Double CO2 = 0.0;
     private static List<Ingredient> ingredients;
     private List<Ingredient> leftovers = new ArrayList<>();
+    private double leftoverSize=0.0;
 
     public ShoppingList() {
     }
@@ -113,6 +114,7 @@ public class ShoppingList {
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
                         Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                         leftovers.add(newIngredient);
+                        leftoverSize+=newValue;
                     }
 
                 }
@@ -120,6 +122,7 @@ public class ShoppingList {
         }
         if(!inList){
             leftovers.add(ingredient);
+            leftoverSize+=ingredient.getAmount().getAmount();
         }
     }
 
@@ -166,7 +169,9 @@ public class ShoppingList {
     public List<Ingredient> getLeftovers(){
         return leftovers;
     }
-
+    public double getLeftoverSize(){
+        return leftoverSize;
+    }
 
     // check or uncheck a value.
     public boolean changeAndGetCheck(Ingredient ingredient) {

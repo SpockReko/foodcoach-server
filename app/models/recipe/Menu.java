@@ -1,5 +1,7 @@
 package models.recipe;
 
+import org.apache.commons.math3.util.Precision;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class Menu {
 
         text = text + "\n\nTotalta koldioxidutsläppet för din inköpslista:\n\n";
 
-        text = text + shop.getCO2() + " kg";
+        text = text + Precision.round(shop.getCO2(),3) + " kg";
 
         return text;
     }

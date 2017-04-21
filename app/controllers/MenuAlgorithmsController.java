@@ -161,7 +161,7 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredients = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(529L),new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(529L),new Amount(50, GRAM)));
         ingredients.add(new Ingredient(Food.find.byId(12L),new Amount(100, GRAM)));
         ingredients.add(new Ingredient(Food.find.byId(10L),new Amount(100, GRAM)));
 

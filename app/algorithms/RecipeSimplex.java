@@ -14,11 +14,16 @@ public class RecipeSimplex {
     private LinearObjectiveFunction f; // objective function, to be minimized
     private Collection<LinearConstraint> constraintsCollection = new ArrayList();
     private LinearConstraintSet constraints;
+    private List<Ingredient> ingredients;
+    private HashMap<Nutrient,Double> nutritionNeed;
+    private List<Double> leastAmountOfIngredient;
+    private boolean exceedsCalorie=false;
 
     /*
     Sets limits of least amount of each ingredient
      */
     public void setConstraintsIngredients(List<Double> leastAmountOfIngredient) {
+        this.leastAmountOfIngredient=leastAmountOfIngredient;
         for( int i=0; i<leastAmountOfIngredient.size(); i++ ) {
             double[] arr = new double[leastAmountOfIngredient.size()];
             arr[i] = 1;
@@ -27,7 +32,9 @@ public class RecipeSimplex {
         constraints = new LinearConstraintSet(constraintsCollection);
     }
 
-    public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed) {
+    public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed, boolean max) {
+        this.ingredients=ingredients;
+        this.nutritionNeed=nutritionNeed;
         List<Double> kcalPer100grams = Arrays.asList(new Double[ingredients.size()]);
         List<Double> proteinPer100grams = Arrays.asList(new Double[ingredients.size()]);
         List<Double> fatPer100grams = Arrays.asList(new Double[ingredients.size()]);
@@ -53,6 +60,10 @@ public class RecipeSimplex {
             /*vitaminAPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminA().doubleValue());
             vitaminDPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminD().doubleValue());
             vitaminCPer100grams.set(i, ingredients.get(i).getFoodItem().getVitamins().getVitaminC().doubleValue());*/
+        }
+
+        if (max) {
+            setMaxConstraintNutrition(kcalPer100grams, nutritionNeed.get(Nutrient.KCAL), ingredients.size());
         }
 
         setEachConstraintNutrition(kcalPer100grams, nutritionNeed.get(Nutrient.KCAL), ingredients.size());
@@ -106,6 +117,25 @@ public class RecipeSimplex {
         }
     }
 
+
+    private void setMaxConstraintNutrition(List<Double> per100grams, Double nutritionNeed, int nrOfIngredients) {
+        double[] arr = new double[nrOfIngredients];
+        for (int i = 0; i < nrOfIngredients; i++) {
+            arr[i] = per100grams.get(i) / 100D;
+        }
+        for(int i =0;i<arr.length;i++)
+        {
+            System.out.println(arr[i]);
+        }
+        System.out.println();
+
+        if( !isZero(arr) ) {
+            constraintsCollection.add(new LinearConstraint(arr, Relationship.LEQ, nutritionNeed*1.2));
+        }
+    }
+
+
+
     private boolean isZero(double[] arr) {
         for(int i=0; i<arr.length; i++) {
             if(arr[i]!=0) {
@@ -113,6 +143,10 @@ public class RecipeSimplex {
             }
         }
         return true;
+    }
+
+    public boolean exceedsCalorie(){
+        return exceedsCalorie;
     }
 
     /*
@@ -129,8 +163,17 @@ public class RecipeSimplex {
     }
 
     public double[] optimize() {
-        PointValuePair result = solver.optimize(f,constraints);
-        return result.getPoint();
+        try {
+            PointValuePair result = solver.optimize(f, constraints);
+            return result.getPoint();
+        }catch(NoFeasibleSolutionException e){
+            exceedsCalorie=true;
+            constraintsCollection = new ArrayList();
+            setConstraintsIngredients(leastAmountOfIngredient);
+            setConstraintsNutrition(ingredients, nutritionNeed, false);
+            PointValuePair result = solver.optimize(f, constraints);
+            return result.getPoint();
+        }
     }
 
 }

@@ -169,9 +169,8 @@ public class MenuAlgorithms {
         for (int i = 0; i < ingredientsToUse.size(); i++) {
             shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
         }
-        //return shoppingList.size()+0.0;
         nutritionValueCalculation(menu);
-        return shoppingList.getLeftovers().size() + 0.0;
+        return shoppingList.getLeftoverSize();
     }
 
     /**
