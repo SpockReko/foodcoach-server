@@ -460,6 +460,7 @@ public class DatabaseSeeder {
     }
 
     private static Category getCategory(String str) {
+        System.out.println(str);
         switch (str) {
             case "Baljväxter": return Category.Baljvaxter;
             case "Övrig frukt": return Category.ovrig_frukt;
@@ -535,6 +536,42 @@ public class DatabaseSeeder {
             case "Snacks": return Category.Snacks;
             case "Ägg av andra fåglar": return Category.agg_honsagg;
             case "Ägg, hönsägg": return Category.agg_honsagg;
+            // For windows with error for å,ä,ö.
+            case "Baljvaxter": return Category.Baljvaxter;
+            case "Ovrig frukt": return Category.ovrig_frukt;
+            case "Appelfrukt": return Category.appelfrukt;
+            case "Bladgronsaker": return Category.Bladgronsaker;
+            case "Gronsaksfrukt": return Category.Gronsaksfrukt;
+            case "Rot- och knolvaxter": return Category.Rot_och_knolvaxter;
+            case "Hjalpämnen vid tillverkning": return Category.Hjalpamnen_vid_tillverkning;
+            case "Gronsakskonserver": return Category.Gronsakskonserver;
+            case "Bar": return Category.Bar;
+            case "Mjolk": return Category.Mjolk;
+            case "Torkade orter": return Category.Torkade_orter;
+            case "Not": return Category.Not;
+            case "Kal": return Category.Kal;
+            case "Ovrigt spannmal": return Category.ovrigt_spannmal;
+            case "Kottprodukter": return Category.Kottprodukter;
+            case "Faglar": return Category.Faglar;
+            case "Modersmjolksersattningar och modersmjolk": return Category.Modersmjolksersattningar_och_modersmjolk;
+            case "Notter, fron": return Category.Notter_fron;
+            case "Ovriga alkoholdrycker": return Category.ovriga_alkoholdrycker;
+            case "Gradde/creme": return Category.Gradde_creme;
+            case "Kryddsaser": return Category.Kryddsaser;
+            case "Syrade mjolkprodukter": return Category.Syrade_mjolkprodukter;
+            case "Sotsaker": return Category.Sotsaker;
+            case "Laskedrycker": return Category.Laskedrycker;
+            case "Lokgronsaker": return Category.Lokgronsaker;
+            case "Ovriga fetter, fettprodukter": return Category.ovriga_fetter_fettprodukter;
+            case "Starkelse": return Category.Starkelse;
+            case "Kliniska naringspreparat": return Category.Kliniska_naringspreparat;
+            case "Smor, mjolkfettblandningar": return Category.Smor_mjolkfettblandningar;
+            case "Rag": return Category.Rag;
+            case "Ovrig mjolk": return Category.ovrig_mjolk;
+            case "Ol": return Category.ol;
+            case "Sotningsmedel": return Category.Sotningsmedel;
+            case "Agg av andra faglar": return Category.agg_honsagg;
+            case "Agg, honsagg": return Category.agg_honsagg;
             default: return null;
         }
     }

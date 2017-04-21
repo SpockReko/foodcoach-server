@@ -203,32 +203,6 @@ public class MenuAlgorithms {
         return text;
     }
 
-    /**
-     * @param ingredientList
-     * @param recipeList
-     */
-    private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList) {
-
-        List<Recipe> filteredRecipes = new ArrayList<>();
-        for (Recipe recipe : allRecipes) {
-            boolean badRecipe = false;
-            for (Ingredient ingredient : ingredientList) {
-                if (recipe.ingredients.contains(ingredient)) {
-                    badRecipe = true;
-                }
-            }
-            for (Recipe r : recipeList) {
-                if (recipe.equals(r)) {
-                    badRecipe = true;
-                }
-            }
-            if (!badRecipe)
-                filteredRecipes.add(recipe);
-        }
-
-        allRecipes = filteredRecipes;
-    }
-
     /** ///////////////////////////////
      *  Setters and getters
      */////////////////////////////////
@@ -242,10 +216,10 @@ public class MenuAlgorithms {
         notTheseIngredients.add(ingredient);
     }
 
-
     public void setNoPrint(boolean noPrint) {
         this.noPrint = noPrint;
     }
+
 
     /**
      * @return
@@ -274,10 +248,61 @@ public class MenuAlgorithms {
      * Every time we want to calculate values we need clean containers for menus
      */
     private void reset() {
+        convertAllToOnePortion();
         optimalMenuNutrition = LARGE_DISTANCE;
         optimalMenu = new Menu(new ArrayList<>());
         filterRecipes(notTheseIngredients, notTheseRecipes);
         menuList = new ArrayList<>();
+    }
+
+
+    private void convertAllToOnePortion(){
+        convertAllRecipesToOneProtion();
+        convertNotTheseRecipesToOneProtion();
+    }
+
+    private void convertAllRecipesToOneProtion() {
+        List<Recipe> oneRecepiesList = new ArrayList<>();
+        for (Recipe r : allRecipes) {
+            oneRecepiesList.add(r.getOnePortionRecipe());
+        }
+        allRecipes = oneRecepiesList;
+    }
+
+    private void convertNotTheseRecipesToOneProtion(){
+        List<Recipe> oneRecepiesList = new ArrayList<>();
+        for (Recipe r: notTheseRecipes){
+            oneRecepiesList.add(r.getOnePortionRecipe());
+        }
+        notTheseRecipes = oneRecepiesList;
+    }
+
+
+
+    /**
+     * @param ingredientList
+     * @param recipeList
+     */
+    private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList) {
+
+        List<Recipe> filteredRecipes = new ArrayList<>();
+        for (Recipe recipe : allRecipes) {
+            boolean badRecipe = false;
+            for (Ingredient ingredient : ingredientList) {
+                if (recipe.ingredients.contains(ingredient)) {
+                    badRecipe = true;
+                }
+            }
+            for (Recipe r : recipeList) {
+                if (recipe.equals(r)) {
+                    badRecipe = true;
+                }
+            }
+            if (!badRecipe)
+                filteredRecipes.add(recipe);
+        }
+
+        allRecipes = filteredRecipes;
     }
 
     /**

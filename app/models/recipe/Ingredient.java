@@ -57,6 +57,10 @@ public class Ingredient extends Model {
     public Double getEnergyKcal() {
         return multiplier(food.getNutrient(Nutrient.KCAL));
     }
+    public Double getCO2() {
+        return multiplier(food.getCO2());
+    }
+
     public Double getEnergyKj() {
         return multiplier(food.getNutrient(Nutrient.KJ));
     }
