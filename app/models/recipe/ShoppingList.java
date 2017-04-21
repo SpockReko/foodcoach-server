@@ -46,12 +46,12 @@ public class ShoppingList {
         ingredients = list;
         for (Ingredient ingredient : list) {
             if (getKey(ingredient) != null) {
-                //CO2 -= ingredient.getFood().getCO2();
+                CO2 -= ingredient.getFood().getCO2();
                 putTogetherIngredients(check, ingredient);
             } else {
                 this.map.put(ingredient, check);
             }
-            //CO2 += ingredient.getFood().getCO2();
+            CO2 += ingredient.getFood().getCO2();
         }
     }
 

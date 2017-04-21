@@ -66,7 +66,12 @@ public class MenuAlgorithm2Test {
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
         ShoppingList shoppingList=new ShoppingList(menu, ingredients);
         System.out.println(shoppingList.toString());
-        List<Ingredient> leftovers=shoppingList.getLeftovers();
+        System.out.println(shoppingList.leftoversToString());
+
+        menu = algorithm.CalculateWeekMenuMinimalShoppingList(ingredients);
+        System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
+        shoppingList=new ShoppingList(menu, ingredients);
+        System.out.println(shoppingList.toString());
         System.out.println(shoppingList.leftoversToString());
     }
 }

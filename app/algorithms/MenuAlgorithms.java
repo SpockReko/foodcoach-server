@@ -118,6 +118,18 @@ public class MenuAlgorithms {
         return optimalMenu;
     }
 
+    /**
+     *
+     * @param ingredientList
+     * @return
+     */
+    public Menu CalculateWeekMenuMinimalShoppingList(List<Ingredient> ingredientList) {
+        reset();
+        this.ingredientsToUse=ingredientList;
+        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getShoppinglistSize);
+        return optimalMenu;
+    }
+
 
 
     /**
@@ -131,6 +143,20 @@ public class MenuAlgorithms {
                 NutritionAlgorithms.nutrientsContent(chosenMenu);
         return NutritionAlgorithms
                 .L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
+    }
+
+
+    /**
+     * @param menu
+     * @return
+     */
+    private Double getShoppinglistSize(Menu menu) {
+        ShoppingList shoppingList = new ShoppingList(menu);
+        for (int i = 0; i < ingredientsToUse.size(); i++) {
+            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+        }
+        nutritionValueCalculation(menu);
+        return shoppingList.size() + 0.0;
     }
 
 
