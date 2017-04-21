@@ -80,6 +80,28 @@ public class MenuAlgorithms {
         }
     }
 
+    public Menu returnMenuGreedy(Function<Menu,Double> optimize){
+        List<Recipe> copyRecipes = new ArrayList<>(allRecipes);
+        List<Recipe> optimalList = new ArrayList<>();
+        List<Recipe> resultList = new ArrayList<>();
+        while(optimalList.size() == nrOfRecipes) {
+
+            for (Recipe recipe : copyRecipes) {
+                List<Recipe> testRecipe = new ArrayList<>(optimalList);
+                testRecipe.add(recipe);
+                Menu menu = new Menu(testRecipe);
+                double value = optimize.apply(menu);
+                if(value < optimalMenuNutrition){
+                    resultList = menu.getRecipeList();
+                }
+            }
+            copyRecipes.removeAll(optimalList);
+            optimalList = resultList;
+        }
+        Menu menu = new Menu(optimalList);
+        return menu;
+    }
+
     /**
      *
      * @param user

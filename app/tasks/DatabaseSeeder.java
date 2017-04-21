@@ -384,7 +384,7 @@ public class DatabaseSeeder {
                 return Processing.CANNED;
             case "Mosat":
                 return Processing.MASHED;
-            case "Rökt":
+            case "Rökt": case "Rokt":
                 return Processing.SMOKED;
             case "Djupfryst":
                 return Processing.FROZEN;
@@ -462,7 +462,6 @@ public class DatabaseSeeder {
     }
 
     private static Category getCategory(String str) {
-        System.out.println(str);
         switch (str) {
             case "Baljväxter": return Category.Baljvaxter;
             case "Övrig frukt": return Category.ovrig_frukt;
@@ -545,7 +544,7 @@ public class DatabaseSeeder {
             case "Bladgronsaker": return Category.Bladgronsaker;
             case "Gronsaksfrukt": return Category.Gronsaksfrukt;
             case "Rot- och knolvaxter": return Category.Rot_och_knolvaxter;
-            case "Hjalpämnen vid tillverkning": return Category.Hjalpamnen_vid_tillverkning;
+            case "Hjalpamnen vid tillverkning": return Category.Hjalpamnen_vid_tillverkning;
             case "Gronsakskonserver": return Category.Gronsakskonserver;
             case "Bar": return Category.Bar;
             case "Mjolk": return Category.Mjolk;
@@ -574,7 +573,10 @@ public class DatabaseSeeder {
             case "Sotningsmedel": return Category.Sotningsmedel;
             case "Agg av andra faglar": return Category.agg_honsagg;
             case "Agg, honsagg": return Category.agg_honsagg;
-            default: return null;
+            case "Torrt brod": return Category.Torrt_brod;
+            default:
+                System.out.println("No category found named: " + str);
+                return null;
         }
     }
 
