@@ -38,7 +38,7 @@ public class Menu {
         }
         text = text + shop.toString();
 
-        text = text + "\n\nTotalta koldioxidutsläppet för din meny:\n\n";
+        text = text + "\n\nTotalta koldioxidutsläppet för din inköpslista:\n\n";
 
         text = text + shop.getCO2() + " kg";
 

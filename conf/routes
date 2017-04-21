@@ -21,7 +21,7 @@ GET     /user/:alder                        controllers.UserController.getRDI(al
 POST    /menu/nutrient                      controllers.MenuAlgorithmsController.menu
 GET     /menu/nutrient                      controllers.MenuAlgorithmsController.menu()
 GET     /menu/economi                       controllers.MenuAlgorithmsController.menu2()
-
+GET     /menu/CO2                           controllers.MenuAlgorithmsController.menu3()
 GET     /bengt/menu/nutrient                 controllers.MenuAlgorithmsController.menuBengt()
 GET     /anna/menu/nutrient                  controllers.MenuAlgorithmsController.menuAnna()
 

@@ -16,7 +16,7 @@ public class RecipeOptimizationController extends Controller {
         Recipe recipe = Recipe.find.byId(recipeNumber);
         User user = new User();
         RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
-        recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
+        recipeOptimizerInstant.setLowestPercentageOfIngredient(0D);
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
 
         return ok(optimizedRecipe.recipeToString(optimizedRecipe) +optimizedRecipe.recipeToString(recipe));
