@@ -24,7 +24,7 @@ public class RecipeOptimizationController extends Controller {
 
     // GET /recipe/header/:header
     public Result optimizeByTitle(String title) {
-        Recipe recipe = Recipe.find.where().eq("header", title).findUnique();
+        Recipe recipe = Recipe.find.where().eq("title", title).findUnique();
         User user = new User();
         RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
         recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);

@@ -1159,14 +1159,14 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 33519	Sötningsmedel		stevia, canderel green pulver	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, LOWPROT, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 33521	Sötningsmedel		stevia, canderel green stick	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, NAGLUFRE, LOWPROT, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 33520	Sötningsmedel		stevia, canderel green tablett	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, LOWPROT, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
-30223	Sötpotatis	TRUE	skalad	skalad	sötpotatisar				Lpomoea batatas	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
+30223	Sötpotatis	TRUE	skalad	Sötpotatis	sötpotatisar				Lpomoea batatas	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 121	Spagetti	TRUE		Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 172	Spagetti		spenat, spenatspaghetti, innehåller ägg	Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACOVEGE
 31675	Spagetti		naturligt glutenfri	Spagetti						Obehandlat	Pasta, makaroner	100 %	UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 31677	Spagetti		Pasta, spaghetti, naturligt glutenfri, innehåller ägg	Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
 340	Sparris		inlagd	Sparris					Asparagus officinalis L.	Konserverat	Grönsakskonserver	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 11689	Sparris	TRUE	rå, rensad	Sparris	sparrisar	30			Asparagus officinalis L.	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-33456	Spenat	TRUE		Spenat					Spinacia oleracea	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
+33456	Spenat	TRUE		Spenat	bladspenat				Spinacia oleracea	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 34228	Spenat		djupfryst	Spenat					Spinacia oleracea	Djupfryst	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 33375	Sportdryck		kolhydrater, medelvärde av industriella produkter	Sportdryck			1			Industriellt	Läskedrycker	100 %	SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 33367	Sportdryck		kolhydrater och protein	Sportdryck			1	leader recovery		Industriellt	Läskedrycker	100 %	SOYAFREE, NAGLUFRE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE

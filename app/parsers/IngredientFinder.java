@@ -31,6 +31,7 @@ public class IngredientFinder {
 
     public Ingredient find(String line) {
         Ingredient ingredient;
+        leftover = "";
 
         try {
             JsonNode jsonNode = retrieveWordInfo(line);
