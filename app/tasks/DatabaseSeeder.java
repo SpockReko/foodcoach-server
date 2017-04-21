@@ -462,7 +462,6 @@ public class DatabaseSeeder {
     }
 
     private static Category getCategory(String str) {
-        System.out.println(str);
         switch (str) {
             case "Baljväxter": return Category.Baljvaxter;
             case "Övrig frukt": return Category.ovrig_frukt;

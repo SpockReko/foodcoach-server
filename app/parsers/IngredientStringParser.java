@@ -1,9 +1,12 @@
 package parsers;
 
 import helpers.StringHelper;
+import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
+import scala.concurrent.java8.FuturesConvertersImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,18 +23,32 @@ public class IngredientStringParser {
     private String insideParenthesis;
     private List<String> alternatives = new ArrayList<>();
 
-    public synchronized List<Ingredient> parse(String ingredientString) {
+    public synchronized Ingredient parse(String ingredientString) throws IOException {
         String line = ingredientString;
-        List<Ingredient> ingredients = new ArrayList<>();
 
         line = handleColon(line).trim();
         line = handleParenthesis(line).trim();
         line = handleAlternatives(line).trim();
 
         Ingredient ingredient = ingredientFinder.find(line);
-        ingredients.add(ingredient);
 
-        return ingredients;
+        if (ingredient != null) {
+            return ingredient;
+        } else {
+            if (!alternatives.isEmpty()) {
+                for (String alternative : alternatives) {
+                    Ingredient alt = ingredientFinder.find(alternative);
+                    if (alt != null && alt.getAmount().getUnit().getType().equals(Amount.Unit.Type.EMPTY)) {
+                        Amount amount = ingredientFinder.extractAmount(line);
+                        if (amount != null) {
+                            return ingredientFinder.find(alternative, amount);
+                        }
+                    }
+                }
+            }
+        }
+        Logger.error("No ingredient found \"" + ingredientString + "\"");
+        return null;
     }
 
     private String handleColon(String line) {

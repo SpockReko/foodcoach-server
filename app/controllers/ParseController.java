@@ -14,7 +14,7 @@ import play.mvc.Result;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.List;
+import java.io.IOException;
 
 /**
  * HTTP controller that handles all general requests to the server.
@@ -26,9 +26,14 @@ public class ParseController extends Controller {
 
     public Result parseLine(String input) {
         IngredientStringParser parser = new IngredientStringParser();
-        List<Ingredient> ingredients = parser.parse(input);
-        if (ingredients != null) {
-            return ok(Json.toJson(ingredients));
+        Ingredient ingredient = null;
+        try {
+            ingredient = parser.parse(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (ingredient != null) {
+            return ok(Json.toJson(ingredient));
         } else {
             return ok("Did not find ingredient");
         }

@@ -30,18 +30,15 @@ public class IngredientFinder {
     /**
      * Tries to find a complete ingredient with amount and food in a string.
      * @param line The string to look in.
-     * @return A ingredient if found, null if not.
+     * @return An ingredient if found, null if not.
+     * @throws IOException If the external API is not available.
      */
-    public Ingredient find(String line) {
+    public Ingredient find(String line) throws IOException {
         Ingredient ingredient;
         leftover = "";
 
-        try {
-            JsonNode jsonNode = retrieveWordInfo(line);
-            taggedWords = JsonHelper.getTaggedWords(jsonNode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JsonNode jsonNode = retrieveWordInfo(line);
+        taggedWords = JsonHelper.getTaggedWords(jsonNode);
 
         ingredient = findIngredient();
         if (ingredient == null) {
@@ -50,6 +47,43 @@ public class IngredientFinder {
         }
 
         return ingredient;
+    }
+
+    /**
+     * Tries to find a complete ingredient in a string,
+     * skips looking for amount uses provided instead.
+     * @param line The string to look in.
+     * @param amount The amount to use in ingredient.
+     * @return An ingredient if found, null if not.
+     * @throws IOException If the external API is not available.
+     */
+    public Ingredient find(String line, Amount amount) throws IOException {
+        Ingredient ingredient;
+        leftover = "";
+
+        JsonNode jsonNode = retrieveWordInfo(line);
+        taggedWords = JsonHelper.getTaggedWords(jsonNode);
+
+        ingredient = findIngredient(amount);
+        if (ingredient == null) {
+            Logger.error("No match \"" + line + "\"");
+            return null;
+        }
+
+        return ingredient;
+    }
+
+    /**
+     * Tries to find an amount in a string and returns it if it found it, null otherwise.
+     * @param line The string to look in.
+     * @return An amount if found, otherwise null.
+     * @throws IOException If the external API is not available.
+     */
+    public Amount extractAmount(String line) throws IOException {
+        JsonNode jsonNode = retrieveWordInfo(line);
+        taggedWords = JsonHelper.getTaggedWords(jsonNode);
+        Amount amount = findAmount();
+        return amount.getUnit().getType().equals(Amount.Unit.Type.EMPTY) ? null : amount;
     }
 
     /**

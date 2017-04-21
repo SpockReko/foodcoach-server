@@ -12,7 +12,6 @@ GET             /food/sort/:id                            controllers.FoodContro
 
 # Recipe items
 GET             /recipes                                  controllers.RecipeController.getAll
-GET             /notlinked_recipes                        controllers.RecipeController.getAllNotLinked
 
 # User info
 GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
