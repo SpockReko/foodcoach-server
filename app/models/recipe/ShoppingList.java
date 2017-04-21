@@ -1,6 +1,5 @@
 package models.recipe;
 
-import models.food.Food;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -40,7 +39,7 @@ public class ShoppingList {
             ingredients.addAll(recipe.getIngredients());
         }
         addList(ingredients, false);
-        removeAmountOfIngredients(ingredientList);
+        removeListOfIngredients(ingredientList);
     }
 
     private void addList(List<Ingredient> list, Boolean check) {
@@ -88,7 +87,7 @@ public class ShoppingList {
     }
 
 
-    public void removeAmountOfIngredients(List<Ingredient> ingredientList){
+    public void removeListOfIngredients(List<Ingredient> ingredientList){
         for(int i=0; i<ingredientList.size(); i++){
             removeAmountToIngredient(ingredientList.get(i), ingredientList.get(i).getAmount().getAmount());
         }
@@ -197,6 +196,7 @@ public class ShoppingList {
                 text += amount + " " + unit + " " + foodItem + "\n";
             }
         }
+        text=text+"\nLeftovers:\n \n";
         if(leftovers.size() > 0 ){
             for (Ingredient i: leftovers) {
                 text = text + i.getFood().name + " " + i.getAmount().getAmount() + "\n";
