@@ -22,8 +22,8 @@ public class RecipeOptimizer {
     User user;
 
     public RecipeOptimizer(Recipe recipe, User user) {
-        this.recipe = recipe;
-        this.ingredients = recipe.ingredients;
+        this.recipe = recipe.getUserRecipe(user);
+        this.ingredients = this.recipe.ingredients;
         this.user = user;
     }
 
@@ -47,6 +47,7 @@ public class RecipeOptimizer {
             newIngredients.add(ingredient);
         }
         Recipe newRecipe = new Recipe(recipe.getTitle(), recipe.getPortions(), newIngredients);
+        System.out.println("Energy: "+newRecipe.getEnergyKcal());
         return newRecipe;
     }
 

@@ -2,6 +2,8 @@ package models.recipe;
 
 import com.avaje.ebean.Model;
 import models.food.Food;
+import models.food.Nutrient;
+import models.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -45,6 +47,9 @@ public class Recipe extends Model {
     }
     public List<Ingredient> getIngredients(){return ingredients;}
 
+    public Double getCO2() {
+        return ingredients.stream().mapToDouble(Ingredient::getCO2).sum();
+    }
     public Double getEnergyKcal() {
         return ingredients.stream().mapToDouble(Ingredient::getEnergyKcal).sum();
     }
@@ -157,6 +162,21 @@ public class Recipe extends Model {
         List<Ingredient> newIngredients = new ArrayList<>();
         for (Ingredient i: ingredients) {
             double onePortionValue = i.getAmount().getAmount()/portions;
+            Amount.Unit currentUnit = i.getAmount().getUnit();
+            Amount newAmount = new Amount(onePortionValue,currentUnit);
+            Food currentFood = i.getFood();
+            Ingredient newIngredient = new Ingredient(currentFood, newAmount);
+            newIngredients.add(newIngredient);
+        }
+        Recipe recepie = new Recipe(this.getTitle(),1,newIngredients);
+        return recepie;
+    }
+    public Recipe getUserRecipe(User user){
+        List<Ingredient> ingredients = getIngredients();
+        List<Ingredient> newIngredients = new ArrayList<>();
+        double div=user.hmap.get(Nutrient.KCAL)/this.getEnergyKcal()*0.3;
+        for (Ingredient i: ingredients) {
+            double onePortionValue = i.getAmount().getAmount()*div;
             Amount.Unit currentUnit = i.getAmount().getUnit();
             Amount newAmount = new Amount(onePortionValue,currentUnit);
             Food currentFood = i.getFood();
