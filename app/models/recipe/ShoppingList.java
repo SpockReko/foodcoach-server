@@ -1,6 +1,5 @@
 package models.recipe;
 
-import models.food.Food;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -12,10 +11,9 @@ import java.util.*;
 public class ShoppingList {
 
     private Map<Ingredient, Boolean> map = new HashMap<>();
-    private Double totalWaste = 0.0;
+    private Double CO2 = 0.0;
     private static List<Ingredient> ingredients;
-    private List<Ingredient> leftovers;
-
+    private List<Ingredient> leftovers = new ArrayList<>();
 
     public ShoppingList() {
     }
@@ -23,7 +21,7 @@ public class ShoppingList {
     public ShoppingList(Menu menu) {
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
-        leftovers=new ArrayList<>();
+
         for (Recipe recipe : recipes) {
             ingredients.addAll(recipe.getIngredients());
         }
@@ -34,28 +32,26 @@ public class ShoppingList {
         addList(list, check);
     }
 
-    public ShoppingList(Menu menu, List<Food> food, List<Amount> amount){
+    public ShoppingList(Menu menu, List<Ingredient> ingredientList){
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
-        leftovers=new ArrayList<Ingredient>();
         for (Recipe recipe : recipes) {
             ingredients.addAll(recipe.getIngredients());
         }
         addList(ingredients, false);
-        removeAmountOfIngredients(food, amount);
+        removeListOfIngredients(ingredientList);
     }
 
     private void addList(List<Ingredient> list, Boolean check) {
         ingredients = list;
-
         for (Ingredient ingredient : list) {
-            if (map.containsKey(ingredient)) {
-                //totalWaste -= ingredient.getWaste();
+            if (getKey(ingredient) != null) {
+                CO2 -= ingredient.getFood().getCO2();
                 putTogetherIngredients(check, ingredient);
             } else {
                 this.map.put(ingredient, check);
             }
-            //totalWaste += ingredient.getWaste();
+            CO2 += ingredient.getFood().getCO2();
         }
     }
 
@@ -90,9 +86,10 @@ public class ShoppingList {
         map.put(newIngredient, check);
     }
 
-    public void removeAmountOfIngredients(List<Food> foods, List<Amount> amount){
-        for(int i=0; i<foods.size(); i++){
-            removeAmountToIngredient(new Ingredient(foods.get(i), amount.get(i)), amount.get(i).getAmount());
+
+    public void removeListOfIngredients(List<Ingredient> ingredientList){
+        for(int i=0; i<ingredientList.size(); i++){
+            removeAmountToIngredient(ingredientList.get(i), ingredientList.get(i).getAmount().getAmount());
         }
     }
 
@@ -124,7 +121,6 @@ public class ShoppingList {
         if(!inList){
             leftovers.add(ingredient);
         }
-
     }
 
     // add amount to ingredients
@@ -163,8 +159,8 @@ public class ShoppingList {
     }
 
     // get total waste
-    public Double getTotalWaste() {
-        return totalWaste;
+    public Double getCO2() {
+        return CO2;
     }
 
     public List<Ingredient> getLeftovers(){
@@ -180,11 +176,12 @@ public class ShoppingList {
 
     @Override
     public String toString() {
+        String text = "";
         if (map.size() == 0) {
             return "Inköpslistan är tom just nu!\n";
         } else {
             Iterator iterator = map.entrySet().iterator();
-            String text = "\n\n\nInköpslista:\n\n";
+            text = "\n\n\nInköpslista:\n\n";
             while (iterator.hasNext()) {
                 Map.Entry<Ingredient, Boolean> entry = (Map.Entry) iterator.next();
                 boolean marked = entry.getValue();
@@ -198,8 +195,14 @@ public class ShoppingList {
                 }
                 text += amount + " " + unit + " " + foodItem + "\n";
             }
-            return text + "\n";
         }
+        text=text+"\nLeftovers:\n \n";
+        if(leftovers.size() > 0 ){
+            for (Ingredient i: leftovers) {
+                text = text + i.getFood().name + " " + i.getAmount().getAmount() + "\n";
+            }
+        }
+        return text;
     }
 
     public String leftoversToString(){

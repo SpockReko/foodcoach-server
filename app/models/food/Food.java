@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static models.food.Category.Sotsaker;
+
 /**
  * Created by fredrikkindstrom on 2017-04-04.
  */
@@ -31,6 +33,7 @@ public class Food extends Model {
     public Double densityConstant;
 
     @Enumerated(EnumType.STRING) public Processing processing;
+    @Enumerated(EnumType.STRING) public Category category;
     @ManyToMany(cascade = CascadeType.ALL) public List<Diet> diets = new ArrayList<>();
 
     private Double energyKj;
@@ -215,5 +218,122 @@ public class Food extends Model {
                 throw new IllegalArgumentException("No such nutrient for this food");
         }
         return value != null ? value : 0d;
+    }
+
+    public double getCO2() {
+        //frukt, gronsaker
+        switch (this.category) {
+            case appelfrukt:
+            case Citrusfrukter:
+            case ovrig_frukt:
+            case Fruktkonserver:
+            case Bladgronsaker:
+            case Gronsaksfrukt:
+            case Gronsakskonserver:
+            case Bar:
+            case Kal:
+            case Svamp:
+            case Lokgronsaker:
+                return 0.1;
+            case Rot_och_knolvaxter:
+                return 0.02;
+            case Saftdrycker:
+            case Juicer:
+                return 0.1;
+            case Kaffe:
+            case Te:
+                return 0.3;
+            case ovriga_alkoholdrycker:
+            case Starksprit:
+            case ol:
+            case Vin:
+                return 0.3;
+            case Baljvaxter:
+                return 0.07;
+            case Notter_fron:
+                return 0.15;
+            //kolhydrat
+            case ovrigt_spannmal:
+            case Vete:
+            case Havre_korn:
+            case Socker_sirap:
+            case Starkelse:
+            case Sotningsmedel:
+            case Torrt_brod:
+            case Rag:
+                return 0.06;
+            case Ris:
+                return 0.2;
+            case Pasta_makaroner:
+                return 0.08;
+            case Potatis:
+            case Potatisprodukter:
+                return 0.01;
+            //mejeri
+            case Mjolk:
+            case Modersmjolksersattningar_och_modersmjolk:
+            case Syrade_mjolkprodukter:
+            case ovrig_mjolk:
+                return 0.1;
+            case agg_honsagg:
+            case agg_av_andra_faglar:
+                return 0.15;
+            case Ost:
+                return 0.8;
+            case Smor_mjolkfettblandningar:
+            case Animaliskt_fett:
+                return 0.8;
+            case Margarin_och_matfett_under_55:
+            case Margarin_och_matfett_over_55:
+            case ovriga_fetter_fettprodukter:
+                return 0.15;
+            case Gradde_creme:
+                return 0.4;
+            //sas, krydda
+            case Kryddsaser:
+            case Torkade_orter:
+            case Hjalpamnen_vid_tillverkning:
+            case Torkade_kryddor:
+            case Salt:
+            case Kliniska_naringspreparat:
+                return 0.1;
+            case Olja:
+            case Matlagnings_och_industrifett:
+                return 0.15;
+            //kott
+            case Fisk:
+            case Fiskprodukter:
+            case Skaldjur:
+                return 0.3;
+            case Not:
+                return 2.6;
+            case Gris:
+            case Kottprodukter:
+            case Organ:
+                return 0.6;
+            case Lamm:
+                return 2.1;
+            case Faglar:
+                return 0.3;
+            case Korv:
+                return 0.7;
+            case Vilt:
+                return 0.05;
+            case Sojaprodukter:
+                return 0.4;
+            //godis
+            case Choklad:
+            case Glass:
+            case Sotsaker:
+            case Diverse_godis:
+            case Snacks:
+                return 0.2;
+            case Laskedrycker:
+                return 00.3;
+            case Vatten:
+                return 0.0;
+                default:
+                    throw new IllegalArgumentException("No such category!");
+        }
     }
 }

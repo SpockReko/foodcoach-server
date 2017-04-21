@@ -3,10 +3,7 @@ package controllers;
 import algorithms.MenuAlgorithms;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.food.Food;
-import models.recipe.Amount;
-import models.recipe.Menu;
-import models.recipe.Recipe;
-import models.recipe.ShoppingList;
+import models.recipe.*;
 import models.user.User;
 import play.api.libs.json.Json;
 import play.data.DynamicForm;
@@ -17,6 +14,8 @@ import play.mvc.Result;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.ArrayList;
+
+import static models.recipe.Amount.Unit.GRAM;
 
 /**
  * Created by fredrikkindstrom on 2017-03-15.
@@ -69,9 +68,9 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+            Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
-            return ok((JsonNode) Json.parse(resultingMenu.recipeListToString()));
+            return ok((JsonNode) Json.parse(resultingMenu.recipeListToString(new ShoppingList(resultingMenu))));
 
         } else { // If we run it from the "Server"
 
@@ -82,10 +81,10 @@ public class MenuAlgorithmsController extends Controller {
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
             menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
 
-            Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+            Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
             if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-                return ok(resultingMenu.recipeListToString());
+                return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
             return ok("nothing found!");
 
         }
@@ -102,10 +101,10 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingMenu.recipeListToString());
+            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
 
 
@@ -124,13 +123,11 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(user);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(user.age + "\n" +resultingMenu.recipeListToString());
+            return ok(user.age + "\n" +resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
-
-
     }
 
 
@@ -140,20 +137,22 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> removeRecipeList = new ArrayList<>();
         int nrOfRecipes = 3;
         List<Recipe> allRecipes = Recipe.find.all();
-        List<Food> foods = new ArrayList<>();
-        List<Amount> amounts = new ArrayList<Amount>();
+        List<Ingredient> ingredients = new ArrayList<>();
 
-        foods.add(Food.find.byId(120L));
-        foods.add(Food.find.byId(12L));
-        amounts.add(new Amount(100, Amount.Unit.GRAM));
-        amounts.add(new Amount(150, Amount.Unit.GRAM));
+        ingredients=new ArrayList<Ingredient>();
+        //foods.add(food2);
+        ingredients.add(new Ingredient(Food.find.byId(529L),new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(12L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(10L),new Amount(100, GRAM)));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(foods, amounts);
-        ShoppingList shoppingList = new ShoppingList(resultingMenu, foods, amounts);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredients);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingMenu.recipeListToString());
+            return ok(ingredients.get(0).getFood().name + "\n" +
+                    ingredients.get(1).getFood().name + "\n" +
+                    ingredients.get(2).getFood().name + "\n\n" + resultingMenu.recipeListToString(shoppingList));
         return ok("nothing found!");
     }
 }

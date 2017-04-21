@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class MenuAlgorithmsTest {
 
     //TODO: Add a user and recepie ith identical recepie and se if week menu chose this.
-    /*
+
     private static Double result;
     private static Menu resultingMenu;
     private static Menu resultingMenuFilterIngrediense;
@@ -29,7 +29,7 @@ public class MenuAlgorithmsTest {
     public static void init() {
 
         User user = new User();
-        User stefan = new User(1);
+        User stefan = new User("Stefan");
 
         userRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(user);
         Recipe stefanRecipe = GlobalDummyModels.createOptimalRecipeForSpecificUser(stefan);
@@ -37,10 +37,9 @@ public class MenuAlgorithmsTest {
         recipes.add(userRecipe);
         recipes.add(stefanRecipe);
 
-        MenuAlgorithms menuAlgorithms = new MenuAlgorithms(user,recipes);
-        menuAlgorithms.setNrOfRecipes(1);
+        MenuAlgorithms menuAlgorithms = new MenuAlgorithms(recipes, new ArrayList<>(),1);
         menuAlgorithms.setNoPrint(false);
-        resultingMenu = menuAlgorithms.calculateWeekMenu(new ArrayList<>());
+        resultingMenu = menuAlgorithms.calculateMenuNutrition(user);
         menuAlgorithms.setNoPrint(true);
 
         HashMap<Nutrient,Double> nutrientsNeed = user.hmap;
@@ -50,12 +49,12 @@ public class MenuAlgorithmsTest {
 
         Ingredient usersPerfectIngrediense = userRecipe.ingredients.get(0);
         menuAlgorithms.addAllergies(usersPerfectIngrediense);
-        resultingMenuFilterIngrediense = menuAlgorithms.calculateWeekMenu(user);
+        resultingMenuFilterIngrediense = menuAlgorithms.calculateMenuNutrition(user);
 
         List<Recipe> filterList = new ArrayList<>();
         filterList.add(userRecipe);
         menuAlgorithms=new MenuAlgorithms(recipes, filterList, 1);
-        resultingMenuFilterRecipe = menuAlgorithms.calculateWeekMenu(user);
+        resultingMenuFilterRecipe = menuAlgorithms.calculateMenuNutrition(user);
 
     }
 
@@ -85,5 +84,4 @@ public class MenuAlgorithmsTest {
         assertTrue(!resultingMenuFilterRecipe.getRecipeList().contains(userRecipe));
     }
 
-*/
 }

@@ -49,7 +49,7 @@ public class NutritionAlgorithms {
         } else if (nutrientContent > overdose ){
             // TODO lägga till meddelande om att det är för mycket av näringsämnet
             menu.addComment("Överdosering av " + nutrient + ", innehåller " + percentageNutrient);
-            System.out.print(menu.recipeListToString());
+            System.out.print(menu.recipeListToString(new ShoppingList(menu)));
             System.out.print("\nOBS!!! Överdosering av ");
             System.out.print(nutrient);
             System.out.print("\nInnehåll: "+nutrientContent+". Behov: "+nutrientNeed+"\n\n");
