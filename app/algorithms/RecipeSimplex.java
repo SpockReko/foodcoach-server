@@ -83,15 +83,10 @@ public class RecipeSimplex {
      */
     public void setLinearObjectiveFunction(List<Ingredient> ingredients) {
         double[] objFcn = new double[ingredients.size()];
-/*
+
         for (int i = 0; i < ingredients.size(); i++) {
-            if (ingredients.get(i).getFood().getWaste() != null) {
-                objFcn[i] = ingredients.get(i).getFood().getWaste() / 100;
-            } else {
-                objFcn[i] = 0;
-            }
+            objFcn[i] = ingredients.get(i).getFood().getCO2() / 100;
         }
-        */
 
         f = new LinearObjectiveFunction(objFcn,0);
     }
