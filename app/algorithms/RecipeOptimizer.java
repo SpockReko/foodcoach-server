@@ -89,7 +89,7 @@ public class RecipeOptimizer {
     public String toString(){
         Menu menu=getMenu();
         String string="Optimalt recept, "+optimizedRecipe.recipeToString(optimizedRecipe)+"Originalrecept, "
-                +optimizedRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\n CO2: "
+                +originalRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\n CO2: "
                 + Precision.round(optimizedRecipe.getCO2(), 3)+"\n Kcal: "+round(optimizedRecipe.getEnergyKcal());
         if(recipeSimplex.exceedsCalorie()){
             string=string+"\n Mer än 120% av kaloribehov";

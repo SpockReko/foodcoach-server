@@ -19,7 +19,7 @@ public class ReceptFavoriterParser implements RecipeParser {
 
     @Override
     public Recipe parse(String html) {
-        IngredientParser ingredientParser = new IngredientParser();
+        IngredientStringParser stringParser = new IngredientStringParser();
         Document doc = Jsoup.parse(html);
 
         String title = doc.select("h1[itemprop=name]").text();
@@ -30,13 +30,16 @@ public class ReceptFavoriterParser implements RecipeParser {
         List<Ingredient> ingredients = new ArrayList<>();
 
         for (Element ingredientString : ingredientStrings) {
-            Ingredient ingredient;
+            List<Ingredient> newIngredients;
             String webString = ingredientString.text().toLowerCase().trim();
-            ingredient = ingredientParser.parse(webString);
-            if (ingredient != null) {
-                ingredients.add(ingredient);
-            } else {
-                Logger.error("Couldn't parse '" + webString + "' moving on...");
+            newIngredients = stringParser.parse(webString);
+
+            for (Ingredient newIngredient : newIngredients) {
+                if (newIngredient != null) {
+                    ingredients.add(newIngredient);
+                } else {
+                    Logger.error("Couldn't parse '" + webString + "' moving on...");
+                }
             }
         }
 

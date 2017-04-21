@@ -3,14 +3,15 @@ package models.recipe;
 import com.avaje.ebean.Model;
 import models.food.Food;
 import models.food.Nutrient;
+import play.Logger;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Essentially a wrapper for a {@link FoodItem} that also contains
- * information about the amount the FoodItem. This is used in the {@link Recipe} since
+ * Essentially a wrapper for a {@link Food} that also contains
+ * information about the amount the Food. This is used in the {@link Recipe} since
  * all ingredients are a FoodItem but are also present in a given amount.
  * Contains wrapper methods for returning all nutrient data multiplied by the amount.
  *
@@ -38,6 +39,7 @@ public class Ingredient extends Model {
         this.amount = amount;
         this.comment = comment;
     }
+
 
     public Food getFood() {
         return food;
@@ -141,11 +143,21 @@ public class Ingredient extends Model {
             return 0.0;
         }
         double multiplier = amount.getUnit().getFraction() * amount.getAmount();
-        if (amount.getUnit().getType() == Amount.Unit.Type.VOLUME) {
-            // TODO fix some info message here for when there is no densityConstant
-            if (food.densityConstant != null) {
-                multiplier *= food.densityConstant;
-            }
+        switch (amount.getUnit().getType()) {
+            case VOLUME:
+                if (food.densityConstant != null) {
+                    multiplier *= food.densityConstant;
+                } else {
+                    Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
+                }
+                break;
+            case SINGLE:
+                if (food.pieceWeightGrams != null) {
+                    multiplier = amount.getAmount() * (food.pieceWeightGrams * 0.01);
+                } else {
+                    Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
+                    multiplier = amount.getAmount();
+                }
         }
         return value * multiplier;
     }
