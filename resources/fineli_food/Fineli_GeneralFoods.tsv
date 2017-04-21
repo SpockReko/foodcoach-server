@@ -138,7 +138,7 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 628	Crème fraiche	TRUE	28% fett	Crème fraiche	creme fraiche, crème fraiche		1			Industriellt	Grädde/creme	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 33021	Currypasta	TRUE	Kryddpasta, curry pasta	Currypasta	currypasta, kryddpasta					Blandat	Kryddsåser	100 %	
 28937	Dadel	TRUE	torkad, vägd med kärna	Dadel	dadlar	8			Phoenix dactylifera	Torkat	Övrig frukt	87 %	
-369	Dill	TRUE	färsk	Dill					Anethum graveolens	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
+369	Dill	TRUE	färsk	Dill			0.167		Anethum graveolens	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 32403	Dippmix	TRUE	såspulver, innehåller mjölk	Dippmix	dippmix, dipmix					Torkat	Hjälpämnen vid tillverkning	100 %	
 32404	Dippmix		såspulver, mjölkfri	Dippmix, mjölkfri						Torkat	Hjälpämnen vid tillverkning	100 %	SOYAFREE, LACSFREE, MILKFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 34598	Drickkvarg	TRUE	drickbar kvarg	Drickkvarg	drick kvarg		1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, LOWLACS, EGGFREE
@@ -495,9 +495,9 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 751	Kycklingben		hel, med skinn, rå	Kyckling						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 11563	Kyckling		kycklingben, med skinn, rå	Kyckling						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 11150	Kyckling		marinerad, utan skinn, rå	Kyckling						Blandat	Fåglar	100 %	UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LOWFAT, GLUTFREE, EGGFREE
-754	Kyckling	TRUE	strimlad	Kyckling	kycklingar, kycklingben, kycklingstrimlor					Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
+754	Kyckling	TRUE	strimlad	Kyckling	kycklingar, kycklingben, kycklingstrimlor, kycklingkött					Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 34180	Kycklingben	TRUE	med skinn, rå	Kycklingben						Obehandlat	Fåglar	100 %	NAGLUFRE, LACSFREE, MILKFREE, GLUTFREE, EGGFREE
-28930	Kycklingfärs	TRUE	Köttfärs, kycklingfärs	Kycklingfärs						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
+28930	Kycklingfärs	TRUE	köttfärs, kycklingfärs	Kycklingfärs						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 33339	Kycklingfilé	TRUE	i honungsmarinad, rå	Kycklingfilé	kycklingfile, kycklingfiléer, kycklingfileer					Blandat	Fåglar	100 %	SOYAFREE, NAGLUFRE, MILKFREE, LOWFAT, GLUTFREE, EGGFREE
 30792	Kycklinglår	TRUE	utan skinn	Kycklinglår	kycklinglårfilé, kycklinglårfiléer, kycklinglårfileer					Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 788	Kycklinglever	TRUE	Lever, kyckling	Kycklinglever	kycklinglevrar					Obehandlat	Organ	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
