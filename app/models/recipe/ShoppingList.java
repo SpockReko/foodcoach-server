@@ -1,5 +1,6 @@
 package models.recipe;
 
+import models.food.Food;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -97,18 +98,23 @@ public class ShoppingList {
     // remove amount from ingredients
     public void removeAmountToIngredient(Ingredient ingredient, double amount) {
         String name = ingredient.getFood().name;
+        Food food=ingredient.getFood();
         Ingredient[] ingredients = new Ingredient[map.size()];
         ingredients = map.keySet().toArray(ingredients);
         boolean inList=false;
         for (Ingredient i : ingredients) {
-            if (i.getFood().name.equals(name)) {
+            if (i.getFood().name.compareTo(name)==0) {
                 if (!map.remove(i)) {
                     inList=true;
-                    if (i.getAmount().getAmount() > amount) {
+                    if (i.getAmount().getAmount() >= amount) {
                         double newValue = i.getAmount().getAmount() - amount;
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
                         Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                         map.put(newIngredient, false);
+                        if(leftovers.contains(ingredient)) {
+                            leftovers.remove(ingredient);
+                            leftoverSize-=amount;
+                        }
                     } else if (i.getAmount().getAmount() < amount) {
                         double newValue =amount - i.getAmount().getAmount();
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
@@ -204,7 +210,8 @@ public class ShoppingList {
         text=text+"\nLeftovers:\n \n";
         if(leftovers.size() > 0 ){
             for (Ingredient i: leftovers) {
-                text = text + i.getFood().name + " " + i.getAmount().getAmount() + "\n";
+                //if(i.getAmount().getAmount()>0)
+                    text = text + i.getFood().name + " " + i.getAmount().getAmount() + "\n";
             }
         }
         return text;
