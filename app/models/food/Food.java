@@ -221,6 +221,9 @@ public class Food extends Model {
     }
 
     public double getCO2() {
+        if (this.category == null) {
+            return 0.0;
+        }
         //frukt, gronsaker
         switch (this.category) {
             case appelfrukt:
@@ -332,8 +335,8 @@ public class Food extends Model {
                 return 00.3;
             case Vatten:
                 return 0.0;
-                default:
-                    throw new IllegalArgumentException("No such category!");
+            default:
+                throw new IllegalArgumentException("No such category!");
         }
     }
 }

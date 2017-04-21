@@ -5,6 +5,11 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
+import static helpers.StringHelper.CYAN;
+import static helpers.StringHelper.GREEN;
+import static helpers.StringHelper.PURPLE;
+import static helpers.StringHelper.YELLOW;
+import static helpers.StringHelper.RESET;
 import models.food.*;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
@@ -16,9 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.*;
-
-import static tasks.CommonTools.CYAN;
-import static tasks.CommonTools.YELLOW;
 
 /**
  * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
@@ -45,7 +47,6 @@ public class DatabaseSeeder {
         GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
         GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
         GEN_SCIENTIFIC_NAME(9), GEN_PROCESSING(10), GEN_CLASSIFICATION(11), GEN_SPECIAL_DIETS(13),
-
         DATA_ID(0), DATA_ENERGY_KJ(2), DATA_CARB(3), DATA_PROTEIN(5), DATA_FAT(4), DATA_FIBRE(7),
         DATA_ALCOHOL(6), DATA_SALT(39), DATA_VITAMIN_A(52), DATA_VITAMIN_B6(47),
         DATA_VITAMIN_B12(50), DATA_VITAMIN_C(51), DATA_VITAMIN_D(54), DATA_VITAMIN_E(55),
@@ -65,7 +66,6 @@ public class DatabaseSeeder {
         GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
         GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
         GEN_SCIENTIFIC_NAME(9),
-
         DATA_ID(1), DATA_ENERGY_KJ(3), DATA_CARB(4), DATA_PROTEIN(6), DATA_FAT(5), DATA_FIBRE(7),
         DATA_ALCOHOL(9), DATA_SALT(55), DATA_VITAMIN_A(35), DATA_VITAMIN_B6(45),
         DATA_VITAMIN_B12(46), DATA_VITAMIN_C(42), DATA_VITAMIN_D(37), DATA_VITAMIN_E(38),
@@ -103,14 +103,14 @@ public class DatabaseSeeder {
         List<String[]> lmvDataRows = parser.parseAll(getReader(LMV_DATA_TSV));
 
         System.out.println(
-            "\n" + CommonTools.PURPLE + "--- (Seeding database) ---\n" + CommonTools.RESET);
+            "\n" + PURPLE + "--- (Seeding database) ---\n" + RESET);
 
         try {
             db.find(Food.class).where().eq("id", "1").findUnique();
         } catch (PersistenceException e) {
             System.out.println(YELLOW
                 + "No database tables present. Please start server and run evolution script first!\n"
-                + CommonTools.RESET);
+                + RESET);
             return;
         }
 
@@ -121,19 +121,19 @@ public class DatabaseSeeder {
             lmvRowIds.put(Integer.parseInt(lmvDataRows.get(i)[LMV.DATA_ID.id]), i);
         }
 
-        System.out.print(CYAN + "Parsing foods from Fineli... " + CommonTools.RESET);
+        System.out.print(CYAN + "Parsing foods from Fineli... " + RESET);
         for (String[] cols : fineliGeneralRows) {
             readGeneralRow(cols, fineliDataRows);
         }
         printDone();
 
-        System.out.print(CYAN + "Parsing extra foods from Livsmedelsverket... " + CommonTools.RESET);
+        System.out.print(CYAN + "Parsing extra foods from Livsmedelsverket... " + RESET);
         for (String[] cols : lmvGeneralRows) {
             readExtraGeneralRow(cols, lmvDataRows);
         }
         printDone();
 
-        System.out.print(CYAN + "Persisting to database... " + CommonTools.RESET);
+        System.out.print(CYAN + "Persisting to database... " + RESET);
         db.saveAll(generalFoods);
         db.saveAll(foods);
         for (FoodGeneral generalFood : generalFoods) {
@@ -142,7 +142,7 @@ public class DatabaseSeeder {
         }
         printDone();
 
-        System.out.print(CYAN + "Adding mocked recipes... " + CommonTools.RESET);
+        System.out.print(CYAN + "Adding mocked recipes... " + RESET);
         mockRecipes();
         printDone();
 
@@ -610,6 +610,6 @@ public class DatabaseSeeder {
     }
 
     private static void printDone() {
-        System.out.println(CommonTools.GREEN + "Done" + CommonTools.RESET);
+        System.out.println(GREEN + "Done" + RESET);
     }
 }

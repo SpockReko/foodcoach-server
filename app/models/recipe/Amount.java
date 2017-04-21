@@ -52,6 +52,8 @@ public class Amount {
         KRYDDMATT(0.01, Type.VOLUME, new String[] { "krm", "kryddmått" }),
         TESKED(0.05, Type.VOLUME, new String[] { "tsk", "tesked" }),
         MATSKED(0.15, Type.VOLUME, new String[] { "msk", "matsked" }),
+        TEKOPP(0.4, Type.VOLUME, new String[] { "tkp", "tekopp" }),
+        KAFFEKOPP(0.67, Type.VOLUME, new String[] { "kkp", "kaffekopp" }),
         // Single piece unit
         STYCK(0.0, Type.SINGLE, new String[] { "st", "stycken" } ),
         // Empty unit
@@ -69,7 +71,7 @@ public class Amount {
 
         /**
          * Returns the fraction between how much each unit is in the standard unit 100 grams
-         * used for all {@link models.food.FoodItem}.
+         * used for all {@link models.food.Food}.
          * If the unit is liter this will return 10 for example.
          * If the type of the unit is volume the densityConstant property will be used.
          * @return The fraction between the unit and 100 grams.

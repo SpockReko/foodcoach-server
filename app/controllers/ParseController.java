@@ -1,17 +1,19 @@
 package controllers;
 
-import models.food.FoodGeneral;
+import edu.uci.ics.crawler4j.crawler.CrawlConfig;
+import edu.uci.ics.crawler4j.crawler.CrawlController;
+import edu.uci.ics.crawler4j.fetcher.PageFetcher;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
+import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import http.RecipeCrawler;
 import models.recipe.Ingredient;
-import models.recipe.NotLinkedRecipe;
-import parsers.FoodParser;
-import parsers.IngredientParser;
+import parsers.IngredientStringParser;
 import play.libs.Json;
-import play.libs.ws.WSClient;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.List;
 
 /**
@@ -19,60 +21,59 @@ import java.util.List;
  */
 public class ParseController extends Controller {
 
-    @Inject
-    static WSClient ws;
+    private static final String RECIPES_URLS_PATH = "resources/recipe_urls/receptfavoriter_se.txt";
+    private static final int RECIPES_TO_PARSE = 10;
 
-    public Result parseIngredient(String str) {
-        FoodParser foodParser = new FoodParser();
-        FoodGeneral item = foodParser.findMatch(str);
-        /*if (item.example != null) {
-            return ok("<font size=\"4\" color=\"blue\">"
-                    + "#" + item.getLmvFoodNumber() + " - "
-                    + item.screenName + " (exempelvis "
-                    + item.example + ")</font>")
-                    .as("text/html");
-        } else if (item.screenName != null) {
-            return ok("<font size=\"4\" color=\"green\">"
-                    + "#" + item.getLmvFoodNumber() + " - "
-                    + item.screenName + "</font>")
-                    .as("text/html");
+    public Result parseLine(String input) {
+        IngredientStringParser parser = new IngredientStringParser();
+        List<Ingredient> ingredients = parser.parse(input);
+        if (ingredients != null) {
+            return ok(Json.toJson(ingredients));
         } else {
-            return ok("<font size=\"4\" color=\"red\">"
-                    + item.getName() + "</font>")
-                    .as("text/html");
-        }*/
-        return  ok(item.name);
-    }
-
-    public Result parseFull(String input) {
-        IngredientParser ingredientParser = new IngredientParser();
-        Ingredient ingredient = ingredientParser.parse(input);
-        if (ingredient != null) {
-            return ok(Json.toJson(ingredient));
+            return ok("Did not find ingredient");
         }
-        else { return ok("Did not find ingredient");}
     }
 
-    public Result recipeInfo(String recipe) {
-        IngredientParser parser = new IngredientParser();
-        Ingredient ing = parser.parse(recipe);
+    public Result runParse() throws Exception {
+        String crawlStorageFolder = "target/crawl-data";
+        int numberOfCrawlers = 2;
 
-        return ok(Json.toJson(ing));
-    }
+        CrawlConfig config = new CrawlConfig();
+        config.setCrawlStorageFolder(crawlStorageFolder);
+        config.setMaxDepthOfCrawling(0);
 
-    public Result runParse() {
-        IngredientParser parser = new IngredientParser();
-        List<NotLinkedRecipe> notLinkedRecipes = NotLinkedRecipe.find.all();
+        /*
+         * Instantiate the controller for this crawl.
+         */
+        PageFetcher pageFetcher = new PageFetcher(config);
+        RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+        RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
+        CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
-        for (NotLinkedRecipe notLinkedRecipe : notLinkedRecipes) {
-            List<Ingredient> taggedIngredients = new ArrayList<>();
-            for (String string : notLinkedRecipe.ingredients) {
-                Ingredient ingredient = parser.parse(string);
-                if (ingredient != null) {
-                    taggedIngredients.add(ingredient);
+        /*
+         * Add pages from .txt file to be crawled.
+         */
+        try (BufferedReader br = new BufferedReader(new FileReader(RECIPES_URLS_PATH))) {
+            String lineUrl;
+            for (int i = 0; i < RECIPES_TO_PARSE; i++) {
+                if ((lineUrl = br.readLine()) != null) {
+                    controller.addSeed(lineUrl);
+                } else {
+                    break;
                 }
             }
         }
-        return ok("Finished!");
+
+        /*
+         * Start the crawl. This is a blocking operation, meaning that your code
+         * will reach the line after this only when crawling is finished.
+         */
+        controller.start(RecipeCrawler.class, numberOfCrawlers);
+
+        // Send the shutdown request and then wait for finishing
+        controller.shutdown();
+        controller.waitUntilFinish();
+
+        return ok("Done!");
     }
 }

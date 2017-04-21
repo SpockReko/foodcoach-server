@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.recipe.Ingredient;
 import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
+import parsers.ReceptFavoriterParser;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -39,7 +40,6 @@ public class RecipeController extends Controller {
         json.put("portions", recipe.getPortions());
         json.put("energyKcalPerPortion", Math.round(recipe.getEnergyKcal()/recipe.getPortions()));
         json.put("energyKcal", Math.round(recipe.getEnergyKcal()));
-        json.put("energyKj", Math.round(recipe.getEnergyKj()));
         json.put("carbohydrates", Math.round(recipe.getCarbohydrates()));
         json.put("protein", Math.round(recipe.getProtein()));
         json.put("fibre", Math.round(recipe.getFibre()));
@@ -49,7 +49,6 @@ public class RecipeController extends Controller {
             node.put("name", i.getFood().name);
             node.put("amount", i.getAmount().getAmount() + " " + i.getAmount().getUnit().name());
             node.put("energyKcal", Math.round(i.getEnergyKcal()));
-            node.put("energyKj", Math.round(i.getEnergyKj()));
             node.put("carbohydrates", Math.round(i.getCarbohydrates()));
             node.put("protein", Math.round(i.getProtein()));
             node.put("fibre", Math.round(i.getFibre()));
