@@ -27,6 +27,11 @@ public class IngredientFinder {
     private List<TaggedWord> taggedWords;
     private String leftover = "";
 
+    /**
+     * Tries to find a complete ingredient with amount and food in a string.
+     * @param line The string to look in.
+     * @return A ingredient if found, null if not.
+     */
     public Ingredient find(String line) {
         Ingredient ingredient;
         leftover = "";
@@ -38,7 +43,7 @@ public class IngredientFinder {
             e.printStackTrace();
         }
 
-        ingredient = findIngredient(line);
+        ingredient = findIngredient();
         if (ingredient == null) {
             Logger.error("No match \"" + line + "\"");
             return null;
@@ -99,26 +104,23 @@ public class IngredientFinder {
     }
 
     /**
-     * Tries to find an ingredient with the string provided.
-     * @param line The string to look for an ingredient in.
+     * Tries to find an ingredient.
      * @return A complete ingredient if found, else null.
      */
-    private Ingredient findIngredient(String line) {
-        return findIngredient(line, findAmount());
+    private Ingredient findIngredient() {
+        return findIngredient(findAmount());
     }
 
     /**
-     * Tries to find an ingredient with the string provided.
-     * Skips looking for amount and uses provided instead.
-     * @param line The string to look for an ingredient in.
+     * Tries to find an ingredient. Skips looking for amount and uses provided instead.
      * @param amount The amount to use instead of trying to find one.
      * @return A complete ingredient if found, else null.
      */
-    private Ingredient findIngredient(String line, Amount amount) {
+    private Ingredient findIngredient(Amount amount) {
         FoodGeneral foodGeneral = findFoodGeneral();
 
         if (foodGeneral != null) {
-            Food food = findFood(foodGeneral, line);
+            Food food = findFood(foodGeneral);
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 Logger.trace("Added " + comment.trim() + " as comment");
@@ -140,12 +142,7 @@ public class IngredientFinder {
      * @return A FoodGeneral if found, null if not.
      */
     private FoodGeneral findFoodGeneral() {
-        StringBuilder builder = new StringBuilder(" ");
-        for (TaggedWord taggedWord : taggedWords) {
-            builder.append(taggedWord.getWord()).append(" ");
-        }
-
-        String line = builder.toString();
+        String line = JsonHelper.taggedToString(taggedWords);
         String matchingTag = "";
         int matchingTagLength = 0;
         FoodGeneral foodGeneral = null;
@@ -195,10 +192,10 @@ public class IngredientFinder {
     /**
      * Tries to find a food within a general food that matches better than the default.
      * @param foodGeneral The general food to find foods within.
-     * @param line The line to look for tags that match with foods.
      * @return A better matching food, or default if no better is found.
      */
-    private Food findFood(FoodGeneral foodGeneral, String line) {
+    private Food findFood(FoodGeneral foodGeneral) {
+        String line = JsonHelper.taggedToString(taggedWords);
         List<String> tags;
         Food food;
         String currentTag = null;
@@ -214,8 +211,7 @@ public class IngredientFinder {
             for (String tag : tags) {
                 currentTagAmount = tags.size();
                 for (TaggedWord tagged : taggedWords) {
-                    if (line.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord()
-                        .equals(tag)) {
+                    if (line.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord().equals(tag)) {
                         currentMatchingTagAmount++;
                         if (currentTagAmount < tagAmount
                             && currentMatchingTagAmount >= matchingTagAmount) {

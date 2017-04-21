@@ -21,4 +21,16 @@ public class JsonHelper {
         }
         return taggedWords;
     }
+
+    /**
+     * Converts a list of tagged words to a string.
+     * @return A string containing all the tagged words.
+     */
+    public static String taggedToString(List<TaggedWord> taggedWords) {
+        StringBuilder builder = new StringBuilder(" ");
+        for (TaggedWord taggedWord : taggedWords) {
+            builder.append(taggedWord.getWord()).append(" ");
+        }
+        return builder.toString();
+    }
 }
