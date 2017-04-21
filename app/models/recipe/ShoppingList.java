@@ -44,9 +44,8 @@ public class ShoppingList {
 
     private void addList(List<Ingredient> list, Boolean check) {
         ingredients = list;
-
         for (Ingredient ingredient : list) {
-            if (map.containsKey(ingredient)) {
+            if (getKey(ingredient) != null) {
                 //CO2 -= ingredient.getFood().getCO2();
                 putTogetherIngredients(check, ingredient);
             } else {
