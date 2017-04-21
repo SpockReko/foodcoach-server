@@ -10,38 +10,13 @@ import play.Logger;
 /**
  * Created by emmafahlen on 2017-02-14.
  */
-public class FoodParser {
+public class AutoCorrecter {
 
     private int maxDistance = 1;
 
     private Levenshtein levenshtein = new Levenshtein();
     private FoodGeneral matchingFood = null;
     private double shortestDistance = Double.MAX_VALUE;
-
-    public FoodGeneral findMatch(String input) {
-        String ingredient = " " + input + " ";
-        matchingFood = null;
-        shortestDistance = Double.MAX_VALUE;
-        int matchingTagLength = 0;
-        FoodGeneral food = null;
-        List<Food> items = Food.find.select("tags").findList();
-
-        for (Food item : items) {
-            List<String> tags = item.tags;
-            for (String tag : tags) {
-                if (ingredient.contains(" " + tag + " ") ||
-                    ingredient.contains(" " + tag + ",") ||
-                    ingredient.contains(" " + tag + ".")) {
-                    if (tag.length() > matchingTagLength) {
-                        Logger.debug("Found \"" + item.name + "\" for string '" + input + "'");
-                        //food = item;
-                        matchingTagLength = tag.length();
-                    }
-                }
-            }
-        }
-        return food;
-    }
 
     public FoodGeneral autoCorrect(String ingredient) {
         List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
