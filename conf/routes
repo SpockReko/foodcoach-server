@@ -28,7 +28,7 @@ GET     /anna/menu/nutrient                  controllers.MenuAlgorithmsControlle
 
 # Optimize recipe
 GET     /recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
-GET     /recipe/optimize/title/:title       controllers.RecipeOptimizationController.optimizeByTitle(title: String)
+GET     /recipe/optimize/header/:header       controllers.RecipeOptimizationController.optimizeByTitle(header: String)
 
 GET     /bengt/recipe/optimize/:number       controllers.RecipeOptimizationController.optimizeByNumberBengt(number: Long)
 GET     /anna/recipe/optimize/:number        controllers.RecipeOptimizationController.optimizeByNumberAnna(number: Long)

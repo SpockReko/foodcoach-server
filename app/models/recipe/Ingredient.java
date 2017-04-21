@@ -26,7 +26,6 @@ public class Ingredient extends Model {
     @ManyToOne @NotNull private final Food food;
     @Embedded @NotNull private final Amount amount;
     public String comment;
-    public String title;
 
     @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
 
@@ -39,13 +38,6 @@ public class Ingredient extends Model {
         this.food = food;
         this.amount = amount;
         this.comment = comment;
-    }
-
-    public Ingredient(Food food, Amount amount, String comment, String title) {
-        this.food = food;
-        this.amount = amount;
-        this.comment = comment;
-        this.title = title;
     }
 
 
@@ -147,12 +139,21 @@ public class Ingredient extends Model {
             return 0.0;
         }
         double multiplier = amount.getUnit().getFraction() * amount.getAmount();
-        if (amount.getUnit().getType() == Amount.Unit.Type.VOLUME) {
-            if (food.densityConstant != null) {
-                multiplier *= food.densityConstant;
-            } else {
-                Logger.warn("No density constant for " + food.name + " defaulting to 1.0");
-            }
+        switch (amount.getUnit().getType()) {
+            case VOLUME:
+                if (food.densityConstant != null) {
+                    multiplier *= food.densityConstant;
+                } else {
+                    Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
+                }
+                break;
+            case SINGLE:
+                if (food.pieceWeightGrams != null) {
+                    multiplier = amount.getAmount() * (food.pieceWeightGrams * 0.01);
+                } else {
+                    Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
+                    multiplier = amount.getAmount();
+                }
         }
         return value * multiplier;
     }

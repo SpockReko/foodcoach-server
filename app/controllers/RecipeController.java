@@ -36,7 +36,7 @@ public class RecipeController extends Controller {
 
     private ObjectNode getJson(Recipe recipe) {
         ObjectNode json = Json.newObject();
-        json.put("title", recipe.getTitle());
+        json.put("header", recipe.getTitle());
         json.put("portions", recipe.getPortions());
         json.put("energyKcalPerPortion", Math.round(recipe.getEnergyKcal()/recipe.getPortions()));
         json.put("energyKcal", Math.round(recipe.getEnergyKcal()));

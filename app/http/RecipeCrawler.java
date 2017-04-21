@@ -46,7 +46,7 @@ public class RecipeCrawler extends WebCrawler {
         parsedRecipe.sourceUrl = url;
         if (db.find(Recipe.class)
                 .where()
-                .eq("title", parsedRecipe.getTitle())
+                .eq("header", parsedRecipe.getTitle())
                 .findCount() == 0) {
             db.save(parsedRecipe);
             Logger.info("Saved Recipe " + parsedRecipe.getTitle());
@@ -60,7 +60,7 @@ public class RecipeCrawler extends WebCrawler {
         parsedRecipe.sourceUrl = url;
         if (db.find(NotLinkedRecipe.class)
                 .where()
-                .eq("title", parsedRecipe.getTitle())
+                .eq("header", parsedRecipe.getTitle())
                 .findCount() == 0) {
             db.save(parsedRecipe);
             Logger.info("Saved NotLinkedRecipe " + parsedRecipe.getTitle());

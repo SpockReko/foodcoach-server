@@ -62,7 +62,7 @@ public class MenuAlgorithmsController extends Controller {
             //String recipe = requestData.get("removeRecipe");
 
             //for (String n : recipe.split(" ")) {
-            //    removeRecipeList.add(Recipe.find.where().contains("title", n).findUnique());
+            //    removeRecipeList.add(Recipe.find.where().contains("header", n).findUnique());
             //}
             List<Recipe> allRecipes = Recipe.find.all();
             MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
