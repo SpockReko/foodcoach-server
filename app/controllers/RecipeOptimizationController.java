@@ -19,7 +19,7 @@ public class RecipeOptimizationController extends Controller {
         recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
 
-        return ok(optimizedRecipe.recipeToString(optimizedRecipe) +optimizedRecipe.recipeToString(recipe));
+        return ok(optimizedRecipe.recipeToString(optimizedRecipe) +optimizedRecipe.recipeToString(recipe.getOnePortionRecipe()));
     }
 
     // GET /recipe/title/:title

@@ -163,8 +163,8 @@ public class Recipe extends Model {
             Ingredient newIngredient = new Ingredient(currentFood, newAmount);
             newIngredients.add(newIngredient);
         }
-        Recipe recepie = new Recipe(this.getTitle(),1,newIngredients);
-        return recepie;
+        Recipe recipe = new Recipe(this.getTitle(),1,newIngredients);
+        return recipe;
     }
 
     public String recipeToString(Recipe recipe){

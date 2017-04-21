@@ -22,8 +22,8 @@ public class RecipeOptimizer {
     User user;
 
     public RecipeOptimizer(Recipe recipe, User user) {
-        this.recipe = recipe;
-        this.ingredients = recipe.ingredients;
+        this.recipe = recipe.getOnePortionRecipe();
+        this.ingredients = this.recipe.ingredients;
         this.user = user;
     }
 
