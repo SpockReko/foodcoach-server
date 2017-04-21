@@ -248,6 +248,7 @@ public class MenuAlgorithms {
      * Every time we want to calculate values we need clean containers for menus
      */
     private void reset() {
+        convertAllToOnePortion();
         optimalMenuNutrition = LARGE_DISTANCE;
         optimalMenu = new Menu(new ArrayList<>());
         filterRecipes(notTheseIngredients, notTheseRecipes);
@@ -255,9 +256,28 @@ public class MenuAlgorithms {
     }
 
 
-    private void convertAllRecipesToOneProtion(){
-
+    private void convertAllToOnePortion(){
+        convertAllRecipesToOneProtion();
+        convertNotTheseRecipesToOneProtion();
     }
+
+    private void convertAllRecipesToOneProtion() {
+        List<Recipe> oneRecepiesList = new ArrayList<>();
+        for (Recipe r : allRecipes) {
+            oneRecepiesList.add(r.getOnePortionRecipe());
+        }
+        allRecipes = oneRecepiesList;
+    }
+
+    private void convertNotTheseRecipesToOneProtion(){
+        List<Recipe> oneRecepiesList = new ArrayList<>();
+        for (Recipe r: notTheseRecipes){
+            oneRecepiesList.add(r.getOnePortionRecipe());
+        }
+        notTheseRecipes = oneRecepiesList;
+    }
+
+
 
     /**
      * @param ingredientList
