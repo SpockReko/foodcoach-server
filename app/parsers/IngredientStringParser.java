@@ -42,7 +42,6 @@ public class IngredientStringParser {
             Logger.trace("Contains colon, added \"" + header + "\" as header");
             return output;
         } else {
-            Logger.trace("Contains no colon");
             return line;
         }
     }
@@ -60,7 +59,6 @@ public class IngredientStringParser {
             Logger.trace("Contains parenthesis, added " + insideParenthesis);
             return line.replaceAll("\\(([^)]+)\\)", "");
         } else {
-            Logger.trace("Contains no parenthesis");
             return line;
         }
     }
@@ -74,7 +72,6 @@ public class IngredientStringParser {
             }
             return split[0];
         } else {
-            Logger.trace("Contains no alternatives");
             return line;
         }
     }

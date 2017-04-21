@@ -3,40 +3,40 @@
 # ~~~~
 
 # Home page
-GET     /                                   controllers.ApplicationController.index
+GET             /                                         controllers.ApplicationController.index
 
 # Food items
-GET     /food/:id                           controllers.FoodController.get(id: Int)
-GET     /food/name/:name                    controllers.FoodController.getByName(name: String)
-GET     /food/sort/:id                      controllers.FoodController.sortById(id: Int)
+GET             /food/:id                                 controllers.FoodController.get(id: Int)
+GET             /food/name/:name                          controllers.FoodController.getByName(name: String)
+GET             /food/sort/:id                            controllers.FoodController.sortById(id: Int)
 
 # Recipe items
-GET     /recipes                            controllers.RecipeController.getAll
-GET     /notlinked_recipes                  controllers.RecipeController.getAllNotLinked
+GET             /recipes                                  controllers.RecipeController.getAll
+GET             /notlinked_recipes                        controllers.RecipeController.getAllNotLinked
 
 # User info
-GET     /user/:alder                        controllers.UserController.getRDI(alder: Int)
+GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
 
 # Menu options from client
-POST    /menu/nutrient                      controllers.MenuAlgorithmsController.menu
-GET     /menu/nutrient                      controllers.MenuAlgorithmsController.menu()
-GET     /menu/economi                       controllers.MenuAlgorithmsController.menu2()
+POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
+GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu()
+GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2()
 
-GET     /bengt/menu/nutrient                 controllers.MenuAlgorithmsController.menuBengt()
-GET     /anna/menu/nutrient                  controllers.MenuAlgorithmsController.menuAnna()
+GET             /bengt/menu/nutrient                      controllers.MenuAlgorithmsController.menuBengt()
+GET             /anna/menu/nutrient                       controllers.MenuAlgorithmsController.menuAnna()
 
 
 # Optimize recipe
-GET     /recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
-GET     /recipe/optimize/title/:title       controllers.RecipeOptimizationController.optimizeByTitle(title: String)
+GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
+GET             /recipe/optimize/title/:title             controllers.RecipeOptimizationController.optimizeByTitle(title: String)
 
-GET     /bengt/recipe/optimize/:number       controllers.RecipeOptimizationController.optimizeByNumberBengt(number: Long)
-GET     /anna/recipe/optimize/:number        controllers.RecipeOptimizationController.optimizeByNumberAnna(number: Long)
+GET             /bengt/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberBengt(number: Long)
+GET             /anna/recipe/optimize/:number             controllers.RecipeOptimizationController.optimizeByNumberAnna(number: Long)
 
 
 # Parse ingredient string to food item
-GET     /parse/:input                       controllers.ParseController.parse(input: String)
-GET     /parseFull/:input                   controllers.ParseController.parseFull(input: String)
+GET             /parseLine/:input                         controllers.ParseController.parseLine(input: String)
+GET             /runParse                                 controllers.ParseController.runParse
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file                       controllers.Assets.at(path="/public", file)
+GET             /assets/*file                             controllers.Assets.at(path="/public", file)

@@ -31,6 +31,7 @@ public class IngredientFinder {
 
     public Ingredient find(String line) {
         Ingredient ingredient;
+        leftover = "";
 
         try {
             JsonNode jsonNode = retrieveWordInfo(line);
@@ -153,9 +154,7 @@ public class IngredientFinder {
         }
 
         if (foodGeneral == null) {
-            System.out.println("FOOD GENERAL NULL");
             FoodParser parser = new FoodParser();
-            System.out.println("LINE: " + line);
             String[] listLine = line.trim().split("\\s++");
             for (String word : listLine) {
                 if (parser.autoCorrect(word) != null) {
