@@ -1,9 +1,11 @@
 package models.recipe;
 
 import com.avaje.ebean.Model;
+import models.food.Food;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -145,8 +147,24 @@ public class Recipe extends Model {
     public Double getEnergyPercentFibre() {
         return 2*100*getFibre()/getEnergyKcal();
     }
+
     public Double getKcalPerPortion() {
         return getEnergyKcal()/getPortions();
+    }
+
+    public Recipe getOnePortionRecipe(){
+        List<Ingredient> ingredients = getIngredients();
+        List<Ingredient> newIngredients = new ArrayList<>();
+        for (Ingredient i: ingredients) {
+            double onePortionValue = i.getAmount().getAmount()/portions;
+            Amount.Unit currentUnit = i.getAmount().getUnit();
+            Amount newAmount = new Amount(onePortionValue,currentUnit);
+            Food currentFood = i.getFood();
+            Ingredient newIngredient = new Ingredient(currentFood, newAmount);
+            newIngredients.add(newIngredient);
+        }
+        Recipe recepie = new Recipe(this.getTitle(),1,newIngredients);
+        return recepie;
     }
 
     public String recipeToString(Recipe recipe){

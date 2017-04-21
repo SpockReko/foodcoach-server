@@ -203,32 +203,6 @@ public class MenuAlgorithms {
         return text;
     }
 
-    /**
-     * @param ingredientList
-     * @param recipeList
-     */
-    private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList) {
-
-        List<Recipe> filteredRecipes = new ArrayList<>();
-        for (Recipe recipe : allRecipes) {
-            boolean badRecipe = false;
-            for (Ingredient ingredient : ingredientList) {
-                if (recipe.ingredients.contains(ingredient)) {
-                    badRecipe = true;
-                }
-            }
-            for (Recipe r : recipeList) {
-                if (recipe.equals(r)) {
-                    badRecipe = true;
-                }
-            }
-            if (!badRecipe)
-                filteredRecipes.add(recipe);
-        }
-
-        allRecipes = filteredRecipes;
-    }
-
     /** ///////////////////////////////
      *  Setters and getters
      */////////////////////////////////
@@ -242,10 +216,10 @@ public class MenuAlgorithms {
         notTheseIngredients.add(ingredient);
     }
 
-
     public void setNoPrint(boolean noPrint) {
         this.noPrint = noPrint;
     }
+
 
     /**
      * @return
@@ -278,6 +252,37 @@ public class MenuAlgorithms {
         optimalMenu = new Menu(new ArrayList<>());
         filterRecipes(notTheseIngredients, notTheseRecipes);
         menuList = new ArrayList<>();
+    }
+
+
+    private void convertAllRecipesToOneProtion(){
+
+    }
+
+    /**
+     * @param ingredientList
+     * @param recipeList
+     */
+    private void filterRecipes(List<Ingredient> ingredientList, List<Recipe> recipeList) {
+
+        List<Recipe> filteredRecipes = new ArrayList<>();
+        for (Recipe recipe : allRecipes) {
+            boolean badRecipe = false;
+            for (Ingredient ingredient : ingredientList) {
+                if (recipe.ingredients.contains(ingredient)) {
+                    badRecipe = true;
+                }
+            }
+            for (Recipe r : recipeList) {
+                if (recipe.equals(r)) {
+                    badRecipe = true;
+                }
+            }
+            if (!badRecipe)
+                filteredRecipes.add(recipe);
+        }
+
+        allRecipes = filteredRecipes;
     }
 
     /**
