@@ -214,7 +214,7 @@ public class DatabaseSeeder {
             specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.id].trim());
         }
         if (cols[Fineli.GEN_CLASSIFICATION.id] != null) {
-            specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.id].trim());
+            specificFood.category = getCategory(cols[Fineli.GEN_CLASSIFICATION.id].trim());
         }
         if (cols[Fineli.GEN_SPECIAL_DIETS.id] != null) {
             String[] diets = cols[Fineli.GEN_SPECIAL_DIETS.id].split(",");
