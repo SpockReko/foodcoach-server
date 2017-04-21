@@ -11,29 +11,29 @@ public class Menu {
     private final List<Recipe> recipeList;
     private List<String> commentList = new ArrayList<>();
 
-    public Menu(List<Recipe> recipes){
+    public Menu(List<Recipe> recipes) {
         this.recipeList = recipes;
     }
 
-    public List<Recipe> getRecipeList(){
+    public List<Recipe> getRecipeList() {
         return new ArrayList<Recipe>(recipeList); //Return a copy so the class is unmodifiable
     }
 
-    public List<String> getCommentList(){
+    public List<String> getCommentList() {
         return new ArrayList<String>(commentList);
     }
 
-    public void addComment(String comment){
+    public void addComment(String comment) {
         commentList.add(comment);
     }
 
-    public String recipeListToString(ShoppingList shop){
+    public String recipeListToString(ShoppingList shop) {
         String text = "Meny:\n\n";
-        for(Recipe r : this.getRecipeList()){
+        for (Recipe r : this.getRecipeList()) {
             text = text + r.getTitle() + "\n";
         }
         text = text + "\n\nNäringsvärden i procent av användarens behov: (1 betyder näringsbehovet är uppfyllt)\n\n";
-        for(String comment : this.getCommentList()){
+        for (String comment : this.getCommentList()) {
             text = text + comment + "\n";
         }
         text = text + shop.toString();
@@ -42,6 +42,14 @@ public class Menu {
 
         text = text + shop.getCO2() + " kg";
 
+        return text;
+    }
+
+    public String nutritionToString() {
+        String text = "\n\nNäringsvärden i procent av användarens behov: (1 betyder näringsbehovet är uppfyllt)\n\n";
+        for (String comment : this.getCommentList()) {
+            text = text + comment + "\n";
+        }
         return text;
     }
 

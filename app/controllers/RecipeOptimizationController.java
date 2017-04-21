@@ -1,10 +1,15 @@
 package controllers;
 
+import algorithms.NutritionAlgorithms;
 import algorithms.RecipeOptimizer;
+import models.recipe.Menu;
 import models.recipe.Recipe;
+import models.recipe.ShoppingList;
 import models.user.User;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import java.util.ArrayList;
 
 /**
  * Created by louiserost on 2017-04-05.
@@ -18,8 +23,9 @@ public class RecipeOptimizationController extends Controller {
         RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
         recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
-
-        return ok(optimizedRecipe.recipeToString(optimizedRecipe) +optimizedRecipe.recipeToString(recipe)+"\n CO2: "+recipe.getCO2());
+        Menu menu=recipeOptimizerInstant.getMenu();
+        return ok(optimizedRecipe.recipeToString(optimizedRecipe) +optimizedRecipe.recipeToString(recipe)
+                +"\n CO2: "+recipe.getCO2()+menu.nutritionToString());
     }
 
     // GET /recipe/title/:title

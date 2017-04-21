@@ -2,9 +2,7 @@ package algorithms;
 
 import models.food.Food;
 import models.food.Nutrient;
-import models.recipe.Amount;
-import models.recipe.Ingredient;
-import models.recipe.Recipe;
+import models.recipe.*;
 import models.user.User;
 
 import java.util.ArrayList;
@@ -19,6 +17,7 @@ public class RecipeOptimizer {
     private Double lowestPercentageOfIngredient;
     private Recipe recipe;
     private List<Ingredient> ingredients;
+    private Recipe optimalRecipe;
     User user;
 
     public RecipeOptimizer(Recipe recipe, User user) {
@@ -48,6 +47,7 @@ public class RecipeOptimizer {
         }
         Recipe newRecipe = new Recipe(recipe.getTitle(), recipe.getPortions(), newIngredients);
         System.out.println("Energy: "+newRecipe.getEnergyKcal());
+        optimalRecipe=newRecipe;
         return newRecipe;
     }
 
@@ -71,6 +71,14 @@ public class RecipeOptimizer {
 
     public Double getLowestPercentageOfIngredient(){
         return lowestPercentageOfIngredient;
+    }
+
+    public Menu getMenu(){
+        ArrayList<Recipe> recipeList =new ArrayList<Recipe>();
+        recipeList.add(optimalRecipe);
+        Menu menu=new Menu(recipeList);
+        NutritionAlgorithms.L2Norm(user.hmap, NutritionAlgorithms.nutrientsContent(menu), user.overdoseValues, menu );
+        return menu;
     }
 
 }
