@@ -44,7 +44,7 @@ public class DatabaseSeeder {
     private enum Fineli {
         GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
         GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
-        GEN_SCIENTIFIC_NAME(9), GEN_PROCESSING(10), GEN_SPECIAL_DIETS(13),
+        GEN_SCIENTIFIC_NAME(9), GEN_PROCESSING(10), GEN_CLASSIFICATION(11), GEN_SPECIAL_DIETS(13),
 
         DATA_ID(0), DATA_ENERGY_KJ(2), DATA_CARB(3), DATA_PROTEIN(5), DATA_FAT(4), DATA_FIBRE(7),
         DATA_ALCOHOL(6), DATA_SALT(39), DATA_VITAMIN_A(52), DATA_VITAMIN_B6(47),
@@ -211,6 +211,9 @@ public class DatabaseSeeder {
             specificFood.scientificName = cols[Fineli.GEN_SCIENTIFIC_NAME.id].trim();
         }
         if (cols[Fineli.GEN_PROCESSING.id] != null) {
+            specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.id].trim());
+        }
+        if (cols[Fineli.GEN_CLASSIFICATION.id] != null) {
             specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.id].trim());
         }
         if (cols[Fineli.GEN_SPECIAL_DIETS.id] != null) {
@@ -458,7 +461,7 @@ public class DatabaseSeeder {
         }
     }
 
-    private static Category getCat(String str) {
+    private static Category getCategory(String str) {
         switch (str) {
             case "Baljväxter": return Category.Baljvaxter;
             case "Övrig frukt": return Category.ovrig_frukt;
@@ -537,6 +540,7 @@ public class DatabaseSeeder {
             default: return null;
         }
     }
+
     private static Diet addOrGetDiet(Diet.Type type) {
         Optional<Diet> opt = diets.stream().filter(d -> d.type == type).findFirst();
         if (opt.isPresent()) {
