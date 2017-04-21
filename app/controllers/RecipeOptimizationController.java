@@ -22,7 +22,7 @@ public class RecipeOptimizationController extends Controller {
         return ok(optimizedRecipe.recipeToString(optimizedRecipe) +optimizedRecipe.recipeToString(recipe));
     }
 
-    // GET /recipe/title/:title
+    // GET /recipe/header/:header
     public Result optimizeByTitle(String title) {
         Recipe recipe = Recipe.find.where().eq("title", title).findUnique();
         User user = new User();

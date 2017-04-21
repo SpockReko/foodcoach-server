@@ -138,7 +138,7 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 628	Crème fraiche	TRUE	28% fett	Crème fraiche	creme fraiche, crème fraiche		1			Industriellt	Grädde/creme	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 33021	Currypasta	TRUE	Kryddpasta, curry pasta	Currypasta	currypasta, kryddpasta					Blandat	Kryddsåser	100 %	
 28937	Dadel	TRUE	torkad, vägd med kärna	Dadel	dadlar	8			Phoenix dactylifera	Torkat	Övrig frukt	87 %	
-369	Dill	TRUE	färsk	Dill					Anethum graveolens	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
+369	Dill	TRUE	färsk	Dill			0.167		Anethum graveolens	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 32403	Dippmix	TRUE	såspulver, innehåller mjölk	Dippmix	dippmix, dipmix					Torkat	Hjälpämnen vid tillverkning	100 %	
 32404	Dippmix		såspulver, mjölkfri	Dippmix, mjölkfri						Torkat	Hjälpämnen vid tillverkning	100 %	SOYAFREE, LACSFREE, MILKFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 34598	Drickkvarg	TRUE	drickbar kvarg	Drickkvarg	drick kvarg		1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, LOWLACS, EGGFREE
@@ -495,9 +495,9 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 751	Kycklingben		hel, med skinn, rå	Kyckling						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 11563	Kyckling		kycklingben, med skinn, rå	Kyckling						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 11150	Kyckling		marinerad, utan skinn, rå	Kyckling						Blandat	Fåglar	100 %	UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LOWFAT, GLUTFREE, EGGFREE
-754	Kyckling	TRUE	strimlad	Kyckling	kycklingar, kycklingben, kycklingstrimlor					Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
+754	Kyckling	TRUE	strimlad	Kyckling	kycklingar, kycklingben, kycklingstrimlor, kycklingkött					Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 34180	Kycklingben	TRUE	med skinn, rå	Kycklingben						Obehandlat	Fåglar	100 %	NAGLUFRE, LACSFREE, MILKFREE, GLUTFREE, EGGFREE
-28930	Kycklingfärs	TRUE	Köttfärs, kycklingfärs	Kycklingfärs						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
+28930	Kycklingfärs	TRUE	köttfärs, kycklingfärs	Kycklingfärs						Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 33339	Kycklingfilé	TRUE	i honungsmarinad, rå	Kycklingfilé	kycklingfile, kycklingfiléer, kycklingfileer					Blandat	Fåglar	100 %	SOYAFREE, NAGLUFRE, MILKFREE, LOWFAT, GLUTFREE, EGGFREE
 30792	Kycklinglår	TRUE	utan skinn	Kycklinglår	kycklinglårfilé, kycklinglårfiléer, kycklinglårfileer					Obehandlat	Fåglar	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 788	Kycklinglever	TRUE	Lever, kyckling	Kycklinglever	kycklinglevrar					Obehandlat	Organ	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
@@ -882,14 +882,13 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 338	Rabarber	TRUE		Rabarber		70			Rheum	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 308	Rädisa	TRUE		Rädisa	rädisor	10			Raphanus sativus var. sativus	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 103	Rågflingor	TRUE		Rågflingor			0.6		Secale cereale	Obehandlat	Råg	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
-29237	Rågkli	TRUE	Kli, rågkli	Rågkli						Obehandlat	Råg	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
+29237	Rågkli	TRUE	kli	Rågkli						Obehandlat	Råg	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 176	Rågkross	TRUE		Rågkross					Secale cereale	Obehandlat	Råg	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 43	Rågmalt	TRUE		Rågmalt						Torkat	Hjälpämnen vid tillverkning	100 %	UNSWEET, SOYAFREE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 100	Rågmjöl		fullkorn	Rågmjöl (fullkorn)			0.5		Secale cereale	Obehandlat	Råg	100 %	UNSWEET, SOYAFREE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 34247	Rågmjöl		fullkorn, r1000	Rågmjöl (fullkorn)			0.5		Secale cereale	Obehandlat	Råg	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 34246	Rågmjöl		fullkorn, r800	Rågmjöl (fullkorn)			0.5		Secale cereale	Obehandlat	Råg	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 11030	Rågmjöl	TRUE	rågsikt, rågsiktmjöl	Rågsikt	rågsikt, rågsiktmjöl		0.55		Secale cereale	Obehandlat	Råg	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
-835	Räka	TRUE		Räka	räkor				Pandalus	Obehandlat	Skaldjur	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 30369	Råkorv	TRUE	syskonkorv	Råkorv	råkorvar					Obehandlat	Korv	100 %	NAGLUFRE, LACSFREE, MILKFREE, LOWCHOL, GLUTFREE, EGGFREE
 602	Råmjölk	TRUE	colostrum	Råmjölk			1			Obehandlat	Mjölk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 535	Rapsolja	TRUE		Rapsolja			0.93			Industriellt	Olja	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
@@ -1160,14 +1159,14 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 33519	Sötningsmedel		stevia, canderel green pulver	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, LOWPROT, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 33521	Sötningsmedel		stevia, canderel green stick	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, NAGLUFRE, LOWPROT, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 33520	Sötningsmedel		stevia, canderel green tablett	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, LOWPROT, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
-30223	Sötpotatis	TRUE	skalad	skalad	sötpotatisar				Lpomoea batatas	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
+30223	Sötpotatis	TRUE	skalad	Sötpotatis	sötpotatisar				Lpomoea batatas	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 121	Spagetti	TRUE		Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 172	Spagetti		spenat, spenatspaghetti, innehåller ägg	Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACOVEGE
 31675	Spagetti		naturligt glutenfri	Spagetti						Obehandlat	Pasta, makaroner	100 %	UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 31677	Spagetti		Pasta, spaghetti, naturligt glutenfri, innehåller ägg	Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
 340	Sparris		inlagd	Sparris					Asparagus officinalis L.	Konserverat	Grönsakskonserver	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 11689	Sparris	TRUE	rå, rensad	Sparris	sparrisar	30			Asparagus officinalis L.	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-33456	Spenat	TRUE		Spenat					Spinacia oleracea	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
+33456	Spenat	TRUE		Spenat	bladspenat				Spinacia oleracea	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 34228	Spenat		djupfryst	Spenat					Spinacia oleracea	Djupfryst	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 33375	Sportdryck		kolhydrater, medelvärde av industriella produkter	Sportdryck			1			Industriellt	Läskedrycker	100 %	SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 33367	Sportdryck		kolhydrater och protein	Sportdryck			1	leader recovery		Industriellt	Läskedrycker	100 %	SOYAFREE, NAGLUFRE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
@@ -1338,10 +1337,10 @@ fineli_id	general_name	default	specific_tags	display_name	extra_tags	piece_weigh
 31997	Yoghurtglass		4% fett	Yoghurtglass			0.58			Industriellt	Glass	100 %	SOYAFREE, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 31518	Yoghurtglass	TRUE	9% fett	Yoghurtglass			0.58			Industriellt	Glass	100 %	
 389	Zucchini	TRUE	squash, zucchini	Zucchini	squash, zucchinis	400			Cucurbita pepo	Obehandlat	Grönsaksfrukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
-30641	Ägg		omega, utan skal	Ägg						Obehandlat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
-858	Ägg	TRUE	utan skal	Ägg						Obehandlat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
-34651	Ägg		utan skal, ekologisk	Ägg						Obehandlat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
-29160	Ägg		vägt med skal	Ägg						Obehandlat	Ägg, hönsägg	88 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
+30641	Ägg		omega, utan skal	Ägg		63				Obehandlat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
+858	Ägg	TRUE	utan skal	Ägg		63				Obehandlat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
+34651	Ägg		utan skal, ekologisk	Ägg		63				Obehandlat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
+29160	Ägg		vägt med skal	Ägg		70				Obehandlat	Ägg, hönsägg	88 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
 33549	Äggpulver	TRUE	för livsmedelsindustri	Äggpulver						Torkat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
 851	Äggula	TRUE	34% av äggmassan	Äggula	äggulor					Obehandlat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
 33551	Äggulepulver	TRUE	för livsmedelsindustri	Äggulepulver						Torkat	Ägg, hönsägg	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
