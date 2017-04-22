@@ -83,13 +83,8 @@ public class MenuAlgorithmsController extends Controller {
 
             Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
-            Food food = resultingMenu.getRecipeList().get(0).getIngredients().get(0).getFood();
-
-            List<Ingredient> atHome = new ArrayList<>();
-            atHome.add(new Ingredient(food, new Amount(50.0, Amount.Unit.GRAM)));
-            System.out.println("Ingrediens vi kollar på: "+food.name);
             if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-                return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu,atHome)));
+                return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
             return ok("nothing found!");
 
         }
