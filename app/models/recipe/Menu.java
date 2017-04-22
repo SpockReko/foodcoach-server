@@ -34,7 +34,7 @@ public class Menu {
         for (Recipe r : this.getRecipeList()) {
             text = text + r.getTitle() + "\n";
         }
-        text = text + "\n\nNäringsvärden i procent av användarens behov: (1 betyder näringsbehovet är uppfyllt)\n\n";
+        text = text + "\n\nNäringsvärden i procent av användarens behov: (1 betyder att näringsbehovet är uppfyllt)\n\n";
         for (String comment : this.getCommentList()) {
             text = text + comment + "\n";
         }

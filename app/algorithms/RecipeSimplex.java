@@ -65,6 +65,7 @@ public class RecipeSimplex {
         setEachConstraint(per100grams, nutritionNeed, ingredients.size(), lower);
     }
 
+
     private void setEachConstraint(List<Double> per100grams, Double nutritionNeed, int nrOfIngredients, boolean lower) {
         double[] arr = new double[nrOfIngredients];
         for (int i = 0; i < nrOfIngredients; i++) {
@@ -98,7 +99,6 @@ public class RecipeSimplex {
             constraintsCollection.add(new LinearConstraint(arr, Relationship.LEQ, nutritionNeed*1.2));
         }
     }
-
 
 
     private boolean isZero(double[] arr) {
