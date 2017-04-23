@@ -2,14 +2,15 @@ package algorithms;
 
 import models.food.Food;
 import models.food.Nutrient;
-import models.recipe.Amount;
-import models.recipe.Ingredient;
-import models.recipe.Recipe;
+import models.recipe.*;
 import models.user.User;
+import org.apache.commons.math3.util.Precision;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.lang.Math.round;
 
 /**
  * Created by stefa on 2017-03-20.
@@ -19,22 +20,26 @@ public class RecipeOptimizer {
     private Double lowestPercentageOfIngredient;
     private Recipe recipe;
     private List<Ingredient> ingredients;
+    private Recipe optimizedRecipe;
+    private RecipeSimplex recipeSimplex;
+    private Recipe originalRecipe;
     User user;
 
     public RecipeOptimizer(Recipe recipe, User user) {
-        this.recipe = recipe;
-        this.ingredients = recipe.ingredients;
+        originalRecipe=recipe;
+        this.recipe = recipe.getUserRecipe(user);
+        this.ingredients = this.recipe.ingredients;
         this.user = user;
     }
 
     public Recipe optimizeRecipe(){
         List<Double> leastAmountOfIngredients = leastAmountOfIngredients(ingredients);
 
-        RecipeSimplex recipeSimplex = new RecipeSimplex();
+        recipeSimplex = new RecipeSimplex();
         recipeSimplex.setLinearObjectiveFunction(ingredients);
         recipeSimplex.setConstraintsIngredients(leastAmountOfIngredients);
         HashMap<Nutrient,Double> nutritionNeed = NutritionAlgorithms.nutrientsNeedScaled(user.hmap,1);
-        recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed);
+        recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed, true);
 
         double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
@@ -47,6 +52,8 @@ public class RecipeOptimizer {
             newIngredients.add(ingredient);
         }
         Recipe newRecipe = new Recipe(recipe.getTitle(), recipe.getPortions(), newIngredients);
+        System.out.println("Energy: "+newRecipe.getEnergyKcal());
+        optimizedRecipe=newRecipe;
         return newRecipe;
     }
 
@@ -72,4 +79,23 @@ public class RecipeOptimizer {
         return lowestPercentageOfIngredient;
     }
 
+    public Menu getMenu(){
+        ArrayList<Recipe> recipeList =new ArrayList<Recipe>();
+        recipeList.add(optimizedRecipe);
+        Menu menu=new Menu(recipeList);
+        NutritionAlgorithms.L2Norm(user.hmap, NutritionAlgorithms.nutrientsContent(menu), user.overdoseValues, menu );
+        return menu;
+    }
+    public String toString(){
+        Menu menu=getMenu();
+        String string="Optimalt recept, "+optimizedRecipe.recipeToString(optimizedRecipe)+"Originalrecept, "
+                +originalRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\n CO2: "
+                + Precision.round(optimizedRecipe.getCO2(), 3)+"\n Kcal: "+round(optimizedRecipe.getEnergyKcal());
+        if(recipeSimplex.exceedsCalorie()){
+            string=string+"\n Mer än 120% av kaloribehov";
+        }
+        string=string+menu.nutritionToString();
+
+        return string;
+    }
 }

@@ -163,7 +163,7 @@ public class User extends Model {
 
         double proteinNeed = 0.15 * dc / 4;
         double fatNeed = 0.3 * dc / 9;
-        double carbohydratesNeed = 0.55 * dc / 9;
+        double carbohydratesNeed = 0.55 * dc / 4;
 
         hmap.put(Nutrient.KCAL, dc);
         hmap.put(Nutrient.KJ, dc*Constants.KCAL_FACTOR);

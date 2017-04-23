@@ -14,11 +14,16 @@ public class RecipeSimplex {
     private LinearObjectiveFunction f; // objective function, to be minimized
     private Collection<LinearConstraint> constraintsCollection = new ArrayList();
     private LinearConstraintSet constraints;
+    private List<Ingredient> ingredients;
+    private HashMap<Nutrient,Double> nutritionNeed;
+    private List<Double> leastAmountOfIngredient;
+    private boolean exceedsCalorie=false;
 
     /*
     Sets limits of least amount of each ingredient
      */
     public void setConstraintsIngredients(List<Double> leastAmountOfIngredient) {
+        this.leastAmountOfIngredient=leastAmountOfIngredient;
         for( int i=0; i<leastAmountOfIngredient.size(); i++ ) {
             double[] arr = new double[leastAmountOfIngredient.size()];
             arr[i] = 1;
@@ -27,22 +32,29 @@ public class RecipeSimplex {
         constraints = new LinearConstraintSet(constraintsCollection);
     }
 
-    public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed) {
-        setLowerConstraint(ingredients, Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL));
-        setLowerConstraint(ingredients, Nutrient.PROTEIN, nutritionNeed.get(Nutrient.PROTEIN));
-        setLowerConstraint(ingredients, Nutrient.FAT, nutritionNeed.get(Nutrient.FAT));
-        setLowerConstraint(ingredients, Nutrient.CARBOHYDRATES, nutritionNeed.get(Nutrient.CARBOHYDRATES));
+    public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed, boolean maxCalorie) {
+            this.ingredients=ingredients;
+            this.nutritionNeed=nutritionNeed;
+
+        setConstraint(ingredients, Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL), true);
+        setConstraint(ingredients, Nutrient.PROTEIN, nutritionNeed.get(Nutrient.PROTEIN), true);
+        setConstraint(ingredients, Nutrient.FAT, nutritionNeed.get(Nutrient.FAT), true);
+        setConstraint(ingredients, Nutrient.CARBOHYDRATES, nutritionNeed.get(Nutrient.CARBOHYDRATES), true);
 
         /*for( Map.Entry<Nutrient,Double> entry : nutritionNeed.entrySet() ) {
             Nutrient nutrient = entry.getKey();
             Double nutrientNeed = entry.getValue();
-            setLowerConstraint(ingredients, nutrient, nutrientNeed);
+            setConstraint(ingredients, nutrient, nutrientNeed);
         }*/
+
+        if (maxCalorie) {
+            setConstraint(ingredients,Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL)*1.2, false);
+        }
 
         constraints = new LinearConstraintSet(constraintsCollection);
     }
 
-    private void setLowerConstraint(List<Ingredient> ingredients, Nutrient nutrient, Double nutritionNeed){
+    private void setConstraint(List<Ingredient> ingredients, Nutrient nutrient, Double nutritionNeed, boolean lower){
         List<Double> per100grams = Arrays.asList(new Double[ingredients.size()]);
         for( int i=0; i<ingredients.size(); i++) {
             if(per100grams.get(i)==null) {
@@ -50,10 +62,11 @@ public class RecipeSimplex {
             }
             per100grams.set(i, ingredients.get(i).getFood().getNutrient(nutrient));
         }
-        setEachConstraint(per100grams, nutritionNeed, ingredients.size());
+        setEachConstraint(per100grams, nutritionNeed, ingredients.size(), lower);
     }
 
-    private void setEachConstraint(List<Double> per100grams, Double nutritionNeed, int nrOfIngredients) {
+
+    private void setEachConstraint(List<Double> per100grams, Double nutritionNeed, int nrOfIngredients, boolean lower) {
         double[] arr = new double[nrOfIngredients];
         for (int i = 0; i < nrOfIngredients; i++) {
             arr[i] = per100grams.get(i) / 100D;
@@ -65,9 +78,28 @@ public class RecipeSimplex {
         System.out.println();
 
         if( !isZero(arr) ) {
-            constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, nutritionNeed));
+            if(lower) constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, nutritionNeed));
+            else  constraintsCollection.add(new LinearConstraint(arr, Relationship.LEQ, nutritionNeed));
         }
     }
+
+
+    private void setMaxConstraintNutrition(List<Double> per100grams, Double nutritionNeed, int nrOfIngredients) {
+        double[] arr = new double[nrOfIngredients];
+        for (int i = 0; i < nrOfIngredients; i++) {
+            arr[i] = per100grams.get(i) / 100D;
+        }
+        for(int i =0;i<arr.length;i++)
+        {
+            System.out.println(arr[i]);
+        }
+        System.out.println();
+
+        if( !isZero(arr) ) {
+            constraintsCollection.add(new LinearConstraint(arr, Relationship.LEQ, nutritionNeed*1.2));
+        }
+    }
+
 
     private boolean isZero(double[] arr) {
         for(int i=0; i<arr.length; i++) {
@@ -76,6 +108,10 @@ public class RecipeSimplex {
             }
         }
         return true;
+    }
+
+    public boolean exceedsCalorie(){
+        return exceedsCalorie;
     }
 
     /*
@@ -92,8 +128,17 @@ public class RecipeSimplex {
     }
 
     public double[] optimize() {
-        PointValuePair result = solver.optimize(f,constraints);
-        return result.getPoint();
+        try {
+            PointValuePair result = solver.optimize(f, constraints);
+            return result.getPoint();
+        }catch(NoFeasibleSolutionException e){
+            exceedsCalorie=true;
+            constraintsCollection = new ArrayList();
+            setConstraintsIngredients(leastAmountOfIngredient);
+            setConstraintsNutrition(ingredients, nutritionNeed, false);
+            PointValuePair result = solver.optimize(f, constraints);
+            return result.getPoint();
+        }
     }
 
 }

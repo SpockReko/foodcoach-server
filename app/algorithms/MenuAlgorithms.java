@@ -196,7 +196,7 @@ public class MenuAlgorithms {
     private Double getShoppinglistSize(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
         }
         nutritionValueCalculation(menu);
         return shoppingList.size() + 0.0;
@@ -210,11 +210,10 @@ public class MenuAlgorithms {
     private Double getLeftoversSize(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
         }
-        //return shoppingList.size()+0.0;
         nutritionValueCalculation(menu);
-        return shoppingList.getLeftovers().size() + 0.0;
+        return shoppingList.getLeftoverSize();
     }
 
     /**
@@ -224,7 +223,7 @@ public class MenuAlgorithms {
     private Double getCO2(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
         }
         nutritionValueCalculation(menu);
         return shoppingList.getCO2();

@@ -18,13 +18,12 @@ GET             /notlinked_recipes                        controllers.RecipeCont
 GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
 
 # Menu options from client
-POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
-GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu()
-GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2()
-
-GET             /bengt/menu/nutrient                      controllers.MenuAlgorithmsController.menuBengt()
-GET             /anna/menu/nutrient                       controllers.MenuAlgorithmsController.menuAnna()
-
+POST    /menu/nutrient                      controllers.MenuAlgorithmsController.menu
+GET     /menu/nutrient                      controllers.MenuAlgorithmsController.menu()
+GET     /menu/economi                       controllers.MenuAlgorithmsController.menu2()
+GET     /menu/CO2                           controllers.MenuAlgorithmsController.menu3()
+GET     /bengt/menu/nutrient                 controllers.MenuAlgorithmsController.menuBengt()
+GET     /anna/menu/nutrient                  controllers.MenuAlgorithmsController.menuAnna()
 
 # Optimize recipe
 GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
