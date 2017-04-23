@@ -1,5 +1,7 @@
 package models.recipe;
 
+import algorithms.MenuAlgorithms;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class Menu {
 
     private final List<Recipe> recipeList;
     private List<String> commentList = new ArrayList<>();
-
+    private double value = MenuAlgorithms.LARGE_DISTANCE;
     public Menu(List<Recipe> recipes){
         this.recipeList = recipes;
     }
@@ -45,4 +47,11 @@ public class Menu {
         return text;
     }
 
+    public void setValue(double value){
+        this.value = value;
+    }
+
+    public double getValue() {
+        return value;
+    }
 }

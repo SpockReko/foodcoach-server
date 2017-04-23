@@ -23,7 +23,7 @@ public class MenuAlgorithms {
 
     boolean noPrint = true;
 
-    private final Double LARGE_DISTANCE = 999999999.9999;
+    public final static Double LARGE_DISTANCE = 999999999.9999;
 
     private Double optimalMenuNutrition;
     private Menu optimalMenu = new Menu(new ArrayList<>());
@@ -80,7 +80,7 @@ public class MenuAlgorithms {
         }
     }
 
-    public Menu returnMenuGreedy(Function<Menu,Double> optimize){
+    public void returnMenuGreedy(Function<Menu,Double> optimize){
         List<Recipe> copyRecipes = new ArrayList<>(allRecipes);
         List<Recipe> optimalList = new ArrayList<>();
         List<Recipe> resultList = new ArrayList<>();
@@ -99,7 +99,7 @@ public class MenuAlgorithms {
             optimalList = resultList;
         }
         Menu menu = new Menu(optimalList);
-        return menu;
+        optimalMenu = menu;
     }
 
     /**
@@ -110,7 +110,11 @@ public class MenuAlgorithms {
     public Menu calculateMenuNutrition(User user) {
         this.user = user;
         reset();
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
+        if(allRecipes.size() < 10) {
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
+        }else{
+            returnMenuGreedy(this::nutritionValueCalculation);
+        }
         return optimalMenu;
     }
 
@@ -124,7 +128,11 @@ public class MenuAlgorithms {
     public Menu calculateWeekMenu(List<Ingredient> ingredientList)  {
         reset();
         this.ingredientsToUse=ingredientList;
-        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::getLeftoversSize);
+        if(allRecipes.size() < 10) {
+            returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::getLeftoversSize);
+        }else{
+            returnMenuGreedy(this::getLeftoversSize);
+        }
         return optimalMenu;
     }
 
@@ -136,7 +144,11 @@ public class MenuAlgorithms {
     public Menu CalculateWeekMenuMinimalWaste(List<Ingredient> ingredientList) {
         reset();
         this.ingredientsToUse=ingredientList;
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getCO2);
+        if(allRecipes.size() < 10) {
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getCO2);
+        }else{
+            returnMenuGreedy(this::getCO2);
+        }
         return optimalMenu;
     }
 
@@ -148,7 +160,11 @@ public class MenuAlgorithms {
     public Menu CalculateWeekMenuMinimalShoppingList(List<Ingredient> ingredientList) {
         reset();
         this.ingredientsToUse=ingredientList;
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getShoppinglistSize);
+        if(allRecipes.size() < 10) {
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getShoppinglistSize);
+        }else{
+            returnMenuGreedy(this::getShoppinglistSize);
+        }
         return optimalMenu;
     }
 
@@ -159,12 +175,17 @@ public class MenuAlgorithms {
      * @return
      */
     private Double nutritionValueCalculation(Menu chosenMenu) {
-        HashMap<Nutrient, Double> nutrientsNeed = user.hmap;
-        HashMap<Nutrient, Double> nutrientsOverdose = user.overdoseValues;
-        HashMap<Nutrient, Double> nutrientsContent =
-                NutritionAlgorithms.nutrientsContent(chosenMenu);
-        return NutritionAlgorithms
-                .L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
+        if (chosenMenu.getCommentList().isEmpty()) {
+            HashMap<Nutrient, Double> nutrientsNeed = user.hmap;
+            HashMap<Nutrient, Double> nutrientsOverdose = user.overdoseValues;
+            HashMap<Nutrient, Double> nutrientsContent =
+                    NutritionAlgorithms.nutrientsContent(chosenMenu);
+            double value = NutritionAlgorithms.L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
+            chosenMenu.setValue(value);
+            return value;
+        }else{
+            return chosenMenu.getValue();
+        }
     }
 
 
@@ -219,6 +240,9 @@ public class MenuAlgorithms {
             text = text + r.getTitle() + "\n";
         }
         text = text + "\n\n";
+        if(menu.getCommentList().isEmpty()){
+            nutritionValueCalculation(menu);
+        }
         for (String comment : menu.getCommentList()) {
             text = text + comment + "\n";
         }
