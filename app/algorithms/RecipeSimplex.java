@@ -33,19 +33,13 @@ public class RecipeSimplex {
     }
 
     public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed, boolean maxCalorie) {
-            this.ingredients=ingredients;
-            this.nutritionNeed=nutritionNeed;
+        this.ingredients=ingredients;
+        this.nutritionNeed=nutritionNeed;
 
         setConstraint(ingredients, Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL), true);
         setConstraint(ingredients, Nutrient.PROTEIN, nutritionNeed.get(Nutrient.PROTEIN), true);
         setConstraint(ingredients, Nutrient.FAT, nutritionNeed.get(Nutrient.FAT), true);
         setConstraint(ingredients, Nutrient.CARBOHYDRATES, nutritionNeed.get(Nutrient.CARBOHYDRATES), true);
-
-        /*for( Map.Entry<Nutrient,Double> entry : nutritionNeed.entrySet() ) {
-            Nutrient nutrient = entry.getKey();
-            Double nutrientNeed = entry.getValue();
-            setConstraint(ingredients, nutrient, nutrientNeed);
-        }*/
 
         if (maxCalorie) {
             setConstraint(ingredients,Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL)*1.2, false);
@@ -71,11 +65,6 @@ public class RecipeSimplex {
         for (int i = 0; i < nrOfIngredients; i++) {
             arr[i] = per100grams.get(i) / 100D;
         }
-        for(int i =0;i<arr.length;i++)
-        {
-            System.out.println(arr[i]);
-        }
-        System.out.println();
 
         if( !isZero(arr) ) {
             if(lower) constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, nutritionNeed));
