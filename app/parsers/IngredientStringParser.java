@@ -1,7 +1,7 @@
 package parsers;
 
 import helpers.StringHelper;
-import models.food.FoodGeneral;
+import models.food.FoodGroup;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
@@ -24,8 +24,8 @@ public class IngredientStringParser {
     private List<String> alternatives = new ArrayList<>();
 
     public IngredientStringParser() {
-        List<FoodGeneral> foodGeneralList = FoodGeneral.find.select("searchTags").findList();
-        ingredientFinder = new IngredientFinder(foodGeneralList);
+        List<FoodGroup> foodGroupList = FoodGroup.find.select("searchTags").findList();
+        ingredientFinder = new IngredientFinder(foodGroupList);
     }
 
     /**

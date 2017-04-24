@@ -3,9 +3,9 @@ package parsers;
 import com.fasterxml.jackson.databind.JsonNode;
 import helpers.TaggerHelper;
 import helpers.StringHelper;
+import models.food.FoodGroup;
 import models.word.TaggedWord;
 import models.food.Food;
-import models.food.FoodGeneral;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
@@ -24,12 +24,12 @@ import java.util.concurrent.ExecutionException;
  */
 public class IngredientFinder {
 
-    private List<FoodGeneral> foodGeneralList;
+    private List<FoodGroup> foodGroupList;
     private List<TaggedWord> taggedWords;
     private String leftover = "";
 
-    public IngredientFinder(List<FoodGeneral> foodGeneralList) {
-        this.foodGeneralList = foodGeneralList;
+    public IngredientFinder(List<FoodGroup> foodGroupList) {
+        this.foodGroupList = foodGroupList;
     }
 
     /**
@@ -156,10 +156,10 @@ public class IngredientFinder {
      * @return A complete ingredient if found, else null.
      */
     private Ingredient findIngredient(Amount amount) {
-        FoodGeneral foodGeneral = findFoodGeneral();
+        FoodGroup foodGroup = findFoodGroup();
 
-        if (foodGeneral != null) {
-            Food food = findFood(foodGeneral);
+        if (foodGroup != null) {
+            Food food = findFood(foodGroup);
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 Logger.trace("Added " + comment.trim() + " as comment");
@@ -177,23 +177,23 @@ public class IngredientFinder {
     }
 
     /**
-     * Tries to find a general food in the given string.
-     * @return A FoodGeneral if found, null if not.
+     * Tries to find a group food in the given string.
+     * @return A FoodGroup if found, null if not.
      */
-    private FoodGeneral findFoodGeneral() {
+    private FoodGroup findFoodGroup() {
         String line = TaggerHelper.taggedToString(taggedWords);
         String matchingTag = "";
         int matchingTagLength = 0;
-        FoodGeneral foodGeneral = null;
+        FoodGroup foodGroup = null;
 
-        for (FoodGeneral general : foodGeneralList) {
-            List<String> tags = general.searchTags;
-            tags.add(general.name.toLowerCase());
+        for (FoodGroup group : foodGroupList) {
+            List<String> tags = group.searchTags;
+            tags.add(group.name.toLowerCase());
             for (String tag : tags) {
                 if (StringHelper.containsWord(line, tag)) {
                     if (tag.length() > matchingTagLength) {
-                        Logger.trace("Found \"" + general.name + "\"");
-                        foodGeneral = general;
+                        Logger.trace("Found \"" + group.name + "\"");
+                        foodGroup = group;
                         matchingTag = tag;
                         matchingTagLength = tag.length();
                     }
@@ -208,12 +208,12 @@ public class IngredientFinder {
         }
 
         // If no food is found right away, try and find with different spelling.
-        if (foodGeneral == null) {
+        if (foodGroup == null) {
             AutoCorrecter correcter = new AutoCorrecter();
             String[] listLine = line.trim().split("\\s++");
             for (String word : listLine) {
                 if (correcter.autoCorrect(word) != null) {
-                    foodGeneral = correcter.autoCorrect(word);
+                    foodGroup = correcter.autoCorrect(word);
                     if (!leftover.isEmpty()) {
                         leftover = leftover.replace(word, "");
                     } else {
@@ -224,15 +224,15 @@ public class IngredientFinder {
             }
         }
 
-        return foodGeneral;
+        return foodGroup;
     }
 
     /**
-     * Tries to find a food within a general food that matches better than the default.
-     * @param foodGeneral The general food to find foods within.
+     * Tries to find a food within a group food that matches better than the default.
+     * @param foodGroup The group food to find foods within.
      * @return A better matching food, or default if no better is found.
      */
-    private Food findFood(FoodGeneral foodGeneral) {
+    private Food findFood(FoodGroup foodGroup) {
         String line = TaggerHelper.taggedToString(taggedWords);
         List<String> tags;
         Food food;
@@ -243,8 +243,8 @@ public class IngredientFinder {
         int matchingTagAmount = 0;
         int currentMatchingTagAmount = 0;
 
-        food = foodGeneral.defaultFood;
-        for (Food f : foodGeneral.foods) {
+        food = foodGroup.defaultFood;
+        for (Food f : foodGroup.foods) {
             tags = f.tags;
             for (String tag : tags) {
                 currentTagAmount = tags.size();

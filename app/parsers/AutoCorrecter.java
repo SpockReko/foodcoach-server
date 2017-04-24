@@ -3,8 +3,7 @@ package parsers;
 import java.util.List;
 
 import info.debatty.java.stringsimilarity.*;
-import models.food.Food;
-import models.food.FoodGeneral;
+import models.food.FoodGroup;
 import play.Logger;
 
 /**
@@ -15,12 +14,12 @@ public class AutoCorrecter {
     private int maxDistance = 1;
 
     private Levenshtein levenshtein = new Levenshtein();
-    private FoodGeneral matchingFood = null;
+    private FoodGroup matchingFood = null;
     private double shortestDistance = Double.MAX_VALUE;
 
-    public FoodGeneral autoCorrect(String ingredient) {
-        List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
-        for (FoodGeneral food : items) {
+    public FoodGroup autoCorrect(String ingredient) {
+        List<FoodGroup> items = FoodGroup.find.select("searchTags").findList();
+        for (FoodGroup food : items) {
             List<String> tags = food.searchTags;
             tags.add(food.name.toLowerCase());
             for (String tag : tags) {
@@ -31,7 +30,7 @@ public class AutoCorrecter {
         return matchingFood;
     }
 
-    private void checkDistance(String input, String tag, FoodGeneral food) {
+    private void checkDistance(String input, String tag, FoodGroup food) {
         if (input.length() <= 1) {
             maxDistance = 0;
         }

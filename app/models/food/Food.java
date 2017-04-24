@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static models.food.Category.Sotsaker;
-
 /**
  * Created by fredrikkindstrom on 2017-04-04.
  */
@@ -24,7 +22,7 @@ public class Food extends Model {
 
     @NotNull public String name;
     @JsonBackReference
-    @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public FoodGeneral general;
+    @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public FoodGroup group;
     @DbArray(length = 255) public List<String> tags = new ArrayList<>();
 
     public String scientificName;

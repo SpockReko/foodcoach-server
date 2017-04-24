@@ -37,9 +37,9 @@ public class DatabaseSeeder {
 
     private static EbeanServer db;
 
-    private static final String FINELI_GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods.tsv";
+    private static final String FINELI_GROUP_TSV = "resources/fineli_food/Fineli_GeneralFoods.tsv";
     private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_FoodData.tsv";
-    private static final String LMV_GENERAL_TSV = "resources/lmv_food/LMV_GeneralFoods.tsv";
+    private static final String LMV_GROUP_TSV = "resources/lmv_food/LMV_GeneralFoods.tsv";
     private static final String LMV_DATA_TSV = "resources/lmv_food/LMV_FoodData.tsv";
     private static final String RECIPES_PATH = "resources/recipes/recipes_fineli.csv";
 
@@ -81,8 +81,8 @@ public class DatabaseSeeder {
         }
     }
 
-    private static Set<FoodGeneral> generalFoods = new HashSet<>();
-    private static Map<FoodGeneral, Food> defaultFoods = new HashMap<>();
+    private static Set<FoodGroup> foodGroups = new HashSet<>();
+    private static Map<FoodGroup, Food> defaultFoods = new HashMap<>();
     private static List<Food> foods = new ArrayList<>();
     private static List<Diet> diets = new ArrayList<>();
     private static Map<Integer, Integer> fineliRowIds = new HashMap<>();
@@ -96,10 +96,10 @@ public class DatabaseSeeder {
         settings.setNumberOfRowsToSkip(1);
         TsvParser parser = new TsvParser(settings);
 
-        List<String[]> fineliGeneralRows = parser.parseAll(getReader(FINELI_GENERAL_TSV));
+        List<String[]> fineliGroupRows = parser.parseAll(getReader(FINELI_GROUP_TSV));
         List<String[]> fineliDataRows = parser.parseAll(getReader(FINELI_DATA_TSV));
 
-        List<String[]> lmvGeneralRows = parser.parseAll(getReader(LMV_GENERAL_TSV));
+        List<String[]> lmvGroupRows = parser.parseAll(getReader(LMV_GROUP_TSV));
         List<String[]> lmvDataRows = parser.parseAll(getReader(LMV_DATA_TSV));
 
         System.out.println(
@@ -122,23 +122,23 @@ public class DatabaseSeeder {
         }
 
         System.out.print(CYAN + "Parsing foods from Fineli... " + RESET);
-        for (String[] cols : fineliGeneralRows) {
-            readGeneralRow(cols, fineliDataRows);
+        for (String[] cols : fineliGroupRows) {
+            readGroupRow(cols, fineliDataRows);
         }
         printDone();
 
         System.out.print(CYAN + "Parsing extra foods from Livsmedelsverket... " + RESET);
-        for (String[] cols : lmvGeneralRows) {
-            readExtraGeneralRow(cols, lmvDataRows);
+        for (String[] cols : lmvGroupRows) {
+            readExtraGroupRow(cols, lmvDataRows);
         }
         printDone();
 
         System.out.print(CYAN + "Persisting to database... " + RESET);
-        db.saveAll(generalFoods);
+        db.saveAll(foodGroups);
         db.saveAll(foods);
-        for (FoodGeneral generalFood : generalFoods) {
-            generalFood.defaultFood = defaultFoods.get(generalFood);
-            db.save(generalFood);
+        for (FoodGroup foodGroup : foodGroups) {
+            foodGroup.defaultFood = defaultFoods.get(foodGroup);
+            db.save(foodGroup);
         }
         printDone();
 
@@ -149,13 +149,13 @@ public class DatabaseSeeder {
         System.out.println();
     }
 
-    private static void readGeneralRow(String[] cols, List<String[]> dataRows) {
-        FoodGeneral generalFood;
-        if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[Fineli.GEN_NAME.id]))) {
-            generalFood = generalFoods.stream()
+    private static void readGroupRow(String[] cols, List<String[]> dataRows) {
+        FoodGroup foodGroup;
+        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[Fineli.GEN_NAME.id]))) {
+            foodGroup = foodGroups.stream()
                 .filter(g -> g.name.equals(cols[Fineli.GEN_NAME.id])).findFirst().get();
         } else {
-            generalFood = new FoodGeneral(cols[Fineli.GEN_NAME.id]);
+            foodGroup = new FoodGroup(cols[Fineli.GEN_NAME.id]);
         }
 
         String name = cols[Fineli.GEN_DISPLAY_NAME.id];
@@ -227,26 +227,26 @@ public class DatabaseSeeder {
             if (cols[Fineli.GEN_EXTRA_TAGS.id] != null) {
                 String[] tags = cols[Fineli.GEN_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
-                    generalFood.searchTags.add(tag.trim());
+                    foodGroup.searchTags.add(tag.trim());
                 }
             }
-            defaultFoods.put(generalFood, specificFood);
+            defaultFoods.put(foodGroup, specificFood);
         } else {
-            generalFood.foods.add(specificFood);
+            foodGroup.foods.add(specificFood);
         }
 
-        specificFood.general = generalFood;
-        generalFoods.add(generalFood);
+        specificFood.group = foodGroup;
+        foodGroups.add(foodGroup);
         foods.add(specificFood);
     }
 
-    private static void readExtraGeneralRow(String[] cols, List<String[]> dataRows) {
-        FoodGeneral generalFood;
-        if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[LMV.GEN_NAME.id]))) {
-            generalFood = generalFoods.stream()
+    private static void readExtraGroupRow(String[] cols, List<String[]> dataRows) {
+        FoodGroup foodGroup;
+        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[LMV.GEN_NAME.id]))) {
+            foodGroup = foodGroups.stream()
                 .filter(g -> g.name.equals(cols[LMV.GEN_NAME.id])).findFirst().get();
         } else {
-            generalFood = new FoodGeneral(cols[LMV.GEN_NAME.id]);
+            foodGroup = new FoodGroup(cols[LMV.GEN_NAME.id]);
         }
 
         String name = cols[LMV.GEN_DISPLAY_NAME.id];
@@ -306,16 +306,16 @@ public class DatabaseSeeder {
             if (cols[LMV.GEN_EXTRA_TAGS.id] != null) {
                 String[] tags = cols[LMV.GEN_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
-                    generalFood.searchTags.add(tag.trim());
+                    foodGroup.searchTags.add(tag.trim());
                 }
             }
-            defaultFoods.put(generalFood, specificFood);
+            defaultFoods.put(foodGroup, specificFood);
         } else {
-            generalFood.foods.add(specificFood);
+            foodGroup.foods.add(specificFood);
         }
 
-        specificFood.general = generalFood;
-        generalFoods.add(generalFood);
+        specificFood.group = foodGroup;
+        foodGroups.add(foodGroup);
         foods.add(specificFood);
     }
 

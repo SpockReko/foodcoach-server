@@ -17,7 +17,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * HTTP controller that handles all general requests to the server.
+ * HTTP controller that handles all group requests to the server.
  */
 public class ParseController extends Controller {
 
