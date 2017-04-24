@@ -55,7 +55,7 @@ public class ShoppingListTest {
         // Constructor with Menu as parameter
         shoppingListWithMenu = new ShoppingList(menu);
 
-        newIngredient = new Ingredient(new Food("newfood", 0, DataSource.LMV), new Amount(100, Amount.Unit.GRAM));
+        newIngredient = new Ingredient(new Food("newfood", 0, DataSource.SLV), new Amount(100, Amount.Unit.GRAM));
     }
 
     @Test

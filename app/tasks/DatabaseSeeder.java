@@ -253,7 +253,7 @@ public class DatabaseSeeder {
         int lmvId = Integer.parseInt(cols[LMV.GEN_ID.id]);
         String[] rows = dataRows.get(lmvRowIds.get(lmvId));
         Food specificFood = new Food(
-            name, lmvId, DataSource.LMV,
+            name, lmvId, DataSource.SLV,
             toDouble(rows[LMV.DATA_ENERGY_KJ.id]),
             toDouble(rows[LMV.DATA_CARB.id]),
             toDouble(rows[LMV.DATA_PROTEIN.id]),
