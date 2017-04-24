@@ -3,7 +3,7 @@ package models.food;
 import javax.persistence.*;
 
 /**
- * Represents a special diet that a food can belong to.
+ * Represents a special diet that a {@link Food} can belong to.
  *
  * @author Fredrik Kindstrom
  */

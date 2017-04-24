@@ -2,6 +2,7 @@ package helpers;
 
 /**
  * Various helper functions for string used in the application.
+ *
  * @author Fredrik Kindstrom
  */
 public class StringHelper {

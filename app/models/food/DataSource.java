@@ -1,7 +1,11 @@
 package models.food;
 
 /**
- * Created by fredrikkindstrom on 2017-04-04.
+ * Respresents the source that each {@link Food} nutrition data is from.
+ * FINELI = Institutet för Hälsa och Välfärd <a href="https://fineli.fi/fineli/sv/index?</a>
+ * SLV = Livsmedelsverket <a href="https://www.livsmedelsverket.se/livsmedelsdatabasen</a>
+ *
+ * @author Fredrik Kindstrom
  */
 public enum DataSource {
     FINELI, SLV

@@ -5,6 +5,7 @@ import models.food.Category;
 /**
  * Contains constant values to be used throughout the application.
  * If you need to use a value that will always be the same everywhere, put it here.
+ *
  * @author Fredrik Kindstrom
  */
 public class Constants {

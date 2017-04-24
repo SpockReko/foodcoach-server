@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Various helper functions used to convert Json data to {@link TaggedWord} class.
+ *
  * @author Emma Fahlen, Fredrik Kindstrom
  */
 public class TaggerHelper {

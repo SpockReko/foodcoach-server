@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by fredrikkindstrom on 2017-04-04.
+ * A factual food with attached nutrition information and other meta data.
+ * All foods belong to a {@link FoodGroup}.
+ *
+ * @author Fredrik Kindstrom
  */
 @Entity
 @Table(name = "Foods")
@@ -66,12 +69,53 @@ public class Food extends Model {
     @Column(name = "selenium_ug") private Double selenium;
     @Column(name = "zinc_mg") private Double zinc;
 
+    /**
+     * Simple test constructor for a food.
+     * @param name The name of the food.
+     * @param dataSourceId The id of the food in the database the nutrition data is from.
+     * @param dataSource The source of the nutrition information.
+     */
     public Food(String name, int dataSourceId, DataSource dataSource) {
         this.name = name;
         this.dataSourceId = dataSourceId;
         this.dataSource = dataSource;
     }
 
+    /**
+     * Complete constructor for a food. The excessive amount of parameters is because
+     * we don't want the nutrition data to be modified in a later stage.
+     * @param name The name of the food.
+     * @param dataSourceId The id of the food in the database the nutrition data is from.
+     * @param dataSource The source of the nutrition information.
+     * @param energyKj The amount of energy per 100g in kj.
+     * @param carbohydrates The amount of carbohydrates per 100g in grams.
+     * @param protein The amount of protein per 100g in grams.
+     * @param fat The amount of fat per 100g in grams.
+     * @param fibre The amount of fibre per 100g in grams.
+     * @param alcohol The amount of alcohol per 100g in grams.
+     * @param salt The amount of salt per 100g in grams.
+     * @param vitaminA The amount of vitamin A per 100g in micrograms.
+     * @param vitaminB6 The amount of vitamin B6 per 100g in micrograms.
+     * @param vitaminB12 The amount of vitamin B12 per 100g in micrograms.
+     * @param vitaminC The amount of vitamin C per 100g in milligrams.
+     * @param vitaminD The amount of vitamin D per 100g in micrograms.
+     * @param vitaminE The amount of vitamin E per 100g in milligrams.
+     * @param vitaminK The amount of vitamin K per 100g in micrograms.
+     * @param thiamine The amount of thiamine per 100g in milligrams.
+     * @param riboflavin The amount of riboflavin per 100g in milligrams.
+     * @param niacin The amount of niacin per 100g in milligrams.
+     * @param niacinEquivalents The amount of niacin equivalents per 100g in milligrams.
+     * @param folate The amount of folate per 100g in micrograms.
+     * @param phosphorus The amount of phosphorus per 100g in milligrams.
+     * @param iodine The amount of iodine per 100g in micrograms.
+     * @param iron The amount of iron per 100g in milligrams.
+     * @param calcium The amount of calcium per 100g in milligrams.
+     * @param potassium The amount of potassium per 100g in milligrams.
+     * @param magnesium The amount of magnesium per 100g in milligrams.
+     * @param sodium The amount of sodium per 100g in milligrams.
+     * @param selenium The amount of selenium per 100g in micrograms.
+     * @param zinc The amount of zinc per 100g in milligrams.
+     */
     public Food(String name, int dataSourceId, DataSource dataSource, Double energyKj,
         Double carbohydrates, Double protein, Double fat, Double fibre, Double alcohol, Double salt,
         Double vitaminA, Double vitaminB6, Double vitaminB12, Double vitaminC, Double vitaminD,
@@ -114,15 +158,38 @@ public class Food extends Model {
 
     public static Finder<Long, Food> find = new Finder<>(Food.class);
 
+    /**
+     * The unique id of the food in the database.
+     * @return The id as a long.
+     */
     public long getId() {
         return id;
     }
+
+    /**
+     * The id of the food in the source database where the nutrition data originally comes from.
+     * Either Fineli "livsmedelskod" or Livsmedelsverket "livsmedelsnummer". See {@link DataSource}.
+     * @return The id as an integer.
+     */
     public int getDataSourceId() {
         return dataSourceId;
     }
+
+    /**
+     * The source database where the nutrition data originally comes from.
+     * Either Fineli or Livsmedelsverket.
+     * @see {@link DataSource}.
+     * @return The {@link DataSource} enum.
+     */
     public DataSource getDataSource() {
         return dataSource;
     }
+
+    /**
+     * Returns a nutrient value for the specified nutrient.
+     * @param nutrient The nutrient which you want information for. See {@link Nutrient}.
+     * @return The nutrient value as a double, 0.0 if no value is present.
+     */
     public double getNutrient(Nutrient nutrient) {
         Double value;
         // TODO Returning 0 instead of null where no data present for now
@@ -219,6 +286,11 @@ public class Food extends Model {
         }
         return value != null ? value : 0d;
     }
+
+    /**
+     * Returns estimated CO2 emission for 100g of the food in kilograms.
+     * @return The CO2 emission value as a double, 0.0 if no value is present.
+     */
     public double getCO2() {
         return this.category == null ? 0.0 : Constants.CO2(this.category);
     }

@@ -9,6 +9,7 @@ import play.libs.Json;
 
 /**
  * Converts various models to a Json representation.
+ *
  * @author Fredrik Kindstrom
  */
 public class JsonHelper {

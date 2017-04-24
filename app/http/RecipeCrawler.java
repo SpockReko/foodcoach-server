@@ -11,7 +11,7 @@ import play.Logger;
 import java.io.IOException;
 
 /**
- * Created by fredrikkindstrom on 2017-03-20.
+ * Used along with jCrawler when parsing a number of url's.
  */
 public class RecipeCrawler extends WebCrawler {
 

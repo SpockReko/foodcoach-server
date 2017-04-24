@@ -1,7 +1,9 @@
 package models.food;
 
 /**
- * Created by stefa on 2017-04-20.
+ * Represents a category that each {@link Food} belongs to.
+ *
+ * @author Stefan Fritzon, Lisa Snall, Fredrik Kindstrom
  */
 public enum Category {
     PULSES_VEGETABLES(TopCategory.PULSES_AND_NUTS), OTHER_FRUITS(TopCategory.FRUITS),
