@@ -1,6 +1,7 @@
 package helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import models.word.TaggedWord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by emmafahlen on 2017-03-27.
  */
-public class JsonHelper {
+public class TaggerHelper {
 
     public static List<TaggedWord> getTaggedWords(JsonNode jsonNode) {
         JsonNode words = jsonNode.get("sentences").get(0);

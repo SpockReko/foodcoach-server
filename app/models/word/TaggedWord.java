@@ -1,4 +1,4 @@
-package helpers;
+package models.word;
 
 /**
  * Created by fredrikkindstrom on 2017-03-30.

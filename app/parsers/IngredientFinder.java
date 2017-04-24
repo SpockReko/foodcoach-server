@@ -1,9 +1,9 @@
 package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import helpers.JsonHelper;
+import helpers.TaggerHelper;
 import helpers.StringHelper;
-import helpers.TaggedWord;
+import models.word.TaggedWord;
 import models.food.Food;
 import models.food.FoodGeneral;
 import models.recipe.Amount;
@@ -43,7 +43,7 @@ public class IngredientFinder {
         leftover = "";
 
         JsonNode jsonNode = retrieveWordInfo(line);
-        taggedWords = JsonHelper.getTaggedWords(jsonNode);
+        taggedWords = TaggerHelper.getTaggedWords(jsonNode);
 
         ingredient = findIngredient();
         if (ingredient == null) {
@@ -67,7 +67,7 @@ public class IngredientFinder {
         leftover = "";
 
         JsonNode jsonNode = retrieveWordInfo(line);
-        taggedWords = JsonHelper.getTaggedWords(jsonNode);
+        taggedWords = TaggerHelper.getTaggedWords(jsonNode);
 
         ingredient = findIngredient(amount);
         if (ingredient == null) {
@@ -86,7 +86,7 @@ public class IngredientFinder {
      */
     public Amount extractAmount(String line) throws IOException {
         JsonNode jsonNode = retrieveWordInfo(line);
-        taggedWords = JsonHelper.getTaggedWords(jsonNode);
+        taggedWords = TaggerHelper.getTaggedWords(jsonNode);
         Amount amount = findAmount();
         return amount.getUnit().getType().equals(Amount.Unit.Type.EMPTY) ? null : amount;
     }
@@ -181,7 +181,7 @@ public class IngredientFinder {
      * @return A FoodGeneral if found, null if not.
      */
     private FoodGeneral findFoodGeneral() {
-        String line = JsonHelper.taggedToString(taggedWords);
+        String line = TaggerHelper.taggedToString(taggedWords);
         String matchingTag = "";
         int matchingTagLength = 0;
         FoodGeneral foodGeneral = null;
@@ -233,7 +233,7 @@ public class IngredientFinder {
      * @return A better matching food, or default if no better is found.
      */
     private Food findFood(FoodGeneral foodGeneral) {
-        String line = JsonHelper.taggedToString(taggedWords);
+        String line = TaggerHelper.taggedToString(taggedWords);
         List<String> tags;
         Food food;
         String currentTag = null;
