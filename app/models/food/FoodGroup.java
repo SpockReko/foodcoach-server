@@ -19,11 +19,9 @@ public class FoodGroup extends Model {
     @Id private long id;
 
     @NotNull public String name;
-
+    @JsonManagedReference
+    @OneToOne public Food defaultFood;
     @DbArray(length = 255) public List<String> searchTags = new ArrayList<>();
-
-    @OneToOne @JsonManagedReference public Food defaultFood;
-
     @OneToMany(mappedBy = "group") public List<Food> foods = new ArrayList<>();
 
     public FoodGroup(String name) {
@@ -31,4 +29,8 @@ public class FoodGroup extends Model {
     }
 
     public static Finder<Long, FoodGroup> find = new Finder<>(FoodGroup.class);
+
+    public long getId() {
+        return id;
+    }
 }

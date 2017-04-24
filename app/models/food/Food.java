@@ -33,6 +33,7 @@ public class Food extends Model {
     @Enumerated(EnumType.STRING) public Processing processing;
     @Enumerated(EnumType.STRING) public Category category;
     @ManyToMany(cascade = CascadeType.ALL) public List<Diet> diets = new ArrayList<>();
+    @Enumerated(EnumType.STRING) private final DataSource dataSource;
 
     private Double energyKj;
     @Column(name = "carbohydrates_g") private Double carbohydrates;
@@ -64,8 +65,6 @@ public class Food extends Model {
     @Column(name = "sodium_mg") private Double sodium;
     @Column(name = "selenium_ug") private Double selenium;
     @Column(name = "zinc_mg") private Double zinc;
-
-    @Enumerated(EnumType.STRING) private final DataSource dataSource;
 
     public Food(String name, int dataSourceId, DataSource dataSource) {
         this.name = name;
@@ -120,6 +119,9 @@ public class Food extends Model {
     }
     public int getDataSourceId() {
         return dataSourceId;
+    }
+    public DataSource getDataSource() {
+        return dataSource;
     }
     public double getNutrient(Nutrient nutrient) {
         Double value;
@@ -217,7 +219,6 @@ public class Food extends Model {
         }
         return value != null ? value : 0d;
     }
-
     public double getCO2() {
         if (this.category == null) {
             return 0.0;
