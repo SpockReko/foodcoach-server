@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.food.Food;
 import models.food.FoodGroup;
+import models.recipe.Ingredient;
 import play.libs.Json;
 
 /**
@@ -14,6 +15,11 @@ import play.libs.Json;
  */
 public class JsonHelper {
 
+    /**
+     * Converts a {@link Food} to Json.
+     * @param food The food to convert.
+     * @return The food represented as Json.
+     */
     public static JsonNode toJson(Food food) {
         ObjectNode output = Json.newObject();
         output.put("id", food.getId());
@@ -31,10 +37,14 @@ public class JsonHelper {
         output.put("category", food.category == null ? null : food.category.name());
         ArrayNode diets = output.putArray("diets");
         food.diets.forEach(d -> diets.add(d.type.name()));
-        output.put("co2", food.getCO2());
         return output;
     }
 
+    /**
+     * Converts an {@link FoodGroup} to Json.
+     * @param foodGroup The food group to convert.
+     * @return The food group represented as Json.
+     */
     public static JsonNode toJson(FoodGroup foodGroup) {
         ObjectNode output = Json.newObject();
         output.put("id", foodGroup.getId());
@@ -48,6 +58,19 @@ public class JsonHelper {
                 foods.add(toJson(food));
             }
         }
+        return output;
+    }
+
+    /**
+     * Converts an {@link Ingredient} to Json.
+     * @param ingredient The ingredient to convert.
+     * @return The ingredient represented as Json.
+     */
+    public static JsonNode toJson(Ingredient ingredient) {
+        ObjectNode output = Json.newObject();
+        output.put("food", toJson(ingredient.getFood()));
+        output.put("amount", Json.toJson(ingredient.getAmount()));
+        output.put("comment", ingredient.comment);
         return output;
     }
 }

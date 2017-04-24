@@ -5,6 +5,7 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import helpers.JsonHelper;
 import http.RecipeCrawler;
 import models.recipe.Ingredient;
 import parsers.IngredientStringParser;
@@ -33,7 +34,7 @@ public class ParseController extends Controller {
             e.printStackTrace();
         }
         if (ingredient != null) {
-            return ok(Json.toJson(ingredient));
+            return ok(JsonHelper.toJson(ingredient));
         } else {
             return ok("Did not find ingredient");
         }
