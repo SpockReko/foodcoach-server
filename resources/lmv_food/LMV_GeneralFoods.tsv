@@ -31,3 +31,6 @@ lmv_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	den
 70	Keso	TRUE	4% fett	Keso	cottage cheese		1		Bos taurus
 71	Keso		3% fett, ananas, apelsin	Keso (smaksatt)			1		Bos taurus
 72	Keso		3.5-5% fett, chili, pesto, lök, feta	Keso (smaksatt)			1		Bos taurus
+3817	Svarta bönor	TRUE	konserv	Svarta bönor	svart böna				Phaseolus vulgaris L. ssp. vulgaris
+4937	Körsbärstomat	TRUE		Körsbärstomater	körsbärstomater, cocktailtomat, cocktailtomater, cherrytomat, cherrytomater, plommontomat, plommontomater	18			Solanum lycopersicum var. cerasiforme (Alef.) Fosberg
+2221	Lasagneplattor	TRUE	fusilli, glutenfri, okokt	Lasagneplattor	lasagne plattor, lasagneplatta	20			Zea mays L.
