@@ -39,14 +39,14 @@ public class DatabaseSeeder {
 
     private static final String FINELI_GROUP_TSV = "resources/fineli_food/Fineli_GeneralFoods.tsv";
     private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_FoodData.tsv";
-    private static final String LMV_GROUP_TSV = "resources/lmv_food/LMV_GeneralFoods.tsv";
-    private static final String LMV_DATA_TSV = "resources/lmv_food/LMV_FoodData.tsv";
+    private static final String SLV_GROUP_TSV = "resources/lmv_food/LMV_GeneralFoods.tsv";
+    private static final String SLV_DATA_TSV = "resources/lmv_food/LMV_FoodData.tsv";
     private static final String RECIPES_PATH = "resources/recipes/recipes_fineli.csv";
 
     private enum Fineli {
-        GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
-        GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
-        GEN_SCIENTIFIC_NAME(9), GEN_PROCESSING(10), GEN_CLASSIFICATION(11), GEN_SPECIAL_DIETS(13),
+        GROUP_ID(0), GROUP_NAME(1), GROUP_DEFAULT(2), GROUP_SPECIFIC_TAGS(3), GROUP_DISPLAY_NAME(4),
+        GROUP_EXTRA_TAGS(5), GROUP_PIECE_WEIGHT(6), GROUP_DENSITY_CONSTANT(7), GROUP_EXAMPLE_BRANDS(8),
+        GROUP_SCIENTIFIC_NAME(9), GROUP_PROCESSING(10), GROUP_CLASSIFICATION(11), GROUP_SPECIAL_DIETS(13),
         DATA_ID(0), DATA_ENERGY_KJ(2), DATA_CARB(3), DATA_PROTEIN(5), DATA_FAT(4), DATA_FIBRE(7),
         DATA_ALCOHOL(6), DATA_SALT(39), DATA_VITAMIN_A(52), DATA_VITAMIN_B6(47),
         DATA_VITAMIN_B12(50), DATA_VITAMIN_C(51), DATA_VITAMIN_D(54), DATA_VITAMIN_E(55),
@@ -62,10 +62,10 @@ public class DatabaseSeeder {
         }
     }
 
-    private enum LMV {
-        GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
-        GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
-        GEN_SCIENTIFIC_NAME(9),
+    private enum SLV {
+        GROUP_ID(0), GROUP_NAME(1), GROUP_DEFAULT(2), GROUP_SPECIFIC_TAGS(3), GROUP_DISPLAY_NAME(4),
+        GROUP_EXTRA_TAGS(5), GROUP_PIECE_WEIGHT(6), GROUP_DENSITY_CONSTANT(7), GROUP_EXAMPLE_BRANDS(8),
+        GROUP_SCIENTIFIC_NAME(9),
         DATA_ID(1), DATA_ENERGY_KJ(3), DATA_CARB(4), DATA_PROTEIN(6), DATA_FAT(5), DATA_FIBRE(7),
         DATA_ALCOHOL(9), DATA_SALT(55), DATA_VITAMIN_A(35), DATA_VITAMIN_B6(45),
         DATA_VITAMIN_B12(46), DATA_VITAMIN_C(42), DATA_VITAMIN_D(37), DATA_VITAMIN_E(38),
@@ -76,7 +76,7 @@ public class DatabaseSeeder {
 
         private final int id;
 
-        LMV(final int id) {
+        SLV(final int id) {
             this.id = id;
         }
     }
@@ -99,8 +99,8 @@ public class DatabaseSeeder {
         List<String[]> fineliGroupRows = parser.parseAll(getReader(FINELI_GROUP_TSV));
         List<String[]> fineliDataRows = parser.parseAll(getReader(FINELI_DATA_TSV));
 
-        List<String[]> lmvGroupRows = parser.parseAll(getReader(LMV_GROUP_TSV));
-        List<String[]> lmvDataRows = parser.parseAll(getReader(LMV_DATA_TSV));
+        List<String[]> lmvGroupRows = parser.parseAll(getReader(SLV_GROUP_TSV));
+        List<String[]> lmvDataRows = parser.parseAll(getReader(SLV_DATA_TSV));
 
         System.out.println(
             "\n" + PURPLE + "--- (Seeding database) ---\n" + RESET);
@@ -118,7 +118,7 @@ public class DatabaseSeeder {
             fineliRowIds.put(Integer.parseInt(fineliDataRows.get(i)[Fineli.DATA_ID.id]), i);
         }
         for (int i = 0; i < lmvDataRows.size(); i++) {
-            lmvRowIds.put(Integer.parseInt(lmvDataRows.get(i)[LMV.DATA_ID.id]), i);
+            lmvRowIds.put(Integer.parseInt(lmvDataRows.get(i)[SLV.DATA_ID.id]), i);
         }
 
         System.out.print(CYAN + "Parsing foods from Fineli... " + RESET);
@@ -151,15 +151,15 @@ public class DatabaseSeeder {
 
     private static void readGroupRow(String[] cols, List<String[]> dataRows) {
         FoodGroup foodGroup;
-        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[Fineli.GEN_NAME.id]))) {
+        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[Fineli.GROUP_NAME.id]))) {
             foodGroup = foodGroups.stream()
-                .filter(g -> g.name.equals(cols[Fineli.GEN_NAME.id])).findFirst().get();
+                .filter(g -> g.name.equals(cols[Fineli.GROUP_NAME.id])).findFirst().get();
         } else {
-            foodGroup = new FoodGroup(cols[Fineli.GEN_NAME.id]);
+            foodGroup = new FoodGroup(cols[Fineli.GROUP_NAME.id]);
         }
 
-        String name = cols[Fineli.GEN_DISPLAY_NAME.id];
-        int fineliId = Integer.parseInt(cols[Fineli.GEN_ID.id]);
+        String name = cols[Fineli.GROUP_DISPLAY_NAME.id];
+        int fineliId = Integer.parseInt(cols[Fineli.GROUP_ID.id]);
         String[] rows = dataRows.get(fineliRowIds.get(fineliId));
         Food specificFood = new Food(
             name, fineliId, DataSource.FINELI,
@@ -193,39 +193,39 @@ public class DatabaseSeeder {
             toDouble(rows[Fineli.DATA_ZINK.id])
         );
 
-        if (cols[Fineli.GEN_SPECIFIC_TAGS.id] != null) {
-            String[] tags = cols[Fineli.GEN_SPECIFIC_TAGS.id].split(",");
+        if (cols[Fineli.GROUP_SPECIFIC_TAGS.id] != null) {
+            String[] tags = cols[Fineli.GROUP_SPECIFIC_TAGS.id].split(",");
             Arrays.setAll(tags, i -> tags[i].trim());
             Collections.addAll(specificFood.tags, tags);
         }
-        if (cols[Fineli.GEN_PIECE_WEIGHT.id] != null) {
-            specificFood.pieceWeightGrams = Integer.parseInt(cols[Fineli.GEN_PIECE_WEIGHT.id]);
+        if (cols[Fineli.GROUP_PIECE_WEIGHT.id] != null) {
+            specificFood.pieceWeightGrams = Integer.parseInt(cols[Fineli.GROUP_PIECE_WEIGHT.id]);
         }
-        if (cols[Fineli.GEN_DENSITY_CONSTANT.id] != null) {
-            specificFood.densityConstant = Double.parseDouble(cols[Fineli.GEN_DENSITY_CONSTANT.id]);
+        if (cols[Fineli.GROUP_DENSITY_CONSTANT.id] != null) {
+            specificFood.densityConstant = Double.parseDouble(cols[Fineli.GROUP_DENSITY_CONSTANT.id]);
         }
-        if (cols[Fineli.GEN_EXAMPLE_BRANDS.id] != null) {
-            specificFood.exampleBrands = cols[Fineli.GEN_EXAMPLE_BRANDS.id].trim();
+        if (cols[Fineli.GROUP_EXAMPLE_BRANDS.id] != null) {
+            specificFood.exampleBrands = cols[Fineli.GROUP_EXAMPLE_BRANDS.id].trim();
         }
-        if (cols[Fineli.GEN_SCIENTIFIC_NAME.id] != null) {
-            specificFood.scientificName = cols[Fineli.GEN_SCIENTIFIC_NAME.id].trim();
+        if (cols[Fineli.GROUP_SCIENTIFIC_NAME.id] != null) {
+            specificFood.scientificName = cols[Fineli.GROUP_SCIENTIFIC_NAME.id].trim();
         }
-        if (cols[Fineli.GEN_PROCESSING.id] != null) {
-            specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.id].trim());
+        if (cols[Fineli.GROUP_PROCESSING.id] != null) {
+            specificFood.processing = getProcessing(cols[Fineli.GROUP_PROCESSING.id].trim());
         }
-        if (cols[Fineli.GEN_CLASSIFICATION.id] != null) {
-            specificFood.category = getCategory(cols[Fineli.GEN_CLASSIFICATION.id].trim());
+        if (cols[Fineli.GROUP_CLASSIFICATION.id] != null) {
+            specificFood.category = getCategory(cols[Fineli.GROUP_CLASSIFICATION.id].trim());
         }
-        if (cols[Fineli.GEN_SPECIAL_DIETS.id] != null) {
-            String[] diets = cols[Fineli.GEN_SPECIAL_DIETS.id].split(",");
+        if (cols[Fineli.GROUP_SPECIAL_DIETS.id] != null) {
+            String[] diets = cols[Fineli.GROUP_SPECIAL_DIETS.id].split(",");
             for (String diet : diets) {
                 specificFood.diets.add(getDiet(diet.trim()));
             }
         }
 
-        if (cols[Fineli.GEN_DEFAULT.id] != null) {
-            if (cols[Fineli.GEN_EXTRA_TAGS.id] != null) {
-                String[] tags = cols[Fineli.GEN_EXTRA_TAGS.id].split(",");
+        if (cols[Fineli.GROUP_DEFAULT.id] != null) {
+            if (cols[Fineli.GROUP_EXTRA_TAGS.id] != null) {
+                String[] tags = cols[Fineli.GROUP_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
                     foodGroup.searchTags.add(tag.trim());
                 }
@@ -242,69 +242,69 @@ public class DatabaseSeeder {
 
     private static void readExtraGroupRow(String[] cols, List<String[]> dataRows) {
         FoodGroup foodGroup;
-        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[LMV.GEN_NAME.id]))) {
+        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[SLV.GROUP_NAME.id]))) {
             foodGroup = foodGroups.stream()
-                .filter(g -> g.name.equals(cols[LMV.GEN_NAME.id])).findFirst().get();
+                .filter(g -> g.name.equals(cols[SLV.GROUP_NAME.id])).findFirst().get();
         } else {
-            foodGroup = new FoodGroup(cols[LMV.GEN_NAME.id]);
+            foodGroup = new FoodGroup(cols[SLV.GROUP_NAME.id]);
         }
 
-        String name = cols[LMV.GEN_DISPLAY_NAME.id];
-        int lmvId = Integer.parseInt(cols[LMV.GEN_ID.id]);
+        String name = cols[SLV.GROUP_DISPLAY_NAME.id];
+        int lmvId = Integer.parseInt(cols[SLV.GROUP_ID.id]);
         String[] rows = dataRows.get(lmvRowIds.get(lmvId));
         Food specificFood = new Food(
             name, lmvId, DataSource.SLV,
-            toDouble(rows[LMV.DATA_ENERGY_KJ.id]),
-            toDouble(rows[LMV.DATA_CARB.id]),
-            toDouble(rows[LMV.DATA_PROTEIN.id]),
-            toDouble(rows[LMV.DATA_FAT.id]),
-            toDouble(rows[LMV.DATA_FIBRE.id]),
-            toDouble(rows[LMV.DATA_ALCOHOL.id]),
-            toDouble(rows[LMV.DATA_SALT.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_A.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_B6.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_B12.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_C.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_D.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_E.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_K.id]),
-            toDouble(rows[LMV.DATA_THIAMINE.id]),
-            toDouble(rows[LMV.DATA_RIBOFLAVIN.id]),
-            toDouble(rows[LMV.DATA_NIACIN.id]),
-            toDouble(rows[LMV.DATA_NIACIN_EQ.id]),
-            toDouble(rows[LMV.DATA_FOLATE.id]),
-            toDouble(rows[LMV.DATA_PHOSPHORUS.id]),
-            toDouble(rows[LMV.DATA_IODINE.id]),
-            toDouble(rows[LMV.DATA_IRON.id]),
-            toDouble(rows[LMV.DATA_CALCIUM.id]),
-            toDouble(rows[LMV.DATA_POTASSIUM.id]),
-            toDouble(rows[LMV.DATA_MAGNESIUM.id]),
-            toDouble(rows[LMV.DATA_SODIUM.id]),
-            toDouble(rows[LMV.DATA_SELENIUM.id]),
-            toDouble(rows[LMV.DATA_ZINK.id])
+            toDouble(rows[SLV.DATA_ENERGY_KJ.id]),
+            toDouble(rows[SLV.DATA_CARB.id]),
+            toDouble(rows[SLV.DATA_PROTEIN.id]),
+            toDouble(rows[SLV.DATA_FAT.id]),
+            toDouble(rows[SLV.DATA_FIBRE.id]),
+            toDouble(rows[SLV.DATA_ALCOHOL.id]),
+            toDouble(rows[SLV.DATA_SALT.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_A.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_B6.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_B12.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_C.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_D.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_E.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_K.id]),
+            toDouble(rows[SLV.DATA_THIAMINE.id]),
+            toDouble(rows[SLV.DATA_RIBOFLAVIN.id]),
+            toDouble(rows[SLV.DATA_NIACIN.id]),
+            toDouble(rows[SLV.DATA_NIACIN_EQ.id]),
+            toDouble(rows[SLV.DATA_FOLATE.id]),
+            toDouble(rows[SLV.DATA_PHOSPHORUS.id]),
+            toDouble(rows[SLV.DATA_IODINE.id]),
+            toDouble(rows[SLV.DATA_IRON.id]),
+            toDouble(rows[SLV.DATA_CALCIUM.id]),
+            toDouble(rows[SLV.DATA_POTASSIUM.id]),
+            toDouble(rows[SLV.DATA_MAGNESIUM.id]),
+            toDouble(rows[SLV.DATA_SODIUM.id]),
+            toDouble(rows[SLV.DATA_SELENIUM.id]),
+            toDouble(rows[SLV.DATA_ZINK.id])
         );
 
-        if (cols[LMV.GEN_SPECIFIC_TAGS.id] != null) {
-            String[] tags = cols[LMV.GEN_SPECIFIC_TAGS.id].split(",");
+        if (cols[SLV.GROUP_SPECIFIC_TAGS.id] != null) {
+            String[] tags = cols[SLV.GROUP_SPECIFIC_TAGS.id].split(",");
             Arrays.setAll(tags, i -> tags[i].trim());
             Collections.addAll(specificFood.tags, tags);
         }
-        if (cols[LMV.GEN_PIECE_WEIGHT.id] != null) {
-            specificFood.pieceWeightGrams = Integer.parseInt(cols[LMV.GEN_PIECE_WEIGHT.id]);
+        if (cols[SLV.GROUP_PIECE_WEIGHT.id] != null) {
+            specificFood.pieceWeightGrams = Integer.parseInt(cols[SLV.GROUP_PIECE_WEIGHT.id]);
         }
-        if (cols[LMV.GEN_DENSITY_CONSTANT.id] != null) {
-            specificFood.densityConstant = Double.parseDouble(cols[LMV.GEN_DENSITY_CONSTANT.id]);
+        if (cols[SLV.GROUP_DENSITY_CONSTANT.id] != null) {
+            specificFood.densityConstant = Double.parseDouble(cols[SLV.GROUP_DENSITY_CONSTANT.id]);
         }
-        if (cols[LMV.GEN_EXAMPLE_BRANDS.id] != null) {
-            specificFood.exampleBrands = cols[LMV.GEN_EXAMPLE_BRANDS.id].trim();
+        if (cols[SLV.GROUP_EXAMPLE_BRANDS.id] != null) {
+            specificFood.exampleBrands = cols[SLV.GROUP_EXAMPLE_BRANDS.id].trim();
         }
-        if (cols[LMV.GEN_SCIENTIFIC_NAME.id] != null) {
-            specificFood.scientificName = cols[LMV.GEN_SCIENTIFIC_NAME.id].trim();
+        if (cols[SLV.GROUP_SCIENTIFIC_NAME.id] != null) {
+            specificFood.scientificName = cols[SLV.GROUP_SCIENTIFIC_NAME.id].trim();
         }
 
-        if (cols[LMV.GEN_DEFAULT.id] != null) {
-            if (cols[LMV.GEN_EXTRA_TAGS.id] != null) {
-                String[] tags = cols[LMV.GEN_EXTRA_TAGS.id].split(",");
+        if (cols[SLV.GROUP_DEFAULT.id] != null) {
+            if (cols[SLV.GROUP_EXTRA_TAGS.id] != null) {
+                String[] tags = cols[SLV.GROUP_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
                     foodGroup.searchTags.add(tag.trim());
                 }
