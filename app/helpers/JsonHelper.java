@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.food.Food;
 import models.food.FoodGroup;
+import models.food.Nutrient;
 import models.recipe.Ingredient;
 import play.libs.Json;
 
@@ -71,6 +72,7 @@ public class JsonHelper {
         output.put("food", toJson(ingredient.getFood()));
         output.put("amount", Json.toJson(ingredient.getAmount()));
         output.put("comment", ingredient.comment);
+        output.put("kcal", ingredient.getEnergyKcal());
         return output;
     }
 }
