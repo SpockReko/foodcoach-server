@@ -1,5 +1,5 @@
 lmv_id	general_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name
-829	Bulgur	TRUE		Bulgur			0.8		Triticum aestivum L.
+829	Bulgur	TRUE		Bulgur	bulgurvete		0.8		Triticum aestivum L.
 3564	Bulgur		fullkorn, kokt	Bulgur					Triticum ispahanicum Heslot ssp. durum
 3136	Bulgur		kokt	Bulgur					Triticum aestivum L. ssp. aestivum
 2477	Jasminris	TRUE		Jasminris	jasmin ris		0.85		Oryza sativa L.
@@ -22,3 +22,7 @@ lmv_id	general_name	default	specific_tags	display_name	extra_tags	piece_weight	d
 1400	Räkor		burk, på burk, konserv, utan lag	Räkor (burk utan lag)		14			Pandalus borealis
 1404	Räkor		friterade	Friterade räkor		14			Pandalus borealis
 1968	Chilisås	TRUE	tomat	Chilisås	chili sås		1.3		Lycopersicon esculentum Mill.
+380	Chilipeppar	TRUE	färsk	Chilipeppar	chili, chilifrukt, chilifrukter, chilipeppar	10			Capsicum sp
+1626	Maräng	TRUE		Maräng	maränger				Beta vulgaris L. var. altissima Döll.
+1686	Digestivekex	TRUE		Digestivekex	digestive-kex, digestive				Triticum aestivum L.
+76	Kesella	TRUE		Kesella					Bos taurus
