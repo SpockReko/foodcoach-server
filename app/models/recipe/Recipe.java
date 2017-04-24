@@ -48,6 +48,8 @@ public class Recipe extends Model {
     }
     public List<Ingredient> getIngredients(){return ingredients;}
 
+    // TODO refactor this to only use Nutrition enum like Food.
+
     public Double getCO2() {
         return ingredients.stream().mapToDouble(Ingredient::getCO2).sum();
     }
@@ -142,72 +144,75 @@ public class Recipe extends Model {
     Extra calculations
      */
     public Double getEnergyPercentProtein() {
-        return 4*100*getProtein()/getEnergyKcal(); // energi från protein per portion
+        return 4 * 100 * getProtein() / getEnergyKcal(); // energi från protein per portion
     }
+
     public Double getEnergyPercentCarbohydrates() {
-        return 4*100*getCarbohydrates()/getEnergyKcal(); // energi från kolhydrater per portion
+        return 4 * 100 * getCarbohydrates()
+            / getEnergyKcal(); // energi från kolhydrater per portion
     }
+
     public Double getEnergyPercentFat() {
-        return 9*100*getFat()/getEnergyKcal(); // energi från fett per portion
+        return 9 * 100 * getFat() / getEnergyKcal(); // energi från fett per portion
     }
+
     public Double getEnergyPercentFibre() {
-        return 2*100*getFibre()/getEnergyKcal();
+        return 2 * 100 * getFibre() / getEnergyKcal();
     }
 
     public Double getKcalPerPortion() {
-        return getEnergyKcal()/getPortions();
+        return getEnergyKcal() / getPortions();
     }
 
-    public Recipe getOnePortionRecipe(){
+    public Recipe getOnePortionRecipe() {
         List<Ingredient> ingredients = getIngredients();
         List<Ingredient> newIngredients = new ArrayList<>();
-        for (Ingredient i: ingredients) {
-            double onePortionValue = i.getAmount().getAmount()/portions;
+        for (Ingredient i : ingredients) {
+            double onePortionValue = i.getAmount().getAmount() / portions;
             Amount.Unit currentUnit = i.getAmount().getUnit();
-            Amount newAmount = new Amount(onePortionValue,currentUnit);
+            Amount newAmount = new Amount(onePortionValue, currentUnit);
             Food currentFood = i.getFood();
             Ingredient newIngredient = new Ingredient(currentFood, newAmount);
             newIngredients.add(newIngredient);
         }
-        Recipe recipe = new Recipe(this.getTitle(),1,newIngredients);
-        return recipe;
+        return new Recipe(this.getTitle(), 1, newIngredients);
     }
-    public Recipe getUserRecipe(User user){
+
+    public Recipe getUserRecipe(User user) {
         List<Ingredient> ingredients = getIngredients();
         List<Ingredient> newIngredients = new ArrayList<>();
-        double div=user.hmap.get(Nutrient.KCAL)/this.getEnergyKcal()*0.3;
-        for (Ingredient i: ingredients) {
-            double onePortionValue = i.getAmount().getAmount()*div;
+        double div = user.hmap.get(Nutrient.KCAL) / this.getEnergyKcal() * 0.3;
+        for (Ingredient i : ingredients) {
+            double onePortionValue = i.getAmount().getAmount() * div;
             Amount.Unit currentUnit = i.getAmount().getUnit();
-            Amount newAmount = new Amount(onePortionValue,currentUnit);
+            Amount newAmount = new Amount(onePortionValue, currentUnit);
             Food currentFood = i.getFood();
             Ingredient newIngredient = new Ingredient(currentFood, newAmount);
             newIngredients.add(newIngredient);
         }
-        Recipe recepie = new Recipe(this.getTitle(),1,newIngredients);
-        return recepie;
+        return new Recipe(this.getTitle(), 1, newIngredients);
     }
 
-    public String recipeToString(Recipe recipe){
-        String text = recipe.getTitle()+"\n\n";
-        for( Ingredient i : recipe.ingredients ){
+    public String recipeToString(Recipe recipe) {
+        String text = recipe.getTitle() + "\n\n";
+        for (Ingredient i : recipe.ingredients) {
             text += i.getFood().name;
             int stringLength = i.getFood().name.length();
-            if(stringLength<8) {
+            if (stringLength < 8) {
                 text += "\t\t\t\t\t";
-            } else if(stringLength>=8 && stringLength<16) {
+            } else if (stringLength >= 8 && stringLength < 16) {
                 text += "\t\t\t\t";
-            } else if(stringLength>=16 && stringLength<24) {
+            } else if (stringLength >= 16 && stringLength < 24) {
                 text += "\t\t\t";
-            } else if (stringLength>=24 && stringLength <32) {
-                text +="\t\t";
+            } else if (stringLength >= 24 && stringLength < 32) {
+                text += "\t\t";
             } else {
-                text +="\t";
+                text += "\t";
             }
-            text += Precision.round(i.getAmount().getAmount(),1)+" "+i.getAmount().getUnit()+"\n";
+            text += Precision.round(i.getAmount().getAmount(), 1) + " " + i.getAmount().getUnit()
+                + "\n";
         }
         text = text + "\n\n";
         return text;
     }
-
 }

@@ -23,13 +23,11 @@ import java.io.Reader;
 import java.util.*;
 
 /**
- * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
- * basic data. Sets the correct values to the Java objects and persists them to the database
- * using the Ebean ORM included with the application. Also parses through and insert the
- * meta information provided by Livsmedelsverket for each food.
- * This has been scraped from their website and put into another CSV file.
- * <p>
- * TL;DR Puts all the Livsmedelsverket food data into the database.
+ * Parses through the provided TSV files containing food groups, foods and their basic data.
+ * Sets the correct values to the Java objects and persists them to the database
+ * using the Ebean ORM included with the application.
+ *
+ * Can be executed with the command "sbt seed" to fill an empty database with data.
  *
  * @author Fredrik Kindstrom
  */
