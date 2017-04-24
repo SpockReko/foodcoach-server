@@ -225,114 +225,114 @@ public class Food extends Model {
         }
         //frukt, gronsaker
         switch (this.category) {
-            case appelfrukt:
-            case Citrusfrukter:
-            case ovrig_frukt:
-            case Fruktkonserver:
-            case Bladgronsaker:
-            case Gronsaksfrukt:
-            case Gronsakskonserver:
-            case Bar:
-            case Kal:
-            case Svamp:
-            case Lokgronsaker:
+            case MALACEOUS_FRUITS:
+            case CITRUS_FRUITS:
+            case OTHER_FRUITS:
+            case CANNED_FRUITS:
+            case LEAF_VEGETABLES:
+            case FRUIT_VEGETABLES:
+            case CANNED_VEGETABLES:
+            case BERRIES:
+            case CABBAGES:
+            case EDIBLE_FUNGI:
+            case ONION_FAMILY_VEGETABLES:
                 return 0.1;
-            case Rot_och_knolvaxter:
+            case ROOT_VEGETABLES_AND_TUBERS:
                 return 0.02;
-            case Saftdrycker:
-            case Juicer:
+            case JUICE_DRINKS:
+            case JUICES:
                 return 0.1;
-            case Kaffe:
-            case Te:
+            case COFFEE:
+            case TEA:
                 return 0.3;
-            case ovriga_alkoholdrycker:
-            case Starksprit:
-            case ol:
-            case Vin:
+            case OTHER_ALCOHOLIC_BEVERAGES:
+            case SPIRITS:
+            case BEER:
+            case WINE:
                 return 0.3;
-            case Baljvaxter:
+            case PULSES_VEGETABLES:
                 return 0.07;
-            case Notter_fron:
+            case NUTS_AND_SEEDS:
                 return 0.15;
             //kolhydrat
-            case ovrigt_spannmal:
-            case Vete:
-            case Havre_korn:
-            case Socker_sirap:
-            case Starkelse:
-            case Sotningsmedel:
-            case Torrt_brod:
-            case Rag:
+            case OTHER_GRAINS:
+            case WHEAT:
+            case OATS_AND_BARLEY:
+            case SUGAR_AND_SYRUPS:
+            case STARCHES:
+            case SWEETENERS:
+            case CRISPBREADS:
+            case RYE:
                 return 0.06;
-            case Ris:
+            case RICE:
                 return 0.2;
-            case Pasta_makaroner:
+            case PASTA_AND_MACARONI:
                 return 0.08;
-            case Potatis:
-            case Potatisprodukter:
+            case POTATOES:
+            case POTATO_PRODUCTS:
                 return 0.01;
             //mejeri
-            case Mjolk:
-            case Modersmjolksersattningar_och_modersmjolk:
-            case Syrade_mjolkprodukter:
-            case ovrig_mjolk:
+            case MILK:
+            case INFANT_FORMULAS_AND_HUMAN_MILK:
+            case FERMENTED_MILK_PRODUCTS:
+            case OTHER_MILK_PRODUCTS:
                 return 0.1;
-            case agg_honsagg:
-            case agg_av_andra_faglar:
+            case CHICKEN_EGGS:
+            case OTHER_EGGS:
                 return 0.15;
-            case Ost:
+            case CHEESE:
                 return 0.8;
-            case Smor_mjolkfettblandningar:
-            case Animaliskt_fett:
+            case BUTTER_AND_BUTTER_SPREADS:
+            case ANIMAL_FATS:
                 return 0.8;
-            case Margarin_och_matfett_under_55:
-            case Margarin_och_matfett_over_55:
-            case ovriga_fetter_fettprodukter:
+            case MARGARINE_FAT_SPREAD_UNDER_55:
+            case MARGARINE_FAT_SPREAD_OVER_55:
+            case OTHER_FAT_PRODUCTS:
                 return 0.15;
-            case Gradde_creme:
+            case CREAM:
                 return 0.4;
             //sas, krydda
-            case Kryddsaser:
-            case Torkade_orter:
-            case Hjalpamnen_vid_tillverkning:
-            case Torkade_kryddor:
-            case Salt:
-            case Kliniska_naringspreparat:
+            case CONDIMENTS:
+            case DRIED_HERBS:
+            case MISCELLANEOUS_INGREDIENTS:
+            case DRIED_SPICES:
+            case SALT:
+            case PRODUCTS_FOR_NUTRITIONAL_SUPPORT:
                 return 0.1;
-            case Olja:
-            case Matlagnings_och_industrifett:
+            case OILS:
+            case FATS_FOR_COOKING_AND_INDUSTRIA:
                 return 0.15;
             //kott
-            case Fisk:
-            case Fiskprodukter:
-            case Skaldjur:
+            case FISH:
+            case FISH_PRODUCTS:
+            case CRUSTACEANS_AND_MOLLUSCS:
                 return 0.3;
-            case Not:
+            case BEEF:
                 return 2.6;
-            case Gris:
-            case Kottprodukter:
-            case Organ:
+            case PORK:
+            case MEAT_PRODUCTS:
+            case OFFAL:
                 return 0.6;
-            case Lamm:
+            case LAMB:
                 return 2.1;
-            case Faglar:
+            case BIRDS:
                 return 0.3;
-            case Korv:
+            case SAUSAGES:
                 return 0.7;
-            case Vilt:
+            case GAME_MEAT:
                 return 0.05;
-            case Sojaprodukter:
+            case SOYA_PRODUCTS:
                 return 0.4;
             //godis
-            case Choklad:
-            case Glass:
-            case Sotsaker:
-            case Diverse_godis:
-            case Snacks:
+            case CHOCOLATE:
+            case ICE_CREAM:
+            case NON_CHOCOLATE_CONFECTIONERY:
+            case OTHER_SUGAR_PRODUCTS:
+            case SNACKS:
                 return 0.2;
-            case Laskedrycker:
+            case SOFT_DRINKS:
                 return 00.3;
-            case Vatten:
+            case WATER:
                 return 0.0;
             default:
                 throw new IllegalArgumentException("No such category!");
