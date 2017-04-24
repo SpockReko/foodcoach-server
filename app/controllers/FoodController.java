@@ -1,12 +1,14 @@
 package controllers;
 
 import algorithms.QuicksortFoodItem;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import helpers.JsonHelper;
 import models.food.Food;
+import models.food.FoodGroup;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 
 /**
@@ -18,45 +20,55 @@ import java.util.List;
 public class FoodController extends Controller {
 
     // GET /food/:id
-    public Result get(int id) {
-        Food food;
-        try {
-            food = Food.find.where().eq("dataSourceId", id).findUnique();
-        } catch (PersistenceException e) {
-            return badRequest("No food with food number '" + id + "' in table Foods");
+    public Result getFoodById(int id) {
+        Food food = Food.find.where().eq("dataSourceId", id).findUnique();
+        if (food != null) {
+            return ok(JsonHelper.toJson(food));
+        } else {
+            return badRequest("Food \"" + id + "\" does not exist");
         }
-        return ok(Json.toJson(food));
     }
 
     // GET /food/name/:name
-    public Result getByName(String name) {
-        List<Food> foods;
-        try {
-            foods = Food.find.where().contains("name", name).findList();
-        } catch (PersistenceException e) {
-            return badRequest("No food called '" + name + "' in table Foods");
+    public Result getFoodByName(String name) {
+        List<Food> foods = Food.find.where().contains("name", name).findList();
+        if (!foods.isEmpty()) {
+            ArrayNode array = Json.newArray();
+            foods.forEach(food -> array.add(JsonHelper.toJson(food)));
+            return ok(array);
+        } else {
+            return badRequest("No food with name \"" + name + "\" found");
         }
-        return ok(Json.toJson(foods));
     }
+
+    // GET /foodgroup/name/:name
+    public Result getFoodGroupByName(String name) {
+        List<FoodGroup> foodGroups = FoodGroup.find.where().contains("name", name).findList();
+        if (!foodGroups.isEmpty()) {
+            ArrayNode array = Json.newArray();
+            foodGroups.forEach(group -> array.add(JsonHelper.toJson(group)));
+            return ok(array);
+        } else {
+            return badRequest("No group with name \"" + name + "\" found");
+        }
+    }
+
 
     // GET /food/sort/:id
     public Result sortById(int id){
-        Food food;
-        List<Food> allFoodItems;
-        try {
-            food = Food.find.where().eq("dataSourceId", id).findUnique();
-            allFoodItems = Food.find.all();
-        } catch (PersistenceException e) {
-            return badRequest("No food with food number '" + id + "' in table FoodItems");
+        Food food = Food.find.where().eq("dataSourceId", id).findUnique();
+        List<Food> allFoodItems = Food.find.all();
+        if (food == null) {
+            return badRequest("Food \"" + id + "\" does not exist");
         }
 
         List<Food> sortedFood = QuicksortFoodItem.sort(allFoodItems, food);
         // To get a good outprint on the webpage!
-        String foodlist = food.getDataSourceId() + " " + food.name + "\n\n";
+        String foodList = food.getDataSourceId() + " " + food.name + "\n\n";
         for (Food f: sortedFood) {
-            foodlist = foodlist + f.getDataSourceId() + " " +f.name +
+            foodList = foodList + f.getDataSourceId() + " " +f.name +
                     " with diff: " + QuicksortFoodItem.diff(f,food) + "\n";
         }
-        return ok(foodlist, "UTF-8");
+        return ok(foodList, "UTF-8");
     }
 }

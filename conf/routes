@@ -5,9 +5,10 @@
 # Home page
 GET             /                                         controllers.ApplicationController.index
 
-# Food items
-GET             /food/:id                                 controllers.FoodController.get(id: Int)
-GET             /food/name/:name                          controllers.FoodController.getByName(name: String)
+# Food
+GET             /food/:id                                 controllers.FoodController.getFoodById(id: Int)
+GET             /food/name/:name                          controllers.FoodController.getFoodByName(name: String)
+GET             /foodgroup/name/:name                     controllers.FoodController.getFoodGroupByName(name: String)
 GET             /food/sort/:id                            controllers.FoodController.sortById(id: Int)
 
 # Recipe items
@@ -17,12 +18,12 @@ GET             /recipes                                  controllers.RecipeCont
 GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
 
 # Menu options from client
-POST    /menu/nutrient                      controllers.MenuAlgorithmsController.menu
-GET     /menu/nutrient                      controllers.MenuAlgorithmsController.menu()
-GET     /menu/economi                       controllers.MenuAlgorithmsController.menu2()
-GET     /menu/CO2                           controllers.MenuAlgorithmsController.menu3()
-GET     /bengt/menu/nutrient                 controllers.MenuAlgorithmsController.menuBengt()
-GET     /anna/menu/nutrient                  controllers.MenuAlgorithmsController.menuAnna()
+POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
+GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu()
+GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2()
+GET             /menu/co2                                 controllers.MenuAlgorithmsController.menu3()
+GET             /bengt/menu/nutrient                      controllers.MenuAlgorithmsController.menuBengt()
+GET             /anna/menu/nutrient                       controllers.MenuAlgorithmsController.menuAnna()
 
 # Optimize recipe
 GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
