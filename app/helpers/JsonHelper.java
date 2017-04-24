@@ -8,7 +8,8 @@ import models.food.FoodGroup;
 import play.libs.Json;
 
 /**
- * Created by fredrikkindstrom on 2017-04-24.
+ * Converts various models to a Json representation.
+ * @author Fredrik Kindstrom
  */
 public class JsonHelper {
 
@@ -25,8 +26,8 @@ public class JsonHelper {
         output.put("exampleBrands", food.exampleBrands);
         output.put("pieceWeightGrams", food.pieceWeightGrams);
         output.put("densityConstant", food.densityConstant);
-        output.put("processing", food.processing.name());
-        output.put("category", food.category.name());
+        output.put("processing", food.processing == null ? null : food.processing.name());
+        output.put("category", food.category == null ? null : food.category.name());
         ArrayNode diets = output.putArray("diets");
         food.diets.forEach(d -> diets.add(d.type.name()));
         output.put("co2", food.getCO2());

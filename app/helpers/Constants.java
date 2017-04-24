@@ -3,7 +3,9 @@ package helpers;
 import models.food.Category;
 
 /**
- * Created by fredrikkindstrom on 2017-04-07.
+ * Contains constant values to be used throughout the application.
+ * If you need to use a value that will always be the same everywhere, put it here.
+ * @author Fredrik Kindstrom
  */
 public class Constants {
 

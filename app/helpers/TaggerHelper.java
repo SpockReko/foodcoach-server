@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by emmafahlen on 2017-03-27.
+ * Various helper functions used to convert Json data to {@link TaggedWord} class.
+ * @author Emma Fahlen, Fredrik Kindstrom
  */
 public class TaggerHelper {
 
