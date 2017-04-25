@@ -149,7 +149,7 @@ public class MenuAlgorithmsController extends Controller {
 
         String ingredientString="";
         for (int i=0; i<ingredients.size(); i++){
-            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getAmount()
+            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
                     +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
         }
 
@@ -176,7 +176,7 @@ public class MenuAlgorithmsController extends Controller {
 
         String ingredientString="";
         for (int i=0; i<ingredients.size(); i++){
-            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getAmount()
+            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
                     +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
         }
 

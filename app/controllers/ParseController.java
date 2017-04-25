@@ -5,30 +5,35 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import helpers.JsonHelper;
 import http.RecipeCrawler;
 import models.recipe.Ingredient;
 import parsers.IngredientStringParser;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.List;
+import java.io.IOException;
 
 /**
- * HTTP controller that handles all general requests to the server.
+ * HTTP controller that handles all group requests to the server.
  */
 public class ParseController extends Controller {
 
     private static final String RECIPES_URLS_PATH = "resources/recipe_urls/receptfavoriter_se.txt";
-    private static final int RECIPES_TO_PARSE = 10;
+    private static final int RECIPES_TO_PARSE = 20;
 
     public Result parseLine(String input) {
         IngredientStringParser parser = new IngredientStringParser();
-        List<Ingredient> ingredients = parser.parse(input);
-        if (ingredients != null) {
-            return ok(Json.toJson(ingredients));
+        Ingredient ingredient = null;
+        try {
+            ingredient = parser.parse(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (ingredient != null) {
+            return ok(JsonHelper.toJson(ingredient));
         } else {
             return ok("Did not find ingredient");
         }

@@ -1,8 +1,6 @@
 package algorithms;
 
-import models.food.Food;
 import models.food.Nutrient;
-import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
@@ -14,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
-import static models.recipe.Amount.Unit.GRAM;
-
 /**
  * Created by stefa on 2017-02-28.
  */
@@ -23,7 +19,7 @@ public class MenuAlgorithms {
 
     boolean noPrint = true;
 
-    private final Double LARGE_DISTANCE = 999999999.9999;
+    public final static Double LARGE_DISTANCE = 999999999.9999;
 
     private Double optimalMenuNutrition;
     private Menu optimalMenu = new Menu(new ArrayList<>());
@@ -35,6 +31,7 @@ public class MenuAlgorithms {
     private List<Ingredient> ingredientsToUse;
     private List<Ingredient> notTheseIngredients = new ArrayList<>();
     private List<Recipe> notTheseRecipes;
+    private static int algoCount = 0;
 
     /**
      * Constructor that creates a MenuAlgorithm class that holds recipes and can create
@@ -60,7 +57,7 @@ public class MenuAlgorithms {
      */
     public double returnAllMenus(int indexOfRecipes, List<Recipe> currentList,
                                  Function<Menu, Double> optimize) {
-
+        algoCount += 1;
         if (currentList.size() == nrOfRecipes) {
             Menu menu = new Menu(currentList);
             double value = optimize.apply(menu);
@@ -80,26 +77,31 @@ public class MenuAlgorithms {
         }
     }
 
-    public Menu returnMenuGreedy(Function<Menu,Double> optimize){
+    public void returnMenuGreedy(Function<Menu,Double> optimize){
+
         List<Recipe> copyRecipes = new ArrayList<>(allRecipes);
         List<Recipe> optimalList = new ArrayList<>();
         List<Recipe> resultList = new ArrayList<>();
-        while(optimalList.size() == nrOfRecipes) {
-
+        while(optimalList.size() != nrOfRecipes) {
+        algoCount += 1;
             for (Recipe recipe : copyRecipes) {
                 List<Recipe> testRecipe = new ArrayList<>(optimalList);
                 testRecipe.add(recipe);
                 Menu menu = new Menu(testRecipe);
                 double value = optimize.apply(menu);
+                System.out.println("[value,menu.size]: [" + value + "," + menu.getRecipeList().size());
                 if(value < optimalMenuNutrition){
+                    optimalMenuNutrition = value;
                     resultList = menu.getRecipeList();
                 }
             }
-            copyRecipes.removeAll(optimalList);
+            optimalMenuNutrition = LARGE_DISTANCE;
+            copyRecipes.removeAll(resultList);
             optimalList = resultList;
         }
         Menu menu = new Menu(optimalList);
-        return menu;
+        optimize.apply(menu);
+        optimalMenu = menu;
     }
 
     /**
@@ -110,7 +112,12 @@ public class MenuAlgorithms {
     public Menu calculateMenuNutrition(User user) {
         this.user = user;
         reset();
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
+        if(allRecipes.size() < 15) {
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
+        }else{
+            returnMenuGreedy(this::nutritionValueCalculation);
+        }
+        System.out.println("algo runs: " + algoCount + ". Where receptnumber is: " + allRecipes.size());
         return optimalMenu;
     }
 
@@ -124,7 +131,11 @@ public class MenuAlgorithms {
     public Menu calculateWeekMenu(List<Ingredient> ingredientList)  {
         reset();
         this.ingredientsToUse=ingredientList;
-        returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::getLeftoversSize);
+        if(allRecipes.size() < 30) {
+            returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::getLeftoversSize);
+        }else{
+            returnMenuGreedy(this::getLeftoversSize);
+        }
         return optimalMenu;
     }
 
@@ -136,7 +147,11 @@ public class MenuAlgorithms {
     public Menu CalculateWeekMenuMinimalWaste(List<Ingredient> ingredientList) {
         reset();
         this.ingredientsToUse=ingredientList;
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getCO2);
+        if(allRecipes.size() < 30) {
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getCO2);
+        }else{
+            returnMenuGreedy(this::getCO2);
+        }
         return optimalMenu;
     }
 
@@ -148,7 +163,11 @@ public class MenuAlgorithms {
     public Menu CalculateWeekMenuMinimalShoppingList(List<Ingredient> ingredientList) {
         reset();
         this.ingredientsToUse=ingredientList;
-        returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getShoppinglistSize);
+        if(allRecipes.size() < 30) {
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getShoppinglistSize);
+        }else{
+            returnMenuGreedy(this::getShoppinglistSize);
+        }
         return optimalMenu;
     }
 
@@ -159,12 +178,17 @@ public class MenuAlgorithms {
      * @return
      */
     private Double nutritionValueCalculation(Menu chosenMenu) {
-        HashMap<Nutrient, Double> nutrientsNeed = user.hmap;
-        HashMap<Nutrient, Double> nutrientsOverdose = user.overdoseValues;
-        HashMap<Nutrient, Double> nutrientsContent =
-                NutritionAlgorithms.nutrientsContent(chosenMenu);
-        return NutritionAlgorithms
-                .L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
+        if (chosenMenu.getCommentList().isEmpty()) {
+            HashMap<Nutrient, Double> nutrientsNeed = user.hmap;
+            HashMap<Nutrient, Double> nutrientsOverdose = user.overdoseValues;
+            HashMap<Nutrient, Double> nutrientsContent =
+                    NutritionAlgorithms.nutrientsContent(chosenMenu);
+            double value = NutritionAlgorithms.L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
+            chosenMenu.setValue(value);
+            return value;
+        }else{
+            return chosenMenu.getValue();
+        }
     }
 
 
@@ -175,7 +199,7 @@ public class MenuAlgorithms {
     private Double getShoppinglistSize(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getQuantity());
         }
         nutritionValueCalculation(menu);
         return shoppingList.size() + 0.0;
@@ -189,7 +213,7 @@ public class MenuAlgorithms {
     private Double getLeftoversSize(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getQuantity());
         }
         nutritionValueCalculation(menu);
         return shoppingList.getLeftoverSize();
@@ -202,7 +226,7 @@ public class MenuAlgorithms {
     private Double getCO2(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountToIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getQuantity());
         }
         nutritionValueCalculation(menu);
         return shoppingList.getCO2();
@@ -218,6 +242,9 @@ public class MenuAlgorithms {
             text = text + r.getTitle() + "\n";
         }
         text = text + "\n\n";
+        if(menu.getCommentList().isEmpty()){
+            nutritionValueCalculation(menu);
+        }
         for (String comment : menu.getCommentList()) {
             text = text + comment + "\n";
         }
@@ -269,6 +296,7 @@ public class MenuAlgorithms {
      * Every time we want to calculate values we need clean containers for menus
      */
     private void reset() {
+        algoCount = 0;
         convertAllToOnePortion();
         optimalMenuNutrition = LARGE_DISTANCE;
         optimalMenu = new Menu(new ArrayList<>());

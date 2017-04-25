@@ -31,7 +31,7 @@ public class IngredientConvertTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         foodItem =
-            new Food("test", 100, DataSource.LMV, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
+            new Food("test", 100, DataSource.SLV, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
                 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
                 10D);
         foodItem.densityConstant = 0.8;

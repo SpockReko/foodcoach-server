@@ -1,7 +1,9 @@
 package helpers;
 
 /**
- * Created by fredrikkindstrom on 2017-04-20.
+ * Various helper functions for string used in the application.
+ *
+ * @author Fredrik Kindstrom
  */
 public class StringHelper {
 

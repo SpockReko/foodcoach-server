@@ -53,7 +53,6 @@ public class RecipeOptimizer {
             newIngredients.add(ingredient);
         }
         Recipe newRecipe = new Recipe(recipe.getTitle(), recipe.getPortions(), newIngredients);
-        System.out.println("Energy: "+newRecipe.getEnergyKcal());
         optimizedRecipe=newRecipe;
         return newRecipe;
     }
@@ -66,7 +65,7 @@ public class RecipeOptimizer {
         for( int i=0; i<ingredients.size(); i++ ) {
             Ingredient ingredient = ingredients.get(i);
             if( lowestPercentageOfIngredient != null ) {
-                leastAmountOfIngredients.add(i, ingredient.getAmount().getAmount() * lowestPercentageOfIngredient);
+                leastAmountOfIngredients.add(i, ingredient.getAmount().getQuantity() * lowestPercentageOfIngredient);
             }
         }
         return leastAmountOfIngredients;
@@ -90,10 +89,10 @@ public class RecipeOptimizer {
     public String toString(){
         Menu menu=getMenu();
         String string="Optimalt recept, "+optimizedRecipe.recipeToString(optimizedRecipe)+"Originalrecept, "
-                +originalRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\n CO2: "
-                + Precision.round(optimizedRecipe.getCO2(), 3)+"\n Kcal: "+round(optimizedRecipe.getEnergyKcal());
+                +originalRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\nCO2: "
+                + Precision.round(optimizedRecipe.getCO2(), 3)+"\nKcal: "+round(optimizedRecipe.getEnergyKcal())+"\n";
         if(recipeSimplex.exceedsCalorie()){
-            string=string+"\n Mer än 120% av kaloribehov";
+            string=string+"\nMer än 120% av kaloribehov\n";
         }
         string=string+menu.nutritionToString();
 

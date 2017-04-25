@@ -28,12 +28,12 @@ public class RecipeTest {
 
    @Before
    public void setUp() throws Exception {
-       item1 = new Food("test1", 100, DataSource.LMV, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
+       item1 = new Food("test1", 100, DataSource.SLV, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
            10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
            10D);
        item1.densityConstant = 0.8;
        Ingredient ing1 = new Ingredient(item1, new Amount(100, Amount.Unit.GRAM));
-       item2 = new Food("test2", 100, DataSource.LMV, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
+       item2 = new Food("test2", 100, DataSource.SLV, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
            10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
            10D);
        item2.densityConstant = 2.0;

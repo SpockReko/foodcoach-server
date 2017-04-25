@@ -1,9 +1,12 @@
 package parsers;
 
 import helpers.StringHelper;
+import models.food.FoodGroup;
+import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -14,24 +17,49 @@ import java.util.regex.Pattern;
  */
 public class IngredientStringParser {
 
-    private IngredientFinder ingredientFinder = new IngredientFinder();
+    private IngredientFinder ingredientFinder;
 
     private String header;
     private String insideParenthesis;
     private List<String> alternatives = new ArrayList<>();
 
-    public synchronized List<Ingredient> parse(String ingredientString) {
+    public IngredientStringParser() {
+        List<FoodGroup> foodGroupList = FoodGroup.find.select("searchTags").findList();
+        ingredientFinder = new IngredientFinder(foodGroupList);
+    }
+
+    /**
+     * Parses a string and tries to find an ingredient with amount in it.
+     * @param ingredientString The string to parse.
+     * @return An ingredient if found or null otherwise.
+     * @throws IOException If the external API used to parse cannot be reached.
+     */
+    public synchronized Ingredient parse(String ingredientString) throws IOException {
         String line = ingredientString;
-        List<Ingredient> ingredients = new ArrayList<>();
 
         line = handleColon(line).trim();
         line = handleParenthesis(line).trim();
         line = handleAlternatives(line).trim();
 
         Ingredient ingredient = ingredientFinder.find(line);
-        ingredients.add(ingredient);
 
-        return ingredients;
+        if (ingredient != null) {
+            return ingredient;
+        } else {
+            if (!alternatives.isEmpty()) {
+                for (String alternative : alternatives) {
+                    Ingredient alt = ingredientFinder.find(alternative);
+                    if (alt != null && alt.getAmount().getUnit().getType().equals(Amount.Unit.Type.EMPTY)) {
+                        Amount amount = ingredientFinder.extractAmount(line);
+                        if (amount != null) {
+                            return ingredientFinder.find(alternative, amount);
+                        }
+                    }
+                }
+            }
+        }
+        Logger.error("No ingredient found \"" + ingredientString + "\"");
+        return null;
     }
 
     private String handleColon(String line) {

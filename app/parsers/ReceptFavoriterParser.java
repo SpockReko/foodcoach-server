@@ -1,7 +1,6 @@
 package parsers;
 
 import models.recipe.Ingredient;
-import models.recipe.NotLinkedRecipe;
 import models.recipe.Recipe;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import play.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class ReceptFavoriterParser implements RecipeParser {
 
     @Override
-    public Recipe parse(String html) {
+    public Recipe parse(String html) throws IOException {
         IngredientStringParser stringParser = new IngredientStringParser();
         Document doc = Jsoup.parse(html);
 
@@ -30,35 +30,17 @@ public class ReceptFavoriterParser implements RecipeParser {
         List<Ingredient> ingredients = new ArrayList<>();
 
         for (Element ingredientString : ingredientStrings) {
-            List<Ingredient> newIngredients;
+            Ingredient ingredient;
             String webString = ingredientString.text().toLowerCase().trim();
-            newIngredients = stringParser.parse(webString);
+            ingredient = stringParser.parse(webString);
 
-            for (Ingredient newIngredient : newIngredients) {
-                if (newIngredient != null) {
-                    ingredients.add(newIngredient);
-                } else {
-                    Logger.error("Couldn't parse '" + webString + "' moving on...");
-                }
+            if (ingredient != null) {
+                ingredients.add(ingredient);
+            } else {
+                Logger.error("Couldn't parse '" + webString + "' moving on...");
             }
         }
 
         return new Recipe(title, portions, ingredients);
-    }
-
-    @Override
-    public NotLinkedRecipe parseWithoutLinking(String html) {
-        Document doc = Jsoup.parse(html);
-
-        String title = doc.select("h1[itemprop=name]").text();
-        String portionsText = doc.select("h3[itemprop=recipeYield]").text().split(" ")[0];
-        int portions = Integer.parseInt(portionsText.replaceAll("\\D+",""));
-
-        Elements ingredients = doc.select(".recipe-ingredients li");
-
-        List<String> textIngredients = new ArrayList<>();
-        ingredients.forEach(elem -> textIngredients.add(elem.text()));
-
-        return new NotLinkedRecipe(title, portions, textIngredients);
     }
 }

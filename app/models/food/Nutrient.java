@@ -1,7 +1,10 @@
 package models.food;
 
 /**
- * Created by fredrikkindstrom on 2017-04-04.
+ * Represents a nutritional value that each {@link Food} has data for.
+ * Used to represent a certain nutrient throughout the application.
+ *
+ * @author Fredrik Kindstrom
  */
 public enum Nutrient {
     KCAL(Type.OTHER, Unit.OTHER),

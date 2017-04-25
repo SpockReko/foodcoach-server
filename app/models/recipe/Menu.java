@@ -1,5 +1,7 @@
 package models.recipe;
 
+
+import algorithms.MenuAlgorithms;
 import org.apache.commons.math3.util.Precision;
 
 import java.util.ArrayList;
@@ -12,8 +14,9 @@ public class Menu {
 
     private final List<Recipe> recipeList;
     private List<String> commentList = new ArrayList<>();
+    private double value = MenuAlgorithms.LARGE_DISTANCE;
+    public Menu(List<Recipe> recipes){
 
-    public Menu(List<Recipe> recipes) {
         this.recipeList = recipes;
     }
 
@@ -34,7 +37,7 @@ public class Menu {
         for (Recipe r : this.getRecipeList()) {
             text = text + r.getTitle() + "\n";
         }
-        text = text + "\n\nNäringsvärden i procent av användarens behov: (1 betyder näringsbehovet är uppfyllt)\n\n";
+        text = text + "\n\nNäringsvärden i procent av användarens behov: (1 betyder att näringsbehovet är uppfyllt)\n\n";
         for (String comment : this.getCommentList()) {
             text = text + comment + "\n";
         }
@@ -48,11 +51,18 @@ public class Menu {
     }
 
     public String nutritionToString() {
-        String text = "\n\nNäringsvärden i procent av användarens behov: (1 betyder näringsbehovet är uppfyllt)\n\n";
+        String text = "\n\nNäringsvärden i procent av användarens behov: (1 betyder att näringsbehovet är uppfyllt)\n\n";
         for (String comment : this.getCommentList()) {
             text = text + comment + "\n";
         }
         return text;
     }
 
+    public void setValue(double value){
+        this.value = value;
+    }
+
+    public double getValue() {
+        return value;
+    }
 }

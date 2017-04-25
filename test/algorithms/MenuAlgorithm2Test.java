@@ -22,11 +22,11 @@ public class MenuAlgorithm2Test {
     }
 
     private static void build(){
-        Food food1=new Food("food1", 1, DataSource.LMV);
-        Food food2=new Food("food2", 2, DataSource.LMV);
-        Food food3=new Food("food3", 3, DataSource.LMV);
-        Food food4=new Food("food4", 4, DataSource.LMV);
-        Food food5=new Food("food5", 5, DataSource.LMV);
+        Food food1=new Food("food1", 1, DataSource.SLV);
+        Food food2=new Food("food2", 2, DataSource.SLV);
+        Food food3=new Food("food3", 3, DataSource.SLV);
+        Food food4=new Food("food4", 4, DataSource.SLV);
+        Food food5=new Food("food5", 5, DataSource.SLV);
         List<Ingredient> iList1=new ArrayList<Ingredient>();
         List<Ingredient> iList2=new ArrayList<Ingredient>();
         List<Ingredient> iList3=new ArrayList<Ingredient>();

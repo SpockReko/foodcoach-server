@@ -4,7 +4,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 /**
- * HTTP controller that handles all general requests to the server.
+ * HTTP controller that handles all group requests to the server.
  */
 public class ApplicationController extends Controller {
 

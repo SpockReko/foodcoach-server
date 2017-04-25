@@ -55,7 +55,7 @@ public class ShoppingListTest {
         // Constructor with Menu as parameter
         shoppingListWithMenu = new ShoppingList(menu);
 
-        newIngredient = new Ingredient(new Food("newfood", 0, DataSource.LMV), new Amount(100, Amount.Unit.GRAM));
+        newIngredient = new Ingredient(new Food("newfood", 0, DataSource.SLV), new Amount(100, Amount.Unit.GRAM));
     }
 
     @Test
@@ -103,9 +103,9 @@ public class ShoppingListTest {
         System.out.println("\nAdding amount 22.22 \n<NotEqual> " + string + newString + "</notEqual>");
         assertNotEquals(string,newString);
 
-        list.removeAmountToIngredient(ingredients.get(1), 122.21);
+        list.removeAmountOfIngredient(ingredients.get(1), 122.21);
         String almostEmpty = list.toString();
-        list.removeAmountToIngredient(ingredients.get(1), 1.0);
+        list.removeAmountOfIngredient(ingredients.get(1), 1.0);
         String empty = list.toString();
         System.out.println("\nRemove almost all and then all \n<NotEqual> " + almostEmpty + empty + "</notEqual>");
         assertNotEquals(almostEmpty,empty);
