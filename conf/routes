@@ -22,8 +22,8 @@ POST            /menu/nutrient                            controllers.MenuAlgori
 GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu
 GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2
 GET             /menu/CO2                                 controllers.MenuAlgorithmsController.menu3
-GET             /bob/menu/nutrient                        menuBob
-GET             /alice/menu/nutrient                      menuAlice
+GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
+GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
 
 
 # Optimize recipe
