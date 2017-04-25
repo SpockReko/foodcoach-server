@@ -31,8 +31,8 @@ public class RecipeController extends Controller {
         ObjectNode json = Json.newObject();
         json.put("title", recipe.getTitle());
         json.put("portions", recipe.getPortions());
-        json.put("energyKcalPerPortion", Math.round(recipe.getNutrientPerPortion(Nutrient.KCAL)));
-        json.put("energyKcal", Math.round(recipe.getNutrient(Nutrient.KCAL)));
+        json.put("energyKcalPerPortion", Math.round(recipe.getNutrientPerPortion(Nutrient.ENERGY_KCAL)));
+        json.put("energyKcal", Math.round(recipe.getNutrient(Nutrient.ENERGY_KCAL)));
         json.put("carbohydrates", Math.round(recipe.getNutrient(Nutrient.CARBOHYDRATES)));
         json.put("protein", Math.round(recipe.getNutrient(Nutrient.PROTEIN)));
         json.put("fibre", Math.round(recipe.getNutrient(Nutrient.FIBRE)));

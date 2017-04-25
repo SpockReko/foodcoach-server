@@ -7,8 +7,8 @@ package models.food;
  * @author Fredrik Kindstrom
  */
 public enum Nutrient {
-    KCAL(Type.OTHER, Unit.OTHER),
-    KJ(Type.OTHER, Unit.OTHER),
+    ENERGY_KCAL(Type.OTHER, Unit.OTHER),
+    ENERGY_KJ(Type.OTHER, Unit.OTHER),
     CARBOHYDRATES(Type.SUGAR, Unit.GRAMS),
     PROTEIN(Type.PROTEIN, Unit.GRAMS),
     FAT(Type.FAT, Unit.GRAMS),

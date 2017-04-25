@@ -55,16 +55,16 @@ public class IngredientConvertTest {
 
     @Test
     public void getEnergyKj() throws Exception {
-        assertEquals(100, kilo.getNutrient(Nutrient.KJ), delta);
-        assertEquals(100, hekto.getNutrient(Nutrient.KJ), delta);
-        assertEquals(100, gram.getNutrient(Nutrient.KJ), delta);
-        assertEquals(80, liter.getNutrient(Nutrient.KJ), delta);
-        assertEquals(80, deci.getNutrient(Nutrient.KJ), delta);
-        assertEquals(80, centi.getNutrient(Nutrient.KJ), delta);
-        assertEquals(80, milli.getNutrient(Nutrient.KJ), delta);
-        assertEquals(80, krydd.getNutrient(Nutrient.KJ), delta);
-        assertEquals(80, tesked.getNutrient(Nutrient.KJ), delta);
-        assertEquals(120, matsked.getNutrient(Nutrient.KJ), delta);
+        assertEquals(100, kilo.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(100, hekto.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(100, gram.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(80, liter.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(80, deci.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(80, centi.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(80, milli.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(80, krydd.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(80, tesked.getNutrient(Nutrient.ENERGY_KJ), delta);
+        assertEquals(120, matsked.getNutrient(Nutrient.ENERGY_KJ), delta);
     }
 
     @Test

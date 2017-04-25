@@ -66,11 +66,11 @@ public class User extends Model {
     public User() {
 
         firstName = "user";
-        hmap.put(Nutrient.KCAL, 2000D);
-        hmap.put(Nutrient.KJ, 2000D* Constants.KCAL_FACTOR);
-        hmap.put(Nutrient.PROTEIN, 0.15*hmap.get(Nutrient.KCAL)/4);
-        hmap.put(Nutrient.CARBOHYDRATES, 0.55*hmap.get(Nutrient.KCAL)/4);
-        hmap.put(Nutrient.FAT, 0.30*hmap.get(Nutrient.KCAL)/9);
+        hmap.put(Nutrient.ENERGY_KCAL, 2000D);
+        hmap.put(Nutrient.ENERGY_KJ, 2000D* Constants.KCAL_FACTOR);
+        hmap.put(Nutrient.PROTEIN, 0.15*hmap.get(Nutrient.ENERGY_KCAL)/4);
+        hmap.put(Nutrient.CARBOHYDRATES, 0.55*hmap.get(Nutrient.ENERGY_KCAL)/4);
+        hmap.put(Nutrient.FAT, 0.30*hmap.get(Nutrient.ENERGY_KCAL)/9);
         hmap.put(Nutrient.FIBRE, 30D);
 
         hmap.put(Nutrient.VITAMIN_A, 800D);
@@ -165,8 +165,8 @@ public class User extends Model {
         double fatNeed = 0.3 * dc / 9;
         double carbohydratesNeed = 0.55 * dc / 4;
 
-        hmap.put(Nutrient.KCAL, dc);
-        hmap.put(Nutrient.KJ, dc*Constants.KCAL_FACTOR);
+        hmap.put(Nutrient.ENERGY_KCAL, dc);
+        hmap.put(Nutrient.ENERGY_KJ, dc*Constants.KCAL_FACTOR);
         hmap.put(Nutrient.PROTEIN, proteinNeed);
         hmap.put(Nutrient.CARBOHYDRATES, carbohydratesNeed);
         hmap.put(Nutrient.FAT, fatNeed);
@@ -550,7 +550,7 @@ public class User extends Model {
 
     private void calculateOverdoseValues(int age) {
 
-        overdoseValues.put(Nutrient.KCAL,hmap.get(Nutrient.KCAL)*1.2D);
+        overdoseValues.put(Nutrient.ENERGY_KCAL,hmap.get(Nutrient.ENERGY_KCAL)*1.2D);
         overdoseValues.put(Nutrient.PROTEIN,hmap.get(Nutrient.PROTEIN)*2D);
         overdoseValues.put(Nutrient.CARBOHYDRATES,hmap.get(Nutrient.CARBOHYDRATES)*2D);
         overdoseValues.put(Nutrient.FAT,hmap.get(Nutrient.FAT)*2D);

@@ -193,10 +193,10 @@ public class Food extends Model {
         Double value;
         // TODO Returning 0 instead of null where no data present for now
         switch (nutrient) {
-            case KCAL:
+            case ENERGY_KCAL:
                 value = energyKj / Constants.KCAL_FACTOR;
                 break;
-            case KJ:
+            case ENERGY_KJ:
                 value = energyKj;
                 break;
             case CARBOHYDRATES:

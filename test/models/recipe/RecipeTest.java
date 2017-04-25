@@ -58,7 +58,7 @@ public class RecipeTest {
            Recipe dbRecipe = Recipe.find.byId(1L);
            assertThat(dbRecipe.getTitle(), is(recipe.getTitle()));
            assertThat(dbRecipe.getPortions(), is(recipe.getPortions()));
-           assertThat(dbRecipe.getNutrient(Nutrient.KCAL), is(recipe.getNutrient(Nutrient.KCAL)));
+           assertThat(dbRecipe.getNutrient(Nutrient.ENERGY_KCAL), is(recipe.getNutrient(Nutrient.ENERGY_KCAL)));
            List<Ingredient> dbIngredients = dbRecipe.ingredients;
            List<Ingredient> ingredients = recipe.ingredients;
            for (int i = 0; i < dbIngredients.size(); i++) {
@@ -69,12 +69,12 @@ public class RecipeTest {
 
    @Test
    public void nutrientValuesTest() {
-       assertEquals(30, recipe.getNutrient(Nutrient.KJ), delta);
+       assertEquals(30, recipe.getNutrient(Nutrient.ENERGY_KJ), delta);
        assertEquals(60, recipe.getNutrient(Nutrient.CARBOHYDRATES), delta);
        assertEquals(30, recipe.getNutrient(Nutrient.PROTEIN), delta);
        assertEquals(30, recipe.getNutrient(Nutrient.FIBRE), delta);
        assertEquals(0, recipe.getNutrient(Nutrient.ALCOHOL), delta);
-       assertEquals(10, recipe.getNutrientPerPortion(Nutrient.KJ), delta);
+       assertEquals(10, recipe.getNutrientPerPortion(Nutrient.ENERGY_KJ), delta);
        assertEquals(20, recipe.getNutrientPerPortion(Nutrient.CARBOHYDRATES), delta);
        assertEquals(10, recipe.getNutrientPerPortion(Nutrient.PROTEIN), delta);
        assertEquals(10, recipe.getNutrientPerPortion(Nutrient.FIBRE), delta);

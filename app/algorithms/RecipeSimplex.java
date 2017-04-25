@@ -41,12 +41,12 @@ public class RecipeSimplex {
             this.ingredients=ingredients;
             this.nutritionNeed=nutritionNeed;
 
-        setConstraint(ingredients, Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL), true);
+        setConstraint(ingredients, Nutrient.ENERGY_KCAL, nutritionNeed.get(Nutrient.ENERGY_KCAL), true);
         setConstraint(ingredients, Nutrient.PROTEIN, nutritionNeed.get(Nutrient.PROTEIN), true);
         setConstraint(ingredients, Nutrient.FAT, nutritionNeed.get(Nutrient.FAT), true);
         setConstraint(ingredients, Nutrient.CARBOHYDRATES, nutritionNeed.get(Nutrient.CARBOHYDRATES), true);
 
-        setConstraint(ingredients,Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL)*maxCalorie, false);
+        setConstraint(ingredients,Nutrient.ENERGY_KCAL, nutritionNeed.get(Nutrient.ENERGY_KCAL)*maxCalorie, false);
 
         constraints = new LinearConstraintSet(constraintsCollection);
     }

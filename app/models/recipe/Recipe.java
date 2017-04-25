@@ -64,19 +64,19 @@ public class Recipe extends Model {
     Extra calculations
      */
     public Double getEnergyPercentProtein() {
-        return 4 * 100 * getNutrient(Nutrient.PROTEIN) / getNutrient(Nutrient.KCAL); // energi från protein per portion
+        return 4 * 100 * getNutrient(Nutrient.PROTEIN) / getNutrient(Nutrient.ENERGY_KCAL); // energi från protein per portion
     }
 
     public Double getEnergyPercentCarbohydrates() {
-        return 4 * 100 * getNutrient(Nutrient.CARBOHYDRATES) / getNutrient(Nutrient.KCAL); // energi från kolhydrater per portion
+        return 4 * 100 * getNutrient(Nutrient.CARBOHYDRATES) / getNutrient(Nutrient.ENERGY_KCAL); // energi från kolhydrater per portion
     }
 
     public Double getEnergyPercentFat() {
-        return 9 * 100 * getNutrient(Nutrient.FAT) / getNutrient(Nutrient.KCAL); // energi från fett per portion
+        return 9 * 100 * getNutrient(Nutrient.FAT) / getNutrient(Nutrient.ENERGY_KCAL); // energi från fett per portion
     }
 
     public Double getEnergyPercentFibre() {
-        return 2 * 100 * getNutrient(Nutrient.FIBRE) / getNutrient(Nutrient.KCAL);
+        return 2 * 100 * getNutrient(Nutrient.FIBRE) / getNutrient(Nutrient.ENERGY_KCAL);
     }
 
     public Recipe getOnePortionRecipe() {
@@ -96,7 +96,7 @@ public class Recipe extends Model {
     public Recipe getUserRecipe(User user) {
         List<Ingredient> ingredients = getIngredients();
         List<Ingredient> newIngredients = new ArrayList<>();
-        double div = user.hmap.get(Nutrient.KCAL) / getNutrient(Nutrient.KCAL) * 0.3;
+        double div = user.hmap.get(Nutrient.ENERGY_KCAL) / getNutrient(Nutrient.ENERGY_KCAL) * 0.3;
         for (Ingredient i : ingredients) {
             double onePortionValue = i.getAmount().getQuantity() * div;
             Amount.Unit currentUnit = i.getAmount().getUnit();

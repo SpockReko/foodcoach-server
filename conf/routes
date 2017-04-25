@@ -32,7 +32,6 @@ GET             /recipe/optimize/title/:title             controllers.RecipeOpti
 GET             /bengt/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberBengt(number: Long)
 GET             /anna/recipe/optimize/:number             controllers.RecipeOptimizationController.optimizeByNumberAnna(number: Long)
 
-
 # Parse ingredient string to food item
 GET             /parseLine/:input                         controllers.ParseController.parseLine(input: String)
 GET             /runParse                                 controllers.ParseController.runParse
