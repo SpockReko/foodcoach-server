@@ -9,7 +9,6 @@ import helpers.JsonHelper;
 import http.RecipeCrawler;
 import models.recipe.Ingredient;
 import parsers.IngredientStringParser;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 

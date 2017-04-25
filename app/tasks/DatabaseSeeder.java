@@ -35,10 +35,10 @@ public class DatabaseSeeder {
 
     private static EbeanServer db;
 
-    private static final String FINELI_GROUP_TSV = "resources/fineli_food/Fineli_GeneralFoods.tsv";
+    private static final String FINELI_GROUP_TSV = "resources/fineli_food/Fineli_FoodGroups.tsv";
     private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_FoodData.tsv";
-    private static final String SLV_GROUP_TSV = "resources/lmv_food/LMV_GeneralFoods.tsv";
-    private static final String SLV_DATA_TSV = "resources/lmv_food/LMV_FoodData.tsv";
+    private static final String SLV_GROUP_TSV = "resources/slv_food/SLV_FoodGroups.tsv";
+    private static final String SLV_DATA_TSV = "resources/slv_food/SLV_FoodData.tsv";
     private static final String RECIPES_PATH = "resources/recipes/recipes_fineli.csv";
 
     private enum Fineli {

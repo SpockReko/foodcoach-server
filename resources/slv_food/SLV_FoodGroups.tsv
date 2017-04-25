@@ -1,4 +1,4 @@
-lmv_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name
+slv_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name
 829	Bulgur	TRUE		Bulgur	bulgurvete		0.8		Triticum aestivum L.
 3564	Bulgur		fullkorn, kokt	Bulgur			0.9		Triticum ispahanicum Heslot ssp. durum
 3136	Bulgur		kokt	Bulgur			0.9		Triticum aestivum L. ssp. aestivum

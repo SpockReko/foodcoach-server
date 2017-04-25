@@ -959,8 +959,8 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 29687	Salmiak	TRUE	sötsak	Salmiak						Industriellt	Sötsaker	100 %	SOYAFREE, MILKFREE, LACSFREE, LACVEGE, LACOVEGE, EGGFREE
 12	Salmiakpastill	TRUE	sötsak	Salmiakpastill	salmiakpastiller					Industriellt	Sötsaker	100 %	LOWPROT, MILKFREE, LACSFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 34797	Salmiakpastill		sötsak, sockerfri	Salmiakpastill						Industriellt	Sötsaker	100 %	LOWPROT, MILKFREE, LACSFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
-36	Salt		mineralsalt, medelvärde	Salt			1.4			Industriellt	Salt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-30	Salt	TRUE	koksalt, joderat	Salt	örtsalt, flingsalt, koksalt, aromsalt, havssalt, mineralsalt		1.4			Industriellt	Salt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE, VITAMADD
+36	Salt	TRUE	mineralsalt, medelvärde	Salt	örtsalt, flingsalt, koksalt, aromsalt, havssalt, mineralsalt		1.4			Industriellt	Salt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+30	Salt		koksalt, joderat	Salt			1.4			Industriellt	Salt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE, VITAMADD
 11196	Salt		örtsalt, aromsalt, salthalt 71%	Örtsalt			1.4			Industriellt	Salt	100 %	CHOLFREE, MILKFREE, LACSFREE, LOWCHOL, LOWFAT, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 79	Salt		ojodat bergssalt	Salt			1.4			Obehandlat	Salt	100 %	SOYAFREE, UNSWEET, LOWPROT, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 33151	Salt		havssalt, ojodat	Havssalt			1.4			Industriellt	Salt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, LACSFREE, MILKFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
@@ -1197,7 +1197,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 11177	Svartpeppar	TRUE		Svartpeppar	peppar		0.43		Piper nigrum	Torkat	Torkade kryddor	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 312	Svartrot	TRUE		Svartrot					Scorzonera hispanica	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 32478	Sweet and sour-sås	TRUE	sweet & sour	Sweet and sour-sås	sweet & sour, sweet & sour sauce, sötsur sås			uncle ben's		Blandat	Kryddsåser	100 %	SOYAFREE, NAGLUFRE, LACSFREE, MILKFREE, LACVEGE, LOWCHOL, LOWFAT, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
-33020	Sweet chili-sås	TRUE	sweet chili sauce, chilisås	Sweet chili-sås	sweet chili, sweet chili sås, sweet-chilisås					Blandat	Kryddsåser	100 %	SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, LOWCHOL, LOWFAT, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+33020	Sweet chili-sås	TRUE	sweet chili sauce, chilisås	Sweet chili-sås	sweet chili, sweet chili sås, sweet-chilisås, sweet chilisås					Blandat	Kryddsåser	100 %	SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, LOWCHOL, LOWFAT, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 450	Sylt	TRUE	bär, bärsylt, medelvärde	Sylt	bärsylt		1.25			Konserverat	Fruktkonserver	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 476	Sylt		sötad med fruktos	Sylt			1.25			Konserverat	Fruktkonserver	100 %	CHOLFREE, SOYAFREE, LOWPROT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 351	Syltad pumpa	TRUE	syltad pumpa	Syltad pumpa					Cucurbita pepo	Konserverat	Grönsakskonserver	100 %	CHOLFREE, SOYAFREE, LOWPROT, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, FATFREE, EGGFREE
