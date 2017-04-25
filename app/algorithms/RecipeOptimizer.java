@@ -89,8 +89,8 @@ public class RecipeOptimizer {
     public String toString(){
         Menu menu=getMenu();
         String string="Optimalt recept, "+optimizedRecipe.recipeToString(optimizedRecipe)+"Originalrecept, "
-                +originalRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\nCO2: "
-                + Precision.round(optimizedRecipe.getCO2(), 3)+"\nKcal: "+round(optimizedRecipe.getNutrient(Nutrient.ENERGY_KCAL))+"\n";
+                +originalRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\nKoldioxidutsläpp: "
+                + Precision.round(optimizedRecipe.getCO2(), 3) + " kg"+"\nEnergi: "+round(optimizedRecipe.getNutrient(Nutrient.ENERGY_KCAL))+" kcal\n";
         if(recipeSimplex.exceedsCalorie()){
             string=string+"\nMer än 120% av kaloribehov\n";
         }
