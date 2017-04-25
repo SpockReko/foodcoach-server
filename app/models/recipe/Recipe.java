@@ -168,7 +168,7 @@ public class Recipe extends Model {
         List<Ingredient> ingredients = getIngredients();
         List<Ingredient> newIngredients = new ArrayList<>();
         for (Ingredient i : ingredients) {
-            double onePortionValue = i.getAmount().getAmount() / portions;
+            double onePortionValue = i.getAmount().getQuantity() / portions;
             Amount.Unit currentUnit = i.getAmount().getUnit();
             Amount newAmount = new Amount(onePortionValue, currentUnit);
             Food currentFood = i.getFood();
@@ -183,7 +183,7 @@ public class Recipe extends Model {
         List<Ingredient> newIngredients = new ArrayList<>();
         double div = user.hmap.get(Nutrient.KCAL) / this.getEnergyKcal() * 0.3;
         for (Ingredient i : ingredients) {
-            double onePortionValue = i.getAmount().getAmount() * div;
+            double onePortionValue = i.getAmount().getQuantity() * div;
             Amount.Unit currentUnit = i.getAmount().getUnit();
             Amount newAmount = new Amount(onePortionValue, currentUnit);
             Food currentFood = i.getFood();
@@ -209,7 +209,7 @@ public class Recipe extends Model {
             } else {
                 text += "\t";
             }
-            text += Precision.round(i.getAmount().getAmount(), 1) + " " + i.getAmount().getUnit()
+            text += Precision.round(i.getAmount().getQuantity(), 1) + " " + i.getAmount().getUnit()
                 + "\n";
         }
         text = text + "\n\n";

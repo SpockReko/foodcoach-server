@@ -1,6 +1,5 @@
 package models.recipe;
 
-import models.food.Food;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -87,14 +86,14 @@ public class ShoppingList {
     private void putTogetherIngredients(Boolean check, Ingredient ingredient) {
         Ingredient oldIngredient = getKey(ingredient);
         shoppingList.remove(oldIngredient);
-        Ingredient newIngredient = changeAmountOfIngredient(ingredient.getAmount().getAmount(), oldIngredient);
+        Ingredient newIngredient = changeAmountOfIngredient(ingredient.getAmount().getQuantity(), oldIngredient);
         shoppingList.put(newIngredient, check);
     }
 
 
     public void removeListOfIngredients(List<Ingredient> ingredientList){
         for(int i=0; i<ingredientList.size(); i++){
-            removeAmountOfIngredient(ingredientList.get(i), ingredientList.get(i).getAmount().getAmount());
+            removeAmountOfIngredient(ingredientList.get(i), ingredientList.get(i).getAmount().getQuantity());
         }
     }
 
@@ -108,8 +107,8 @@ public class ShoppingList {
             if (i.getFood().name.compareTo(name) == 0) {
                 if (!shoppingList.remove(i)) {
                     inList = true;
-                    if (i.getAmount().getAmount() > amount) { // if needed amount is greater than amount at home
-                        double newValue = i.getAmount().getAmount() - amount; // amount needed to be bought
+                    if (i.getAmount().getQuantity() > amount) { // if needed amount is greater than amount at home
+                        double newValue = i.getAmount().getQuantity() - amount; // amount needed to be bought
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
                         Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                         shoppingList.put(newIngredient, false);
@@ -117,8 +116,8 @@ public class ShoppingList {
                             leftovers.remove(ingredient);
                             leftoverSize -= amount;
                         }
-                    } else if (i.getAmount().getAmount() < amount) { // if amount at home is greater than the needed amount
-                        double newValue = amount - i.getAmount().getAmount(); // amount of ingredient which is left after cooking
+                    } else if (i.getAmount().getQuantity() < amount) { // if amount at home is greater than the needed amount
+                        double newValue = amount - i.getAmount().getQuantity(); // amount of ingredient which is left after cooking
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
                         Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                         leftovers.add(newIngredient);
@@ -130,7 +129,7 @@ public class ShoppingList {
         }
         if (!inList) {
             leftovers.add(ingredient);
-            leftoverSize += ingredient.getAmount().getAmount();
+            leftoverSize += ingredient.getAmount().getQuantity();
         }
     }
 
@@ -142,7 +141,7 @@ public class ShoppingList {
         for (Ingredient i : ingredients) {
             if (i.getFood().name.equals(name)) {
                 if (!shoppingList.remove(i)) {
-                    double newValue = i.getAmount().getAmount() + amount;
+                    double newValue = i.getAmount().getQuantity() + amount;
                     Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
                     Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
                     shoppingList.put(newIngredient, false);
@@ -159,7 +158,7 @@ public class ShoppingList {
         return new Ingredient(
                 indexIngredient.getFood(),
                 new Amount(
-                        indexIngredient.getAmount().getAmount() + amount,
+                        indexIngredient.getAmount().getQuantity() + amount,
                         indexIngredient.getAmount().getUnit()
                 ));
     }
@@ -199,7 +198,7 @@ public class ShoppingList {
             while (iterator.hasNext()) {
                 Map.Entry<Ingredient, Boolean> entry = (Map.Entry) iterator.next();
                 boolean marked = entry.getValue();
-                String amount = entry.getKey().getAmount().getAmount() + "";
+                String amount = entry.getKey().getAmount().getQuantity() + "";
                 String unit = entry.getKey().getAmount().getUnit().toString();
                 String foodItem = entry.getKey().getFood().name;
                 if (marked) {
@@ -214,7 +213,7 @@ public class ShoppingList {
         text=text+"\nRester:\n \n";
         if(leftovers.size() > 0 ){
             for (Ingredient i: leftovers) {
-                text += i.getFood().name + " " + i.getAmount().getAmount() + " " + i.getAmount().getUnit() + "\n";
+                text += i.getFood().name + " " + i.getAmount().getQuantity() + " " + i.getAmount().getUnit() + "\n";
             }
         }
         return text;
@@ -228,7 +227,7 @@ public class ShoppingList {
             String text = "Rester:\n";
             for(Ingredient ingredient:leftovers){
                 String unit=ingredient.getAmount().getUnit().toString();
-                text+=ingredient.getAmount().getAmount()+" "+unit+" "+ingredient.getFood().name+"\n";
+                text+=ingredient.getAmount().getQuantity()+" "+unit+" "+ingredient.getFood().name+"\n";
             }
             return text + "\n";
         }

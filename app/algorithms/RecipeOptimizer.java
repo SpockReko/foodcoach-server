@@ -64,7 +64,7 @@ public class RecipeOptimizer {
         for( int i=0; i<ingredients.size(); i++ ) {
             Ingredient ingredient = ingredients.get(i);
             if( lowestPercentageOfIngredient != null ) {
-                leastAmountOfIngredients.add(i, ingredient.getAmount().getAmount() * lowestPercentageOfIngredient);
+                leastAmountOfIngredients.add(i, ingredient.getAmount().getQuantity() * lowestPercentageOfIngredient);
             }
         }
         return leastAmountOfIngredients;

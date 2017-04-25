@@ -143,7 +143,7 @@ public class Ingredient extends Model {
             // TODO return 0.0 for now, would be nice to know if there is no data present instead
             return 0.0;
         }
-        double multiplier = amount.getUnit().getFraction() * amount.getAmount();
+        double multiplier = amount.getUnit().getFraction() * amount.getQuantity();
         switch (amount.getUnit().getType()) {
             case VOLUME:
                 if (food.densityConstant != null) {
@@ -154,10 +154,10 @@ public class Ingredient extends Model {
                 break;
             case SINGLE:
                 if (food.pieceWeightGrams != null) {
-                    multiplier = amount.getAmount() * (food.pieceWeightGrams * 0.01);
+                    multiplier = amount.getQuantity() * (food.pieceWeightGrams * 0.01);
                 } else {
                     Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
-                    multiplier = amount.getAmount();
+                    multiplier = amount.getQuantity();
                 }
         }
         return value * multiplier;
