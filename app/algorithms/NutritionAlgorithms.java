@@ -122,10 +122,10 @@ public class NutritionAlgorithms {
     private static void addNutrionInfoToMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
         if((nutrient + "").length() < 7) {
             menu.addComment(nutrient + ":\t\t" +
-                    Precision.round(percentageOfRDI, 2));
+                    (int)Precision.round(100*percentageOfRDI, 0)+"%");
         }else{
             menu.addComment(nutrient + ":\t" +
-                    Precision.round(percentageOfRDI, 2));
+                    (int)Precision.round(100*percentageOfRDI, 0)+"%");
         }
     }
 
