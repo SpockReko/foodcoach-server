@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.food.Nutrient;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
 import play.libs.Json;
@@ -30,11 +31,11 @@ public class RecipeController extends Controller {
         ObjectNode json = Json.newObject();
         json.put("title", recipe.getTitle());
         json.put("portions", recipe.getPortions());
-        json.put("energyKcalPerPortion", Math.round(recipe.getEnergyKcal()/recipe.getPortions()));
-        json.put("energyKcal", Math.round(recipe.getEnergyKcal()));
-        json.put("carbohydrates", Math.round(recipe.getCarbohydrates()));
-        json.put("protein", Math.round(recipe.getProtein()));
-        json.put("fibre", Math.round(recipe.getFibre()));
+        json.put("energyKcalPerPortion", Math.round(recipe.getNutrientPerPortion(Nutrient.KCAL)));
+        json.put("energyKcal", Math.round(recipe.getNutrient(Nutrient.KCAL)));
+        json.put("carbohydrates", Math.round(recipe.getNutrient(Nutrient.CARBOHYDRATES)));
+        json.put("protein", Math.round(recipe.getNutrient(Nutrient.PROTEIN)));
+        json.put("fibre", Math.round(recipe.getNutrient(Nutrient.FIBRE)));
         json.put("url", recipe.sourceUrl);
         ArrayNode array = json.putArray("ingredients");
         for (Ingredient i : recipe.ingredients) {

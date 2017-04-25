@@ -19,11 +19,11 @@ GET             /user/:alder                              controllers.UserContro
 
 # Menu options from client
 POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
-GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu()
-GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2()
-GET             /menu/co2                                 controllers.MenuAlgorithmsController.menu3()
-GET             /bengt/menu/nutrient                      controllers.MenuAlgorithmsController.menuBengt()
-GET             /anna/menu/nutrient                       controllers.MenuAlgorithmsController.menuAnna()
+GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu
+GET             /menu/economy                             controllers.MenuAlgorithmsController.menu2
+GET             /menu/co2                                 controllers.MenuAlgorithmsController.menu3
+GET             /bengt/menu/nutrient                      controllers.MenuAlgorithmsController.menuBengt
+GET             /anna/menu/nutrient                       controllers.MenuAlgorithmsController.menuAnna
 
 # Optimize recipe
 GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)

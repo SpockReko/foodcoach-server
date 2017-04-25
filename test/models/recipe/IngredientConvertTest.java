@@ -2,6 +2,7 @@ package models.recipe;
 
 import models.food.DataSource;
 import models.food.Food;
+import models.food.Nutrient;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -54,72 +55,72 @@ public class IngredientConvertTest {
 
     @Test
     public void getEnergyKj() throws Exception {
-        assertEquals(100, kilo.getEnergyKj(), delta);
-        assertEquals(100, hekto.getEnergyKj(), delta);
-        assertEquals(100, gram.getEnergyKj(), delta);
-        assertEquals(80, liter.getEnergyKj(), delta);
-        assertEquals(80, deci.getEnergyKj(), delta);
-        assertEquals(80, centi.getEnergyKj(), delta);
-        assertEquals(80, milli.getEnergyKj(), delta);
-        assertEquals(80, krydd.getEnergyKj(), delta);
-        assertEquals(80, tesked.getEnergyKj(), delta);
-        assertEquals(120, matsked.getEnergyKj(), delta);
+        assertEquals(100, kilo.getNutrient(Nutrient.KJ), delta);
+        assertEquals(100, hekto.getNutrient(Nutrient.KJ), delta);
+        assertEquals(100, gram.getNutrient(Nutrient.KJ), delta);
+        assertEquals(80, liter.getNutrient(Nutrient.KJ), delta);
+        assertEquals(80, deci.getNutrient(Nutrient.KJ), delta);
+        assertEquals(80, centi.getNutrient(Nutrient.KJ), delta);
+        assertEquals(80, milli.getNutrient(Nutrient.KJ), delta);
+        assertEquals(80, krydd.getNutrient(Nutrient.KJ), delta);
+        assertEquals(80, tesked.getNutrient(Nutrient.KJ), delta);
+        assertEquals(120, matsked.getNutrient(Nutrient.KJ), delta);
     }
 
     @Test
     public void getCarbohydrates() throws Exception {
-        assertEquals(100, kilo.getCarbohydrates(), delta);
-        assertEquals(100, hekto.getCarbohydrates(), delta);
-        assertEquals(100, gram.getCarbohydrates(), delta);
-        assertEquals(80, liter.getCarbohydrates(), delta);
-        assertEquals(80, deci.getCarbohydrates(), delta);
-        assertEquals(80, centi.getCarbohydrates(), delta);
-        assertEquals(80, milli.getCarbohydrates(), delta);
-        assertEquals(80, krydd.getCarbohydrates(), delta);
-        assertEquals(80, tesked.getCarbohydrates(), delta);
-        assertEquals(120, matsked.getCarbohydrates(), delta);
+        assertEquals(100, kilo.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(100, hekto.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(100, gram.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(80, liter.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(80, deci.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(80, centi.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(80, milli.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(80, krydd.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(80, tesked.getNutrient(Nutrient.CARBOHYDRATES), delta);
+        assertEquals(120, matsked.getNutrient(Nutrient.CARBOHYDRATES), delta);
     }
 
     @Test
     public void getProtein() throws Exception {
-        assertEquals(100, kilo.getProtein(), delta);
-        assertEquals(100, hekto.getProtein(), delta);
-        assertEquals(100, gram.getProtein(), delta);
-        assertEquals(80, liter.getProtein(), delta);
-        assertEquals(80, deci.getProtein(), delta);
-        assertEquals(80, centi.getProtein(), delta);
-        assertEquals(80, milli.getProtein(), delta);
-        assertEquals(80, krydd.getProtein(), delta);
-        assertEquals(80, tesked.getProtein(), delta);
-        assertEquals(120, matsked.getProtein(), delta);
+        assertEquals(100, kilo.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(100, hekto.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(100, gram.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(80, liter.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(80, deci.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(80, centi.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(80, milli.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(80, krydd.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(80, tesked.getNutrient(Nutrient.PROTEIN), delta);
+        assertEquals(120, matsked.getNutrient(Nutrient.PROTEIN), delta);
     }
 
     @Test
     public void getFibre() throws Exception {
-        assertEquals(100, kilo.getFibre(), delta);
-        assertEquals(100, hekto.getFibre(), delta);
-        assertEquals(100, gram.getFibre(), delta);
-        assertEquals(80, liter.getFibre(), delta);
-        assertEquals(80, deci.getFibre(), delta);
-        assertEquals(80, centi.getFibre(), delta);
-        assertEquals(80, milli.getFibre(), delta);
-        assertEquals(80, krydd.getFibre(), delta);
-        assertEquals(80, tesked.getFibre(), delta);
-        assertEquals(120, matsked.getFibre(), delta);
+        assertEquals(100, kilo.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(100, hekto.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(100, gram.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(80, liter.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(80, deci.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(80, centi.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(80, milli.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(80, krydd.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(80, tesked.getNutrient(Nutrient.FIBRE), delta);
+        assertEquals(120, matsked.getNutrient(Nutrient.FIBRE), delta);
     }
 
     @Test
     public void getAlcohol() throws Exception {
-        assertEquals(100, kilo.getAlcohol(), delta);
-        assertEquals(100, hekto.getAlcohol(), delta);
-        assertEquals(100, gram.getAlcohol(), delta);
-        assertEquals(80, liter.getAlcohol(), delta);
-        assertEquals(80, deci.getAlcohol(), delta);
-        assertEquals(80, centi.getAlcohol(), delta);
-        assertEquals(80, milli.getAlcohol(), delta);
-        assertEquals(80, krydd.getAlcohol(), delta);
-        assertEquals(80, tesked.getAlcohol(), delta);
-        assertEquals(120, matsked.getAlcohol(), delta);
+        assertEquals(100, kilo.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(100, hekto.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(100, gram.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(80, liter.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(80, deci.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(80, centi.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(80, milli.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(80, krydd.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(80, tesked.getNutrient(Nutrient.ALCOHOL), delta);
+        assertEquals(120, matsked.getNutrient(Nutrient.ALCOHOL), delta);
     }
 
 }

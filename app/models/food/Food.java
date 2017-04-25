@@ -177,8 +177,7 @@ public class Food extends Model {
 
     /**
      * The source database where the nutrition data originally comes from.
-     * Either Fineli or Livsmedelsverket.
-     * @see {@link DataSource}.
+     * Either Fineli or Livsmedelsverket. See {@link DataSource}.
      * @return The {@link DataSource} enum.
      */
     public DataSource getDataSource() {

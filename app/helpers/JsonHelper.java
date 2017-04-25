@@ -72,7 +72,7 @@ public class JsonHelper {
         output.put("food", toJson(ingredient.getFood()));
         output.put("amount", Json.toJson(ingredient.getAmount()));
         output.put("comment", ingredient.comment);
-        output.put("kcal", ingredient.getEnergyKcal());
+        output.put("kcal", ingredient.getNutrient(Nutrient.KCAL));
         return output;
     }
 }
