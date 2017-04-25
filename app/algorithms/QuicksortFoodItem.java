@@ -75,7 +75,7 @@ public class QuicksortFoodItem {
         double sum = 0d;
 
         sum +=
-            Math.abs(food1.getNutrient(Nutrient.KJ) - foodWeCompare.getNutrient(Nutrient.KJ)) * 20;
+            Math.abs(food1.getNutrient(Nutrient.ENERGY_KJ) - foodWeCompare.getNutrient(Nutrient.ENERGY_KJ)) * 20;
         sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES))
             * 20;
         sum += Math.abs(food1.getNutrient(Nutrient.FAT) - foodWeCompare.getNutrient(Nutrient.FAT))
@@ -112,7 +112,7 @@ public class QuicksortFoodItem {
 
         double sum = 0f;
 
-        sum += Math.abs(food1.getNutrient(Nutrient.KCAL) - foodWeCompare.getNutrient(Nutrient.KCAL))*20;
+        sum += Math.abs(food1.getNutrient(Nutrient.ENERGY_KCAL) - foodWeCompare.getNutrient(Nutrient.ENERGY_KCAL))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.CARBOHYDRATES) - foodWeCompare.getNutrient(Nutrient.CARBOHYDRATES))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.FAT) - foodWeCompare.getNutrient(Nutrient.FAT))*20;
         sum += Math.abs(food1.getNutrient(Nutrient.PROTEIN) - foodWeCompare.getNutrient(Nutrient.PROTEIN))*20;

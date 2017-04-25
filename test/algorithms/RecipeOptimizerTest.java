@@ -25,7 +25,7 @@ public class RecipeOptimizerTest {
         List<Ingredient> ingredients = optimized.ingredients;
             for( int i=0; i<ingredients.size(); i++ ) {
                 Ingredient ingredient = ingredients.get(i);
-                System.out.println(ingredient.getAmount().getAmount()+"  "+ingredient.getFoodItem().getName());
+                System.out.println(ingredient.getQuantity().getQuantity()+"  "+ingredient.getFoodItem().getName());
          }
         HashMap<Nutrient, Double> nutReq1=TestVariables.user1.hmap;
         System.out.println(nutReq1.get(Nutrient.CaloriKcal));

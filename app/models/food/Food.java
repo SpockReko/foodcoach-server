@@ -10,10 +10,11 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static models.food.Category.Sotsaker;
-
 /**
- * Created by fredrikkindstrom on 2017-04-04.
+ * A factual food with attached nutrition information and other meta data.
+ * All foods belong to a {@link FoodGroup}.
+ *
+ * @author Fredrik Kindstrom
  */
 @Entity
 @Table(name = "Foods")
@@ -24,7 +25,7 @@ public class Food extends Model {
 
     @NotNull public String name;
     @JsonBackReference
-    @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public FoodGeneral general;
+    @NotNull @ManyToOne(cascade = CascadeType.PERSIST) public FoodGroup group;
     @DbArray(length = 255) public List<String> tags = new ArrayList<>();
 
     public String scientificName;
@@ -35,6 +36,7 @@ public class Food extends Model {
     @Enumerated(EnumType.STRING) public Processing processing;
     @Enumerated(EnumType.STRING) public Category category;
     @ManyToMany(cascade = CascadeType.ALL) public List<Diet> diets = new ArrayList<>();
+    @Enumerated(EnumType.STRING) private final DataSource dataSource;
 
     private Double energyKj;
     @Column(name = "carbohydrates_g") private Double carbohydrates;
@@ -67,14 +69,53 @@ public class Food extends Model {
     @Column(name = "selenium_ug") private Double selenium;
     @Column(name = "zinc_mg") private Double zinc;
 
-    @Enumerated(EnumType.STRING) private final DataSource dataSource;
-
+    /**
+     * Simple test constructor for a food.
+     * @param name The name of the food.
+     * @param dataSourceId The id of the food in the database the nutrition data is from.
+     * @param dataSource The source of the nutrition information.
+     */
     public Food(String name, int dataSourceId, DataSource dataSource) {
         this.name = name;
         this.dataSourceId = dataSourceId;
         this.dataSource = dataSource;
     }
 
+    /**
+     * Complete constructor for a food. The excessive amount of parameters is because
+     * we don't want the nutrition data to be modified in a later stage.
+     * @param name The name of the food.
+     * @param dataSourceId The id of the food in the database the nutrition data is from.
+     * @param dataSource The source of the nutrition information.
+     * @param energyKj The amount of energy per 100g in kj.
+     * @param carbohydrates The amount of carbohydrates per 100g in grams.
+     * @param protein The amount of protein per 100g in grams.
+     * @param fat The amount of fat per 100g in grams.
+     * @param fibre The amount of fibre per 100g in grams.
+     * @param alcohol The amount of alcohol per 100g in grams.
+     * @param salt The amount of salt per 100g in grams.
+     * @param vitaminA The amount of vitamin A per 100g in micrograms.
+     * @param vitaminB6 The amount of vitamin B6 per 100g in micrograms.
+     * @param vitaminB12 The amount of vitamin B12 per 100g in micrograms.
+     * @param vitaminC The amount of vitamin C per 100g in milligrams.
+     * @param vitaminD The amount of vitamin D per 100g in micrograms.
+     * @param vitaminE The amount of vitamin E per 100g in milligrams.
+     * @param vitaminK The amount of vitamin K per 100g in micrograms.
+     * @param thiamine The amount of thiamine per 100g in milligrams.
+     * @param riboflavin The amount of riboflavin per 100g in milligrams.
+     * @param niacin The amount of niacin per 100g in milligrams.
+     * @param niacinEquivalents The amount of niacin equivalents per 100g in milligrams.
+     * @param folate The amount of folate per 100g in micrograms.
+     * @param phosphorus The amount of phosphorus per 100g in milligrams.
+     * @param iodine The amount of iodine per 100g in micrograms.
+     * @param iron The amount of iron per 100g in milligrams.
+     * @param calcium The amount of calcium per 100g in milligrams.
+     * @param potassium The amount of potassium per 100g in milligrams.
+     * @param magnesium The amount of magnesium per 100g in milligrams.
+     * @param sodium The amount of sodium per 100g in milligrams.
+     * @param selenium The amount of selenium per 100g in micrograms.
+     * @param zinc The amount of zinc per 100g in milligrams.
+     */
     public Food(String name, int dataSourceId, DataSource dataSource, Double energyKj,
         Double carbohydrates, Double protein, Double fat, Double fibre, Double alcohol, Double salt,
         Double vitaminA, Double vitaminB6, Double vitaminB12, Double vitaminC, Double vitaminD,
@@ -117,20 +158,45 @@ public class Food extends Model {
 
     public static Finder<Long, Food> find = new Finder<>(Food.class);
 
+    /**
+     * The unique id of the food in the database.
+     * @return The id as a long.
+     */
     public long getId() {
         return id;
     }
+
+    /**
+     * The id of the food in the source database where the nutrition data originally comes from.
+     * Either Fineli "livsmedelskod" or Livsmedelsverket "livsmedelsnummer". See {@link DataSource}.
+     * @return The id as an integer.
+     */
     public int getDataSourceId() {
         return dataSourceId;
     }
+
+    /**
+     * The source database where the nutrition data originally comes from.
+     * Either Fineli or Livsmedelsverket. See {@link DataSource}.
+     * @return The {@link DataSource} enum.
+     */
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    /**
+     * Returns a nutrient value for the specified nutrient.
+     * @param nutrient The nutrient which you want information for. See {@link Nutrient}.
+     * @return The nutrient value as a double, 0.0 if no value is present.
+     */
     public double getNutrient(Nutrient nutrient) {
         Double value;
         // TODO Returning 0 instead of null where no data present for now
         switch (nutrient) {
-            case KCAL:
+            case ENERGY_KCAL:
                 value = energyKj / Constants.KCAL_FACTOR;
                 break;
-            case KJ:
+            case ENERGY_KJ:
                 value = energyKj;
                 break;
             case CARBOHYDRATES:
@@ -220,123 +286,11 @@ public class Food extends Model {
         return value != null ? value : 0d;
     }
 
+    /**
+     * Returns estimated CO2 emission for 100g of the food in kilograms.
+     * @return The CO2 emission value as a double, 0.0 if no value is present.
+     */
     public double getCO2() {
-        if (this.category == null) {
-            return 0.0;
-        }
-        //frukt, gronsaker
-        switch (this.category) {
-            case appelfrukt:
-            case Citrusfrukter:
-            case ovrig_frukt:
-            case Fruktkonserver:
-            case Bladgronsaker:
-            case Gronsaksfrukt:
-            case Gronsakskonserver:
-            case Bar:
-            case Kal:
-            case Svamp:
-            case Lokgronsaker:
-                return 0.1;
-            case Rot_och_knolvaxter:
-                return 0.02;
-            case Saftdrycker:
-            case Juicer:
-                return 0.1;
-            case Kaffe:
-            case Te:
-                return 0.3;
-            case ovriga_alkoholdrycker:
-            case Starksprit:
-            case ol:
-            case Vin:
-                return 0.3;
-            case Baljvaxter:
-                return 0.07;
-            case Notter_fron:
-                return 0.15;
-            //kolhydrat
-            case ovrigt_spannmal:
-            case Vete:
-            case Havre_korn:
-            case Socker_sirap:
-            case Starkelse:
-            case Sotningsmedel:
-            case Torrt_brod:
-            case Rag:
-                return 0.06;
-            case Ris:
-                return 0.2;
-            case Pasta_makaroner:
-                return 0.08;
-            case Potatis:
-            case Potatisprodukter:
-                return 0.01;
-            //mejeri
-            case Mjolk:
-            case Modersmjolksersattningar_och_modersmjolk:
-            case Syrade_mjolkprodukter:
-            case ovrig_mjolk:
-                return 0.1;
-            case agg_honsagg:
-            case agg_av_andra_faglar:
-                return 0.15;
-            case Ost:
-                return 0.8;
-            case Smor_mjolkfettblandningar:
-            case Animaliskt_fett:
-                return 0.8;
-            case Margarin_och_matfett_under_55:
-            case Margarin_och_matfett_over_55:
-            case ovriga_fetter_fettprodukter:
-                return 0.15;
-            case Gradde_creme:
-                return 0.4;
-            //sas, krydda
-            case Kryddsaser:
-            case Torkade_orter:
-            case Hjalpamnen_vid_tillverkning:
-            case Torkade_kryddor:
-            case Salt:
-            case Kliniska_naringspreparat:
-                return 0.1;
-            case Olja:
-            case Matlagnings_och_industrifett:
-                return 0.15;
-            //kott
-            case Fisk:
-            case Fiskprodukter:
-            case Skaldjur:
-                return 0.3;
-            case Not:
-                return 2.6;
-            case Gris:
-            case Kottprodukter:
-            case Organ:
-                return 0.6;
-            case Lamm:
-                return 2.1;
-            case Faglar:
-                return 0.3;
-            case Korv:
-                return 0.7;
-            case Vilt:
-                return 0.05;
-            case Sojaprodukter:
-                return 0.4;
-            //godis
-            case Choklad:
-            case Glass:
-            case Sotsaker:
-            case Diverse_godis:
-            case Snacks:
-                return 0.2;
-            case Laskedrycker:
-                return 00.3;
-            case Vatten:
-                return 0.0;
-            default:
-                throw new IllegalArgumentException("No such category!");
-        }
+        return this.category == null ? 0.0 : Constants.CO2(this.category);
     }
 }

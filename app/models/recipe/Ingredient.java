@@ -29,134 +29,79 @@ public class Ingredient extends Model {
 
     @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
 
+    /**
+     * Basic constructor for an ingredient. Needs a food and an amount.
+     * @param food The food the ingredient consists of.
+     * @param amount The amount the food is present in.
+     */
     public Ingredient(Food food, Amount amount) {
         this.food = food;
         this.amount = amount;
     }
 
+    /**
+     * Same as basic constructor but adds a comment generated from parsing.
+     * @param food The food the ingredient consists of.
+     * @param amount The amount the food is present in.
+     * @param comment A string comment that can be about how to cook the ingredient etc.
+     */
     public Ingredient(Food food, Amount amount, String comment) {
         this.food = food;
         this.amount = amount;
         this.comment = comment;
     }
 
-
+    /**
+     * Gives the attached food that the ingredient consists of.
+     * @return The food the ingredient consists of.
+     */
     public Food getFood() {
         return food;
     }
+
+    /**
+     * Gives the amount the ingredient is present in.
+     * @return The amount the ingredient is present in.
+     */
     public Amount getAmount() {
         return amount;
     }
-    public Double getEnergyKcal() {
-        return multiplier(food.getNutrient(Nutrient.KCAL));
+
+    /**
+     * Returns a total nutrient value for the specified nutrient.
+     * This is multiplied with the amount.
+     * @param nutrient The nutrient which you want information for. See {@link Nutrient}.
+     * @return The nutrient value as a double, 0.0 if no value is present.
+     */
+    public double getNutrient(Nutrient nutrient) {
+        return multiplier(food.getNutrient(nutrient));
     }
+
+    /**
+     * Returns estimated total CO2 emission for the ingredient in kilograms.
+     * This is multiplied with the amount.
+     * @return The CO2 emission value as a double, 0.0 if no value is present.
+     */
     public Double getCO2() {
         return multiplier(food.getCO2());
     }
 
-    public Double getEnergyKj() {
-        return multiplier(food.getNutrient(Nutrient.KJ));
-    }
-    public Double getCarbohydrates() {
-        return multiplier(food.getNutrient(Nutrient.CARBOHYDRATES));
-    }
-    public Double getProtein() {
-        return multiplier(food.getNutrient(Nutrient.PROTEIN));
-    }
-    public Double getFat() {
-        return multiplier(food.getNutrient(Nutrient.FAT));
-    }
-    public Double getFibre() {
-        return multiplier(food.getNutrient(Nutrient.FIBRE));
-    }
-    public Double getAlcohol() {
-        return multiplier(food.getNutrient(Nutrient.ALCOHOL));
-    }
-
-    /*
-    Extra nutrition data
-     */
-    public Double getVitaminA() {
-        return multiplier(food.getNutrient(Nutrient.VITAMIN_A));
-    }
-    public Double getVitaminB6() {
-        return multiplier(food.getNutrient(Nutrient.VITAMIN_B6));
-    }
-    public Double getVitaminB12() {
-        return multiplier(food.getNutrient(Nutrient.VITAMIN_B12));
-    }
-    public Double getVitaminC() {
-        return multiplier(food.getNutrient(Nutrient.VITAMIN_C));
-    }
-    public Double getVitaminD() {
-        return multiplier(food.getNutrient(Nutrient.VITAMIN_D));
-    }
-    public Double getVitaminE() {
-        return multiplier(food.getNutrient(Nutrient.VITAMIN_E));
-    }
-    public Double getThiamine() {
-        return multiplier(food.getNutrient(Nutrient.THIAMINE));
-    }
-    public Double getRiboflavin() {
-        return multiplier(food.getNutrient(Nutrient.RIBOFLAVIN));
-    }
-    public Double getNiacin() {
-        return multiplier(food.getNutrient(Nutrient.NIACIN));
-    }
-    public Double getNiacinEquivalents() {
-        return multiplier(food.getNutrient(Nutrient.NIACIN_EQ));
-    }
-    public Double getFolate() {
-        return multiplier(food.getNutrient(Nutrient.FOLATE));
-    }
-    public Double getPhosphorus() {
-        return multiplier(food.getNutrient(Nutrient.PHOSPHORUS));
-    }
-    public Double getIodine() {
-        return multiplier(food.getNutrient(Nutrient.IODINE));
-    }
-    public Double getIron() {
-        return multiplier(food.getNutrient(Nutrient.IRON));
-    }
-    public Double getCalcium() {
-        return multiplier(food.getNutrient(Nutrient.CALCIUM));
-    }
-    public Double getPotassium() {
-        return multiplier(food.getNutrient(Nutrient.POTASSIUM));
-    }
-    public Double getMagnesium() {
-        return multiplier(food.getNutrient(Nutrient.MAGNESIUM));
-    }
-    public Double getSalt() {
-        return multiplier(food.getNutrient(Nutrient.SALT));
-    }
-    public Double getSelenium() {
-        return multiplier(food.getNutrient(Nutrient.SELENIUM));
-    }
-    public Double getZink() {
-        return multiplier(food.getNutrient(Nutrient.ZINC));
-    }
-
-    private Double multiplier(Double value) {
-        if (value == null) {
-            // TODO return 0.0 for now, would be nice to know if there is no data present instead
-            return 0.0;
-        }
-        double multiplier = amount.getUnit().getFraction() * amount.getAmount();
+    private double multiplier(double value) {
+        double multiplier = amount.getUnit().getFraction() * amount.getQuantity();
         switch (amount.getUnit().getType()) {
             case VOLUME:
                 if (food.densityConstant != null) {
                     multiplier *= food.densityConstant;
                 } else {
-                    //Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
+                    Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
                 }
                 break;
             case SINGLE:
                 if (food.pieceWeightGrams != null) {
-                    multiplier = amount.getAmount() * (food.pieceWeightGrams * 0.01);
+                    multiplier = amount.getQuantity() * (food.pieceWeightGrams * 0.01);
                 } else {
-                    //Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
-                    multiplier = amount.getAmount();
+                    Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
+                    multiplier = amount.getQuantity();
                 }
         }
         return value * multiplier;

@@ -51,7 +51,7 @@ public class Menu {
     }
 
     public String nutritionToString() {
-        String text = "\n\nNäringsvärden i procent av användarens behov: (1 betyder näringsbehovet är uppfyllt)\n\n";
+        String text = "\n\nNäringsvärden i procent av användarens behov: (1 betyder att näringsbehovet är uppfyllt)\n\n";
         for (String comment : this.getCommentList()) {
             text = text + comment + "\n";
         }

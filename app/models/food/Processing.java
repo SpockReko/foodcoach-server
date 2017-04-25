@@ -1,7 +1,8 @@
 package models.food;
 
 /**
- * Created by fredrikkindstrom on 2017-04-04.
+ * Represents a certain kind of precessing that a {@link Food} has gone through.
+ * This is from the Fineli database.
  */
 public enum Processing {
     BAKED_IN_OVEN, BOILED, CANNED, DRIED, FRIED, FROZEN, GRILLED_BROILED, INDUSTRIAL,

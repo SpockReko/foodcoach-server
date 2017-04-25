@@ -23,13 +23,11 @@ import java.io.Reader;
 import java.util.*;
 
 /**
- * Parses through the provided CSV file given by Livsmedelsverket containing foods and their
- * basic data. Sets the correct values to the Java objects and persists them to the database
- * using the Ebean ORM included with the application. Also parses through and insert the
- * meta information provided by Livsmedelsverket for each food.
- * This has been scraped from their website and put into another CSV file.
- * <p>
- * TL;DR Puts all the Livsmedelsverket food data into the database.
+ * Parses through the provided TSV files containing food groups, foods and their basic data.
+ * Sets the correct values to the Java objects and persists them to the database
+ * using the Ebean ORM included with the application.
+ *
+ * Can be executed with the command "sbt seed" to fill an empty database with data.
  *
  * @author Fredrik Kindstrom
  */
@@ -37,16 +35,16 @@ public class DatabaseSeeder {
 
     private static EbeanServer db;
 
-    private static final String FINELI_GENERAL_TSV = "resources/fineli_food/Fineli_GeneralFoods.tsv";
+    private static final String FINELI_GROUP_TSV = "resources/fineli_food/Fineli_FoodGroups.tsv";
     private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_FoodData.tsv";
-    private static final String LMV_GENERAL_TSV = "resources/lmv_food/LMV_GeneralFoods.tsv";
-    private static final String LMV_DATA_TSV = "resources/lmv_food/LMV_FoodData.tsv";
+    private static final String SLV_GROUP_TSV = "resources/slv_food/SLV_FoodGroups.tsv";
+    private static final String SLV_DATA_TSV = "resources/slv_food/SLV_FoodData.tsv";
     private static final String RECIPES_PATH = "resources/recipes/recipes_fineli.csv";
 
     private enum Fineli {
-        GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
-        GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
-        GEN_SCIENTIFIC_NAME(9), GEN_PROCESSING(10), GEN_CLASSIFICATION(11), GEN_SPECIAL_DIETS(13),
+        GROUP_ID(0), GROUP_NAME(1), GROUP_DEFAULT(2), GROUP_SPECIFIC_TAGS(3), GROUP_DISPLAY_NAME(4),
+        GROUP_EXTRA_TAGS(5), GROUP_PIECE_WEIGHT(6), GROUP_DENSITY_CONSTANT(7), GROUP_EXAMPLE_BRANDS(8),
+        GROUP_SCIENTIFIC_NAME(9), GROUP_PROCESSING(10), GROUP_CLASSIFICATION(11), GROUP_SPECIAL_DIETS(13),
         DATA_ID(0), DATA_ENERGY_KJ(2), DATA_CARB(3), DATA_PROTEIN(5), DATA_FAT(4), DATA_FIBRE(7),
         DATA_ALCOHOL(6), DATA_SALT(39), DATA_VITAMIN_A(52), DATA_VITAMIN_B6(47),
         DATA_VITAMIN_B12(50), DATA_VITAMIN_C(51), DATA_VITAMIN_D(54), DATA_VITAMIN_E(55),
@@ -62,10 +60,10 @@ public class DatabaseSeeder {
         }
     }
 
-    private enum LMV {
-        GEN_ID(0), GEN_NAME(1), GEN_DEFAULT(2), GEN_SPECIFIC_TAGS(3), GEN_DISPLAY_NAME(4),
-        GEN_EXTRA_TAGS(5), GEN_PIECE_WEIGHT(6), GEN_DENSITY_CONSTANT(7), GEN_EXAMPLE_BRANDS(8),
-        GEN_SCIENTIFIC_NAME(9),
+    private enum SLV {
+        GROUP_ID(0), GROUP_NAME(1), GROUP_DEFAULT(2), GROUP_SPECIFIC_TAGS(3), GROUP_DISPLAY_NAME(4),
+        GROUP_EXTRA_TAGS(5), GROUP_PIECE_WEIGHT(6), GROUP_DENSITY_CONSTANT(7), GROUP_EXAMPLE_BRANDS(8),
+        GROUP_SCIENTIFIC_NAME(9),
         DATA_ID(1), DATA_ENERGY_KJ(3), DATA_CARB(4), DATA_PROTEIN(6), DATA_FAT(5), DATA_FIBRE(7),
         DATA_ALCOHOL(9), DATA_SALT(55), DATA_VITAMIN_A(35), DATA_VITAMIN_B6(45),
         DATA_VITAMIN_B12(46), DATA_VITAMIN_C(42), DATA_VITAMIN_D(37), DATA_VITAMIN_E(38),
@@ -76,13 +74,13 @@ public class DatabaseSeeder {
 
         private final int id;
 
-        LMV(final int id) {
+        SLV(final int id) {
             this.id = id;
         }
     }
 
-    private static Set<FoodGeneral> generalFoods = new HashSet<>();
-    private static Map<FoodGeneral, Food> defaultFoods = new HashMap<>();
+    private static Set<FoodGroup> foodGroups = new HashSet<>();
+    private static Map<FoodGroup, Food> defaultFoods = new HashMap<>();
     private static List<Food> foods = new ArrayList<>();
     private static List<Diet> diets = new ArrayList<>();
     private static Map<Integer, Integer> fineliRowIds = new HashMap<>();
@@ -96,11 +94,11 @@ public class DatabaseSeeder {
         settings.setNumberOfRowsToSkip(1);
         TsvParser parser = new TsvParser(settings);
 
-        List<String[]> fineliGeneralRows = parser.parseAll(getReader(FINELI_GENERAL_TSV));
+        List<String[]> fineliGroupRows = parser.parseAll(getReader(FINELI_GROUP_TSV));
         List<String[]> fineliDataRows = parser.parseAll(getReader(FINELI_DATA_TSV));
 
-        List<String[]> lmvGeneralRows = parser.parseAll(getReader(LMV_GENERAL_TSV));
-        List<String[]> lmvDataRows = parser.parseAll(getReader(LMV_DATA_TSV));
+        List<String[]> lmvGroupRows = parser.parseAll(getReader(SLV_GROUP_TSV));
+        List<String[]> lmvDataRows = parser.parseAll(getReader(SLV_DATA_TSV));
 
         System.out.println(
             "\n" + PURPLE + "--- (Seeding database) ---\n" + RESET);
@@ -118,27 +116,27 @@ public class DatabaseSeeder {
             fineliRowIds.put(Integer.parseInt(fineliDataRows.get(i)[Fineli.DATA_ID.id]), i);
         }
         for (int i = 0; i < lmvDataRows.size(); i++) {
-            lmvRowIds.put(Integer.parseInt(lmvDataRows.get(i)[LMV.DATA_ID.id]), i);
+            lmvRowIds.put(Integer.parseInt(lmvDataRows.get(i)[SLV.DATA_ID.id]), i);
         }
 
         System.out.print(CYAN + "Parsing foods from Fineli... " + RESET);
-        for (String[] cols : fineliGeneralRows) {
-            readGeneralRow(cols, fineliDataRows);
+        for (String[] cols : fineliGroupRows) {
+            readGroupRow(cols, fineliDataRows);
         }
         printDone();
 
         System.out.print(CYAN + "Parsing extra foods from Livsmedelsverket... " + RESET);
-        for (String[] cols : lmvGeneralRows) {
-            readExtraGeneralRow(cols, lmvDataRows);
+        for (String[] cols : lmvGroupRows) {
+            readExtraGroupRow(cols, lmvDataRows);
         }
         printDone();
 
         System.out.print(CYAN + "Persisting to database... " + RESET);
-        db.saveAll(generalFoods);
+        db.saveAll(foodGroups);
         db.saveAll(foods);
-        for (FoodGeneral generalFood : generalFoods) {
-            generalFood.defaultFood = defaultFoods.get(generalFood);
-            db.save(generalFood);
+        for (FoodGroup foodGroup : foodGroups) {
+            foodGroup.defaultFood = defaultFoods.get(foodGroup);
+            db.save(foodGroup);
         }
         printDone();
 
@@ -149,17 +147,17 @@ public class DatabaseSeeder {
         System.out.println();
     }
 
-    private static void readGeneralRow(String[] cols, List<String[]> dataRows) {
-        FoodGeneral generalFood;
-        if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[Fineli.GEN_NAME.id]))) {
-            generalFood = generalFoods.stream()
-                .filter(g -> g.name.equals(cols[Fineli.GEN_NAME.id])).findFirst().get();
+    private static void readGroupRow(String[] cols, List<String[]> dataRows) {
+        FoodGroup foodGroup;
+        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[Fineli.GROUP_NAME.id]))) {
+            foodGroup = foodGroups.stream()
+                .filter(g -> g.name.equals(cols[Fineli.GROUP_NAME.id])).findFirst().get();
         } else {
-            generalFood = new FoodGeneral(cols[Fineli.GEN_NAME.id]);
+            foodGroup = new FoodGroup(cols[Fineli.GROUP_NAME.id]);
         }
 
-        String name = cols[Fineli.GEN_DISPLAY_NAME.id];
-        int fineliId = Integer.parseInt(cols[Fineli.GEN_ID.id]);
+        String name = cols[Fineli.GROUP_DISPLAY_NAME.id];
+        int fineliId = Integer.parseInt(cols[Fineli.GROUP_ID.id]);
         String[] rows = dataRows.get(fineliRowIds.get(fineliId));
         Food specificFood = new Food(
             name, fineliId, DataSource.FINELI,
@@ -193,129 +191,129 @@ public class DatabaseSeeder {
             toDouble(rows[Fineli.DATA_ZINK.id])
         );
 
-        if (cols[Fineli.GEN_SPECIFIC_TAGS.id] != null) {
-            String[] tags = cols[Fineli.GEN_SPECIFIC_TAGS.id].split(",");
+        if (cols[Fineli.GROUP_SPECIFIC_TAGS.id] != null) {
+            String[] tags = cols[Fineli.GROUP_SPECIFIC_TAGS.id].split(",");
             Arrays.setAll(tags, i -> tags[i].trim());
             Collections.addAll(specificFood.tags, tags);
         }
-        if (cols[Fineli.GEN_PIECE_WEIGHT.id] != null) {
-            specificFood.pieceWeightGrams = Integer.parseInt(cols[Fineli.GEN_PIECE_WEIGHT.id]);
+        if (cols[Fineli.GROUP_PIECE_WEIGHT.id] != null) {
+            specificFood.pieceWeightGrams = Integer.parseInt(cols[Fineli.GROUP_PIECE_WEIGHT.id]);
         }
-        if (cols[Fineli.GEN_DENSITY_CONSTANT.id] != null) {
-            specificFood.densityConstant = Double.parseDouble(cols[Fineli.GEN_DENSITY_CONSTANT.id]);
+        if (cols[Fineli.GROUP_DENSITY_CONSTANT.id] != null) {
+            specificFood.densityConstant = Double.parseDouble(cols[Fineli.GROUP_DENSITY_CONSTANT.id]);
         }
-        if (cols[Fineli.GEN_EXAMPLE_BRANDS.id] != null) {
-            specificFood.exampleBrands = cols[Fineli.GEN_EXAMPLE_BRANDS.id].trim();
+        if (cols[Fineli.GROUP_EXAMPLE_BRANDS.id] != null) {
+            specificFood.exampleBrands = cols[Fineli.GROUP_EXAMPLE_BRANDS.id].trim();
         }
-        if (cols[Fineli.GEN_SCIENTIFIC_NAME.id] != null) {
-            specificFood.scientificName = cols[Fineli.GEN_SCIENTIFIC_NAME.id].trim();
+        if (cols[Fineli.GROUP_SCIENTIFIC_NAME.id] != null) {
+            specificFood.scientificName = cols[Fineli.GROUP_SCIENTIFIC_NAME.id].trim();
         }
-        if (cols[Fineli.GEN_PROCESSING.id] != null) {
-            specificFood.processing = getProcessing(cols[Fineli.GEN_PROCESSING.id].trim());
+        if (cols[Fineli.GROUP_PROCESSING.id] != null) {
+            specificFood.processing = getProcessing(cols[Fineli.GROUP_PROCESSING.id].trim());
         }
-        if (cols[Fineli.GEN_CLASSIFICATION.id] != null) {
-            specificFood.category = getCategory(cols[Fineli.GEN_CLASSIFICATION.id].trim());
+        if (cols[Fineli.GROUP_CLASSIFICATION.id] != null) {
+            specificFood.category = getCategory(cols[Fineli.GROUP_CLASSIFICATION.id].trim());
         }
-        if (cols[Fineli.GEN_SPECIAL_DIETS.id] != null) {
-            String[] diets = cols[Fineli.GEN_SPECIAL_DIETS.id].split(",");
+        if (cols[Fineli.GROUP_SPECIAL_DIETS.id] != null) {
+            String[] diets = cols[Fineli.GROUP_SPECIAL_DIETS.id].split(",");
             for (String diet : diets) {
                 specificFood.diets.add(getDiet(diet.trim()));
             }
         }
 
-        if (cols[Fineli.GEN_DEFAULT.id] != null) {
-            if (cols[Fineli.GEN_EXTRA_TAGS.id] != null) {
-                String[] tags = cols[Fineli.GEN_EXTRA_TAGS.id].split(",");
+        if (cols[Fineli.GROUP_DEFAULT.id] != null) {
+            if (cols[Fineli.GROUP_EXTRA_TAGS.id] != null) {
+                String[] tags = cols[Fineli.GROUP_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
-                    generalFood.searchTags.add(tag.trim());
+                    foodGroup.searchTags.add(tag.trim());
                 }
             }
-            defaultFoods.put(generalFood, specificFood);
+            defaultFoods.put(foodGroup, specificFood);
         } else {
-            generalFood.foods.add(specificFood);
+            foodGroup.foods.add(specificFood);
         }
 
-        specificFood.general = generalFood;
-        generalFoods.add(generalFood);
+        specificFood.group = foodGroup;
+        foodGroups.add(foodGroup);
         foods.add(specificFood);
     }
 
-    private static void readExtraGeneralRow(String[] cols, List<String[]> dataRows) {
-        FoodGeneral generalFood;
-        if (generalFoods.stream().anyMatch(g -> g.name.equals(cols[LMV.GEN_NAME.id]))) {
-            generalFood = generalFoods.stream()
-                .filter(g -> g.name.equals(cols[LMV.GEN_NAME.id])).findFirst().get();
+    private static void readExtraGroupRow(String[] cols, List<String[]> dataRows) {
+        FoodGroup foodGroup;
+        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[SLV.GROUP_NAME.id]))) {
+            foodGroup = foodGroups.stream()
+                .filter(g -> g.name.equals(cols[SLV.GROUP_NAME.id])).findFirst().get();
         } else {
-            generalFood = new FoodGeneral(cols[LMV.GEN_NAME.id]);
+            foodGroup = new FoodGroup(cols[SLV.GROUP_NAME.id]);
         }
 
-        String name = cols[LMV.GEN_DISPLAY_NAME.id];
-        int lmvId = Integer.parseInt(cols[LMV.GEN_ID.id]);
+        String name = cols[SLV.GROUP_DISPLAY_NAME.id];
+        int lmvId = Integer.parseInt(cols[SLV.GROUP_ID.id]);
         String[] rows = dataRows.get(lmvRowIds.get(lmvId));
         Food specificFood = new Food(
-            name, lmvId, DataSource.LMV,
-            toDouble(rows[LMV.DATA_ENERGY_KJ.id]),
-            toDouble(rows[LMV.DATA_CARB.id]),
-            toDouble(rows[LMV.DATA_PROTEIN.id]),
-            toDouble(rows[LMV.DATA_FAT.id]),
-            toDouble(rows[LMV.DATA_FIBRE.id]),
-            toDouble(rows[LMV.DATA_ALCOHOL.id]),
-            toDouble(rows[LMV.DATA_SALT.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_A.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_B6.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_B12.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_C.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_D.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_E.id]),
-            toDouble(rows[LMV.DATA_VITAMIN_K.id]),
-            toDouble(rows[LMV.DATA_THIAMINE.id]),
-            toDouble(rows[LMV.DATA_RIBOFLAVIN.id]),
-            toDouble(rows[LMV.DATA_NIACIN.id]),
-            toDouble(rows[LMV.DATA_NIACIN_EQ.id]),
-            toDouble(rows[LMV.DATA_FOLATE.id]),
-            toDouble(rows[LMV.DATA_PHOSPHORUS.id]),
-            toDouble(rows[LMV.DATA_IODINE.id]),
-            toDouble(rows[LMV.DATA_IRON.id]),
-            toDouble(rows[LMV.DATA_CALCIUM.id]),
-            toDouble(rows[LMV.DATA_POTASSIUM.id]),
-            toDouble(rows[LMV.DATA_MAGNESIUM.id]),
-            toDouble(rows[LMV.DATA_SODIUM.id]),
-            toDouble(rows[LMV.DATA_SELENIUM.id]),
-            toDouble(rows[LMV.DATA_ZINK.id])
+            name, lmvId, DataSource.SLV,
+            toDouble(rows[SLV.DATA_ENERGY_KJ.id]),
+            toDouble(rows[SLV.DATA_CARB.id]),
+            toDouble(rows[SLV.DATA_PROTEIN.id]),
+            toDouble(rows[SLV.DATA_FAT.id]),
+            toDouble(rows[SLV.DATA_FIBRE.id]),
+            toDouble(rows[SLV.DATA_ALCOHOL.id]),
+            toDouble(rows[SLV.DATA_SALT.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_A.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_B6.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_B12.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_C.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_D.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_E.id]),
+            toDouble(rows[SLV.DATA_VITAMIN_K.id]),
+            toDouble(rows[SLV.DATA_THIAMINE.id]),
+            toDouble(rows[SLV.DATA_RIBOFLAVIN.id]),
+            toDouble(rows[SLV.DATA_NIACIN.id]),
+            toDouble(rows[SLV.DATA_NIACIN_EQ.id]),
+            toDouble(rows[SLV.DATA_FOLATE.id]),
+            toDouble(rows[SLV.DATA_PHOSPHORUS.id]),
+            toDouble(rows[SLV.DATA_IODINE.id]),
+            toDouble(rows[SLV.DATA_IRON.id]),
+            toDouble(rows[SLV.DATA_CALCIUM.id]),
+            toDouble(rows[SLV.DATA_POTASSIUM.id]),
+            toDouble(rows[SLV.DATA_MAGNESIUM.id]),
+            toDouble(rows[SLV.DATA_SODIUM.id]),
+            toDouble(rows[SLV.DATA_SELENIUM.id]),
+            toDouble(rows[SLV.DATA_ZINK.id])
         );
 
-        if (cols[LMV.GEN_SPECIFIC_TAGS.id] != null) {
-            String[] tags = cols[LMV.GEN_SPECIFIC_TAGS.id].split(",");
+        if (cols[SLV.GROUP_SPECIFIC_TAGS.id] != null) {
+            String[] tags = cols[SLV.GROUP_SPECIFIC_TAGS.id].split(",");
             Arrays.setAll(tags, i -> tags[i].trim());
             Collections.addAll(specificFood.tags, tags);
         }
-        if (cols[LMV.GEN_PIECE_WEIGHT.id] != null) {
-            specificFood.pieceWeightGrams = Integer.parseInt(cols[LMV.GEN_PIECE_WEIGHT.id]);
+        if (cols[SLV.GROUP_PIECE_WEIGHT.id] != null) {
+            specificFood.pieceWeightGrams = Integer.parseInt(cols[SLV.GROUP_PIECE_WEIGHT.id]);
         }
-        if (cols[LMV.GEN_DENSITY_CONSTANT.id] != null) {
-            specificFood.densityConstant = Double.parseDouble(cols[LMV.GEN_DENSITY_CONSTANT.id]);
+        if (cols[SLV.GROUP_DENSITY_CONSTANT.id] != null) {
+            specificFood.densityConstant = Double.parseDouble(cols[SLV.GROUP_DENSITY_CONSTANT.id]);
         }
-        if (cols[LMV.GEN_EXAMPLE_BRANDS.id] != null) {
-            specificFood.exampleBrands = cols[LMV.GEN_EXAMPLE_BRANDS.id].trim();
+        if (cols[SLV.GROUP_EXAMPLE_BRANDS.id] != null) {
+            specificFood.exampleBrands = cols[SLV.GROUP_EXAMPLE_BRANDS.id].trim();
         }
-        if (cols[LMV.GEN_SCIENTIFIC_NAME.id] != null) {
-            specificFood.scientificName = cols[LMV.GEN_SCIENTIFIC_NAME.id].trim();
+        if (cols[SLV.GROUP_SCIENTIFIC_NAME.id] != null) {
+            specificFood.scientificName = cols[SLV.GROUP_SCIENTIFIC_NAME.id].trim();
         }
 
-        if (cols[LMV.GEN_DEFAULT.id] != null) {
-            if (cols[LMV.GEN_EXTRA_TAGS.id] != null) {
-                String[] tags = cols[LMV.GEN_EXTRA_TAGS.id].split(",");
+        if (cols[SLV.GROUP_DEFAULT.id] != null) {
+            if (cols[SLV.GROUP_EXTRA_TAGS.id] != null) {
+                String[] tags = cols[SLV.GROUP_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
-                    generalFood.searchTags.add(tag.trim());
+                    foodGroup.searchTags.add(tag.trim());
                 }
             }
-            defaultFoods.put(generalFood, specificFood);
+            defaultFoods.put(foodGroup, specificFood);
         } else {
-            generalFood.foods.add(specificFood);
+            foodGroup.foods.add(specificFood);
         }
 
-        specificFood.general = generalFood;
-        generalFoods.add(generalFood);
+        specificFood.group = foodGroup;
+        foodGroups.add(foodGroup);
         foods.add(specificFood);
     }
 
@@ -463,117 +461,117 @@ public class DatabaseSeeder {
 
     private static Category getCategory(String str) {
         switch (str) {
-            case "Baljväxter": return Category.Baljvaxter;
-            case "Övrig frukt": return Category.ovrig_frukt;
-            case "Fruktkonserver": return Category.Fruktkonserver;
-            case "Juicer": return Category.Juicer;
-            case "Saftdrycker": return Category.Saftdrycker;
-            case "Fiskprodukter": return Category.Fiskprodukter;
-            case "Citrusfrukter": return Category.Citrusfrukter;
-            case "Äppelfrukt": return Category.appelfrukt;
-            case "Bladgrönsaker": return Category.Bladgronsaker;
-            case "Grönsaksfrukt": return Category.Gronsaksfrukt;
-            case "Rot- och knölväxter": return Category.Rot_och_knolvaxter;
-            case "Olja": return Category.Olja;
-            case "Gris": return Category.Gris;
-            case "Matlagnings- och industrifett": return Category.Matlagnings_och_industrifett;
-            case "Hjälpämnen vid tillverkning": return Category.Hjalpamnen_vid_tillverkning;
-            case "Korv": return Category.Korv;
-            case "Grönsakskonserver": return Category.Gronsakskonserver;
-            case "Bär": return Category.Bar;
-            case "Mjölk": return Category.Mjolk;
-            case "Torkade örter": return Category.Torkade_orter;
-            case "Skaldjur": return Category.Skaldjur;
-            case "Ost": return Category.Ost;
-            case "Nöt": return Category.Not;
-            case "Organ": return Category.Organ;
-            case "Kål": return Category.Kal;
-            case "Övrigt spannmål": return Category.ovrigt_spannmal;
-            case "Fisk": return Category.Fisk;
-            case "Köttprodukter": return Category.Kottprodukter;
-            case "Fåglar": return Category.Faglar;
-            case "Modersmjölksersättningar och modersmjölk": return Category.Modersmjolksersattningar_och_modersmjolk;
-            case "Kaffe": return Category.Kaffe;
-            case "Nötter, frön": return Category.Notter_fron;
-            case "Svamp": return Category.Svamp;
-            case "Choklad": return Category.Choklad;
-            case "Övriga alkoholdrycker": return Category.ovriga_alkoholdrycker;
-            case "Vete": return Category.Vete;
-            case "Grädde/creme": return Category.Gradde_creme;
-            case "Kryddsåser": return Category.Kryddsaser;
-            case "Syrade mjölkprodukter": return Category.Syrade_mjolkprodukter;
-            case "Socker, sirap": return Category.Socker_sirap;
-            case "Sötsaker": return Category.Sotsaker;
-            case "Läskedrycker": return Category.Laskedrycker;
-            case "Pasta, makaroner": return Category.Pasta_makaroner;
-            case "Glass": return Category.Glass;
-            case "Ris": return Category.Ris;
-            case "Lökgrönsaker": return Category.Lokgronsaker;
-            case "Övriga fetter, fettprodukter": return Category.ovriga_fetter_fettprodukter;
-            case "Vilt": return Category.Vilt;
-            case "Havre, korn": return Category.Havre_korn;
-            case "Starksprit": return Category.Starksprit;
-            case "Stärkelse": return Category.Starkelse;
-            case "Lamm": return Category.Lamm;
-            case "Kliniska näringspreparat": return Category.Kliniska_naringspreparat;
-            case "Margarin och matfett >55 %": return Category.Margarin_och_matfett_over_55;
-            case "Margarin och matfett <55 %": return Category.Margarin_och_matfett_under_55;
-            case "Smör, mjölkfettblandningar": return Category.Smor_mjolkfettblandningar;
-            case "Vatten": return Category.Vatten;
-            case "Råg": return Category.Rag;
-            case "Övrig mjölk": return Category.ovrig_mjolk;
-            case "Diverse godis": return Category.Diverse_godis;
-            case "Öl": return Category.ol;
-            case "Torkade kryddor": return Category.Torkade_kryddor;
-            case "Potatisprodukter": return Category.Potatisprodukter;
-            case "Potatis": return Category.Potatis;
-            case "Vin": return Category.Vin;
-            case "Salt": return Category.Salt;
-            case "Torrt bröd": return Category.Torrt_brod;
-            case "Sojaprodukter": return Category.Sojaprodukter;
-            case "Sötningsmedel": return Category.Sotningsmedel;
-            case "Animaliskt fett": return Category.Animaliskt_fett;
-            case "Te": return Category.Te;
-            case "Snacks": return Category.Snacks;
-            case "Ägg av andra fåglar": return Category.agg_honsagg;
-            case "Ägg, hönsägg": return Category.agg_honsagg;
+            case "Baljväxter": return Category.PULSES_VEGETABLES;
+            case "Övrig frukt": return Category.OTHER_FRUITS;
+            case "Fruktkonserver": return Category.CANNED_FRUITS;
+            case "Juicer": return Category.JUICES;
+            case "Saftdrycker": return Category.JUICE_DRINKS;
+            case "Fiskprodukter": return Category.FISH_PRODUCTS;
+            case "Citrusfrukter": return Category.CITRUS_FRUITS;
+            case "Äppelfrukt": return Category.MALACEOUS_FRUITS;
+            case "Bladgrönsaker": return Category.LEAF_VEGETABLES;
+            case "Grönsaksfrukt": return Category.FRUIT_VEGETABLES;
+            case "Rot- och knölväxter": return Category.ROOT_VEGETABLES_AND_TUBERS;
+            case "Olja": return Category.OILS;
+            case "Gris": return Category.PORK;
+            case "Matlagnings- och industrifett": return Category.FATS_FOR_COOKING_AND_INDUSTRIA;
+            case "Hjälpämnen vid tillverkning": return Category.MISCELLANEOUS_INGREDIENTS;
+            case "Korv": return Category.SAUSAGES;
+            case "Grönsakskonserver": return Category.CANNED_VEGETABLES;
+            case "Bär": return Category.BERRIES;
+            case "Mjölk": return Category.MILK;
+            case "Torkade örter": return Category.DRIED_HERBS;
+            case "Skaldjur": return Category.CRUSTACEANS_AND_MOLLUSCS;
+            case "Ost": return Category.CHEESE;
+            case "Nöt": return Category.BEEF;
+            case "Organ": return Category.OFFAL;
+            case "Kål": return Category.CABBAGES;
+            case "Övrigt spannmål": return Category.OTHER_GRAINS;
+            case "Fisk": return Category.FISH;
+            case "Köttprodukter": return Category.MEAT_PRODUCTS;
+            case "Fåglar": return Category.BIRDS;
+            case "Modersmjölksersättningar och modersmjölk": return Category.INFANT_FORMULAS_AND_HUMAN_MILK;
+            case "Kaffe": return Category.COFFEE;
+            case "Nötter, frön": return Category.NUTS_AND_SEEDS;
+            case "Svamp": return Category.EDIBLE_FUNGI;
+            case "Choklad": return Category.CHOCOLATE;
+            case "Övriga alkoholdrycker": return Category.OTHER_ALCOHOLIC_BEVERAGES;
+            case "Vete": return Category.WHEAT;
+            case "Grädde/creme": return Category.CREAM;
+            case "Kryddsåser": return Category.CONDIMENTS;
+            case "Syrade mjölkprodukter": return Category.FERMENTED_MILK_PRODUCTS;
+            case "Socker, sirap": return Category.SUGAR_AND_SYRUPS;
+            case "Sötsaker": return Category.NON_CHOCOLATE_CONFECTIONERY;
+            case "Läskedrycker": return Category.SOFT_DRINKS;
+            case "Pasta, makaroner": return Category.PASTA_AND_MACARONI;
+            case "Glass": return Category.ICE_CREAM;
+            case "Ris": return Category.RICE;
+            case "Lökgrönsaker": return Category.ONION_FAMILY_VEGETABLES;
+            case "Övriga fetter, fettprodukter": return Category.OTHER_FAT_PRODUCTS;
+            case "Vilt": return Category.GAME_MEAT;
+            case "Havre, korn": return Category.OATS_AND_BARLEY;
+            case "Starksprit": return Category.SPIRITS;
+            case "Stärkelse": return Category.STARCHES;
+            case "Lamm": return Category.LAMB;
+            case "Kliniska näringspreparat": return Category.PRODUCTS_FOR_NUTRITIONAL_SUPPORT;
+            case "Margarin och matfett >55 %": return Category.MARGARINE_FAT_SPREAD_OVER_55;
+            case "Margarin och matfett <55 %": return Category.MARGARINE_FAT_SPREAD_UNDER_55;
+            case "Smör, mjölkfettblandningar": return Category.BUTTER_AND_BUTTER_SPREADS;
+            case "Vatten": return Category.WATER;
+            case "Råg": return Category.RYE;
+            case "Övrig mjölk": return Category.OTHER_MILK_PRODUCTS;
+            case "Diverse godis": return Category.OTHER_SUGAR_PRODUCTS;
+            case "Öl": return Category.BEER;
+            case "Torkade kryddor": return Category.DRIED_SPICES;
+            case "Potatisprodukter": return Category.POTATO_PRODUCTS;
+            case "Potatis": return Category.POTATOES;
+            case "Vin": return Category.WINE;
+            case "Salt": return Category.SALT;
+            case "Torrt bröd": return Category.CRISPBREADS;
+            case "Sojaprodukter": return Category.SOYA_PRODUCTS;
+            case "Sötningsmedel": return Category.SWEETENERS;
+            case "Animaliskt fett": return Category.ANIMAL_FATS;
+            case "Te": return Category.TEA;
+            case "Snacks": return Category.SNACKS;
+            case "Ägg av andra fåglar": return Category.CHICKEN_EGGS;
+            case "Ägg, hönsägg": return Category.CHICKEN_EGGS;
             // For windows with error for å,ä,ö.
-            case "Baljvaxter": return Category.Baljvaxter;
-            case "Ovrig frukt": return Category.ovrig_frukt;
-            case "Appelfrukt": return Category.appelfrukt;
-            case "Bladgronsaker": return Category.Bladgronsaker;
-            case "Gronsaksfrukt": return Category.Gronsaksfrukt;
-            case "Rot- och knolvaxter": return Category.Rot_och_knolvaxter;
-            case "Hjalpamnen vid tillverkning": return Category.Hjalpamnen_vid_tillverkning;
-            case "Gronsakskonserver": return Category.Gronsakskonserver;
-            case "Bar": return Category.Bar;
-            case "Mjolk": return Category.Mjolk;
-            case "Torkade orter": return Category.Torkade_orter;
-            case "Not": return Category.Not;
-            case "Kal": return Category.Kal;
-            case "Ovrigt spannmal": return Category.ovrigt_spannmal;
-            case "Kottprodukter": return Category.Kottprodukter;
-            case "Faglar": return Category.Faglar;
-            case "Modersmjolksersattningar och modersmjolk": return Category.Modersmjolksersattningar_och_modersmjolk;
-            case "Notter, fron": return Category.Notter_fron;
-            case "Ovriga alkoholdrycker": return Category.ovriga_alkoholdrycker;
-            case "Gradde/creme": return Category.Gradde_creme;
-            case "Kryddsaser": return Category.Kryddsaser;
-            case "Syrade mjolkprodukter": return Category.Syrade_mjolkprodukter;
-            case "Sotsaker": return Category.Sotsaker;
-            case "Laskedrycker": return Category.Laskedrycker;
-            case "Lokgronsaker": return Category.Lokgronsaker;
-            case "Ovriga fetter, fettprodukter": return Category.ovriga_fetter_fettprodukter;
-            case "Starkelse": return Category.Starkelse;
-            case "Kliniska naringspreparat": return Category.Kliniska_naringspreparat;
-            case "Smor, mjolkfettblandningar": return Category.Smor_mjolkfettblandningar;
-            case "Rag": return Category.Rag;
-            case "Ovrig mjolk": return Category.ovrig_mjolk;
-            case "Ol": return Category.ol;
-            case "Sotningsmedel": return Category.Sotningsmedel;
-            case "Agg av andra faglar": return Category.agg_honsagg;
-            case "Agg, honsagg": return Category.agg_honsagg;
-            case "Torrt brod": return Category.Torrt_brod;
+            case "Baljvaxter": return Category.PULSES_VEGETABLES;
+            case "Ovrig frukt": return Category.OTHER_FRUITS;
+            case "Appelfrukt": return Category.MALACEOUS_FRUITS;
+            case "Bladgronsaker": return Category.LEAF_VEGETABLES;
+            case "Gronsaksfrukt": return Category.FRUIT_VEGETABLES;
+            case "Rot- och knolvaxter": return Category.ROOT_VEGETABLES_AND_TUBERS;
+            case "Hjalpamnen vid tillverkning": return Category.MISCELLANEOUS_INGREDIENTS;
+            case "Gronsakskonserver": return Category.CANNED_VEGETABLES;
+            case "Bar": return Category.BERRIES;
+            case "Mjolk": return Category.MILK;
+            case "Torkade orter": return Category.DRIED_HERBS;
+            case "Not": return Category.BEEF;
+            case "Kal": return Category.CABBAGES;
+            case "Ovrigt spannmal": return Category.OTHER_GRAINS;
+            case "Kottprodukter": return Category.MEAT_PRODUCTS;
+            case "Faglar": return Category.BIRDS;
+            case "Modersmjolksersattningar och modersmjolk": return Category.INFANT_FORMULAS_AND_HUMAN_MILK;
+            case "Notter, fron": return Category.NUTS_AND_SEEDS;
+            case "Ovriga alkoholdrycker": return Category.OTHER_ALCOHOLIC_BEVERAGES;
+            case "Gradde/creme": return Category.CREAM;
+            case "Kryddsaser": return Category.CONDIMENTS;
+            case "Syrade mjolkprodukter": return Category.FERMENTED_MILK_PRODUCTS;
+            case "Sotsaker": return Category.NON_CHOCOLATE_CONFECTIONERY;
+            case "Laskedrycker": return Category.SOFT_DRINKS;
+            case "Lokgronsaker": return Category.ONION_FAMILY_VEGETABLES;
+            case "Ovriga fetter, fettprodukter": return Category.OTHER_FAT_PRODUCTS;
+            case "Starkelse": return Category.STARCHES;
+            case "Kliniska naringspreparat": return Category.PRODUCTS_FOR_NUTRITIONAL_SUPPORT;
+            case "Smor, mjolkfettblandningar": return Category.BUTTER_AND_BUTTER_SPREADS;
+            case "Rag": return Category.RYE;
+            case "Ovrig mjolk": return Category.OTHER_MILK_PRODUCTS;
+            case "Ol": return Category.BEER;
+            case "Sotningsmedel": return Category.SWEETENERS;
+            case "Agg av andra faglar": return Category.CHICKEN_EGGS;
+            case "Agg, honsagg": return Category.CHICKEN_EGGS;
+            case "Torrt brod": return Category.CRISPBREADS;
             default:
                 System.out.println("No category found named: " + str);
                 return null;

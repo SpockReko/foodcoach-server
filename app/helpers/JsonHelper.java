@@ -1,24 +1,78 @@
 package helpers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.food.Food;
+import models.food.FoodGroup;
+import models.food.Nutrient;
+import models.recipe.Ingredient;
+import play.libs.Json;
 
 /**
- * Created by emmafahlen on 2017-03-27.
+ * Converts various models to a Json representation.
+ *
+ * @author Fredrik Kindstrom
  */
 public class JsonHelper {
 
-    public static List<TaggedWord> getTaggedWords(JsonNode jsonNode) {
-        JsonNode words = jsonNode.get("sentences").get(0);
-        List<TaggedWord> taggedWords = new ArrayList<>();
-        for (int i = 0; i < words.size(); i++) {
-            String word = words.get(i).get("word_form").textValue();
-            String lemma = words.get(i).get("lemma").textValue();
-            String udPosTag = words.get(i).get("ud_tags").get("pos_tag").textValue();
-            taggedWords.add(new TaggedWord(word, lemma, udPosTag));
+    /**
+     * Converts a {@link Food} to Json.
+     * @param food The food to convert.
+     * @return The food represented as Json.
+     */
+    public static JsonNode toJson(Food food) {
+        ObjectNode output = Json.newObject();
+        output.put("id", food.getId());
+        output.put("dataSource", food.getDataSource().name());
+        output.put("dataSourceId", food.getDataSourceId());
+        output.put("name", food.name);
+        output.put("group", food.group.name);
+        ArrayNode tags = output.putArray("tags");
+        food.tags.forEach(tags::add);
+        output.put("scientificName", food.scientificName);
+        output.put("exampleBrands", food.exampleBrands);
+        output.put("pieceWeightGrams", food.pieceWeightGrams);
+        output.put("densityConstant", food.densityConstant);
+        output.put("processing", food.processing == null ? null : food.processing.name());
+        output.put("category", food.category == null ? null : food.category.name());
+        ArrayNode diets = output.putArray("diets");
+        food.diets.forEach(d -> diets.add(d.type.name()));
+        return output;
+    }
+
+    /**
+     * Converts an {@link FoodGroup} to Json.
+     * @param foodGroup The food group to convert.
+     * @return The food group represented as Json.
+     */
+    public static JsonNode toJson(FoodGroup foodGroup) {
+        ObjectNode output = Json.newObject();
+        output.put("id", foodGroup.getId());
+        output.put("name", foodGroup.name);
+        ArrayNode searchTags = output.putArray("searchTags");
+        foodGroup.searchTags.forEach(searchTags::add);
+        output.set("defaultFood", toJson(foodGroup.defaultFood));
+        if (!foodGroup.foods.isEmpty()) {
+            ArrayNode foods = output.putArray("foods");
+            for (Food food : foodGroup.foods) {
+                foods.add(toJson(food));
+            }
         }
-        return taggedWords;
+        return output;
+    }
+
+    /**
+     * Converts an {@link Ingredient} to Json.
+     * @param ingredient The ingredient to convert.
+     * @return The ingredient represented as Json.
+     */
+    public static JsonNode toJson(Ingredient ingredient) {
+        ObjectNode output = Json.newObject();
+        output.set("food", toJson(ingredient.getFood()));
+        output.set("amount", Json.toJson(ingredient.getAmount()));
+        output.put("comment", ingredient.comment);
+        output.put("kcal", ingredient.getNutrient(Nutrient.ENERGY_KCAL));
+        return output;
     }
 }

@@ -6,27 +6,27 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 /**
- * Represents an amount of an {@link Ingredient}. Can be of any unit either of mass or volume.
+ * Represents an quantity of an {@link Ingredient}. Can be of any unit either of mass or volume.
  *
  * @author Fredrik Kindstrom
  */
 @Embeddable
 public class Amount {
 
-    @NotNull private final double amount;
+    @NotNull private final double quantity;
     @Enumerated(EnumType.STRING) @NotNull private final Unit unit;
 
-    public Amount(double amount, Unit unit) {
-        this.amount = amount;
+    public Amount(double quantity, Unit unit) {
+        this.quantity = quantity;
         this.unit = unit;
     }
 
     /**
-     * Returns the amount. "2" liters or "3.5" kilograms for example.
-     * @return The amount of the unit.
+     * Returns the quantity. "2" liters or "3.5" kilograms for example.
+     * @return The quantity of the amount.
      */
-    public double getAmount() {
-        return amount;
+    public double getQuantity() {
+        return quantity;
     }
 
 
@@ -70,10 +70,11 @@ public class Amount {
         }
 
         /**
-         * Returns the fraction between how much each unit is in the standard unit 100 grams
-         * used for all {@link models.food.Food}.
-         * If the unit is liter this will return 10 for example.
-         * If the type of the unit is volume the densityConstant property will be used.
+         * Returns the fraction between how much each unit is in
+         * the standard 100 grams used for all {@link models.food.Food}.
+         * If the unit is kilogram this will return 10 for example.
+         * If the type of the unit is volume the {@link models.food.Food#densityConstant}
+         * property will be used.
          * @return The fraction between the unit and 100 grams.
          */
         public double getFraction() {
@@ -81,7 +82,7 @@ public class Amount {
         }
 
         /**
-         * Returns the type of the unit. Either mass or volume.
+         * Returns the {@link Type} of the unit.
          * @return The type of the unit.
          */
         public Type getType() {
@@ -98,7 +99,8 @@ public class Amount {
         }
 
         /**
-         * The type of the unit. Either mass or volume.
+         * The type of the unit.
+         * Either {@link Type#MASS}, {@link Type#VOLUME} or {@link Type#SINGLE}.
          */
         public enum Type { MASS, VOLUME, SINGLE, EMPTY }
 

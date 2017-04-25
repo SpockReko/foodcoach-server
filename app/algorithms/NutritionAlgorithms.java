@@ -64,33 +64,32 @@ public class NutritionAlgorithms {
     Returns the total amount of nutrients per portion in several recipes
      */
     public static HashMap<Nutrient,Double> nutrientsContent(Menu menu) {
-        HashMap<Nutrient, Double> nutrientsContent = new HashMap<Nutrient, Double>();
+        HashMap<Nutrient, Double> nutrientsContent = new HashMap<>();
 
-        for( Recipe recipe : menu.getRecipeList() ) {
-            addToHashMap(nutrientsContent, Nutrient.KCAL, recipe.getEnergyKcal() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.FAT, recipe.getFat() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.PROTEIN, recipe.getProtein() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.CARBOHYDRATES, recipe.getCarbohydrates() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.FIBRE, recipe.getFibre() / recipe.getPortions());
-
-            addToHashMap(nutrientsContent, Nutrient.VITAMIN_A, recipe.getVitaminA() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VITAMIN_B6, recipe.getVitaminB6() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VITAMIN_B12, recipe.getVitaminB12() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VITAMIN_C, recipe.getVitaminC() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VITAMIN_D, recipe.getVitaminD() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.VITAMIN_E, recipe.getVitaminE() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.THIAMINE, recipe.getThiamine() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.RIBOFLAVIN, recipe.getRiboflavin() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.NIACIN, recipe.getNiacin() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.FOLATE, recipe.getFolate() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.CALCIUM, recipe.getCalcium() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.PHOSPHORUS, recipe.getPhosphorus() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.POTASSIUM, recipe.getPotassium() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.MAGNESIUM, recipe.getMagnesium() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.IRON, recipe.getIron() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.ZINC, recipe.getZink() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.IODINE, recipe.getIodine() / recipe.getPortions());
-            addToHashMap(nutrientsContent, Nutrient.SELENIUM, recipe.getSelenium() / recipe.getPortions());
+        for (Recipe recipe : menu.getRecipeList()) {
+            addToHashMap(nutrientsContent, Nutrient.ENERGY_KCAL, recipe.getNutrientPerPortion(Nutrient.ENERGY_KCAL));
+            addToHashMap(nutrientsContent, Nutrient.FAT, recipe.getNutrientPerPortion(Nutrient.FAT));
+            addToHashMap(nutrientsContent, Nutrient.PROTEIN, recipe.getNutrientPerPortion(Nutrient.PROTEIN));
+            addToHashMap(nutrientsContent, Nutrient.CARBOHYDRATES, recipe.getNutrientPerPortion(Nutrient.CARBOHYDRATES));
+            addToHashMap(nutrientsContent, Nutrient.FIBRE, recipe.getNutrientPerPortion(Nutrient.FIBRE));
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_A, recipe.getNutrientPerPortion(Nutrient.VITAMIN_A));
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_B6, recipe.getNutrientPerPortion(Nutrient.VITAMIN_B6));
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_B12, recipe.getNutrientPerPortion(Nutrient.VITAMIN_B12));
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_C, recipe.getNutrientPerPortion(Nutrient.VITAMIN_C));
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_D, recipe.getNutrientPerPortion(Nutrient.VITAMIN_D));
+            addToHashMap(nutrientsContent, Nutrient.VITAMIN_E, recipe.getNutrientPerPortion(Nutrient.VITAMIN_E));
+            addToHashMap(nutrientsContent, Nutrient.THIAMINE, recipe.getNutrientPerPortion(Nutrient.THIAMINE));
+            addToHashMap(nutrientsContent, Nutrient.RIBOFLAVIN, recipe.getNutrientPerPortion(Nutrient.RIBOFLAVIN));
+            addToHashMap(nutrientsContent, Nutrient.NIACIN, recipe.getNutrientPerPortion(Nutrient.NIACIN));
+            addToHashMap(nutrientsContent, Nutrient.FOLATE, recipe.getNutrientPerPortion(Nutrient.FOLATE));
+            addToHashMap(nutrientsContent, Nutrient.CALCIUM, recipe.getNutrientPerPortion(Nutrient.CARBOHYDRATES));
+            addToHashMap(nutrientsContent, Nutrient.PHOSPHORUS, recipe.getNutrientPerPortion(Nutrient.PHOSPHORUS));
+            addToHashMap(nutrientsContent, Nutrient.POTASSIUM, recipe.getNutrientPerPortion(Nutrient.POTASSIUM));
+            addToHashMap(nutrientsContent, Nutrient.MAGNESIUM, recipe.getNutrientPerPortion(Nutrient.MAGNESIUM));
+            addToHashMap(nutrientsContent, Nutrient.IRON, recipe.getNutrientPerPortion(Nutrient.IRON));
+            addToHashMap(nutrientsContent, Nutrient.ZINC, recipe.getNutrientPerPortion(Nutrient.ZINC));
+            addToHashMap(nutrientsContent, Nutrient.IODINE, recipe.getNutrientPerPortion(Nutrient.IODINE));
+            addToHashMap(nutrientsContent, Nutrient.SELENIUM, recipe.getNutrientPerPortion(Nutrient.SELENIUM));
         }
 
         return nutrientsContent;

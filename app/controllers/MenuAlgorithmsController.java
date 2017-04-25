@@ -140,17 +140,21 @@ public class MenuAlgorithmsController extends Controller {
         List<Ingredient> ingredients = new ArrayList<>();
 
         ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(12L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(10L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredients);
         ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 
+        String ingredientString="";
+        for (int i=0; i<ingredients.size(); i++){
+            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
+                    +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
+        }
+
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(ingredients.get(0).getFood().name + "\n" +
-                    ingredients.get(1).getFood().name + "\n" +
-                    ingredients.get(2).getFood().name + "\n\n" + resultingMenu.recipeListToString(shoppingList));
+            return ok(ingredientString+"\n" + resultingMenu.recipeListToString(shoppingList));
         return ok("nothing found!");
     }
     // GET     /menu/CO2
@@ -161,18 +165,24 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredients = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(50, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(12L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(10L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
+
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.CalculateWeekMenuMinimalWaste(ingredients);
         ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 
+        String ingredientString="";
+        for (int i=0; i<ingredients.size(); i++){
+            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
+                    +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
+        }
+
+
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(ingredients.get(0).getFood().name + "\n" +
-                    ingredients.get(1).getFood().name + "\n" +
-                    ingredients.get(2).getFood().name + "\n\n" + resultingMenu.recipeListToString(shoppingList));
+            return ok(ingredientString+"\n" + resultingMenu.recipeListToString(shoppingList));
         return ok("nothing found!");
     }
 }

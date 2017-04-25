@@ -1,11 +1,11 @@
 package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import helpers.JsonHelper;
+import helpers.TaggerHelper;
 import helpers.StringHelper;
-import helpers.TaggedWord;
+import models.food.FoodGroup;
+import models.word.TaggedWord;
 import models.food.Food;
-import models.food.FoodGeneral;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
@@ -18,31 +18,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by emmafahlen on 2017-03-23.
  */
 public class IngredientFinder {
 
+    private List<FoodGroup> foodGroupList;
     private List<TaggedWord> taggedWords;
     private String leftover = "";
 
-    public Ingredient find(String line) {
+    public IngredientFinder(List<FoodGroup> foodGroupList) {
+        this.foodGroupList = foodGroupList;
+    }
+
+    /**
+     * Tries to find a complete ingredient with amount and food in a string.
+     * @param line The string to look in.
+     * @return An ingredient if found, null if not.
+     * @throws IOException If the external API is not available.
+     */
+    public Ingredient find(String line) throws IOException {
         Ingredient ingredient;
         leftover = "";
 
-        try {
-            JsonNode jsonNode = retrieveWordInfo(line);
-            taggedWords = JsonHelper.getTaggedWords(jsonNode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JsonNode jsonNode = retrieveWordInfo(line);
+        taggedWords = TaggerHelper.getTaggedWords(jsonNode);
 
-        try {
-            ingredient = findIngredient(line);
-        } catch (IngredientNotFoundException e) {
+        ingredient = findIngredient();
+        if (ingredient == null) {
             Logger.error("No match \"" + line + "\"");
             return null;
         }
@@ -50,12 +54,54 @@ public class IngredientFinder {
         return ingredient;
     }
 
+    /**
+     * Tries to find a complete ingredient in a string,
+     * skips looking for amount uses provided instead.
+     * @param line The string to look in.
+     * @param amount The amount to use in ingredient.
+     * @return An ingredient if found, null if not.
+     * @throws IOException If the external API is not available.
+     */
+    public Ingredient find(String line, Amount amount) throws IOException {
+        Ingredient ingredient;
+        leftover = "";
+
+        JsonNode jsonNode = retrieveWordInfo(line);
+        taggedWords = TaggerHelper.getTaggedWords(jsonNode);
+
+        ingredient = findIngredient(amount);
+        if (ingredient == null) {
+            Logger.error("No match \"" + line + "\"");
+            return null;
+        }
+
+        return ingredient;
+    }
+
+    /**
+     * Tries to find an amount in a string and returns it if it found it, null otherwise.
+     * @param line The string to look in.
+     * @return An amount if found, otherwise null.
+     * @throws IOException If the external API is not available.
+     */
+    public Amount extractAmount(String line) throws IOException {
+        JsonNode jsonNode = retrieveWordInfo(line);
+        taggedWords = TaggerHelper.getTaggedWords(jsonNode);
+        Amount amount = findAmount();
+        return amount.getUnit().getType().equals(Amount.Unit.Type.EMPTY) ? null : amount;
+    }
+
+    /**
+     * Finds an amount in the given string using the information obtained from the external API.
+     * @return An amount containing amount and unit or empty amount.
+     */
     private Amount findAmount() {
         List<TaggedWord> filteredWords = new ArrayList<>(taggedWords);
         Double numeric = null;
         Amount.Unit unit = null;
 
         for (TaggedWord taggedWord : taggedWords) {
+            // Find unit
             for (Amount.Unit u : Amount.Unit.values()) {
                 for (String identifier : u.getIdentifiers()) {
                     if (identifier.equals(taggedWord.getLemma())) {
@@ -66,6 +112,7 @@ public class IngredientFinder {
                     }
                 }
             }
+            // Find amount
             if (taggedWord.getUdPosTag().equals("NUM")) {
                 if (numeric == null) {
                     String word = taggedWord.getWord().replace(',', '.');
@@ -95,51 +142,58 @@ public class IngredientFinder {
         }
     }
 
-    private Ingredient findIngredient(String line) throws IngredientNotFoundException {
-        return findIngredient(line, findAmount());
+    /**
+     * Tries to find an ingredient.
+     * @return A complete ingredient if found, else null.
+     */
+    private Ingredient findIngredient() {
+        return findIngredient(findAmount());
     }
 
-    private Ingredient findIngredient(String line, Amount amount) throws IngredientNotFoundException {
-        FoodGeneral foodGeneral = findFoodGeneral();
-        Food food = findFood(foodGeneral, line);
+    /**
+     * Tries to find an ingredient. Skips looking for amount and uses provided instead.
+     * @param amount The amount to use instead of trying to find one.
+     * @return A complete ingredient if found, else null.
+     */
+    private Ingredient findIngredient(Amount amount) {
+        FoodGroup foodGroup = findFoodGroup();
 
-        if (food != null) {
+        if (foodGroup != null) {
+            Food food = findFood(foodGroup);
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 Logger.trace("Added " + comment.trim() + " as comment");
-                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
+                Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
                     + food.name + ", \"" + comment.trim() + "\" }");
                 return new Ingredient(food, amount, comment.trim());
             } else {
-                Logger.info("Ingredient { " + amount.getAmount() + ", " + amount.getUnit() + ", "
+                Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
                     + food.name + " }");
                 return new Ingredient(food, amount);
             }
         } else {
-            throw new IngredientNotFoundException();
+            return null;
         }
     }
 
-    private FoodGeneral findFoodGeneral() {
-        StringBuilder builder = new StringBuilder(" ");
-        for (TaggedWord taggedWord : taggedWords) {
-            builder.append(taggedWord.getWord()).append(" ");
-        }
-
-        String line = builder.toString();
+    /**
+     * Tries to find a group food in the given string.
+     * @return A FoodGroup if found, null if not.
+     */
+    private FoodGroup findFoodGroup() {
+        String line = TaggerHelper.taggedToString(taggedWords);
         String matchingTag = "";
         int matchingTagLength = 0;
-        FoodGeneral foodGeneral = null;
-        List<FoodGeneral> items = FoodGeneral.find.select("searchTags").findList();
+        FoodGroup foodGroup = null;
 
-        for (FoodGeneral general : items) {
-            List<String> tags = general.searchTags;
-            tags.add(general.name.toLowerCase());
+        for (FoodGroup group : foodGroupList) {
+            List<String> tags = group.searchTags;
+            tags.add(group.name.toLowerCase());
             for (String tag : tags) {
                 if (StringHelper.containsWord(line, tag)) {
                     if (tag.length() > matchingTagLength) {
-                        Logger.trace("Found \"" + general.name + "\"");
-                        foodGeneral = general;
+                        Logger.trace("Found \"" + group.name + "\"");
+                        foodGroup = group;
                         matchingTag = tag;
                         matchingTagLength = tag.length();
                     }
@@ -153,12 +207,13 @@ public class IngredientFinder {
             leftover = leftover.replace(matchingTag, "");
         }
 
-        if (foodGeneral == null) {
-            FoodParser parser = new FoodParser();
+        // If no food is found right away, try and find with different spelling.
+        if (foodGroup == null) {
+            AutoCorrecter correcter = new AutoCorrecter();
             String[] listLine = line.trim().split("\\s++");
             for (String word : listLine) {
-                if (parser.autoCorrect(word) != null) {
-                    foodGeneral = parser.autoCorrect(word);
+                if (correcter.autoCorrect(word) != null) {
+                    foodGroup = correcter.autoCorrect(word);
                     if (!leftover.isEmpty()) {
                         leftover = leftover.replace(word, "");
                     } else {
@@ -169,10 +224,16 @@ public class IngredientFinder {
             }
         }
 
-        return foodGeneral;
+        return foodGroup;
     }
 
-    private Food findFood(FoodGeneral foodGeneral, String webString) {
+    /**
+     * Tries to find a food within a group food that matches better than the default.
+     * @param foodGroup The group food to find foods within.
+     * @return A better matching food, or default if no better is found.
+     */
+    private Food findFood(FoodGroup foodGroup) {
+        String line = TaggerHelper.taggedToString(taggedWords);
         List<String> tags;
         Food food;
         String currentTag = null;
@@ -182,29 +243,26 @@ public class IngredientFinder {
         int matchingTagAmount = 0;
         int currentMatchingTagAmount = 0;
 
-        if (foodGeneral == null) {
-            food = null;
-        } else {
-            food = foodGeneral.defaultFood;
-            for (Food f : foodGeneral.foods) {
-                tags = f.tags;
-                for (String tag : tags) {
-                    currentTagAmount = tags.size();
-                    for (TaggedWord tagged : taggedWords) {
-                        if (webString.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord().equals(tag)) {
-                            currentMatchingTagAmount++;
-                            if (currentTagAmount < tagAmount && currentMatchingTagAmount >= matchingTagAmount) {
-                                food = f;
-                                tagAmount = currentTagAmount;
-                                matchingTagAmount = currentMatchingTagAmount;
-                                currentTag = tag;
-                                hasTag = true;
-                            }
+        food = foodGroup.defaultFood;
+        for (Food f : foodGroup.foods) {
+            tags = f.tags;
+            for (String tag : tags) {
+                currentTagAmount = tags.size();
+                for (TaggedWord tagged : taggedWords) {
+                    if (line.contains(tag) || tagged.getLemma().equals(tag) || tagged.getWord().equals(tag)) {
+                        currentMatchingTagAmount++;
+                        if (currentTagAmount < tagAmount
+                            && currentMatchingTagAmount >= matchingTagAmount) {
+                            food = f;
+                            tagAmount = currentTagAmount;
+                            matchingTagAmount = currentMatchingTagAmount;
+                            currentTag = tag;
+                            hasTag = true;
                         }
                     }
                 }
-                currentMatchingTagAmount = 0;
             }
+            currentMatchingTagAmount = 0;
         }
 
         if (hasTag) {
@@ -234,6 +292,4 @@ public class IngredientFinder {
             ws.close();
         }
     }
-
-    private class IngredientNotFoundException extends Throwable {}
 }

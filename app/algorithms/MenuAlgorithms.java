@@ -1,8 +1,6 @@
 package algorithms;
 
-import models.food.Food;
 import models.food.Nutrient;
-import models.recipe.Amount;
 import models.recipe.Ingredient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
@@ -13,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
-
-import static models.recipe.Amount.Unit.GRAM;
 
 /**
  * Created by stefa on 2017-02-28.
@@ -203,7 +199,7 @@ public class MenuAlgorithms {
     private Double getShoppinglistSize(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getQuantity());
         }
         nutritionValueCalculation(menu);
         return shoppingList.size() + 0.0;
@@ -217,7 +213,7 @@ public class MenuAlgorithms {
     private Double getLeftoversSize(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getQuantity());
         }
         nutritionValueCalculation(menu);
         return shoppingList.getLeftoverSize();
@@ -230,7 +226,7 @@ public class MenuAlgorithms {
     private Double getCO2(Menu menu) {
         ShoppingList shoppingList = new ShoppingList(menu);
         for (int i = 0; i < ingredientsToUse.size(); i++) {
-            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getAmount());
+            shoppingList.removeAmountOfIngredient(ingredientsToUse.get(i), ingredientsToUse.get(i).getAmount().getQuantity());
         }
         nutritionValueCalculation(menu);
         return shoppingList.getCO2();
