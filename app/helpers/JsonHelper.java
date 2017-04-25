@@ -52,7 +52,7 @@ public class JsonHelper {
         output.put("name", foodGroup.name);
         ArrayNode searchTags = output.putArray("searchTags");
         foodGroup.searchTags.forEach(searchTags::add);
-        output.put("defaultFood", toJson(foodGroup.defaultFood));
+        output.set("defaultFood", toJson(foodGroup.defaultFood));
         if (!foodGroup.foods.isEmpty()) {
             ArrayNode foods = output.putArray("foods");
             for (Food food : foodGroup.foods) {
@@ -69,8 +69,8 @@ public class JsonHelper {
      */
     public static JsonNode toJson(Ingredient ingredient) {
         ObjectNode output = Json.newObject();
-        output.put("food", toJson(ingredient.getFood()));
-        output.put("amount", Json.toJson(ingredient.getAmount()));
+        output.set("food", toJson(ingredient.getFood()));
+        output.set("amount", Json.toJson(ingredient.getAmount()));
         output.put("comment", ingredient.comment);
         output.put("kcal", ingredient.getNutrient(Nutrient.ENERGY_KCAL));
         return output;
