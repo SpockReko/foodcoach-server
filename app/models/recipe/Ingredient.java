@@ -29,28 +29,59 @@ public class Ingredient extends Model {
 
     @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
 
+    /**
+     * Basic constructor for an ingredient. Needs a food and an amount.
+     * @param food The food the ingredient consists of.
+     * @param amount The amount the food is present in.
+     */
     public Ingredient(Food food, Amount amount) {
         this.food = food;
         this.amount = amount;
     }
 
+    /**
+     * Same as basic constructor but adds a comment generated from parsing.
+     * @param food The food the ingredient consists of.
+     * @param amount The amount the food is present in.
+     * @param comment A string comment that can be about how to cook the ingredient etc.
+     */
     public Ingredient(Food food, Amount amount, String comment) {
         this.food = food;
         this.amount = amount;
         this.comment = comment;
     }
 
+    /**
+     * Gives the attached food that the ingredient consists of.
+     * @return The food the ingredient consists of.
+     */
     public Food getFood() {
         return food;
     }
+
+    /**
+     * Gives the amount the ingredient is present in.
+     * @return The amount the ingredient is present in.
+     */
     public Amount getAmount() {
         return amount;
     }
 
+    /**
+     * Returns a total nutrient value for the specified nutrient.
+     * This is multiplied with the amount.
+     * @param nutrient The nutrient which you want information for. See {@link Nutrient}.
+     * @return The nutrient value as a double, 0.0 if no value is present.
+     */
     public double getNutrient(Nutrient nutrient) {
         return multiplier(food.getNutrient(nutrient));
     }
 
+    /**
+     * Returns estimated total CO2 emission for the ingredient in kilograms.
+     * This is multiplied with the amount.
+     * @return The CO2 emission value as a double, 0.0 if no value is present.
+     */
     public Double getCO2() {
         return multiplier(food.getCO2());
     }
