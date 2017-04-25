@@ -90,7 +90,7 @@ public class MenuAlgorithmsController extends Controller {
         }
     }
 
-    public Result menuBengt() {
+    public Result menuBob() {
         User user;
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class MenuAlgorithmsController extends Controller {
     }
 
 
-    public Result menuAnna() {
+    public Result menuAlice() {
 
         User user;
         int nrOfRecipes;

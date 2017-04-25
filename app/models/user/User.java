@@ -106,7 +106,7 @@ public class User extends Model {
             this.goal = Goal.DECREASE;
             dailyCalories();
             calculateOverdoseValues(age);
-        }else if(name.equals("Bengt")){
+        }else if(name.equals("Bob")){
             this.sex = Sex.MALE;
             this.activityLevel = 1.2;
             this.weight = 102.0;
@@ -115,7 +115,7 @@ public class User extends Model {
             this.goal = Goal.STAY;
             dailyCalories();
             calculateOverdoseValues(age);
-        }else if(name.equals("Anna")){
+        }else if(name.equals("Alice")){
             this.sex = Sex.FEMALE;
             this.activityLevel = 2.0;
             this.weight = 60.0;

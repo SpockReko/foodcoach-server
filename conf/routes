@@ -18,20 +18,19 @@ GET             /notlinked_recipes                        controllers.RecipeCont
 GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
 
 # Menu options from client
-POST    /menu/nutrient                      controllers.MenuAlgorithmsController.menu
-GET     /menu/nutrient                      controllers.MenuAlgorithmsController.menu()
-GET     /menu/economi                       controllers.MenuAlgorithmsController.menu2()
-GET     /menu/CO2                           controllers.MenuAlgorithmsController.menu3()
-GET     /bengt/menu/nutrient                 controllers.MenuAlgorithmsController.menuBengt()
-GET     /anna/menu/nutrient                  controllers.MenuAlgorithmsController.menuAnna()
+POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
+GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu()
+GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2()
+GET             /menu/CO2                                 controllers.MenuAlgorithmsController.menu3()
+GET             /bob/menu/nutrient                        menuBob()
+GET             /alice/menu/nutrient                      menuAlice()
 
 # Optimize recipe
 GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
 GET             /recipe/optimize/title/:title             controllers.RecipeOptimizationController.optimizeByTitle(title: String)
 
-GET             /bengt/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberBengt(number: Long)
-GET             /anna/recipe/optimize/:number             controllers.RecipeOptimizationController.optimizeByNumberAnna(number: Long)
-
+GET             /bob/recipe/optimize/:number              optimizeByNumberBob(number: Long)
+GET             /alice/recipe/optimize/:number            optimizeByNumberAlice(number: Long)
 
 # Parse ingredient string to food item
 GET             /parseLine/:input                         controllers.ParseController.parseLine(input: String)

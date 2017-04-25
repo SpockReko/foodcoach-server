@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Admin on 2017-03-23.
  */
-public class WeekMenuTest {
+public class MenuTest {
 
     //TODO: Add a user and recepie ith identical recepie and se if week menu chose this.
 
