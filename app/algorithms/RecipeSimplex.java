@@ -18,21 +18,26 @@ public class RecipeSimplex {
     private HashMap<Nutrient,Double> nutritionNeed;
     private List<Double> leastAmountOfIngredient;
     private boolean exceedsCalorie=false;
+    private double limit;
+    private double maxCalorie;
 
     /*
     Sets limits of least amount of each ingredient
      */
-    public void setConstraintsIngredients(List<Double> leastAmountOfIngredient) {
+    public void setConstraintsIngredients(List<Double> leastAmountOfIngredient, double limit) {
+        this.limit=limit;
         this.leastAmountOfIngredient=leastAmountOfIngredient;
         for( int i=0; i<leastAmountOfIngredient.size(); i++ ) {
             double[] arr = new double[leastAmountOfIngredient.size()];
             arr[i] = 1;
             constraintsCollection.add(new LinearConstraint(arr, Relationship.GEQ, leastAmountOfIngredient.get(i)));
+            constraintsCollection.add(new LinearConstraint(arr, Relationship.LEQ,
+                    leastAmountOfIngredient.get(i)*limit));
         }
         constraints = new LinearConstraintSet(constraintsCollection);
     }
 
-    public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed, boolean maxCalorie) {
+    public void setConstraintsNutrition(List<Ingredient> ingredients, HashMap<Nutrient,Double> nutritionNeed, double maxCalorie) {
             this.ingredients=ingredients;
             this.nutritionNeed=nutritionNeed;
 
@@ -47,9 +52,7 @@ public class RecipeSimplex {
             setConstraint(ingredients, nutrient, nutrientNeed);
         }*/
 
-        if (maxCalorie) {
-            setConstraint(ingredients,Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL)*1.2, false);
-        }
+        setConstraint(ingredients,Nutrient.KCAL, nutritionNeed.get(Nutrient.KCAL)*maxCalorie, false);
 
         constraints = new LinearConstraintSet(constraintsCollection);
     }
@@ -131,14 +134,14 @@ public class RecipeSimplex {
         try {
             PointValuePair result = solver.optimize(f, constraints);
             return result.getPoint();
-        }catch(NoFeasibleSolutionException e){
-            exceedsCalorie=true;
+        } catch (NoFeasibleSolutionException e) {
+            //exceedsCalorie = true;
+            limit+=0.5;
+            maxCalorie+=0.1;
             constraintsCollection = new ArrayList();
-            setConstraintsIngredients(leastAmountOfIngredient);
-            setConstraintsNutrition(ingredients, nutritionNeed, false);
-            PointValuePair result = solver.optimize(f, constraints);
-            return result.getPoint();
-        }
+            setConstraintsIngredients(leastAmountOfIngredient, limit);
+            setConstraintsNutrition(ingredients, nutritionNeed, maxCalorie);
+            return optimize();
+            }
     }
-
 }
