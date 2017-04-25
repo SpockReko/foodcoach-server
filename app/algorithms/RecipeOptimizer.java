@@ -27,6 +27,7 @@ public class RecipeOptimizer {
 
     public RecipeOptimizer(Recipe recipe, User user) {
         originalRecipe=recipe;
+        //this.recipe=recipe.getOnePortionRecipe();
         this.recipe = recipe.getUserRecipe(user);
         this.ingredients = this.recipe.ingredients;
         this.user = user;
@@ -37,9 +38,9 @@ public class RecipeOptimizer {
 
         recipeSimplex = new RecipeSimplex();
         recipeSimplex.setLinearObjectiveFunction(ingredients);
-        recipeSimplex.setConstraintsIngredients(leastAmountOfIngredients);
+        recipeSimplex.setConstraintsIngredients(leastAmountOfIngredients, 2);
         HashMap<Nutrient,Double> nutritionNeed = NutritionAlgorithms.nutrientsNeedScaled(user.hmap,1);
-        recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed, true);
+        recipeSimplex.setConstraintsNutrition(ingredients, nutritionNeed, 1.2);
 
         double[] optimalAmountOfIngredients = recipeSimplex.optimize();
 
