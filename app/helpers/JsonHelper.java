@@ -7,6 +7,7 @@ import models.food.Food;
 import models.food.FoodGroup;
 import models.food.Nutrient;
 import models.recipe.Ingredient;
+import models.recipe.Recipe;
 import play.libs.Json;
 
 /**
@@ -73,6 +74,28 @@ public class JsonHelper {
         output.set("amount", Json.toJson(ingredient.getAmount()));
         output.put("comment", ingredient.comment);
         output.put("kcal", ingredient.getNutrient(Nutrient.ENERGY_KCAL));
+        return output;
+    }
+
+    /**
+     * Converts a {@link Recipe} to Json.
+     * @param recipe The recipe to convert.
+     * @return The recipe represented as Json.
+     */
+    public static JsonNode toJson(Recipe recipe) {
+        ObjectNode output = Json.newObject();
+        output.put("title", recipe.getTitle());
+        output.put("portions", recipe.getPortions());
+        output.put("energyKcalPerPortion", Math.round(recipe.getNutrientPerPortion(Nutrient.ENERGY_KCAL)));
+        output.put("energyKcal", Math.round(recipe.getNutrient(Nutrient.ENERGY_KCAL)));
+        output.put("carbohydrates", Math.round(recipe.getNutrient(Nutrient.CARBOHYDRATES)));
+        output.put("protein", Math.round(recipe.getNutrient(Nutrient.PROTEIN)));
+        output.put("co2", Math.round(recipe.getCO2()));
+        output.put("url", recipe.sourceUrl);
+        ArrayNode array = output.putArray("ingredients");
+        for (Ingredient ingredient : recipe.ingredients) {
+            array.add(JsonHelper.toJson(ingredient));
+        }
         return output;
     }
 }
