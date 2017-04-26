@@ -45,16 +45,17 @@ public class IngredientStringParser {
 
     /**
      * Parses a string and tries to find an ingredient with amount in it.
-     * @param ingredientString The string to parse.
+     * @param ingredientString The string to parseHtml.
      * @return An ingredient if found or null otherwise.
-     * @throws IOException If the external API used to parse cannot be reached.
+     * @throws IOException If the external API used to parseHtml cannot be reached.
      */
     public synchronized Ingredient parse(String ingredientString) throws IOException {
         String line = ingredientString;
 
         line = handleColon(line).trim();
         line = handleParenthesis(line).trim();
-        line = handleAlternatives(line).trim();
+        //TODO disable this functionality for now
+        //line = handleAlternatives(line).trim();
 
         Ingredient ingredient = ingredientFinder.find(line);
 
