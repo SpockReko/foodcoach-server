@@ -71,7 +71,7 @@ public class Ingredient extends Model {
      * This is multiplied with the amount.
      * @return The CO2 emission value as a double, 0.0 if no value is present.
      */
-    public Double getCO2() {
+    public double getCO2() {
         return multiplier(food.getCO2());
     }
 
