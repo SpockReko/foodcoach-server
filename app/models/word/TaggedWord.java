@@ -1,7 +1,10 @@
 package models.word;
 
 /**
- * Created by fredrikkindstrom on 2017-03-30.
+ * Represents a word with added meta information from JSON Tagger API.
+ * Used in the parsing process.
+ *
+ * @author Fredrik Kindstrom
  */
 public class TaggedWord {
     private String word;
