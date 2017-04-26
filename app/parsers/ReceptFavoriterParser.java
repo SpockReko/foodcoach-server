@@ -27,7 +27,15 @@ public class ReceptFavoriterParser implements RecipeParser {
     }
 
     @Override
-    public Recipe parse(String html) throws IOException {
+    public Recipe parseUrl(String url) throws IOException {
+        String html = Jsoup.connect(url).get().body().html();
+        Recipe recipe = parseHtml(html);
+        recipe.sourceUrl = url;
+        return recipe;
+    }
+
+    @Override
+    public Recipe parseHtml(String html) throws IOException {
         Document doc = Jsoup.parse(html);
 
         String title = doc.select("h1[itemprop=name]").text();
@@ -45,7 +53,7 @@ public class ReceptFavoriterParser implements RecipeParser {
             if (ingredient != null) {
                 ingredients.add(ingredient);
             } else {
-                Logger.error("Couldn't parse '" + webString + "' moving on...");
+                Logger.error("Couldn't parseHtml '" + webString + "' moving on...");
             }
         }
 

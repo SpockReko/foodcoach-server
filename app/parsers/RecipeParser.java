@@ -9,5 +9,6 @@ import java.io.IOException;
  */
 public interface RecipeParser {
 
-    Recipe parse(String html) throws IOException;
+    Recipe parseUrl(String url) throws IOException;
+    Recipe parseHtml(String html) throws IOException;
 }
