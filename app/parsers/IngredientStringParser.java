@@ -60,8 +60,10 @@ public class IngredientStringParser {
         Ingredient ingredient = ingredientFinder.find(line);
 
         if (ingredient != null) {
+            ingredient.original = ingredientString;
             return ingredient;
         } else {
+            //TODO this isn't used right now
             if (!alternatives.isEmpty()) {
                 for (String alternative : alternatives) {
                     Ingredient alt = ingredientFinder.find(alternative);

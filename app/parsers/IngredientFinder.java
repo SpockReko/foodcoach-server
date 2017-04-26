@@ -166,17 +166,18 @@ class IngredientFinder {
 
         if (foodGroup != null) {
             Food food = findFood(foodGroup);
+            Ingredient ingredient = new Ingredient(food, amount);
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 Logger.trace("Added " + comment.trim() + " as comment");
                 Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
                     + food.name + ", \"" + comment.trim() + "\" }");
-                return new Ingredient(food, amount, comment.trim());
+                ingredient.comment = comment.trim();
             } else {
                 Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
                     + food.name + " }");
-                return new Ingredient(food, amount);
             }
+            return ingredient;
         } else {
             return null;
         }

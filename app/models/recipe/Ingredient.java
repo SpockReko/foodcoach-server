@@ -26,6 +26,7 @@ public class Ingredient extends Model {
     @ManyToOne @NotNull private final Food food;
     @Embedded @NotNull private final Amount amount;
     public String comment;
+    public String original;
 
     @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
 
@@ -37,18 +38,6 @@ public class Ingredient extends Model {
     public Ingredient(Food food, Amount amount) {
         this.food = food;
         this.amount = amount;
-    }
-
-    /**
-     * Same as basic constructor but adds a comment generated from parsing.
-     * @param food The food the ingredient consists of.
-     * @param amount The amount the food is present in.
-     * @param comment A string comment that can be about how to cook the ingredient etc.
-     */
-    public Ingredient(Food food, Amount amount, String comment) {
-        this.food = food;
-        this.amount = amount;
-        this.comment = comment;
     }
 
     /**
