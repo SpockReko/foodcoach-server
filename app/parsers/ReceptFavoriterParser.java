@@ -53,7 +53,7 @@ public class ReceptFavoriterParser implements RecipeParser {
             if (ingredient != null) {
                 ingredients.add(ingredient);
             } else {
-                Logger.error("Couldn't parseHtml '" + webString + "' moving on...");
+                Logger.error("Couldn't parse '" + webString + "' moving on...");
             }
         }
 

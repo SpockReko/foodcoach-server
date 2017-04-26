@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by emmafahlen on 2017-03-23.
  */
-public class IngredientFinder {
+class IngredientFinder {
 
     private final List<FoodGroup> foodGroupList;
     private final WSClient wsClient;
@@ -33,7 +33,7 @@ public class IngredientFinder {
      * @param wsClient The web service client to use when calling Json Tagger API.
      * @param foodGroupList A list of all {@link FoodGroup}s in the database.
      */
-    public IngredientFinder(WSClient wsClient, List<FoodGroup> foodGroupList) {
+    IngredientFinder(WSClient wsClient, List<FoodGroup> foodGroupList) {
         this.foodGroupList = foodGroupList;
         this.wsClient = wsClient;
     }
@@ -44,7 +44,7 @@ public class IngredientFinder {
      * @return An ingredient if found, null if not.
      * @throws IOException If the external API is not available.
      */
-    public Ingredient find(String line) throws IOException {
+    Ingredient find(String line) throws IOException {
         Ingredient ingredient;
         leftover = "";
 
@@ -68,7 +68,7 @@ public class IngredientFinder {
      * @return An ingredient if found, null if not.
      * @throws IOException If the external API is not available.
      */
-    public Ingredient find(String line, Amount amount) throws IOException {
+    Ingredient find(String line, Amount amount) throws IOException {
         Ingredient ingredient;
         leftover = "";
 

@@ -49,7 +49,7 @@ public class IngredientStringParser {
      * @return An ingredient if found or null otherwise.
      * @throws IOException If the external API used to parseHtml cannot be reached.
      */
-    public synchronized Ingredient parse(String ingredientString) throws IOException {
+    public Ingredient parse(String ingredientString) throws IOException {
         String line = ingredientString;
 
         line = handleColon(line).trim();
