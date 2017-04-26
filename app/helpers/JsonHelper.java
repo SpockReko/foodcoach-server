@@ -37,8 +37,8 @@ public class JsonHelper {
         output.put("densityConstant", food.densityConstant);
         output.put("processing", food.processing == null ? null : food.processing.name());
         output.put("category", food.category == null ? null : food.category.name());
-        ArrayNode diets = output.putArray("diets");
-        food.diets.forEach(d -> diets.add(d.type.name()));
+        //ArrayNode diets = output.putArray("diets");
+        //food.diets.forEach(d -> diets.add(d.type.name()));
         return output;
     }
 
