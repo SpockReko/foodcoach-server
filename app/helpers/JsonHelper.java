@@ -31,14 +31,8 @@ public class JsonHelper {
         output.put("group", food.group.name);
         ArrayNode tags = output.putArray("tags");
         food.tags.forEach(tags::add);
-        output.put("scientificName", food.scientificName);
-        output.put("exampleBrands", food.exampleBrands);
-        output.put("pieceWeightGrams", food.pieceWeightGrams);
-        output.put("densityConstant", food.densityConstant);
         output.put("processing", food.processing == null ? null : food.processing.name());
         output.put("category", food.category == null ? null : food.category.name());
-        //ArrayNode diets = output.putArray("diets");
-        //food.diets.forEach(d -> diets.add(d.type.name()));
         return output;
     }
 
@@ -70,11 +64,12 @@ public class JsonHelper {
      */
     public static JsonNode toJson(Ingredient ingredient) {
         ObjectNode output = Json.newObject();
-        output.set("food", toJson(ingredient.getFood()));
         output.set("amount", Json.toJson(ingredient.getAmount()));
         output.put("comment", ingredient.comment);
         output.put("original", ingredient.original);
         output.put("kcal", ingredient.getNutrient(Nutrient.ENERGY_KCAL));
+        output.put("co2", ingredient.getCO2());
+        output.set("food", toJson(ingredient.getFood()));
         return output;
     }
 
@@ -89,9 +84,9 @@ public class JsonHelper {
         output.put("portions", recipe.getPortions());
         output.put("energyKcalPerPortion", Math.round(recipe.getNutrientPerPortion(Nutrient.ENERGY_KCAL)));
         output.put("energyKcal", Math.round(recipe.getNutrient(Nutrient.ENERGY_KCAL)));
+        output.put("co2PerPortion", recipe.getCO2PerPortion());
         output.put("carbohydrates", Math.round(recipe.getNutrient(Nutrient.CARBOHYDRATES)));
         output.put("protein", Math.round(recipe.getNutrient(Nutrient.PROTEIN)));
-        output.put("co2", Math.round(recipe.getCO2()));
         output.put("url", recipe.sourceUrl);
         ArrayNode array = output.putArray("ingredients");
         for (Ingredient ingredient : recipe.ingredients) {
