@@ -11,6 +11,7 @@ import models.food.Category;
 public class Constants {
 
     public static final double KCAL_FACTOR = 4.184;
+    public static final String JSON_TAGGER_URL = "https://json-tagger.com/tag";
 
     public static double CO2(Category category) {
         switch (category) {

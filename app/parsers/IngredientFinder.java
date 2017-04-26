@@ -1,6 +1,7 @@
 package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import helpers.Constants;
 import helpers.TaggerHelper;
 import helpers.StringHelper;
 import models.food.FoodGroup;
@@ -25,11 +26,17 @@ import java.util.concurrent.ExecutionException;
 public class IngredientFinder {
 
     private List<FoodGroup> foodGroupList;
+    private WSClient wsClient;
     private List<TaggedWord> taggedWords;
     private String leftover = "";
 
-    public IngredientFinder(List<FoodGroup> foodGroupList) {
+    /**
+     * @param wsClient The web service client to use when calling Json Tagger API.
+     * @param foodGroupList A list of all {@link FoodGroup}s in the database.
+     */
+    public IngredientFinder(WSClient wsClient, List<FoodGroup> foodGroupList) {
         this.foodGroupList = foodGroupList;
+        this.wsClient = wsClient;
     }
 
     /**
@@ -280,16 +287,13 @@ public class IngredientFinder {
      * @throws IOException When the HTTP request cannot be made.
      */
     private JsonNode retrieveWordInfo(String line) throws IOException {
-        WSClient ws = WS.newClient(9000);
-        CompletionStage<WSResponse> request = ws.url("https://json-tagger.com/tag")
+        CompletionStage<WSResponse> request = wsClient.url(Constants.JSON_TAGGER_URL)
             .setContentType("application/x-www-form-urlencoded").post(line);
         CompletionStage<JsonNode> jsonPromise = request.thenApply(WSResponse::asJson);
         try {
             return jsonPromise.toCompletableFuture().get();
         } catch (InterruptedException | ExecutionException e) {
             throw new IllegalArgumentException("Illegal webString");
-        } finally {
-            ws.close();
         }
     }
 }

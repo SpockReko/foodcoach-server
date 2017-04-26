@@ -1,5 +1,6 @@
 package parsers;
 
+import models.food.FoodGroup;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
 import org.jsoup.Jsoup;
@@ -7,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import play.Logger;
+import play.libs.ws.WSClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,9 +19,15 @@ import java.util.List;
  */
 public class ReceptFavoriterParser implements RecipeParser {
 
+    private IngredientStringParser stringParser;
+
+    public ReceptFavoriterParser(WSClient wsClient) {
+        List<FoodGroup> foodGroupList = FoodGroup.find.select("searchTags").findList();
+        stringParser = new IngredientStringParser(wsClient, foodGroupList);
+    }
+
     @Override
     public Recipe parse(String html) throws IOException {
-        IngredientStringParser stringParser = new IngredientStringParser();
         Document doc = Jsoup.parse(html);
 
         String title = doc.select("h1[itemprop=name]").text();

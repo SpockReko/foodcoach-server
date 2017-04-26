@@ -7,6 +7,7 @@ import models.recipe.Recipe;
 import parsers.RecipeParser;
 import parsers.ReceptFavoriterParser;
 import play.Logger;
+import play.libs.ws.WSClient;
 
 import java.io.IOException;
 
@@ -29,7 +30,8 @@ public class RecipeCrawler extends WebCrawler {
             RecipeParser parser;
 
             if (url.startsWith("http://receptfavoriter")) {
-                parser = new ReceptFavoriterParser();
+                WSClient wsClient = (WSClient) getMyController().getCustomData();
+                parser = new ReceptFavoriterParser(wsClient);
             } else {
                 throw new IllegalStateException("No parser for site: " + url);
             }

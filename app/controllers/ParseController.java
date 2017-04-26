@@ -9,9 +9,11 @@ import helpers.JsonHelper;
 import http.RecipeCrawler;
 import models.recipe.Ingredient;
 import parsers.IngredientStringParser;
+import play.libs.ws.WSClient;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,11 +23,12 @@ import java.io.IOException;
  */
 public class ParseController extends Controller {
 
+    @Inject WSClient wsClient;
     private static final String RECIPES_URLS_PATH = "resources/recipe_urls/receptfavoriter_se.txt";
     private static final int RECIPES_TO_PARSE = 20;
 
     public Result parseLine(String input) {
-        IngredientStringParser parser = new IngredientStringParser();
+        IngredientStringParser parser = new IngredientStringParser(wsClient);
         Ingredient ingredient = null;
         try {
             ingredient = parser.parse(input);
@@ -41,7 +44,7 @@ public class ParseController extends Controller {
 
     public Result runParse() throws Exception {
         String crawlStorageFolder = "target/crawl-data";
-        int numberOfCrawlers = 2;
+        int numberOfCrawlers = 7;
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorageFolder);
@@ -54,6 +57,7 @@ public class ParseController extends Controller {
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
         CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+        controller.setCustomData(wsClient);
 
         /*
          * Add pages from .txt file to be crawled.

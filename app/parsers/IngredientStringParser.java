@@ -5,6 +5,7 @@ import models.food.FoodGroup;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
+import play.libs.ws.WSClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,9 +24,23 @@ public class IngredientStringParser {
     private String insideParenthesis;
     private List<String> alternatives = new ArrayList<>();
 
-    public IngredientStringParser() {
+    /**
+     * Use this only when there is no external list of all {@link FoodGroup}s already created.
+     * Constructs by first fetching all {@link FoodGroup}s from the database.
+     * @param wsClient The web service client to use when calling Json Tagger API.
+     */
+    public IngredientStringParser(WSClient wsClient) {
         List<FoodGroup> foodGroupList = FoodGroup.find.select("searchTags").findList();
-        ingredientFinder = new IngredientFinder(foodGroupList);
+        ingredientFinder = new IngredientFinder(wsClient, foodGroupList);
+    }
+
+    /**
+     * * Constructs using the provided list of all {@link FoodGroup}s.
+     * @param wsClient The web service client to use when calling Json Tagger API.
+     * @param foodGroupList A list of all {@link FoodGroup}s in the database.
+     */
+    public IngredientStringParser(WSClient wsClient, List<FoodGroup> foodGroupList) {
+        ingredientFinder = new IngredientFinder(wsClient, foodGroupList);
     }
 
     /**
