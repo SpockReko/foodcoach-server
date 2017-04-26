@@ -443,8 +443,8 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 398	Krossade tomater	TRUE		Krossade tomater	tomatkross				Lycopersicon esculentum	Konserverat	Grönsakskonserver	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 446	Krusbär	TRUE		Krusbär		5	0.6		Ribes uva-crispa	Obehandlat	Bär	98 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LOWCHOL, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN, FATFREE
 33022	Kryddpasta	TRUE	kryddpasta, ingefärapasta	Ingefärapasta	ingefärapasta					Konserverat	Kryddsåser	100 %	NAGLUFRE, LACSFREE, MILKFREE, LACVEGE, LOWCHOL, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
-11197	Kryddsås, hp	TRUE	brun, hp-sås	Hp-sås	hpsås, hp					Industriellt	Kryddsåser	100 %	MILKFREE, LACSFREE, LACVEGE, LOWFAT, LOWCHOL, HIGHSALT, VEGAN, LACOVEGE, EGGFREE
-31	Kryddsås, soja	TRUE	sojasås	Sojasås	soja, sojasås, soyasås, soya					Industriellt	Kryddsåser	100 %	UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+11197	Hp-sås	TRUE	brun, hp-sås	Hp-sås	hpsås, hp					Industriellt	Kryddsåser	100 %	MILKFREE, LACSFREE, LACVEGE, LOWFAT, LOWCHOL, HIGHSALT, VEGAN, LACOVEGE, EGGFREE
+31	Sojasås	TRUE	sojasås	Sojasås	soja, sojasås, soyasås, soya		1.2			Industriellt	Kryddsåser	100 %	UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 34601	Kvarg		bär-/fruktkvarg, laktosfri	Kvarg (frukt/bär, laktosfri)			1	arla protein kvarg		Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, NAGLUFRE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE
 33404	Kvarg		bär-/fruktkvarg, fett 3%	Kvarg (frukt/bär)			1	danio		Industriellt	Syrade mjölkprodukter	100 %	
 33885	Kvarg		bär-/fruktkvarg, laktosfri	Kvarg (frukt/bär, laktosfri)			1	profeel protein kvarg		Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE
@@ -538,7 +538,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 29823	Majsmjöl	TRUE	finmalet	Majsmjöl					Zea mays	Obehandlat	Övrigt spannmål	100 %	UNSWEET, SOYAFREE, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 543	Majsolja	TRUE		Majsolja			0.93			Industriellt	Olja	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 30187	Majssnack	TRUE	utan salt	Majssnack	majssnacks					Industriellt	Övrigt spannmål	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
-34110	Majsstärkelse	TRUE	maizena, redning, brun/ljus	Majsstärkelse	maizena, redning					Industriellt	Stärkelse	100 %	SOYAFREE, UNSWEET, LOWPROT, NAGLUFRE, SALTFREE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+34110	Majsstärkelse	TRUE	maizena, redning, brun/ljus	Majsstärkelse	maizena, maizenaredning					Industriellt	Stärkelse	100 %	SOYAFREE, UNSWEET, LOWPROT, NAGLUFRE, SALTFREE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 27	Majsstärkelse			Majsstärkelse						Industriellt	Stärkelse	100 %	UNSWEET, SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 34713	Makaroner		fullkornsvete, fullkorn	Fullkornsmakaroner			0.6			Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 119	Makaroner		mörka	Makaroner			0.6			Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
@@ -1002,12 +1002,12 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 34239	Skogsriska	TRUE		Skogsriska	skogsriskor				Lactarius trivialis	Obehandlat	Svamp	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 126	Skorpmjöl	TRUE		Skorpmjöl						Obehandlat	Vete	100 %	SOYAFREE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, LACOVEGE, EGGFREE
 31692	Skorpmjöl		naturligt glutenfritt	Skorpmjöl						Industriellt	Övrigt spannmål	100 %	SOYAFREE, NAGLUFRE, MILKFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-34585	Skyr		naturell, <0,5% fett	Skyr						Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
-34593	Skyr	TRUE	naturell, 4% fett	Skyr						Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
-34587	Skyr		syntetiskt sötad, <0,5% fett	Skyr						Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
-34588	Skyr		syntetiskt sötad, 2% fett	Skyr						Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, SALTFREE, LACOVEGE
-34586	Skyr		sötad med socker, <0,5% fett	Skyr						Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
-34589	Skyr		sötad med socker och stevia, <0,5% fett	Skyr						Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
+34585	Skyr		naturell, <0,5% fett	Skyr			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
+34593	Skyr	TRUE	naturell, 4% fett	Skyr			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
+34587	Skyr		syntetiskt sötad, <0,5% fett	Skyr			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
+34588	Skyr		syntetiskt sötad, 2% fett	Skyr			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, SALTFREE, LACOVEGE
+34586	Skyr		sötad med socker, <0,5% fett	Skyr			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
+34589	Skyr		sötad med socker och stevia, <0,5% fett	Skyr			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, EGGFREE
 30462	Smaksatt yoghurt		1,5% fett, låg laktoshalt	Smaksatt yoghurt			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE
 34641	Smaksatt yoghurt		1,9% fett, 0,8 ug vitamin d, prob, laktosfri	Smaksatt yoghurt			1	arla luonto+		Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, VITAMADD
 33221	Smaksatt yoghurt		1% fett, laktosfri	Smaksatt yoghurt			1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, NAGLUFRE, LACSFREE, SALTFREE, LOWFAT, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE
@@ -1194,7 +1194,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 343	Svamp		riska, saltad	Svamp					Lactarius (trivialis/rufus/torminusus)	Saltat	Svamp	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 342	Svamp	TRUE	sopp, kremla	Svamp	svampar				Boletus edulis, russula paludosa	Obehandlat	Svamp	100 %	CHOLFREE, SOYAFREE, LOWPROT, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, FATFREE, EGGFREE
 444	Svart vinbär	TRUE		Svarta vinbär			0.5		Ribes nigrum	Obehandlat	Bär	95 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LOWCHOL, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN, FATFREE
-11177	Svartpeppar	TRUE		Svartpeppar	peppar		0.43		Piper nigrum	Torkat	Torkade kryddor	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+11177	Svartpeppar	TRUE		Svartpeppar	peppar		0.46		Piper nigrum	Torkat	Torkade kryddor	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 312	Svartrot	TRUE		Svartrot					Scorzonera hispanica	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 32478	Sweet and sour-sås	TRUE	sweet & sour	Sweet and sour-sås	sweet & sour, sweet & sour sauce, sötsur sås			uncle ben's		Blandat	Kryddsåser	100 %	SOYAFREE, NAGLUFRE, LACSFREE, MILKFREE, LACVEGE, LOWCHOL, LOWFAT, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 33020	Sweet chili-sås	TRUE	sweet chili sauce, chilisås	Sweet chili-sås	sweet chili, sweet chili sås, sweet-chilisås, sweet chilisås					Blandat	Kryddsåser	100 %	SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, LOWCHOL, LOWFAT, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
@@ -1308,7 +1308,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 393	Vitlök	TRUE		Vitlök	vitlökar, vitlöksklyftor, vitlöksklyfta				Allium sativum	Obehandlat	Lökgrönsaker	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 30429	Vitmögelost	TRUE	16% fett, camembert/brie	Vitmögelost	vitmögelostar, brie, camembert					Industriellt	Ost	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACVEGE, LOWFAT, HIGHSALT, GLUTFREE, LACOVEGE, EGGFREE
 640	Vitmögelost		26-30% fett, camembert/brie	Vitmögelost						Industriellt	Ost	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACVEGE, HIGHSALT, GLUTFREE, LACOVEGE, EGGFREE
-11178	Vitpeppar	TRUE		Vitpeppar	vitpepparkorn				Piper nigrum	Torkat	Torkade kryddor	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+11178	Vitpeppar	TRUE		Vitpeppar	vitpepparkorn		0.46		Piper nigrum	Torkat	Torkade kryddor	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 926	Vitt vin		sött	Vitt vin			1			Industriellt	Vin	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 925	Vitt vin	TRUE	torrt	Vitt vin	vittvin		1			Industriellt	Vin	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 34643	Yoghurt med kvarg	TRUE	naturell, 1,4% fett, 0,6ug vit d, ab, laktosfri	Yoghurt med kvarg	kvarggurt, kvargyoghurt, kvarg yoghurt		1	arla luonto+		Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, VITAMADD
