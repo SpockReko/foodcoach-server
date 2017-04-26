@@ -21,7 +21,7 @@ public class IngredientStringParser {
     private final IngredientFinder ingredientFinder;
 
     private String header;
-    private String insideParenthesis;
+    private String parenthesis;
     private List<String> alternatives = new ArrayList<>();
 
     /**
@@ -50,6 +50,8 @@ public class IngredientStringParser {
      * @throws IOException If the external API used to parseHtml cannot be reached.
      */
     public Ingredient parse(String ingredientString) throws IOException {
+        header = "";
+        parenthesis = "";
         String line = ingredientString;
 
         line = handleColon(line).trim();
@@ -61,9 +63,16 @@ public class IngredientStringParser {
 
         if (ingredient != null) {
             ingredient.original = ingredientString;
+            if (!parenthesis.equals("")) {
+                if (ingredient.comment != null) {
+                    ingredient.comment += " " + parenthesis;
+                } else {
+                    ingredient.comment = parenthesis;
+                }
+            }
             return ingredient;
         } else {
-            //TODO this isn't used right now
+            //TODO this is disabled
             if (!alternatives.isEmpty()) {
                 for (String alternative : alternatives) {
                     Ingredient alt = ingredientFinder.find(alternative);
@@ -101,8 +110,8 @@ public class IngredientStringParser {
             }
         }
         if (split[1] != null) {
-            insideParenthesis = "(" + split[1] + ")";
-            Logger.trace("Contains parenthesis, added " + insideParenthesis);
+            parenthesis = "(" + split[1] + ")";
+            Logger.trace("Contains parenthesis, added " + parenthesis);
             return line.replaceAll("\\(([^)]+)\\)", "");
         } else {
             return line;
