@@ -43,7 +43,7 @@ public class RecipeCrawler extends WebCrawler {
     private void parseRecipe(String url, String html, RecipeParser parser) {
         Recipe parsedRecipe = null;
         try {
-            parsedRecipe = parser.parse(html);
+            parsedRecipe = parser.parseHtml(html);
         } catch (IOException e) {
             e.printStackTrace();
         }
