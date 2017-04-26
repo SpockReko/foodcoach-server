@@ -296,8 +296,8 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 32795	Grillkorv		ultralätt, mjölkfri, 7% fett	Grillkorv (lätt, mjölkfri)						Industriellt	Korv	100 %	SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, LOWFAT, LOWCHOL, GLUTFREE, EGGFREE
 705	Grisbog	TRUE		Grisbog	gris bog					Obehandlat	Gris	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, EGGFREE
 787	Grislever	TRUE	lever, gris	Grislever						Obehandlat	Organ	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
-11074	Groddar		alfalfa-groddar	Alfalfagroddar					Medicago sativa	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-384	Groddar	TRUE	medelvärde, alfalfa, mungbönor	Alfalfagroddar	alfalfa groddar, alfalfa-groddar				Medicago sativa, vigna mungo	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+11074	Groddar		alfalfa-groddar, alfalfa	Alfalfagroddar					Medicago sativa	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+384	Groddar	TRUE	medelvärde, alfalfa, mungbönor	Böngroddar	alfalfa groddar, alfalfa-groddar, groddar, böngroddar				Medicago sativa, vigna mungo	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 372	Gröna brytbönor	TRUE	färska	Gröna brytbönor	grön brytböna, gröna brytbönor, brytböna, brytbönor				Phaseolus vulgaris	Obehandlat	Baljväxter	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 326	Grönkål	TRUE	bladkål	Grönkål	grön kål				Brassica oleracea var. sabellica	Obehandlat	Kål	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 356	Grönsaksblandning	TRUE	morot, blomkål, ärter, bönor	Grönsaksblandning	grönsaks blandning					Djupfryst	Rot- och knölväxter	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
@@ -435,7 +435,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 11052	Körsbär	TRUE	kärnfri	Körsbär		6	0.6		Prunus avium L., prunus cerasus L.	Obehandlat	Övrig frukt	100 %	
 28920	Körsbär		vägd med kärna	Körsbär		7	0.6		Prunus avium, prunus cerasus	Obehandlat	Övrig frukt	91 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 11512	Kotlettrad	TRUE		Kotlettrad	kotlettrader					Obehandlat	Gris	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
-38	Köttbuljong	TRUE	Köttbuljongpulver/koncentrat	Köttbuljong						Industriellt	Kryddsåser	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, GLUTFREE, EGGFREE
+38	Köttbuljong	TRUE	köttbuljongpulver, koncentrat	Köttbuljong						Industriellt	Kryddsåser	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, GLUTFREE, EGGFREE
 743	Köttkonserv, gris-nöt	TRUE	gris-nöt	Kött (konsverv)	köttkonserver, griskonserv, griskonserver					Konserverat	Nöt	100 %	NAGLUFRE, LOWSALT, MILKFREE, LACSFREE, GLUTFREE, EGGFREE
 741	Köttkonserv, nöt	TRUE	nötkött	Nötkött (konsverv)	nötkonserv, nötkonserver					Konserverat	Nöt	100 %	LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, HIGHSALT, GLUTFREE, EGGFREE
 836	Kräfta	TRUE		Kräftor	kräftstjärtar, kräftor				Astacus	Obehandlat	Skaldjur	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
@@ -538,7 +538,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 29823	Majsmjöl	TRUE	finmalet	Majsmjöl					Zea mays	Obehandlat	Övrigt spannmål	100 %	UNSWEET, SOYAFREE, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 543	Majsolja	TRUE		Majsolja			0.93			Industriellt	Olja	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 30187	Majssnack	TRUE	utan salt	Majssnack	majssnacks					Industriellt	Övrigt spannmål	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
-34110	Majsstärkelse	TRUE	maizena, redning, brun/ljus	Majsstärkelse	maizena, maizenaredning					Industriellt	Stärkelse	100 %	SOYAFREE, UNSWEET, LOWPROT, NAGLUFRE, SALTFREE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+34110	Majsstärkelse	TRUE	maizena, redning, brun/ljus	Majsstärkelse	maizena, maizenaredning		0.55			Industriellt	Stärkelse	100 %	SOYAFREE, UNSWEET, LOWPROT, NAGLUFRE, SALTFREE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 27	Majsstärkelse			Majsstärkelse						Industriellt	Stärkelse	100 %	UNSWEET, SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 34713	Makaroner		fullkornsvete, fullkorn	Fullkornsmakaroner			0.6			Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 119	Makaroner		mörka	Makaroner			0.6			Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
@@ -648,7 +648,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 687	Matlagningsyoghurt	TRUE	6-8% fett, låg laktoshalt	Matlagningsyoghurt	matyoghurt, matlagnings yoghurt		1			Industriellt	Grädde/creme	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 541	Matolja	TRUE	medelvärde, 87% raps-, 8% solros- och 5% olivolja	Matolja	solrosolja		0.93			Industriellt	Olja	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 531	Matolja		för livsmedelindustri, 70% rapsolja, 30% palmolja	Matolja			0.93			Industriellt	Olja	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWSALT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-30306	Medvurst	TRUE		Medvurst						Industriellt	Korv	100 %	NAGLUFRE, MILKFREE, LACSFREE, LOWCHOL, HIGHSALT, GLUTFREE, EGGFREE
+30306	Medvurst	TRUE		Medvurst	salami					Industriellt	Korv	100 %	NAGLUFRE, MILKFREE, LACSFREE, LOWCHOL, HIGHSALT, GLUTFREE, EGGFREE
 30305	Medvurst		lätt, 15% fett	Medvurst						Industriellt	Korv	100 %	NAGLUFRE, LACSFREE, MILKFREE, LOWCHOL, HIGHSALT, GLUTFREE, EGGFREE
 32407	Medvurst		ultralätt 9% fett	Medvurst						Industriellt	Korv	100 %	UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, LOWCHOL, LOWFAT, HIGHSALT, GLUTFREE, EGGFREE
 33845	Medvurst		salami, 22%	Medvurst						Industriellt	Korv	100 %	MILKFREE, LACSFREE, HIGHSALT, GLUTFREE, EGGFREE
@@ -711,7 +711,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 300	Morot	TRUE		Morot	morötter, sommarmorötter, sommarmorot, minimorötter, minimorot	100			Daucus carota	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 302	Morot		torkad	Morot (torkad)					Daucus carota	Torkat	Rot- och knölväxter	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 845	Mört	TRUE		Mört	mörtar				Rutilus rutilus	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
-29239	Mozzarella	TRUE	20% fett	Mozzarella	mozarella, mozzarella, mozzarrella, mozzarellaost, mozarellaost, mozarellaostar, mozzarellaostar					Industriellt	Ost	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
+29239	Mozzarella	TRUE	20% fett	Mozzarella	mozarella, mozzarella, mozzarrella, mozzarellaost, mozarellaost, mozarellaostar, mozzarellaostar	120	0.6			Industriellt	Ost	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 469	Multivitaminjuice	TRUE	Juice, fem frukters juice, vitamin c	Multivitaminjuice	multivitamin juice					Mosat	Juicer	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LOWCHOL, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN, FATFREE
 31213	Mungobönor	TRUE	kokta	Mungobönor	mungoböna				Vigna radiata	Kokt	Baljväxter	100 %	CHOLFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 334	Nässla	TRUE		Nässla	nässlor				Urtica dioica	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
@@ -751,7 +751,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 719	Nötgrytbitar	TRUE	nötbog, högrev, soppkött av nöt	Nötgrytbitar	grytbitar av nöt, grytbitar, nöt grytbitar					Obehandlat	Nöt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 792	Nöthjärta	TRUE	hjärta, nöt	Nöthjärta	kohjärta, nöthjärtan, kohjärtan					Obehandlat	Organ	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LOWFAT, GLUTFREE, EGGFREE
 34187	Oxfilé	TRUE	nötkött, innerfilé	Oxfilé	innerfilé av nöt, nötinnerfiléer, nötinnerfileer, oxfiléer, oxfileer					Obehandlat	Nöt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, GLUTFREE, EGGFREE
-714	Nötkött	TRUE	fett, medelvärde	Nötkött						Obehandlat	Nöt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
+714	Nötkött	TRUE	fett, medelvärde	Nötkött	biff, lövbiff					Obehandlat	Nöt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 34201	Nötkött		låg fetthalt, medelvärde	Nötkött						Obehandlat	Nöt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 34183	Nötkött		sortiment e, såskött, rå	Nötkött						Obehandlat	Nöt	100 %	NAGLUFRE, LACSFREE, MILKFREE, GLUTFREE, EGGFREE
 31145	Nötkött		strimlat, marinerat, rått	Nötkött (strimlat)						Blandat	Nöt	100 %	SOYAFREE, NAGLUFRE, MILKFREE, GLUTFREE, EGGFREE
@@ -783,9 +783,9 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 536	Olivolja	TRUE		Olivolja	olja		0.93		Olea europaea sativa	Industriellt	Olja	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 11191	Oregano	TRUE	torkad	Oregano			0.1		Origanum vulgare	Torkat	Torkade örter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 823	Öring	TRUE		Öring	öringar				Salmo trutta	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
-11157	Ost		28% fett, inneh. veg. fett	Ost						Industriellt	Ost	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, LACOVEGE, EGGFREE
-643	Ost		hård småhålig ost, 24-27% fett, edam	Ost						Industriellt	Ost	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, LACSFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
-33449	Ost	TRUE	medelvärde	Ost	ost, ostbit, ostar, ostbitar, parmesan, parmesanost					Industriellt	Ost	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
+11157	Ost		28% fett, inneh. veg. fett	Ost			0.5			Industriellt	Ost	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, LACOVEGE, EGGFREE
+643	Ost		hård småhålig ost, 24-27% fett, edam	Ost			0.5			Industriellt	Ost	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, LACSFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
+33449	Ost	TRUE	medelvärde	Ost	ost, ostbit, ostar, ostbitar, gratängost, gratängostar		0.5			Industriellt	Ost	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 863	Ostron	TRUE	vägda med skal	Ostron					Ostrea edulis	Obehandlat	Skaldjur	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 11735	Ostronskivling	TRUE		Ostronskivling	ostronskivlingar		0.2		Pleurotus ostreatus	Obehandlat	Svamp	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 1554	Ostsnacks	TRUE		Ostsnacks						Industriellt	Övrigt spannmål	100 %	SOYAFREE, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
@@ -875,7 +875,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 34235	Rättika	TRUE		Rättika	rättikor				Raphanus sativus var. longipinnatus	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 822	Regnbåge	TRUE	hel, medelvärde	Regnbåge	regnbågar				Oncorhynchus mykiss	Obehandlat	Fisk	65 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 34256	Regnbåge		odlad	Regnbåge					Oncorhynchus mykiss	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
-33419	Regnbågefilé	TRUE		Regnbågefilé	regnbågsfiléer, regnbågefiléer, regnbågsfilé				Oncorhynchus mykiss	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, GLUTFREE, EGGFREE
+33419	Regnbågefilé	TRUE		Regnbågefilé	regnbågslax, regnbågelax, regnbågsfiléer, regnbågefiléer, regnbågsfilé				Oncorhynchus mykiss	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, GLUTFREE, EGGFREE
 870	Regnbågefilé		gravad	Regnbågefilé (gravad)					Oncorhynchus mykiss	Saltat	Fiskprodukter	100 %	SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, HIGHSALT, GLUTFREE, EGGFREE
 848	Regnbågefilé		hav	Regnbågefilé					Oncorhynchus mykiss	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 33409	Regnbågefilé		kallrökt	Regnbågefilé (kallrökt)					Oncorhynchus mykiss	Rökt	Fiskprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, HIGHSALT, GLUTFREE, EGGFREE
@@ -1289,7 +1289,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 936	Vin		svagt, 4-5 vol-% alkohol	Vin			1			Industriellt	Vin	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 11069	Vin		alkoholfritt	Vin			1			Industriellt	Läskedrycker	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 904	Vin	TRUE	medelvärde, 8-15 vol-% alkohol	Vin			1			Industriellt	Vin	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
-929	Vinäger	TRUE	vinättika	Vinäger	balsamvinäger		1			Industriellt	Kryddsåser	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+929	Vinäger	TRUE	vinättika	Vinäger	balsamvinäger, rödvinsvinäger		1			Industriellt	Kryddsåser	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 28928	Vinblad	TRUE	inlagd i saltlag	Vinblad						Konserverat	Grönsakskonserver	100 %	CHOLFREE, LACSFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, HIGHSALT, VEGAN, FATFREE
 28932	Vindruva	TRUE	medelvärde, vägd med kärnor, grön/mörk	Vindruvor	vindruvor, druvor, druva	16			Vitis vinifera L.	Obehandlat	Övrig frukt	95 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 423	Vindruva		medelvärde, kärnfria, gröna/mörka	Vindruvor		14			Vitis vinifera L.	Obehandlat	Övrig frukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
