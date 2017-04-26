@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class IngredientStringParser {
 
-    private IngredientFinder ingredientFinder;
+    private final IngredientFinder ingredientFinder;
 
     private String header;
     private String insideParenthesis;

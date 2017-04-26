@@ -2,15 +2,14 @@ package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import helpers.Constants;
-import helpers.TaggerHelper;
 import helpers.StringHelper;
-import models.food.FoodGroup;
-import models.word.TaggedWord;
+import helpers.TaggerHelper;
 import models.food.Food;
+import models.food.FoodGroup;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
+import models.word.TaggedWord;
 import play.Logger;
-import play.libs.ws.WS;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
 
@@ -25,8 +24,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class IngredientFinder {
 
-    private List<FoodGroup> foodGroupList;
-    private WSClient wsClient;
+    private final List<FoodGroup> foodGroupList;
+    private final WSClient wsClient;
     private List<TaggedWord> taggedWords;
     private String leftover = "";
 
@@ -91,7 +90,7 @@ public class IngredientFinder {
      * @return An amount if found, otherwise null.
      * @throws IOException If the external API is not available.
      */
-    public Amount extractAmount(String line) throws IOException {
+    Amount extractAmount(String line) throws IOException {
         JsonNode jsonNode = retrieveWordInfo(line);
         taggedWords = TaggerHelper.getTaggedWords(jsonNode);
         Amount amount = findAmount();
@@ -286,7 +285,7 @@ public class IngredientFinder {
      * @return A json respone with info about each word.
      * @throws IOException When the HTTP request cannot be made.
      */
-    private JsonNode retrieveWordInfo(String line) throws IOException {
+    private JsonNode retrieveWordInfo(String line) {
         CompletionStage<WSResponse> request = wsClient.url(Constants.JSON_TAGGER_URL)
             .setContentType("application/x-www-form-urlencoded").post(line);
         CompletionStage<JsonNode> jsonPromise = request.thenApply(WSResponse::asJson);

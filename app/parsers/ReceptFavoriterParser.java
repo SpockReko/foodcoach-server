@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ReceptFavoriterParser implements RecipeParser {
 
-    private IngredientStringParser stringParser;
+    private final IngredientStringParser stringParser;
 
     public ReceptFavoriterParser(WSClient wsClient) {
         List<FoodGroup> foodGroupList = FoodGroup.find.select("searchTags").findList();
