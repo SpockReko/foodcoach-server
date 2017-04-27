@@ -37,6 +37,12 @@ public class JsonHelper {
         return output;
     }
 
+    /**
+     * Converts a {@link User} to Json.
+     * @param user The user to convert.
+     * @return The user represented as Json.
+     */
+
     public static JsonNode toJson(User user) {
         ObjectNode output = Json.newObject();
         output.put("id", user.id);

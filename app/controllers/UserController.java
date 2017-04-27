@@ -25,7 +25,7 @@ public class UserController extends Controller {
     }
     */
 
-    /*
+
     // GET /user/name/:name
     public Result getUserByName(String name) {
         User user = User.find.where().eq("firstName", name).findUnique();
@@ -34,7 +34,7 @@ public class UserController extends Controller {
         } else {
             return badRequest("User \"" + name + "\" does not exist");
         }
-    } */
+    }
 
     // GET /user/name/:id
     public Result getUserById(int id) {

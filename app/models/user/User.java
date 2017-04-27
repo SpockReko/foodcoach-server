@@ -14,6 +14,8 @@ import models.food.Nutrient;
 
 /**
  * Created by Stolof on 17/02/17.
+ *
+ *
  */
 
 @Entity
@@ -78,12 +80,6 @@ public class User extends Model {
     }
 
     public static Finder<Long, User> find = new Finder<>(User.class);
-
-    /*
-    public long getUserId() {
-        return id;
-    }
-    */
 
     public HashMap<Nutrient, Double> hmap = new HashMap<>();
     public HashMap<Nutrient, Double> overdoseValues = new HashMap<>();
