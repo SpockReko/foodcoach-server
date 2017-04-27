@@ -1,0 +1,6 @@
+nsda_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name	classification
+02036	Rosmarin		torkad	Rosmarin (torkad)			0.22		Rosmarinus officinalis	Torkade örter
+02063	Rosmarin	TRUE	färsk	Rosmarin (färsk)			0.11		Rosmarinus officinalis	Bladgrönsaker
+02014	Spiskummin	TRUE		Spiskummin			0.4		Cuminum cyminum	Torkade kryddor
+06169	Tabasosås	TRUE		Tabascosås	tabasco		0.95			Kryddsåser
+02004	Lagerblad	TRUE		Lagerblad			0.12		Laurus nobilis	Bladgrönsaker
