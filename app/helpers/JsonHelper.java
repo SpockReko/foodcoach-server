@@ -8,6 +8,7 @@ import models.food.FoodGroup;
 import models.food.Nutrient;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
+import models.user.User;
 import play.libs.Json;
 
 /**
@@ -33,6 +34,19 @@ public class JsonHelper {
         food.tags.forEach(tags::add);
         output.put("processing", food.processing == null ? null : food.processing.name());
         output.put("category", food.category == null ? null : food.category.name());
+        return output;
+    }
+
+    public static JsonNode toJson(User user) {
+        ObjectNode output = Json.newObject();
+        output.put("id", user.id);
+        output.put("name", user.firstName);
+        output.put("sex", String.valueOf(user.sex));
+        output.put("weight", user.weight);
+        output.put("height", user.height);
+        output.put("height", user.height);
+        output.put("age", user.age);
+        output.put("activityLevel", user.activityLevel);
         return output;
     }
 
