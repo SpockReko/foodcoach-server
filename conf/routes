@@ -16,6 +16,8 @@ GET             /recipes                                  controllers.RecipeCont
 
 # User info
 GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
+GET             /user/name/:name                          controllers.UserController.getUserByName(name: String)
+GET             /user/id/:id                              controllers.UserController.getUserById(id: Int)
 
 # Menu options from client
 POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
