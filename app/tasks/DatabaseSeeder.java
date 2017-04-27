@@ -5,6 +5,8 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
+
+import static com.avaje.ebean.Expr.eq;
 import static helpers.StringHelper.CYAN;
 import static helpers.StringHelper.GREEN;
 import static helpers.StringHelper.PURPLE;
@@ -37,12 +39,12 @@ public class DatabaseSeeder {
 
     private static EbeanServer db;
 
-    private static final String FINELI_GROUP_TSV = "resources/fineli_food/Fineli_FoodGroups.tsv";
-    private static final String FINELI_DATA_TSV = "resources/fineli_food/Fineli_FoodData.tsv";
-    private static final String SLV_GROUP_TSV = "resources/slv_food/SLV_FoodGroups.tsv";
-    private static final String SLV_DATA_TSV = "resources/slv_food/SLV_FoodData.tsv";
-    private static final String NSDA_GROUP_TSV = "resources/nsda_food/NSDA_FoodGroups.tsv";
-    private static final String NSDA_DATA_TSV = "resources/nsda_food/NSDA_FoodData.tsv";
+    private static final String FINELI_GROUP_TSV = "resources/food/Fineli_FoodGroups.tsv";
+    private static final String FINELI_DATA_TSV = "resources/food/Fineli_FoodData.tsv";
+    private static final String SLV_GROUP_TSV = "resources/food/SLV_FoodGroups.tsv";
+    private static final String SLV_DATA_TSV = "resources/food/SLV_FoodData.tsv";
+    private static final String NSDA_GROUP_TSV = "resources/food/NSDA_FoodGroups.tsv";
+    private static final String NSDA_DATA_TSV = "resources/food/NSDA_FoodData.tsv";
     private static final String RECIPES_PATH = "resources/recipes/recipes_fineli.csv";
 
     private enum Fineli {
@@ -67,7 +69,7 @@ public class DatabaseSeeder {
     private enum SLV {
         GROUP_ID(0), GROUP_NAME(1), GROUP_DEFAULT(2), GROUP_SPECIFIC_TAGS(3), GROUP_DISPLAY_NAME(4),
         GROUP_EXTRA_TAGS(5), GROUP_PIECE_WEIGHT(6), GROUP_DENSITY_CONSTANT(7), GROUP_EXAMPLE_BRANDS(8),
-        GROUP_SCIENTIFIC_NAME(9),
+        GROUP_SCIENTIFIC_NAME(9), GROUP_CLASSIFICATION(10),
         DATA_ID(1), DATA_ENERGY_KJ(3), DATA_CARB(4), DATA_PROTEIN(6), DATA_FAT(5), DATA_FIBRE(7),
         DATA_ALCOHOL(9), DATA_SALT(55), DATA_VITAMIN_A(35), DATA_VITAMIN_B6(45),
         DATA_VITAMIN_B12(46), DATA_VITAMIN_C(42), DATA_VITAMIN_D(37), DATA_VITAMIN_E(38),
@@ -86,12 +88,13 @@ public class DatabaseSeeder {
     private enum NSDA {
         GROUP_ID(0), GROUP_NAME(1), GROUP_DEFAULT(2), GROUP_SPECIFIC_TAGS(3), GROUP_DISPLAY_NAME(4),
         GROUP_EXTRA_TAGS(5), GROUP_PIECE_WEIGHT(6), GROUP_DENSITY_CONSTANT(7),
-        GROUP_EXAMPLE_BRANDS(8), GROUP_SCIENTIFIC_NAME(9), DATA_ID(0), DATA_ENERGY_KCAL(3),
-        DATA_CARB(7), DATA_PROTEIN(4), DATA_FAT(5), DATA_FIBRE(8), DATA_VITAMIN_A(33),
-        DATA_VITAMIN_B6(25), DATA_VITAMIN_B12(31), DATA_VITAMIN_C(20), DATA_VITAMIN_D(41),
-        DATA_VITAMIN_E(40), DATA_VITAMIN_K(43), DATA_THIAMINE(21), DATA_RIBOFLAVIN(22),
-        DATA_NIACIN(23), DATA_FOLATE(26), DATA_PHOSPHORUS(13), DATA_IRON(11), DATA_CALCIUM(10),
-        DATA_POTASSIUM(14), DATA_MAGNESIUM(12), DATA_SODIUM(15), DATA_SELENIUM(19), DATA_ZINK(16);
+        GROUP_EXAMPLE_BRANDS(8), GROUP_SCIENTIFIC_NAME(9), GROUP_CLASSIFICATION(10), DATA_ID(0),
+        DATA_ENERGY_KCAL(3), DATA_CARB(7), DATA_PROTEIN(4), DATA_FAT(5), DATA_FIBRE(8),
+        DATA_VITAMIN_A(33), DATA_VITAMIN_B6(25), DATA_VITAMIN_B12(31), DATA_VITAMIN_C(20),
+        DATA_VITAMIN_D(41), DATA_VITAMIN_E(40), DATA_VITAMIN_K(43), DATA_THIAMINE(21),
+        DATA_RIBOFLAVIN(22), DATA_NIACIN(23), DATA_FOLATE(26), DATA_PHOSPHORUS(13), DATA_IRON(11),
+        DATA_CALCIUM(10), DATA_POTASSIUM(14), DATA_MAGNESIUM(12), DATA_SODIUM(15),
+        DATA_SELENIUM(19), DATA_ZINK(16);
 
         private final int id;
 
@@ -331,6 +334,9 @@ public class DatabaseSeeder {
         if (cols[SLV.GROUP_SCIENTIFIC_NAME.id] != null) {
             specificFood.scientificName = cols[SLV.GROUP_SCIENTIFIC_NAME.id].trim();
         }
+        if (cols[SLV.GROUP_CLASSIFICATION.id] != null) {
+            specificFood.category = getCategory(cols[SLV.GROUP_CLASSIFICATION.id].trim());
+        }
 
         if (cols[SLV.GROUP_DEFAULT.id] != null) {
             if (cols[SLV.GROUP_EXTRA_TAGS.id] != null) {
@@ -410,6 +416,9 @@ public class DatabaseSeeder {
         if (cols[NSDA.GROUP_SCIENTIFIC_NAME.id] != null) {
             specificFood.scientificName = cols[NSDA.GROUP_SCIENTIFIC_NAME.id].trim();
         }
+        if (cols[NSDA.GROUP_CLASSIFICATION.id] != null) {
+            specificFood.category = getCategory(cols[NSDA.GROUP_CLASSIFICATION.id].trim());
+        }
 
         if (cols[NSDA.GROUP_DEFAULT.id] != null) {
             if (cols[NSDA.GROUP_EXTRA_TAGS.id] != null) {
@@ -459,7 +468,10 @@ public class DatabaseSeeder {
                     throw new RuntimeException("Wrong unit in recipes.csv");
                 }
 
-                Food food = db.find(Food.class).where().eq("dataSourceId", fineliId).findUnique();
+                Food food = db.find(Food.class)
+                    .where().conjunction()
+                    .eq("dataSourceId", fineliId)
+                    .eq("dataSource", DataSource.FINELI).findUnique();
 
                 if (food == null) {
                     throw new RuntimeException("No food with food number " + fineliId);
