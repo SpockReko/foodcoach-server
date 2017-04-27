@@ -1,5 +1,6 @@
 package parsers;
 
+import helpers.StringHelper;
 import models.food.FoodGroup;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
@@ -40,7 +41,12 @@ public class ReceptFavoriterParser implements RecipeParser {
 
         String title = doc.select("h1[itemprop=name]").text();
         String portionsText = doc.select("h3[itemprop=recipeYield]").text();
-        int portions = Integer.parseInt(portionsText.replaceAll("\\D+",""));
+        int portions = -1;
+        try {
+            portions = StringHelper.parseFirstNumber(portionsText);
+        } catch (IllegalArgumentException e) {
+            Logger.error("No portion found \"" + portionsText + "\"");
+        }
 
         Elements ingredientStrings = doc.select(".recipe-ingredients li");
         List<Ingredient> ingredients = new ArrayList<>();

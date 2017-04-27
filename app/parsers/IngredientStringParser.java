@@ -45,9 +45,9 @@ public class IngredientStringParser {
 
     /**
      * Parses a string and tries to find an ingredient with amount in it.
-     * @param ingredientString The string to parseHtml.
+     * @param ingredientString The string to parse.
      * @return An ingredient if found or null otherwise.
-     * @throws IOException If the external API used to parseHtml cannot be reached.
+     * @throws IOException If the external API used to parse cannot be reached.
      */
     public Ingredient parse(String ingredientString) throws IOException {
         header = "";
