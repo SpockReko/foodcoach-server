@@ -125,6 +125,9 @@ class IngredientFinder {
                     if (word.contains("/")) {
                         String[] part = word.split("/");
                         numeric = Double.parseDouble(part[0]) / Double.parseDouble(part[1]);
+                    } else if (word.contains("-")) {
+                        String[] part = word.split("-");
+                        numeric = (Double.parseDouble(part[0]) + Double.parseDouble(part[1])) / 2;
                     } else {
                         numeric = Double.parseDouble(word);
                     }
