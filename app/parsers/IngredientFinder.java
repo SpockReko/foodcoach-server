@@ -1,15 +1,15 @@
 package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import helpers.TaggerHelper;
+import helpers.Constants;
 import helpers.StringHelper;
-import models.food.FoodGroup;
-import models.word.TaggedWord;
+import helpers.TaggerHelper;
 import models.food.Food;
+import models.food.FoodGroup;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
+import models.word.TaggedWord;
 import play.Logger;
-import play.libs.ws.WS;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSResponse;
 
@@ -22,14 +22,20 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by emmafahlen on 2017-03-23.
  */
-public class IngredientFinder {
+class IngredientFinder {
 
-    private List<FoodGroup> foodGroupList;
+    private final List<FoodGroup> foodGroupList;
+    private final WSClient wsClient;
     private List<TaggedWord> taggedWords;
     private String leftover = "";
 
-    public IngredientFinder(List<FoodGroup> foodGroupList) {
+    /**
+     * @param wsClient The web service client to use when calling Json Tagger API.
+     * @param foodGroupList A list of all {@link FoodGroup}s in the database.
+     */
+    IngredientFinder(WSClient wsClient, List<FoodGroup> foodGroupList) {
         this.foodGroupList = foodGroupList;
+        this.wsClient = wsClient;
     }
 
     /**
@@ -38,7 +44,7 @@ public class IngredientFinder {
      * @return An ingredient if found, null if not.
      * @throws IOException If the external API is not available.
      */
-    public Ingredient find(String line) throws IOException {
+    Ingredient find(String line) throws IOException {
         Ingredient ingredient;
         leftover = "";
 
@@ -62,7 +68,7 @@ public class IngredientFinder {
      * @return An ingredient if found, null if not.
      * @throws IOException If the external API is not available.
      */
-    public Ingredient find(String line, Amount amount) throws IOException {
+    Ingredient find(String line, Amount amount) throws IOException {
         Ingredient ingredient;
         leftover = "";
 
@@ -84,7 +90,7 @@ public class IngredientFinder {
      * @return An amount if found, otherwise null.
      * @throws IOException If the external API is not available.
      */
-    public Amount extractAmount(String line) throws IOException {
+    Amount extractAmount(String line) throws IOException {
         JsonNode jsonNode = retrieveWordInfo(line);
         taggedWords = TaggerHelper.getTaggedWords(jsonNode);
         Amount amount = findAmount();
@@ -119,6 +125,9 @@ public class IngredientFinder {
                     if (word.contains("/")) {
                         String[] part = word.split("/");
                         numeric = Double.parseDouble(part[0]) / Double.parseDouble(part[1]);
+                    } else if (word.contains("-")) {
+                        String[] part = word.split("-");
+                        numeric = (Double.parseDouble(part[0]) + Double.parseDouble(part[1])) / 2;
                     } else {
                         numeric = Double.parseDouble(word);
                     }
@@ -160,17 +169,18 @@ public class IngredientFinder {
 
         if (foodGroup != null) {
             Food food = findFood(foodGroup);
+            Ingredient ingredient = new Ingredient(food, amount);
             if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
                 String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
                 Logger.trace("Added " + comment.trim() + " as comment");
                 Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
                     + food.name + ", \"" + comment.trim() + "\" }");
-                return new Ingredient(food, amount, comment.trim());
+                ingredient.comment = comment.trim();
             } else {
                 Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
                     + food.name + " }");
-                return new Ingredient(food, amount);
             }
+            return ingredient;
         } else {
             return null;
         }
@@ -279,17 +289,14 @@ public class IngredientFinder {
      * @return A json respone with info about each word.
      * @throws IOException When the HTTP request cannot be made.
      */
-    private JsonNode retrieveWordInfo(String line) throws IOException {
-        WSClient ws = WS.newClient(9000);
-        CompletionStage<WSResponse> request = ws.url("https://json-tagger.com/tag")
+    private JsonNode retrieveWordInfo(String line) {
+        CompletionStage<WSResponse> request = wsClient.url(Constants.JSON_TAGGER_URL)
             .setContentType("application/x-www-form-urlencoded").post(line);
         CompletionStage<JsonNode> jsonPromise = request.thenApply(WSResponse::asJson);
         try {
             return jsonPromise.toCompletableFuture().get();
         } catch (InterruptedException | ExecutionException e) {
             throw new IllegalArgumentException("Illegal webString");
-        } finally {
-            ws.close();
         }
     }
 }

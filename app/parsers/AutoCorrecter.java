@@ -9,15 +9,15 @@ import play.Logger;
 /**
  * Created by emmafahlen on 2017-02-14.
  */
-public class AutoCorrecter {
+class AutoCorrecter {
 
     private int maxDistance = 1;
 
-    private Levenshtein levenshtein = new Levenshtein();
+    private final Levenshtein levenshtein = new Levenshtein();
     private FoodGroup matchingFood = null;
     private double shortestDistance = Double.MAX_VALUE;
 
-    public FoodGroup autoCorrect(String ingredient) {
+    FoodGroup autoCorrect(String ingredient) {
         List<FoodGroup> items = FoodGroup.find.select("searchTags").findList();
         for (FoodGroup food : items) {
             List<String> tags = food.searchTags;

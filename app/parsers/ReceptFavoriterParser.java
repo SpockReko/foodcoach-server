@@ -1,5 +1,7 @@
 package parsers;
 
+import helpers.StringHelper;
+import models.food.FoodGroup;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
 import org.jsoup.Jsoup;
@@ -7,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import play.Logger;
+import play.libs.ws.WSClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,14 +20,33 @@ import java.util.List;
  */
 public class ReceptFavoriterParser implements RecipeParser {
 
+    private final IngredientStringParser stringParser;
+
+    public ReceptFavoriterParser(WSClient wsClient) {
+        List<FoodGroup> foodGroupList = FoodGroup.find.select("searchTags").findList();
+        stringParser = new IngredientStringParser(wsClient, foodGroupList);
+    }
+
     @Override
-    public Recipe parse(String html) throws IOException {
-        IngredientStringParser stringParser = new IngredientStringParser();
+    public Recipe parseUrl(String url) throws IOException {
+        String html = Jsoup.connect(url).get().body().html();
+        Recipe recipe = parseHtml(html);
+        recipe.sourceUrl = url;
+        return recipe;
+    }
+
+    @Override
+    public Recipe parseHtml(String html) throws IOException {
         Document doc = Jsoup.parse(html);
 
         String title = doc.select("h1[itemprop=name]").text();
         String portionsText = doc.select("h3[itemprop=recipeYield]").text();
-        int portions = Integer.parseInt(portionsText.replaceAll("\\D+",""));
+        int portions = -1;
+        try {
+            portions = StringHelper.parseFirstNumber(portionsText);
+        } catch (IllegalArgumentException e) {
+            Logger.error("No portion found \"" + portionsText + "\"");
+        }
 
         Elements ingredientStrings = doc.select(".recipe-ingredients li");
         List<Ingredient> ingredients = new ArrayList<>();

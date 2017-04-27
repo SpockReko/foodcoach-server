@@ -25,8 +25,6 @@ public class Recipe extends Model {
 
     @NotNull private final String title;
     @NotNull private final int portions;
-    public String description;
-    public int cookingDurationMinutes;
 
     @ManyToMany(cascade = CascadeType.ALL) public List<Ingredient> ingredients;
 
@@ -48,8 +46,12 @@ public class Recipe extends Model {
     }
     public List<Ingredient> getIngredients(){return ingredients;}
 
-    public Double getCO2() {
+    public double getCO2() {
         return ingredients.stream().mapToDouble(Ingredient::getCO2).sum();
+    }
+
+    public double getCO2PerPortion() {
+        return ingredients.stream().mapToDouble(Ingredient::getCO2).sum() / portions;
     }
 
     public double getNutrient(Nutrient nutrient) {
@@ -63,21 +65,6 @@ public class Recipe extends Model {
     /*
     Extra calculations
      */
-    public Double getEnergyPercentProtein() {
-        return 4 * 100 * getNutrient(Nutrient.PROTEIN) / getNutrient(Nutrient.ENERGY_KCAL); // energi från protein per portion
-    }
-
-    public Double getEnergyPercentCarbohydrates() {
-        return 4 * 100 * getNutrient(Nutrient.CARBOHYDRATES) / getNutrient(Nutrient.ENERGY_KCAL); // energi från kolhydrater per portion
-    }
-
-    public Double getEnergyPercentFat() {
-        return 9 * 100 * getNutrient(Nutrient.FAT) / getNutrient(Nutrient.ENERGY_KCAL); // energi från fett per portion
-    }
-
-    public Double getEnergyPercentFibre() {
-        return 2 * 100 * getNutrient(Nutrient.FIBRE) / getNutrient(Nutrient.ENERGY_KCAL);
-    }
 
     public Recipe getOnePortionRecipe() {
         List<Ingredient> ingredients = getIngredients();

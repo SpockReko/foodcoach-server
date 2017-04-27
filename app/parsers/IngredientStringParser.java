@@ -5,6 +5,7 @@ import models.food.FoodGroup;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
 import play.Logger;
+import play.libs.ws.WSClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,15 +18,29 @@ import java.util.regex.Pattern;
  */
 public class IngredientStringParser {
 
-    private IngredientFinder ingredientFinder;
+    private final IngredientFinder ingredientFinder;
 
     private String header;
-    private String insideParenthesis;
+    private String parenthesis;
     private List<String> alternatives = new ArrayList<>();
 
-    public IngredientStringParser() {
+    /**
+     * Use this only when there is no external list of all {@link FoodGroup}s already created.
+     * Constructs by first fetching all {@link FoodGroup}s from the database.
+     * @param wsClient The web service client to use when calling Json Tagger API.
+     */
+    public IngredientStringParser(WSClient wsClient) {
         List<FoodGroup> foodGroupList = FoodGroup.find.select("searchTags").findList();
-        ingredientFinder = new IngredientFinder(foodGroupList);
+        ingredientFinder = new IngredientFinder(wsClient, foodGroupList);
+    }
+
+    /**
+     * * Constructs using the provided list of all {@link FoodGroup}s.
+     * @param wsClient The web service client to use when calling Json Tagger API.
+     * @param foodGroupList A list of all {@link FoodGroup}s in the database.
+     */
+    public IngredientStringParser(WSClient wsClient, List<FoodGroup> foodGroupList) {
+        ingredientFinder = new IngredientFinder(wsClient, foodGroupList);
     }
 
     /**
@@ -34,18 +49,30 @@ public class IngredientStringParser {
      * @return An ingredient if found or null otherwise.
      * @throws IOException If the external API used to parse cannot be reached.
      */
-    public synchronized Ingredient parse(String ingredientString) throws IOException {
+    public Ingredient parse(String ingredientString) throws IOException {
+        header = "";
+        parenthesis = "";
         String line = ingredientString;
 
         line = handleColon(line).trim();
         line = handleParenthesis(line).trim();
-        line = handleAlternatives(line).trim();
+        //TODO disable this functionality for now
+        //line = handleAlternatives(line).trim();
 
         Ingredient ingredient = ingredientFinder.find(line);
 
         if (ingredient != null) {
+            ingredient.original = ingredientString;
+            if (!parenthesis.equals("")) {
+                if (ingredient.comment != null) {
+                    ingredient.comment += " " + parenthesis;
+                } else {
+                    ingredient.comment = parenthesis;
+                }
+            }
             return ingredient;
         } else {
+            //TODO this is disabled
             if (!alternatives.isEmpty()) {
                 for (String alternative : alternatives) {
                     Ingredient alt = ingredientFinder.find(alternative);
@@ -83,8 +110,8 @@ public class IngredientStringParser {
             }
         }
         if (split[1] != null) {
-            insideParenthesis = "(" + split[1] + ")";
-            Logger.trace("Contains parenthesis, added " + insideParenthesis);
+            parenthesis = "(" + split[1] + ")";
+            Logger.trace("Contains parenthesis, added " + parenthesis);
             return line.replaceAll("\\(([^)]+)\\)", "");
         } else {
             return line;

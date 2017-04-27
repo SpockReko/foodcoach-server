@@ -16,6 +16,8 @@ GET             /recipes                                  controllers.RecipeCont
 
 # User info
 GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
+GET             /user/name/:name                          controllers.UserController.getUserByName(name: String)
+GET             /user/id/:id                              controllers.UserController.getUserById(id: Int)
 
 # Menu options from client
 POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
@@ -34,7 +36,8 @@ GET             /bob/recipe/optimize/:number              controllers.RecipeOpti
 GET             /alice/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberAlice(number: Long)
 
 # Parse ingredient string to food item
-GET             /parseLine/:input                         controllers.ParseController.parseLine(input: String)
+GET             /parseLine                                controllers.ParseController.parseLine(line: String)
+GET             /parseUrl                                 controllers.ParseController.parseUrl(url: String)
 GET             /runParse                                 controllers.ParseController.runParse
 
 # Map static resources from the /public folder to the /assets URL path

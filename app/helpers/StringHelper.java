@@ -13,10 +13,39 @@ public class StringHelper {
     public static final String PURPLE = "\u001B[35m";
     public static final String RESET = "\u001B[0m";
 
-    public static boolean containsWord(String s, String word) {
+    /**
+     * Return whether a string of words contains a word.
+     * @param str The string to look in.
+     * @param word The word to look for.
+     * @return True if the word is by itself in the string, false if not.
+     */
+    public static boolean containsWord(String str, String word) {
         return
-            s.toLowerCase().contains(" " + word + " ") ||
-            s.toLowerCase().contains(" " + word + ",") ||
-            s.toLowerCase().contains(" " + word + ".");
+            str.toLowerCase().contains(" " + word + " ") ||
+            str.toLowerCase().contains(" " + word + ",") ||
+            str.toLowerCase().contains(" " + word + ".");
+    }
+
+    /**
+     * Returns the first positive number found in a string.
+     * If a string contains approximations (4-5) it returns the mean of those numbers;
+     * @param str The string to look in.
+     * @return A number if found.
+     * @throws IllegalArgumentException if no number is found in string.
+     */
+    public static int parseFirstNumber(String str) {
+        for (String word : str.split("\\s+")) {
+            if (word.matches("\\d+")) {
+                return Integer.parseInt(word);
+            } else if (word.matches("[\\d-]+")) {
+                String[] split = word.split("-");
+                int sum = 0;
+                for (String s : split) {
+                    sum += Integer.parseInt(s);
+                }
+                return Math.round(sum / split.length);
+            }
+        }
+        throw new IllegalArgumentException("No numbers in string");
     }
 }

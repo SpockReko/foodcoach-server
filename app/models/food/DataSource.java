@@ -8,5 +8,5 @@ package models.food;
  * @author Fredrik Kindstrom
  */
 public enum DataSource {
-    FINELI, SLV
+    FINELI, SLV, NSDA
 }
