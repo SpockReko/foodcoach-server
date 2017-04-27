@@ -80,7 +80,7 @@ public class Ingredient extends Model {
         switch (amount.getUnit().getType()) {
             case VOLUME:
                 if (food.densityConstant != null) {
-                    multiplier *= food.densityConstant;
+                    multiplier /= food.densityConstant;
                 } else {
                     Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
                 }
