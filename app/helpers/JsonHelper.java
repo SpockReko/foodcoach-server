@@ -52,6 +52,7 @@ public class JsonHelper {
         output.put("height", user.height);
         output.put("age", user.age);
         output.put("activityLevel", user.activityLevel);
+        output.put("goal", String.valueOf(user.goal));
         return output;
     }
 
