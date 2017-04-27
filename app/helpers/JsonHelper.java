@@ -42,7 +42,6 @@ public class JsonHelper {
      * @param user The user to convert.
      * @return The user represented as Json.
      */
-
     public static JsonNode toJson(User user) {
         ObjectNode output = Json.newObject();
         output.put("id", user.id);
@@ -90,6 +89,12 @@ public class JsonHelper {
         output.put("kcal", ingredient.getNutrient(Nutrient.ENERGY_KCAL));
         output.put("co2", ingredient.getCO2());
         output.set("food", toJson(ingredient.getFood()));
+        if (!ingredient.alternatives.isEmpty()) {
+            ArrayNode alternatives = output.putArray("alternatives");
+            for (Ingredient alt : ingredient.alternatives) {
+                alternatives.add(toJson(alt));
+            }
+        }
         return output;
     }
 
