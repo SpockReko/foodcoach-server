@@ -7,6 +7,7 @@ import play.Logger;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class Ingredient extends Model {
     public String comment;
     public String original;
 
-    @ManyToMany(mappedBy = "ingredients", cascade = CascadeType.ALL) public List<Recipe> recipes;
+    @ManyToMany public List<Ingredient> alternatives = new ArrayList<>();
 
     /**
      * Basic constructor for an ingredient. Needs a food and an amount.
