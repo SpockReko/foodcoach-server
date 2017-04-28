@@ -35,3 +35,11 @@ slv_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	den
 4937	Körsbärstomat	TRUE		Körsbärstomater	körsbärstomater, cocktailtomat, cocktailtomater, cherrytomat, cherrytomater, plommontomat, plommontomater	18			Solanum lycopersicum var. cerasiforme (Alef.) Fosberg	
 2221	Lasagneplattor	TRUE	fusilli, glutenfri, okokt	Lasagneplattor	lasagne plattor, lasagneplatta	20			Zea mays L.	
 103	Parmesanost	TRUE	hårdost, 30% fett	Parmesanost	parmesan, grana padano		0.5		Bos taurus	
+972	Revbensspjäll	TRUE	rå, fläsk	Revbensspjäll		175			Sus scrofa	Gris
+207	Kavring	TRUE		Kavring	rågsiktsbröd	30			Secale cereale L. ssp. Cereale	Maträtt
+2041	Vaniljvisp	TRUE		Vaniljvisp		250	1	Milda	Bos taurus	Maträtt
+1804	Hallonsylt	TRUE		Hallonsylt			1		Rubus ideaus L.	Fruktkonserver
+26	Vinägrett	TRUE		Vinägrett			1		Brassica napus L. ssp. napus	Kryddsåser
+203	Tortilla	TRUE		Tortilla	tortillas, vetetortillas, vetetortilla	40			Triticum aestivum L.	Maträtt
+957	Rostbiff	TRUE		Rostbiff					Bos taurus	Nöt
+1219	Gelatinblad	TRUE	blad, pulver	Gelatinblad	gelatin, gelatinpulver					

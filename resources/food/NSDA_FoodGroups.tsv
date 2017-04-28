@@ -2,5 +2,17 @@ nsda_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	de
 02036	Rosmarin	TRUE	torkad	Rosmarin (torkad)			0.24		Rosmarinus officinalis	Torkade örter
 02063	Rosmarin		färsk	Rosmarin (färsk)			0.14		Rosmarinus officinalis	Bladgrönsaker
 02014	Spiskummin	TRUE		Spiskummin			0.42		Cuminum cyminum	Torkade kryddor
-06169	Tabasosås	TRUE		Tabascosås	tabasco		0.95			Kryddsåser
+06169	Tabascosås	TRUE		Tabascosås	tabasco		0.95			Kryddsåser
 02004	Lagerblad	TRUE		Lagerblad			0.12		Laurus nobilis	Bladgrönsaker
+11291	Salladslök	TRUE		Salladslök	grön lök, gröna lökar, vårlök, vårlökar, knipplök, knipplökar, piplök, piplökar	30			Allium fistulosum	Lökgrönsaker
+02015	Curry	TRUE		Curry	currypulver		0.4			Torkade kryddor
+18413	Pitabröd	TRUE		Pitabröd	pita	60				Vete
+18041	Pitabröd		berikat	Pitabröd		60				Vete
+18042	Pitabröd		fullkorn	Pitabröd (fullkorn)		64				Vete
+02031	Cayennepeppar	TRUE		Cayennepeppar	cayenne		0.37		Capsicum annuum	Torkade kryddor
+06631	Sriracha-sås	TRUE		Sriracha-sås	sriracha, srirachasås, het chilisås		1.3			Kryddsåser
+02025	Muskotnöt	TRUE	malen, riven	Muskotnöt	muskot		0.47		Myristica fragrans	Nötter, frön
+02009	Chilipulver	TRUE	pulver	Chilipulver			0.53			Torkade kryddor
+06176	Ostronsås	TRUE		Ostronsås			1.2			Kryddsåser
+02010	Kanel	TRUE		Kanel			0.52		Cinnamomum	Torkade kryddor
+11677	Schalottenlök	TRUE	rå	Schalottenlök	schalottenlökar	30	0.68		Allium cepa ascalonicum	Lökgrönsaker

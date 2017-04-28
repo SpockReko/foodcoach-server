@@ -1,4 +1,4 @@
-fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name	processing	classification	edible_portion	special_diets
+	group_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name	processing	classification	edible_portion	special_diets
 31216	Adukibönor	TRUE	torkade	Adukibönor (torkade)	adukiböna		0.9		Vigna angularis	Torkat	Baljväxter	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 28923	Ananas		färsk, med skal	Färsk ananas		900			Ananas comosus	Obehandlat	Övrig frukt	53 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 471	Ananas		konserv, i egen juice, burkananas, konservananas, burk, konserverad	Konserverad ananas (i egen juice)					Ananas comosus	Konserverat	Fruktkonserver	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, UNSWEET, SOYAFREE, NAGLUFRE, MILKFREE, VEGAN, FATFREE
@@ -17,7 +17,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 408	Aprikos		i sockerlag, konserv, konserverad, konservaprikos, burkaprikos	Aprikos i sockerlag					Prunus armeniaca	Konserverat	Fruktkonserver	100 %	CHOLFREE, LOWPROT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, FATFREE, EGGFREE
 11054	Aprikos	TRUE	kärnfri	Aprikos	aprikos, konservaprikos, burkaprikos	40			Prunus armeniaca	Obehandlat	Äppelfrukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 28921	Aprikos		med kärna	Aprikos		50			Prunus armeniaca	Obehandlat	Äppelfrukt	94 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
-409	Aprikos		torkad	Aprikos (torkad)		7			Prunus armeniaca	Torkat	Äppelfrukt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+409	Aprikos		torkad	Aprikos (torkad)	torkade aprikoser	7			Prunus armeniaca	Torkat	Äppelfrukt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 31538	Aprikospuré	TRUE	sockerfri, vitamin c	Aprikospuré	aprikospuré					Mosat	Fruktkonserver	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, VITAMADD, UNSWEET, SOYAFREE, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 362	Aubergine	TRUE	äggplanta	Aubergine	aubergine, äggplanta, äggplantor	400			Solanum melongena	Obehandlat	Grönsaksfrukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 11057	Avokado		skalad, kärnfri	Avokado					Persea americana	Obehandlat	Övrig frukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
@@ -117,7 +117,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 628	Crème fraiche	TRUE	28% fett	Crème fraiche	creme fraiche, crème fraiche, créme fraiche		1			Industriellt	Grädde/creme	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
 33021	Currypasta	TRUE	kryddpasta, curry pasta	Currypasta	currypasta, kryddpasta					Blandat	Kryddsåser	100 %	
 28937	Dadel	TRUE	torkad, vägd med kärna	Dadel	dadlar	8			Phoenix dactylifera	Torkat	Övrig frukt	87 %	
-369	Dill	TRUE	färsk	Dill			0.167		Anethum graveolens	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
+369	Dill	TRUE	färsk	Dill		5	0.167		Anethum graveolens	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 32403	Dippmix	TRUE	såspulver, innehåller mjölk	Dippmix	dippmix, dipmix					Torkat	Hjälpämnen vid tillverkning	100 %	
 32404	Dippmix		såspulver, mjölkfri	Dippmix, mjölkfri						Torkat	Hjälpämnen vid tillverkning	100 %	SOYAFREE, LACSFREE, MILKFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 34598	Drickkvarg	TRUE	drickbar kvarg	Drickkvarg	drick kvarg		1			Industriellt	Syrade mjölkprodukter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, SALTFREE, LACVEGE, LOWFAT, GLUTFREE, LACOVEGE, FATFREE, LOWLACS, EGGFREE
@@ -777,11 +777,11 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 913	Öl		<2,8 vol-% alkohol	Öl			1	i-öl		Industriellt	Öl	100 %	
 902	Öl	TRUE	mellanöl, 4,5 vol-% alkohol	Öl	starköl, mellanöl, lättöl, folköl		1			Industriellt	Öl	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 940	Öl		starkt, 7,5- 8 vol-% alkohol	Öl			1			Industriellt	Öl	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
-28938	Oliv 	TRUE	medelvärde, utan kärna, inlagd i olja, grön/svart	Oliver	gröna oliver, svarta oliver, oliver				Olea europaea sativa	Konserverat	Övrig frukt	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-34972	Oliv 		medelvärde, utan kärna, i saltlag, grön	Oliver					Olea europaea sativa	Konserverat	Övrig frukt	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-431	Oliv 		medelvärde, vägd med kärna, i olja, grön/svart	Oliver					Olea europaea sativa	Konserverat	Övrig frukt	80 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+28938	Oliv 	TRUE	medelvärde, utan kärna, inlagd i olja, grön/svart	Oliver	gröna oliver, svarta oliver, oliver	6	0.3		Olea europaea sativa	Konserverat	Övrig frukt	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+34972	Oliv 		medelvärde, utan kärna, i saltlag, grön	Oliver		6	0.3		Olea europaea sativa	Konserverat	Övrig frukt	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+431	Oliv 		medelvärde, vägd med kärna, i olja, grön/svart	Oliver		6	0.3		Olea europaea sativa	Konserverat	Övrig frukt	80 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 536	Olivolja	TRUE		Olivolja	olja		0.93		Olea europaea sativa	Industriellt	Olja	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-11191	Oregano	TRUE	torkad	Oregano			0.1		Origanum vulgare	Torkat	Torkade örter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+11191	Oregano	TRUE	torkad	Oregano			0.36		Origanum vulgare	Torkat	Torkade örter	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 823	Öring	TRUE		Öring	öringar				Salmo trutta	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 11157	Ost		28% fett, inneh. veg. fett	Ost			0.5			Industriellt	Ost	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, LACVEGE, HIGHSALT, GLUTFREE, LACOVEGE, EGGFREE
 643	Ost		hård småhålig ost, 24-27% fett, edam	Ost			0.5			Industriellt	Ost	100 %	SOYAFREE, UNSWEET, LOWSALT, NAGLUFRE, LACSFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
@@ -801,7 +801,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 355	Paprika	TRUE	medelvärde	Paprika	paprikor, konservpaprika, konservpaprikor	160			Capsicum annuum	Obehandlat	Grönsaksfrukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 386	Paprika		röd	Röd paprika		160			Capsicum annuum	Obehandlat	Grönsaksfrukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 33494	Paprika		röd, konserv, konserverad, konserverade	Röd paprika (konserv)					Capsicum annuum	Konserverat	Grönsaksfrukt	100 %	CHOLFREE, SOYAFREE, LOWPROT, NAGLUFRE, LACSFREE, MILKFREE, LACVEGE, VEGAN, GLUTFREE, FATFREE, LACOVEGE, EGGFREE
-11182	Paprikapulver	TRUE		Paprikapulver					Capsicum annuum	Torkat	Torkade kryddor	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+11182	Paprikapulver	TRUE		Paprikapulver			0.37		Capsicum annuum	Torkat	Torkade kryddor	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 32464	Paranöt	TRUE		Paranötter	paranötter					Obehandlat	Nötter, frön	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 11062	Päron		skalat	Päron		120			Pyrus communis	Obehandlat	Äppelfrukt	100 %	
 28917	Päron	TRUE	vägd med skal	Päron		150			Pyrus communis	Obehandlat	Äppelfrukt	88 %	
@@ -820,8 +820,8 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 11589	Pepparrot	TRUE		Pepparrot	pepparrötter				Armoracia	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, SOYAFREE, NAGLUFRE, LOWPROT, LACSFREE, MILKFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE, HIGHFIBR
 411	Persika	TRUE	konserv i sockerlag	Persika	persikor				Prunus persica	Konserverat	Fruktkonserver	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, SOYAFREE, NAGLUFRE, MILKFREE, VEGAN, FATFREE
 412	Persika		torkad	Persika (torkad)					Prunus persica	Torkat	Äppelfrukt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-333	Persilja	TRUE		Persilja	bladpersilja				Petroselinum crispum	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
-30968	Pinjenöt	TRUE		Pinjenötter	pinjenötter		0.8		Pinus spp.	Torkat	Nötter, frön	100 %	
+333	Persilja	TRUE		Persilja	bladpersilja		0.26		Petroselinum crispum	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
+30968	Pinjenöt	TRUE		Pinjenötter	pinjenötter		0.57		Pinus spp.	Torkat	Nötter, frön	100 %	
 31212	Pistagenöt	TRUE		Pistagenötter	pistagenötter		0.65		Pistacia vera	Torkat	Nötter, frön	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 33131	Pistagenöt		saltad	Pistagenötter			0.65		Pistacia vera	Rostat	Nötter, frön	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 11053	Plommon	TRUE	kärnfri	Plommon		40	0.6		Prunus domestica	Obehandlat	Äppelfrukt	100 %	
@@ -923,7 +923,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 311	Rotselleri	TRUE		Rotselleri					Apium graveolens var. rapaceum	Obehandlat	Rot- och knölväxter	100 %	
 445	Rött vinbär	TRUE		Rött vinbär	röda vinbär		0.5		Ribes rubrum ribes*pallidum	Obehandlat	Bär	95 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LOWCHOL, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN, FATFREE
 304	Rova	TRUE		Rova	rovor				Brassica rapa	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
-34159	Ruccola	TRUE		Ruccola	rucola, ruccola, senapskål				Eruca sativa	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LACSFREE, MILKFREE, LACVEGE, LOWFAT, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
+34159	Ruccola	TRUE		Ruccola	rucola, ruccola, senapskål, ruccolasallad, rucolasallad				Eruca sativa	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LACSFREE, MILKFREE, LACVEGE, LOWFAT, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 34230	Ruccola		vild, sandsenap	Ruccola (vild)					Diplotaxis muralis	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LACSFREE, MILKFREE, LACVEGE, LOWFAT, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 428	Russin	TRUE		Russin			0.6		Vitis vinifera	Torkat	Övrig frukt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 73	Russin		yoghurtrussin, yoghurtfrukt, överdragen torkad frukt	Russin (yoghurtöverdrag)			0.7			Industriellt	Övrig frukt	100 %	SOYAFREE, NAGLUFRE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE
@@ -970,9 +970,9 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 33638	Såspulver	TRUE	medelvärde av industriella produkter	Såspulver						Blandat	Hjälpämnen vid tillverkning	100 %	
 826	Sej	TRUE	djupfryst	Sej					Pollachius virens	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 28	Senap	TRUE		Senap	dijonsenap		1.1			Industriellt	Kryddsåser	100 %	SOYAFREE, MILKFREE, LACSFREE, LACVEGE, HIGHSALT, VEGAN, LACOVEGE, EGGFREE
-385	Sesamfrön	TRUE	med skal	Sesamfrön	sesamfrö				Sesamum indicum	Torkat	Nötter, frön	100 %	UNSWEET, SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-34245	Sesamfrön		vit, utan skal	Sesamfrön					Sesamum indicum	Torkat	Nötter, frön	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
-11087	Sesampasta	TRUE	tahini, utan salt	Sesampasta	tahini					Blandat	Nötter, frön	100 %	CHOLFREE, LACSFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, HIGHFIBR, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
+385	Sesamfrön	TRUE	med skal	Sesamfrön	sesamfrö		0.6		Sesamum indicum	Torkat	Nötter, frön	100 %	UNSWEET, SOYAFREE, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+34245	Sesamfrön		vit, utan skal	Sesamfrön			0.6		Sesamum indicum	Torkat	Nötter, frön	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
+11087	Sesampasta	TRUE	tahini, utan salt	Sesampasta	tahini		1.08			Blandat	Nötter, frön	100 %	CHOLFREE, LACSFREE, LACVEGE, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, HIGHFIBR, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 33038	Sharon	TRUE	kaki, persimon	Sharon	kaki, persimon					Obehandlat	Övrig frukt	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 11734	Shiitakesvamp	TRUE		Shiitakesvamp		12			Lentinula edodes	Obehandlat	Svamp	100 %	CHOLFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 706	Sidfläsk	TRUE	av gris	Sidfläsk						Obehandlat	Gris	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, SALTFREE, GLUTFREE, EGGFREE
@@ -1140,7 +1140,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 33521	Sötningsmedel		stevia, canderel green stick	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, NAGLUFRE, LOWPROT, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 33520	Sötningsmedel		stevia, canderel green tablett	Sötningsmedel						Industriellt	Sötningsmedel	100 %	SOYAFREE, LOWPROT, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, GLUTFREE, LACOVEGE, EGGFREE
 30223	Sötpotatis	TRUE	skalad	Sötpotatis	sötpotatisar				Lpomoea batatas	Obehandlat	Rot- och knölväxter	100 %	CHOLFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN, FATFREE
-121	Spagetti	TRUE		Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
+121	Spagetti	TRUE		Spagetti	tagliatelle					Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 172	Spagetti		spenat, spenatspaghetti, innehåller ägg	Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACOVEGE
 31675	Spagetti		naturligt glutenfri	Spagetti						Obehandlat	Pasta, makaroner	100 %	UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 31677	Spagetti		Pasta, spaghetti, naturligt glutenfri, innehåller ägg	Spagetti						Obehandlat	Pasta, makaroner	100 %	SOYAFREE, UNSWEET, NAGLUFRE, LACSFREE, MILKFREE, SALTFREE, GLUTFREE, LACOVEGE
@@ -1228,7 +1228,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 29501	Tonic	TRUE	tonicvatten	Tonic	tonicvatten		1			Industriellt	Läskedrycker	100 %	SOYAFREE, NAGLUFRE, LOWPROT, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 427	Torkad frukt	TRUE	blandad frukt, torkad	Torkad frukt						Torkat	Övrig frukt	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE
 33568	Torkad frukt och nötter	TRUE	salta nötter och torkad frukt, blandning	Torkad frukt och nötter						Blandat	Snacks	100 %	CHOLFREE, MILKFREE, LACSFREE, LOWCHOL, LACVEGE, GLUTFREE, VEGAN, LACOVEGE, EGGFREE, HIGHFIBR
-804	Torsk	TRUE		Torsk	torskar				Gadus morhua	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
+804	Torsk	TRUE	färsk, tinad	Torsk	torskar, torskfilé	125			Gadus morhua	Obehandlat	Fisk	100 %	SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, LACSFREE, SALTFREE, GLUTFREE, EGGFREE
 364	Trädgårdskrasse	TRUE		Trädgårdskrasse					Lepidium sativum	Obehandlat	Bladgrönsaker	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, SOYAFREE, UNSWEET, NAGLUFRE, MILKFREE, VEGAN
 441	Tranbär	TRUE		Tranbär					Vaccinium oxycoccos, v. macrocarpon	Obehandlat	Bär	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LOWCHOL, LACVEGE, GLUTFREE, LACOVEGE, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN
 30395	Tranbärsjuice	TRUE	Juice, tranbär-lingonjuice	Tranbärsjuice	tranbärs juice		1			Industriellt	Juicer	100 %	CHOLFREE, LOWPROT, LACSFREE, SALTFREE, LACVEGE, LOWCHOL, GLUTFREE, LACOVEGE, LOWLACS, EGGFREE, UNSWEET, SOYAFREE, LOWSALT, NAGLUFRE, MILKFREE, LOWFAT, VEGAN
@@ -1282,7 +1282,7 @@ fineli_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	
 175	Vetekross	TRUE	fullkorn	Vetekross					Triticum spp.	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 124	Vetemjöl		jästbrödsvetemjöl	Vetemjöl			0.62		Triticum spp.	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 34249	Vetemjöl		specialvetemjöl, special	Vetemjöl			0.62		Triticum aestivum	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
-142	Vetemjöl	TRUE	bageriindustrin, nymalet	Vetemjöl	durummjöl, durumvetemjöl		0.62		Triticum spp.	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
+142	Vetemjöl	TRUE	bageriindustrin, nymalet	Vetemjöl	durummjöl, durumvetemjöl, durumvete		0.62		Triticum spp.	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 34242	Vetemjöl		bageriindustrin v600	Vetemjöl			0.62		Triticum aestivum	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, LACSFREE, MILKFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 28905	Vetemjöl		durum	Durumvetemjöl			0.65		Triticum durum desf.	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
 110	Vetemjöl		halvgrovt	Vetemjöl			0.63		Triticum spp.	Obehandlat	Vete	100 %	SOYAFREE, UNSWEET, MILKFREE, LACSFREE, SALTFREE, LACVEGE, VEGAN, LACOVEGE, EGGFREE
