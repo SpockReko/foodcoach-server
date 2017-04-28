@@ -48,4 +48,19 @@ public class StringHelper {
         }
         throw new IllegalArgumentException("No numbers in string");
     }
+
+    /**
+     * Removes ugly stuff from a string. Like dangling commas, double blanks etc.
+     * @param str The string to cleanup.
+     * @return The clean string.
+     */
+    public static String clean(String str) {
+        if (str.endsWith(",")) {
+            str = str.substring(0, str.length()-1);
+        }
+        if (str.startsWith(",")) {
+            str = str.substring(1);
+        }
+        return str;
+    }
 }

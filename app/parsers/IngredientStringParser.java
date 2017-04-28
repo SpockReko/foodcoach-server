@@ -70,6 +70,7 @@ public class IngredientStringParser {
                     ingredient.comment = parenthesis;
                 }
             }
+            ingredient.comment = StringHelper.clean(ingredient.comment);
             return ingredient;
         } else {
             //TODO this is disabled

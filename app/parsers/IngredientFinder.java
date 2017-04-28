@@ -148,8 +148,9 @@ class IngredientFinder {
         }
 
         // Remove found words from comments
-        if (unitIndex != -1 && quantityIndex != -1) {
+        if (unitIndex != -1)
             filteredWords.remove(unitIndex);
+        if (quantityIndex != -1) {
             filteredWords.remove(quantityIndex);
         }
 
