@@ -24,16 +24,17 @@ POST            /menu/nutrient                            controllers.MenuAlgori
 GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu
 GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2
 GET             /menu/CO2                                 controllers.MenuAlgorithmsController.menu3
+GET             /stefan/menu/nutrient                     controllers.MenuAlgorithmsController.menuStefan
 GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
 GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
-
+GET             /menu/nutrient/user/:name                 controllers.MenuAlgorithmsController.menuByName(name: String)
 
 # Optimize recipe
 GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
 GET             /recipe/optimize/title/:title             controllers.RecipeOptimizationController.optimizeByTitle(title: String)
-
 GET             /bob/recipe/optimize/:number              controllers.RecipeOptimizationController.optimizeByNumberBob(number: Long)
 GET             /alice/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberAlice(number: Long)
+GET             /recipe/optimize/user/:number/:userName   controllers.RecipeOptimizationController.optimizeByNumberUserName(number: Long, userName: String)
 
 # Parse ingredient string to food item
 GET             /parseLine                                controllers.ParseController.parseLine(line: String)
