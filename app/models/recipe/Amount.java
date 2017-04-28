@@ -54,8 +54,12 @@ public class Amount {
         MATSKED(0.15, Type.VOLUME, new String[] { "msk", "matsked" }),
         TEKOPP(0.4, Type.VOLUME, new String[] { "tkp", "tekopp" }),
         KAFFEKOPP(0.67, Type.VOLUME, new String[] { "kkp", "kaffekopp" }),
+        // Packages and other special units
+        // TODO refactor this to a separate db table instead
+        CAN(1.0, Type.SINGLE, new String[] { "burk", "burkar" }),
+        PACKAGE(1.0, Type.SINGLE, new String[] { "paket" }),
         // Single piece unit
-        STYCK(0.0, Type.SINGLE, new String[] { "st", "stycken" } ),
+        STYCK(1.0, Type.SINGLE, new String[] { "st", "stycken" }),
         // Empty unit
         EMPTY(0.0, Type.EMPTY, new String[] {""} );
 

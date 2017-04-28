@@ -1,6 +1,7 @@
 package parsers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import helpers.BooleanHelper;
 import helpers.Constants;
 import helpers.StringHelper;
 import helpers.TaggerHelper;
@@ -103,24 +104,33 @@ class IngredientFinder {
      */
     private Amount findAmount() {
         List<TaggedWord> filteredWords = new ArrayList<>(taggedWords);
+        int unitIndex = -1;
+        int quantityIndex = -1;
         Double numeric = null;
         Amount.Unit unit = null;
 
-        for (TaggedWord taggedWord : taggedWords) {
-            // Find unit
+        // TODO be smarter and dont loop string twice
+        // Find unit
+        for (int i = 0; i < taggedWords.size(); i++) {
+            TaggedWord taggedWord = taggedWords.get(i);
             for (Amount.Unit u : Amount.Unit.values()) {
                 for (String identifier : u.getIdentifiers()) {
                     if (identifier.equals(taggedWord.getLemma())) {
-                        if (unit == null) {
+                        if (unit == null || BooleanHelper.isUnitBetter(unit, u)) {
                             unit = u;
-                            filteredWords.remove(taggedWord);
+                            unitIndex = i;
+                            Logger.trace("Added " + unit.name() + " as unit");
                         }
                     }
                 }
             }
-            // Find amount
+        }
+
+        // Find quantity
+        for (int i = 0; i < taggedWords.size(); i++) {
+            TaggedWord taggedWord = taggedWords.get(i);
             if (taggedWord.getUdPosTag().equals("NUM")) {
-                if (numeric == null) {
+                if (numeric == null || BooleanHelper.isQuantityBetter(unitIndex, quantityIndex, i)) {
                     String word = taggedWord.getWord().replace(',', '.');
                     if (word.contains("/")) {
                         String[] part = word.split("/");
@@ -132,16 +142,22 @@ class IngredientFinder {
                         numeric = Double.parseDouble(word);
                     }
                     Logger.trace("Added " + numeric + " as numeric");
-                    filteredWords.remove(taggedWord);
+                    quantityIndex = i;
                 }
             }
+        }
+
+        // Remove found words from comments
+        if (unitIndex != -1 && quantityIndex != -1) {
+            filteredWords.remove(unitIndex);
+            filteredWords.remove(quantityIndex);
         }
 
         // Choose STYCK as unit if no unit is found.
         if (unit == null) {
             unit = Amount.Unit.STYCK;
+            Logger.trace("Added " + unit.name() + " as unit");
         }
-        Logger.trace("Added " + unit.name() + " as unit");
         taggedWords = filteredWords;
 
         if (numeric != null) {
