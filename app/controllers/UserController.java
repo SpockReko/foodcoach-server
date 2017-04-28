@@ -6,9 +6,6 @@ import models.user.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import java.util.ArrayList;
-import play.libs.Json;
-
-
 
 
 /**
@@ -35,6 +32,7 @@ public class UserController extends Controller {
             return badRequest("User \"" + name + "\" does not exist");
         }
     }
+
 
     // GET /user/name/:id
     public Result getUserById(int id) {
