@@ -26,6 +26,8 @@ GET             /menu/economi                             controllers.MenuAlgori
 GET             /menu/CO2                                 controllers.MenuAlgorithmsController.menu3
 GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
 GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
+GET             /menu/nutrient/user/:name                 controllers.MenuAlgorithmsController.menuByName(name: String)
+
 
 
 # Optimize recipe

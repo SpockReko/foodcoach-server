@@ -116,6 +116,15 @@ public class User extends Model {
         calculateOverdoseValues(30);
     }
 
+    public static User getUserByName2(String name) {
+        User user = User.find.where().eq("firstName", name).findUnique();
+        if (user != null) {
+            return user;
+        } else {
+            return User.find.where().eq("firstName", "Bob").findUnique();
+        }
+    }
+
     public User(String name){
 
         if(name.equals("Stefan")) {
