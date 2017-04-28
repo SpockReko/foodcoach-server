@@ -45,48 +45,87 @@ public class IngredientStringParser {
 
     /**
      * Parses a string and tries to find an ingredient with amount in it.
-     * @param ingredientString The string to parse.
+     * @param input The string to parse.
      * @return An ingredient if found or null otherwise.
      * @throws IOException If the external API used to parse cannot be reached.
      */
-    public Ingredient parse(String ingredientString) throws IOException {
+    public Ingredient parse(String input) throws IOException {
         header = "";
         parenthesis = "";
-        String line = ingredientString;
+        String line = input;
 
         line = handleColon(line).trim();
         line = handleParenthesis(line).trim();
-        //TODO disable this functionality for now
-        //line = handleAlternatives(line).trim();
+        line = handleAlternatives(line).trim();
 
         Ingredient ingredient = ingredientFinder.find(line);
 
         if (ingredient != null) {
-            ingredient.original = ingredientString;
-            if (!parenthesis.equals("")) {
-                if (ingredient.comment != null) {
-                    ingredient.comment += " " + parenthesis;
-                } else {
-                    ingredient.comment = parenthesis;
+            finishUp(ingredient, input);
+            if (!alternatives.isEmpty()) {
+                List<Ingredient> list = findAlternatives();
+                Amount amount = new Amount(0.0, Amount.Unit.EMPTY);
+                // Find at least one amount to use
+                for (Ingredient ing : list) {
+                    if (ing.hasAmount()) {
+                        amount = ing.getAmount();
+                        break;
+                    }
+                }
+                // Set that amount to all alternatives
+                for (Ingredient ing : list) {
+                    if (!ing.hasAmount()) {
+                        ing.setAmount(amount);
+                    }
+                }
+                // Also set that amount if the main ingredient doesn't have one
+                if (!ingredient.hasAmount()) {
+                    ingredient.setAmount(amount);
+                }
+                ingredient.alternatives = list;
+            }
+            return ingredient;
+        } else if (!alternatives.isEmpty()) {
+            List<Ingredient> list = findAlternatives();
+            Amount amount = new Amount(0.0, Amount.Unit.EMPTY);
+            FoodGroup group = null;
+            // Find at least one amount and food group to use
+            for (Ingredient ing : list) {
+                group = ing.getFood().group;
+                if (ing.hasAmount()) {
+                    amount = ing.getAmount();
+                    break;
                 }
             }
-            ingredient.comment = StringHelper.clean(ingredient.comment);
-            return ingredient;
-        } else {
-            //TODO this is disabled
-            if (!alternatives.isEmpty()) {
-                for (String alternative : alternatives) {
-                    Ingredient alt = ingredientFinder.find(alternative);
-                    if (alt != null && alt.getAmount().getUnit().getType().equals(Amount.Unit.Type.EMPTY)) {
-                        Amount amount = ingredientFinder.extractAmount(line);
-                        if (amount != null) {
-                            return ingredientFinder.find(alternative, amount);
-                        }
+            ingredient = ingredientFinder.findInGroup(line, group);
+            // Also set that amount if the main ingredient doesn't have one
+            if (ingredient == null) {
+                Logger.error("No ingredient found \"" + input + "\"");
+                return null;
+            }
+            if (!amount.isEmpty()) {
+                if (!ingredient.hasAmount()) {
+                    ingredient.setAmount(amount);
+                }
+                // Set that amount to all alternatives
+                for (Ingredient ing : list) {
+                    if (!ing.hasAmount()) {
+                        ing.setAmount(amount);
+                    }
+                }
+            } else if (ingredient.hasAmount()) {
+                // Set that amount to all alternatives
+                for (Ingredient ing : list) {
+                    if (!ing.hasAmount()) {
+                        ing.setAmount(ingredient.getAmount());
                     }
                 }
             }
+            ingredient.alternatives = list;
+            finishUp(ingredient, input);
+            return ingredient;
         }
-        Logger.error("No ingredient found \"" + ingredientString + "\"");
+        Logger.error("No ingredient found \"" + input + "\"");
         return null;
     }
 
@@ -129,6 +168,31 @@ public class IngredientStringParser {
             return split[0];
         } else {
             return line;
+        }
+    }
+
+    private List<Ingredient> findAlternatives() throws IOException {
+        List<Ingredient> list = new ArrayList<>();
+        for (String str : alternatives) {
+            Ingredient alternative = ingredientFinder.find(str);
+            if (alternative != null) {
+                list.add(alternative);
+            }
+        }
+        return list;
+    }
+
+    private void finishUp(Ingredient ingredient, String input) {
+        ingredient.original = input;
+        if (!parenthesis.equals("")) {
+            if (ingredient.comment != null) {
+                ingredient.comment += " " + parenthesis;
+            } else {
+                ingredient.comment = parenthesis;
+            }
+        }
+        if (ingredient.comment != null) {
+            ingredient.comment = StringHelper.clean(ingredient.comment);
         }
     }
 }

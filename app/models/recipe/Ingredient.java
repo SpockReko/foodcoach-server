@@ -24,8 +24,8 @@ public class Ingredient extends Model {
 
     @Id @Column(columnDefinition = "bigint unsigned") private long id;
 
+    @Embedded @NotNull private Amount amount;
     @ManyToOne @NotNull private final Food food;
-    @Embedded @NotNull private final Amount amount;
     public String comment;
     public String original;
 
@@ -33,10 +33,10 @@ public class Ingredient extends Model {
 
     /**
      * Basic constructor for an ingredient. Needs a food and an amount.
-     * @param food The food the ingredient consists of.
      * @param amount The amount the food is present in.
+     * @param food The food the ingredient consists of.
      */
-    public Ingredient(Food food, Amount amount) {
+    public Ingredient(Amount amount, Food food) {
         this.food = food;
         this.amount = amount;
     }
@@ -57,6 +57,10 @@ public class Ingredient extends Model {
         return amount;
     }
 
+    public void setAmount(Amount amount) {
+        this.amount = amount;
+    }
+
     /**
      * Returns a total nutrient value for the specified nutrient.
      * This is multiplied with the amount.
@@ -74,6 +78,14 @@ public class Ingredient extends Model {
      */
     public double getCO2() {
         return multiplier(food.getCO2());
+    }
+
+    /**
+     * Returns whether the ingredient has a valid amount or not.
+     * @return True if an amount is present, false if not.
+     */
+    public boolean hasAmount() {
+        return amount.getUnit().getType() != Amount.Unit.Type.EMPTY;
     }
 
     private double multiplier(double value) {

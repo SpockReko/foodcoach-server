@@ -139,9 +139,9 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredients = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(new Amount(200, GRAM), Food.find.byId(528L)));
+        ingredients.add(new Ingredient(new Amount(100, GRAM), Food.find.byId(436L)));
+        ingredients.add(new Ingredient(new Amount(100, GRAM), Food.find.byId(822L)));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredients);
@@ -165,9 +165,9 @@ public class MenuAlgorithmsController extends Controller {
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredients = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(new Amount(200, GRAM), Food.find.byId(528L)));
+        ingredients.add(new Ingredient(new Amount(100, GRAM), Food.find.byId(436L)));
+        ingredients.add(new Ingredient(new Amount(100, GRAM), Food.find.byId(822L)));
 
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);

@@ -74,7 +74,7 @@ public class Recipe extends Model {
             Amount.Unit currentUnit = i.getAmount().getUnit();
             Amount newAmount = new Amount(onePortionValue, currentUnit);
             Food currentFood = i.getFood();
-            Ingredient newIngredient = new Ingredient(currentFood, newAmount);
+            Ingredient newIngredient = new Ingredient(newAmount, currentFood);
             newIngredients.add(newIngredient);
         }
         return new Recipe(this.getTitle(), 1, newIngredients);
@@ -89,7 +89,7 @@ public class Recipe extends Model {
             Amount.Unit currentUnit = i.getAmount().getUnit();
             Amount newAmount = new Amount(onePortionValue, currentUnit);
             Food currentFood = i.getFood();
-            Ingredient newIngredient = new Ingredient(currentFood, newAmount);
+            Ingredient newIngredient = new Ingredient(newAmount, currentFood);
             newIngredients.add(newIngredient);
         }
         return new Recipe(this.getTitle(), 1, newIngredients);

@@ -32,14 +32,14 @@ public class MenuAlgorithm2Test {
         List<Ingredient> iList3=new ArrayList<Ingredient>();
         List<Ingredient> iList4=new ArrayList<Ingredient>();
         List<Ingredient> iList5=new ArrayList<Ingredient>();
-        iList1.add(new Ingredient(food1, new Amount(100, GRAM)));
-        iList1.add(new Ingredient(food2, new Amount(100, GRAM)));
-        iList1.add(new Ingredient(food3, new Amount(100, GRAM)));
+        iList1.add(new Ingredient(new Amount(100, GRAM), food1));
+        iList1.add(new Ingredient(new Amount(100, GRAM), food2));
+        iList1.add(new Ingredient(new Amount(100, GRAM), food3));
 
-        iList2.add(new Ingredient(food2, new Amount(100, GRAM)));
-        iList3.add(new Ingredient(food3, new Amount(100, GRAM)));
-        iList4.add(new Ingredient(food4, new Amount(100, GRAM)));
-        iList5.add(new Ingredient(food5, new Amount(100, GRAM)));
+        iList2.add(new Ingredient(new Amount(100, GRAM), food2));
+        iList3.add(new Ingredient(new Amount(100, GRAM), food3));
+        iList4.add(new Ingredient(new Amount(100, GRAM), food4));
+        iList5.add(new Ingredient(new Amount(100, GRAM), food5));
 
         Recipe rec2=new Recipe("rec2", 1, iList2);
         Recipe rec3=new Recipe("rec3", 1, iList3);
@@ -54,9 +54,9 @@ public class MenuAlgorithm2Test {
 
         ingredients=new ArrayList<Ingredient>();
         //foods.add(food2);
-        ingredients.add(new Ingredient(food3,new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(food4,new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(food5,new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(new Amount(200, GRAM), food3));
+        ingredients.add(new Ingredient(new Amount(100, GRAM), food4));
+        ingredients.add(new Ingredient(new Amount(100, GRAM), food5));
     }
 
 

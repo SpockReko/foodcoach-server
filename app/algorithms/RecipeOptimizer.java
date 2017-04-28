@@ -49,7 +49,7 @@ public class RecipeOptimizer {
         for( int i=0; i<optimalAmountOfIngredients.length; i++ ){
             Food food = ingredients.get(i).getFood();
             Amount amount = new Amount(optimalAmountOfIngredients[i], ingredients.get(i).getAmount().getUnit());
-            Ingredient ingredient = new Ingredient(food, amount);
+            Ingredient ingredient = new Ingredient(amount, food);
             newIngredients.add(ingredient);
         }
         Recipe newRecipe = new Recipe(recipe.getTitle(), recipe.getPortions(), newIngredients);

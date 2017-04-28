@@ -52,7 +52,7 @@ class IngredientFinder {
         JsonNode jsonNode = retrieveWordInfo(line);
         taggedWords = TaggerHelper.getTaggedWords(jsonNode);
 
-        ingredient = findIngredient();
+        ingredient = findIngredient(findAmount(), findFoodGroup());
         if (ingredient == null) {
             Logger.error("No match \"" + line + "\"");
             return null;
@@ -62,21 +62,21 @@ class IngredientFinder {
     }
 
     /**
-     * Tries to find a complete ingredient in a string,
-     * skips looking for amount uses provided instead.
+     * Tries to find a complete ingredient with amount and food in a string.
+     * Uses provided FoodGroup instead of finding one from scratch.
      * @param line The string to look in.
-     * @param amount The amount to use in ingredient.
+     * @param group The group to use instead of finding one.
      * @return An ingredient if found, null if not.
      * @throws IOException If the external API is not available.
      */
-    Ingredient find(String line, Amount amount) throws IOException {
+    Ingredient findInGroup(String line, FoodGroup group) throws IOException {
         Ingredient ingredient;
         leftover = "";
 
         JsonNode jsonNode = retrieveWordInfo(line);
         taggedWords = TaggerHelper.getTaggedWords(jsonNode);
 
-        ingredient = findIngredient(amount);
+        ingredient = findIngredient(findAmount(), group);
         if (ingredient == null) {
             Logger.error("No match \"" + line + "\"");
             return null;
@@ -86,16 +86,27 @@ class IngredientFinder {
     }
 
     /**
-     * Tries to find an amount in a string and returns it if it found it, null otherwise.
-     * @param line The string to look in.
-     * @return An amount if found, otherwise null.
-     * @throws IOException If the external API is not available.
+     * Tries to find an ingredient.
+     * @return A complete ingredient if found, else null.
      */
-    Amount extractAmount(String line) throws IOException {
-        JsonNode jsonNode = retrieveWordInfo(line);
-        taggedWords = TaggerHelper.getTaggedWords(jsonNode);
-        Amount amount = findAmount();
-        return amount.getUnit().getType().equals(Amount.Unit.Type.EMPTY) ? null : amount;
+    private Ingredient findIngredient(Amount amount, FoodGroup foodGroup) {
+        if (foodGroup != null) {
+            Food food = findFood(foodGroup);
+            Ingredient ingredient = new Ingredient(amount, food);
+            if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
+                String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
+                Logger.trace("Added " + comment.trim() + " as comment");
+                Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
+                    + food.name + ", \"" + comment.trim() + "\" }");
+                ingredient.comment = comment.trim();
+            } else {
+                Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
+                    + food.name + " }");
+            }
+            return ingredient;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -165,41 +176,6 @@ class IngredientFinder {
             return new Amount(numeric, unit);
         } else {
             return new Amount(0.0, Amount.Unit.EMPTY);
-        }
-    }
-
-    /**
-     * Tries to find an ingredient.
-     * @return A complete ingredient if found, else null.
-     */
-    private Ingredient findIngredient() {
-        return findIngredient(findAmount());
-    }
-
-    /**
-     * Tries to find an ingredient. Skips looking for amount and uses provided instead.
-     * @param amount The amount to use instead of trying to find one.
-     * @return A complete ingredient if found, else null.
-     */
-    private Ingredient findIngredient(Amount amount) {
-        FoodGroup foodGroup = findFoodGroup();
-
-        if (foodGroup != null) {
-            Food food = findFood(foodGroup);
-            Ingredient ingredient = new Ingredient(food, amount);
-            if (!leftover.isEmpty() && !leftover.matches("[ -.,:]*")) {
-                String comment = leftover.replaceAll("\\s+(?=[),])|\\s{2,}", "");
-                Logger.trace("Added " + comment.trim() + " as comment");
-                Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
-                    + food.name + ", \"" + comment.trim() + "\" }");
-                ingredient.comment = comment.trim();
-            } else {
-                Logger.info("Ingredient { " + amount.getQuantity() + ", " + amount.getUnit() + ", "
-                    + food.name + " }");
-            }
-            return ingredient;
-        } else {
-            return null;
         }
     }
 

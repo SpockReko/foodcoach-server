@@ -56,7 +56,7 @@ public class GlobalDummyModels {
             user.hmap.get(Nutrient.SELENIUM) * convertToOnePortion,
             user.hmap.get(Nutrient.ZINC) * convertToOnePortion);
 
-        Ingredient perfectIngredient = new Ingredient(perfectFood, amount);
+        Ingredient perfectIngredient = new Ingredient(amount, perfectFood);
         ingredients.add(perfectIngredient);
 
         return new Recipe("Recipe", 1, ingredients);

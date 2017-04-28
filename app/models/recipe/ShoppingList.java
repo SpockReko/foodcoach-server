@@ -110,7 +110,7 @@ public class ShoppingList {
                     if (i.getAmount().getQuantity() > amount) { // if needed amount is greater than amount at home
                         double newValue = i.getAmount().getQuantity() - amount; // amount needed to be bought
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
-                        Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
+                        Ingredient newIngredient = new Ingredient(newAmount, i.getFood());
                         shoppingList.put(newIngredient, false);
                         if (leftovers.contains(ingredient)) {
                             leftovers.remove(ingredient);
@@ -119,7 +119,7 @@ public class ShoppingList {
                     } else if (i.getAmount().getQuantity() < amount) { // if amount at home is greater than the needed amount
                         double newValue = amount - i.getAmount().getQuantity(); // amount of ingredient which is left after cooking
                         Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
-                        Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
+                        Ingredient newIngredient = new Ingredient(newAmount, i.getFood());
                         leftovers.add(newIngredient);
                         leftoverSize += newValue;
                     }
@@ -143,7 +143,7 @@ public class ShoppingList {
                 if (!shoppingList.remove(i)) {
                     double newValue = i.getAmount().getQuantity() + amount;
                     Amount newAmount = new Amount(newValue, i.getAmount().getUnit());
-                    Ingredient newIngredient = new Ingredient(i.getFood(), newAmount);
+                    Ingredient newIngredient = new Ingredient(newAmount, i.getFood());
                     shoppingList.put(newIngredient, false);
                 }
             }
@@ -155,12 +155,10 @@ public class ShoppingList {
     // help method
     @NotNull
     private Ingredient changeAmountOfIngredient(double amount, Ingredient indexIngredient) {
-        return new Ingredient(
-                indexIngredient.getFood(),
-                new Amount(
-                        indexIngredient.getAmount().getQuantity() + amount,
-                        indexIngredient.getAmount().getUnit()
-                ));
+        return new Ingredient(new Amount(
+                indexIngredient.getAmount().getQuantity() + amount,
+                indexIngredient.getAmount().getUnit()
+        ), indexIngredient.getFood());
     }
 
     // size of the shoppingList

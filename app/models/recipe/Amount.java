@@ -38,6 +38,14 @@ public class Amount {
         return unit;
     }
 
+    /**
+     * Returns whether the amount is empty or not.
+     * @return True if it is empty, false if not.
+     */
+    public boolean isEmpty() {
+        return unit.type == Unit.Type.EMPTY;
+    }
+
     public enum Unit {
         // Standard SI-Volume
         LITER(10, Type.VOLUME, new String[] { "l", "liter" }),

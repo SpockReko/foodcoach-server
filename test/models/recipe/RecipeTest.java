@@ -36,13 +36,13 @@ public class RecipeTest {
            10D);
        food1.densityConstant = 0.8;
        food1.group = group;
-       Ingredient ing1 = new Ingredient(food1, new Amount(100, Amount.Unit.GRAM));
+       Ingredient ing1 = new Ingredient(new Amount(100, Amount.Unit.GRAM), food1);
        food2 = new Food("test2", 100, DataSource.SLV, 10D, 20D, 10D, 10D, 10D, 0D, 10D, 10D, 10D, 10D,
            10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
            10D);
        food2.densityConstant = 2.0;
        food2.group = group;
-       Ingredient ing2 = new Ingredient(food2, new Amount(200, Amount.Unit.GRAM));
+       Ingredient ing2 = new Ingredient(new Amount(200, Amount.Unit.GRAM), food2);
        List<Ingredient> ingredients = new LinkedList<>();
        ingredients.add(ing1);
        ingredients.add(ing2);

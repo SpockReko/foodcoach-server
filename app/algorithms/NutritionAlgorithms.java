@@ -142,7 +142,7 @@ public class NutritionAlgorithms {
 
         List<Ingredient> recipeIngredient = recipe.ingredients;
         recipeIngredient.remove(ingredient);
-        recipeIngredient.add(new Ingredient(foodItem,ingredient.getAmount()));
+        recipeIngredient.add(new Ingredient(ingredient.getAmount(), foodItem));
         return recipe;
         // TODO: Om inte ingredients listan ej har shared reference så måste vi köra koden här under.
         //return new Recipe(recipe.getTitle()+ " changed", recipe.getPortions(), recipeIngredient);

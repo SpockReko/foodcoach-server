@@ -6,7 +6,6 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.tsv.TsvParser;
 import com.univocity.parsers.tsv.TsvParserSettings;
 
-import static com.avaje.ebean.Expr.eq;
 import static helpers.StringHelper.CYAN;
 import static helpers.StringHelper.GREEN;
 import static helpers.StringHelper.PURPLE;
@@ -477,7 +476,7 @@ public class DatabaseSeeder {
                     throw new RuntimeException("No food with food number " + fineliId);
                 }
 
-                ingredients.add(new Ingredient(food, new Amount(amount, unit)));
+                ingredients.add(new Ingredient(new Amount(amount, unit), food));
             }
 
             Recipe recipe = new Recipe(title, portions, ingredients);

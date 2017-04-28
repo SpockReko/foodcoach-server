@@ -36,16 +36,16 @@ public class IngredientConvertTest {
                 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D, 10D,
                 10D);
         foodItem.densityConstant = 0.8;
-        kilo = new Ingredient(foodItem, new Amount(1, Amount.Unit.KILOGRAM));
-        hekto = new Ingredient(foodItem, new Amount(10, Amount.Unit.HECTOGRAM));
-        gram = new Ingredient(foodItem, new Amount(1000, Amount.Unit.GRAM));
-        liter = new Ingredient(foodItem, new Amount(1, Amount.Unit.LITER));
-        deci = new Ingredient(foodItem, new Amount(10, Amount.Unit.DECILITER));
-        centi = new Ingredient(foodItem, new Amount(100, Amount.Unit.CENTILITER));
-        milli = new Ingredient(foodItem, new Amount(1000, Amount.Unit.MILLILITER));
-        krydd = new Ingredient(foodItem, new Amount(1000, Amount.Unit.KRYDDMATT));
-        tesked = new Ingredient(foodItem, new Amount(200, Amount.Unit.TESKED));
-        matsked = new Ingredient(foodItem, new Amount(100, Amount.Unit.MATSKED));
+        kilo = new Ingredient(new Amount(1, Amount.Unit.KILOGRAM), foodItem);
+        hekto = new Ingredient(new Amount(10, Amount.Unit.HECTOGRAM), foodItem);
+        gram = new Ingredient(new Amount(1000, Amount.Unit.GRAM), foodItem);
+        liter = new Ingredient(new Amount(1, Amount.Unit.LITER), foodItem);
+        deci = new Ingredient(new Amount(10, Amount.Unit.DECILITER), foodItem);
+        centi = new Ingredient(new Amount(100, Amount.Unit.CENTILITER), foodItem);
+        milli = new Ingredient(new Amount(1000, Amount.Unit.MILLILITER), foodItem);
+        krydd = new Ingredient(new Amount(1000, Amount.Unit.KRYDDMATT), foodItem);
+        tesked = new Ingredient(new Amount(200, Amount.Unit.TESKED), foodItem);
+        matsked = new Ingredient(new Amount(100, Amount.Unit.MATSKED), foodItem);
     }
 
     @Test
