@@ -95,7 +95,7 @@ public class MenuAlgorithmsController extends Controller {
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
 
-        user = new User("Bengt");
+        user = new User("Bob");
         nrOfRecipes = 3;
 
         List<Recipe> allRecipes = Recipe.find.all();
@@ -117,7 +117,7 @@ public class MenuAlgorithmsController extends Controller {
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
 
-        user = new User("Anna");
+        user = new User("Alice");
         nrOfRecipes = 3;
 
         List<Recipe> allRecipes = Recipe.find.all();
