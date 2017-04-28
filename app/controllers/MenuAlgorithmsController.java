@@ -90,12 +90,36 @@ public class MenuAlgorithmsController extends Controller {
         }
     }
 
+    public Result menuStefan() {
+        User user;
+        int nrOfRecipes;
+        List<Recipe> removeRecipeList = new ArrayList<>();
+        Recipe r = Recipe.find.where().eq("title", "Cheesecake på olika vis").findUnique();
+        removeRecipeList.add(r);
+        removeRecipeList.add(Recipe.find.where().eq("title", "Rabarbersaft").findUnique());
+        user = new User("Stefan");
+        nrOfRecipes = 3;
+
+        List<Recipe> allRecipes = Recipe.find.all();
+        int all = allRecipes.size();
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+
+        if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+        return ok("nothing found!");
+
+
+    }
+
+
     public Result menuBob() {
         User user;
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
 
-        user = new User("Bengt");
+        user = new User("Bob");
         nrOfRecipes = 3;
 
         List<Recipe> allRecipes = Recipe.find.all();
@@ -117,7 +141,7 @@ public class MenuAlgorithmsController extends Controller {
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
 
-        user = new User("Anna");
+        user = new User("Alice");
         nrOfRecipes = 3;
 
         List<Recipe> allRecipes = Recipe.find.all();
