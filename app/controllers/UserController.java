@@ -1,10 +1,10 @@
 package controllers;
 
+import helpers.JsonHelper;
 import models.food.Nutrient;
 import models.user.User;
 import play.mvc.Controller;
 import play.mvc.Result;
-
 import java.util.ArrayList;
 
 
@@ -21,6 +21,28 @@ public class UserController extends Controller {
         return ok(index.render(userForm));
     }
     */
+
+
+    // GET /user/name/:name
+    public Result getUserByName(String name) {
+        User user = User.find.where().eq("firstName", name).findUnique();
+        if (user != null) {
+            return ok(JsonHelper.toJson(user));
+        } else {
+            return badRequest("User \"" + name + "\" does not exist");
+        }
+    }
+
+
+    // GET /user/name/:id
+    public Result getUserById(int id) {
+        User user = User.find.where().eq("id", id).findUnique();
+        if (user != null) {
+            return ok(JsonHelper.toJson(user));
+        } else {
+            return badRequest("User \"" + id + "\" does not exist");
+        }
+    }
 
     public Result getRDI(int age) {
         User.Goal mal2 = User.Goal.INCREASE;

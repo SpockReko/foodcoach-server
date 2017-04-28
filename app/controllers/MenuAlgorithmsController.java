@@ -114,6 +114,7 @@ public class MenuAlgorithmsController extends Controller {
     }
 
 
+    // GET  /bob/menu/nutrient
     public Result menuBob() {
         User user;
         int nrOfRecipes;
@@ -135,6 +136,7 @@ public class MenuAlgorithmsController extends Controller {
     }
 
 
+    // GET  /alice/menu/nutrient
     public Result menuAlice() {
 
         User user;
@@ -150,7 +152,27 @@ public class MenuAlgorithmsController extends Controller {
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(user.age + "\n" +resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+        return ok("nothing found!");
+    }
+
+    // GET /menu/nutrient/name/:name
+    public Result menuByName(String userName) {
+
+        User user;
+        int nrOfRecipes;
+        List<Recipe> removeRecipeList = new ArrayList<>();
+
+        user = User.getUserByName2(userName);
+        nrOfRecipes = 3;
+
+        List<Recipe> allRecipes = Recipe.find.all();
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+
+        if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
     }
 

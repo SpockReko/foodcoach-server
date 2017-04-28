@@ -14,12 +14,15 @@ import models.food.Nutrient;
 
 /**
  * Created by Stolof on 17/02/17.
+ *
+ *
  */
 
 @Entity
 @Table(name = "Users")
 public class User extends Model {
 
+    @Id public long id;
 
     public String firstName;
     public String lastName;
@@ -34,10 +37,11 @@ public class User extends Model {
     @Column(nullable = false) public Double activityLevel;
     @OneToMany public ArrayList<String> allergier = new ArrayList<String>();
     //@Column(nullable = false) public Double goal;
-    @Enumerated(EnumType.STRING) public Goal goal;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false) public Goal goal;
 
     public Timestamp dateEntered;
-    @Id public long id;
+
 
     public enum Sex {
         MALE, FEMALE
@@ -57,8 +61,25 @@ public class User extends Model {
         }
     }
 
+    public User(long id, String firstName, String lastName, String email, Date birthDate, Sex sex,
+                Double weight, Double height, Integer age, Double activityLevel, ArrayList<String> allergier,
+                Goal goal, Timestamp dateEntered) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.weight = weight;
+        this.height = height;
+        this.age = age;
+        this.activityLevel = activityLevel;
+        this.allergier = allergier;
+        this.goal = goal;
+        this.dateEntered = dateEntered;
+    }
 
-
+    public static Finder<Long, User> find = new Finder<>(User.class);
 
     public HashMap<Nutrient, Double> hmap = new HashMap<>();
     public HashMap<Nutrient, Double> overdoseValues = new HashMap<>();
@@ -93,6 +114,15 @@ public class User extends Model {
         hmap.put(Nutrient.SELENIUM, 55D);
 
         calculateOverdoseValues(30);
+    }
+
+    public static User getUserByName2(String name) {
+        User user = User.find.where().eq("firstName", name).findUnique();
+        if (user != null) {
+            return user;
+        } else {
+            return User.find.where().eq("firstName", "Bob").findUnique();
+        }
     }
 
     public User(String name){

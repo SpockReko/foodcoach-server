@@ -8,6 +8,7 @@ import models.food.FoodGroup;
 import models.food.Nutrient;
 import models.recipe.Ingredient;
 import models.recipe.Recipe;
+import models.user.User;
 import play.libs.Json;
 
 /**
@@ -33,6 +34,24 @@ public class JsonHelper {
         food.tags.forEach(tags::add);
         output.put("processing", food.processing == null ? null : food.processing.name());
         output.put("category", food.category == null ? null : food.category.name());
+        return output;
+    }
+
+    /**
+     * Converts a {@link User} to Json.
+     * @param user The user to convert.
+     * @return The user represented as Json.
+     */
+    public static JsonNode toJson(User user) {
+        ObjectNode output = Json.newObject();
+        output.put("id", user.id);
+        output.put("name", user.firstName);
+        output.put("sex", String.valueOf(user.sex));
+        output.put("weight", user.weight);
+        output.put("height", user.height);
+        output.put("age", user.age);
+        output.put("activityLevel", user.activityLevel);
+        output.put("goal", String.valueOf(user.goal));
         return output;
     }
 
@@ -70,6 +89,12 @@ public class JsonHelper {
         output.put("kcal", ingredient.getNutrient(Nutrient.ENERGY_KCAL));
         output.put("co2", ingredient.getCO2());
         output.set("food", toJson(ingredient.getFood()));
+        if (!ingredient.alternatives.isEmpty()) {
+            ArrayNode alternatives = output.putArray("alternatives");
+            for (Ingredient alt : ingredient.alternatives) {
+                alternatives.add(toJson(alt));
+            }
+        }
         return output;
     }
 
