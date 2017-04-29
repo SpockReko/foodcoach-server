@@ -19,7 +19,8 @@ GET             /recipes                                  controllers.RecipeCont
 GET             /user/name/:userName                      controllers.UserController.getUserByName(userName: String)
 GET             /user/id/:id                              controllers.UserController.getUserById(id: Int)
 # POST            /user/name/:userName                      controllers.UserController.getUserByName(userName: String)
-# POST            /user/add                                 controllers.UserController.addUser
+POST            /user/add                                 controllers.UserController.addUser()
+GET             /user/add                                 controllers.UserController.addUser()
 
 # Menu options from client
 POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu

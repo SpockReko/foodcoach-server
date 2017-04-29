@@ -3,9 +3,13 @@ package controllers;
 import helpers.JsonHelper;
 import models.food.Nutrient;
 import models.user.User;
+import play.api.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import java.util.ArrayList;
+import play.data.FormFactory;
+
+import static play.data.Form.form;
 
 
 /**
@@ -15,13 +19,26 @@ import java.util.ArrayList;
 
 public class UserController extends Controller {
 
-/*    final static Form<User> userForm = form(User.class);
+/*   final static Form<User> userForm = form(User.class);
 
     public static Result Index() {
         return ok(index.render(userForm));
-    }
-    */
+    } */
 
+
+    //private FormFactory formFactory;
+    //Form<User> userForm = formFactory.form(User.class);
+
+    // POST /user/add:form
+    public  Result addUser(){
+        User user = form(User.class).bindFromRequest().get();
+        if(user != null){
+            return ok(JsonHelper.toJson(user));
+        } else{
+            return badRequest("YOU FUCKED UP");
+        }
+
+    }
 
     // GET /user/name/:name
     public Result getUserByName(String name) {
@@ -44,7 +61,7 @@ public class UserController extends Controller {
         }
     }
 
-    // POST
+    /* // POST
     public Result addUser() {
         User user = User.find.where().eq("id", 1).findUnique();
         if (user != null) {
@@ -52,7 +69,7 @@ public class UserController extends Controller {
         } else {
             return badRequest("User does not exist");
         }
-    }
+    } */
 
 
 
