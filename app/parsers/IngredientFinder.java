@@ -138,6 +138,7 @@ class IngredientFinder {
         }
 
         // Find quantity
+        // TODO make words not fail here like "två"
         for (int i = 0; i < taggedWords.size(); i++) {
             TaggedWord taggedWord = taggedWords.get(i);
             if (taggedWord.getUdPosTag().equals("NUM")) {

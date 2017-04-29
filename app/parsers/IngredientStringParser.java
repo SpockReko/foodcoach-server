@@ -1,6 +1,7 @@
 package parsers;
 
 import helpers.StringHelper;
+import models.food.Food;
 import models.food.FoodGroup;
 import models.recipe.Amount;
 import models.recipe.Ingredient;
@@ -22,7 +23,7 @@ public class IngredientStringParser {
 
     private String header;
     private String parenthesis;
-    private List<String> alternatives = new ArrayList<>();
+    private final List<String> alternativeStrings = new ArrayList<>();
 
     /**
      * Use this only when there is no external list of all {@link FoodGroup}s already created.
@@ -52,6 +53,7 @@ public class IngredientStringParser {
     public Ingredient parse(String input) throws IOException {
         header = "";
         parenthesis = "";
+        alternativeStrings.clear();
         String line = input;
 
         line = handleColon(line).trim();
@@ -62,35 +64,43 @@ public class IngredientStringParser {
 
         if (ingredient != null) {
             finishUp(ingredient, input);
-            if (!alternatives.isEmpty()) {
-                List<Ingredient> list = findAlternatives();
+            if (!alternativeStrings.isEmpty()) {
+                List<Ingredient> alternatives = findAlternatives();
                 Amount amount = new Amount(0.0, Amount.Unit.EMPTY);
                 // Find at least one amount to use
-                for (Ingredient ing : list) {
+                for (Ingredient ing : alternatives) {
                     if (ing.hasAmount()) {
                         amount = ing.getAmount();
                         break;
                     }
                 }
+                if (amount.isEmpty() && ingredient.hasAmount()) {
+                    amount = ingredient.getAmount();
+                }
                 // Set that amount to all alternatives
-                for (Ingredient ing : list) {
+                for (Ingredient ing : alternatives) {
                     if (!ing.hasAmount()) {
                         ing.setAmount(amount);
                     }
                 }
+                // Remove if alternative is same food as main
+                Food main = ingredient.getFood();
+                alternatives.removeIf(i -> i.getFood().equals(main));
                 // Also set that amount if the main ingredient doesn't have one
                 if (!ingredient.hasAmount()) {
                     ingredient.setAmount(amount);
                 }
-                ingredient.alternatives = list;
+                if (!alternatives.isEmpty()) {
+                    ingredient.alternatives = alternatives;
+                }
             }
             return ingredient;
-        } else if (!alternatives.isEmpty()) {
-            List<Ingredient> list = findAlternatives();
+        } else if (!alternativeStrings.isEmpty()) {
+            List<Ingredient> alternatives = findAlternatives();
             Amount amount = new Amount(0.0, Amount.Unit.EMPTY);
             FoodGroup group = null;
             // Find at least one amount and food group to use
-            for (Ingredient ing : list) {
+            for (Ingredient ing : alternatives) {
                 group = ing.getFood().group;
                 if (ing.hasAmount()) {
                     amount = ing.getAmount();
@@ -98,30 +108,35 @@ public class IngredientStringParser {
                 }
             }
             ingredient = ingredientFinder.findInGroup(line, group);
-            // Also set that amount if the main ingredient doesn't have one
             if (ingredient == null) {
                 Logger.error("No ingredient found \"" + input + "\"");
                 return null;
             }
+            // Also set that amount if the main ingredient doesn't have one
             if (!amount.isEmpty()) {
                 if (!ingredient.hasAmount()) {
                     ingredient.setAmount(amount);
                 }
                 // Set that amount to all alternatives
-                for (Ingredient ing : list) {
+                for (Ingredient ing : alternatives) {
                     if (!ing.hasAmount()) {
                         ing.setAmount(amount);
                     }
                 }
             } else if (ingredient.hasAmount()) {
                 // Set that amount to all alternatives
-                for (Ingredient ing : list) {
+                for (Ingredient ing : alternatives) {
                     if (!ing.hasAmount()) {
                         ing.setAmount(ingredient.getAmount());
                     }
                 }
             }
-            ingredient.alternatives = list;
+            // Remove if alternative is same food as main
+            Food main = ingredient.getFood();
+            alternatives.removeIf(i -> i.getFood().equals(main));
+            if (!alternatives.isEmpty()) {
+                ingredient.alternatives = alternatives;
+            }
             finishUp(ingredient, input);
             return ingredient;
         }
@@ -162,7 +177,7 @@ public class IngredientStringParser {
         if (StringHelper.containsWord(line, "eller")) {
             String[] split = line.toLowerCase().split(" eller");
             for (int i = 1; i < split.length; i++) {
-                alternatives.add(split[i].trim());
+                alternativeStrings.add(split[i].trim());
                 Logger.trace("Contains alternative: " + split[i].trim());
             }
             return split[0];
@@ -173,7 +188,7 @@ public class IngredientStringParser {
 
     private List<Ingredient> findAlternatives() throws IOException {
         List<Ingredient> list = new ArrayList<>();
-        for (String str : alternatives) {
+        for (String str : alternativeStrings) {
             Ingredient alternative = ingredientFinder.find(str);
             if (alternative != null) {
                 list.add(alternative);

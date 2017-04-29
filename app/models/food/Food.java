@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A factual food with attached nutrition information and other meta data.
@@ -292,5 +293,22 @@ public class Food extends Model {
      */
     public double getCO2() {
         return this.category == null ? 0.0 : Constants.CO2(this.category);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Food food = (Food) o;
+        return id == food.id && dataSourceId == food.dataSourceId
+            && Objects.equals(name, food.name)
+            && Objects.equals(tags, food.tags);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dataSourceId, name, tags);
     }
 }
