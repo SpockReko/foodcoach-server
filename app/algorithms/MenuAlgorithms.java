@@ -82,9 +82,9 @@ public class MenuAlgorithms {
         List<Recipe> copyRecipes = new ArrayList<>(allRecipes);
         List<Recipe> optimalList = new ArrayList<>();
         List<Recipe> resultList = new ArrayList<>();
-        while(optimalList.size() != nrOfRecipes) {
-        algoCount += 1;
+        while(optimalList.size() < nrOfRecipes) {
             for (Recipe recipe : copyRecipes) {
+                algoCount += 1;
                 List<Recipe> testRecipe = new ArrayList<>(optimalList);
                 testRecipe.add(recipe);
                 Menu menu = new Menu(testRecipe);
@@ -112,8 +112,8 @@ public class MenuAlgorithms {
     public Menu calculateMenuNutrition(User user) {
         this.user = user;
         reset();
-        if(allRecipes.size() < 15) {
-            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
+        if(false) {
+            //returnAllMenus(40, new ArrayList<>(), this::nutritionValueCalculation);
         }else{
             returnMenuGreedy(this::nutritionValueCalculation);
         }
@@ -131,7 +131,7 @@ public class MenuAlgorithms {
     public Menu calculateWeekMenu(List<Ingredient> ingredientList)  {
         reset();
         this.ingredientsToUse=ingredientList;
-        if(allRecipes.size() < 30) {
+        if(allRecipes.size() < 10) {
             returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::getLeftoversSize);
         }else{
             returnMenuGreedy(this::getLeftoversSize);
@@ -238,6 +238,7 @@ public class MenuAlgorithms {
      */
     public String recipeListToString(Menu menu) {
         String text = "";
+
         for (Recipe r : menu.getRecipeList()) {
             text = text + r.getTitle() + "\n";
         }
@@ -290,6 +291,9 @@ public class MenuAlgorithms {
         return menus.clone();
     }
 
+    public int getAllRecepie(){
+        return allRecipes.size();
+    }
 //############### Help-classes ################
 
     /**
@@ -300,8 +304,8 @@ public class MenuAlgorithms {
         convertAllToOnePortion();
         optimalMenuNutrition = LARGE_DISTANCE;
         optimalMenu = new Menu(new ArrayList<>());
-        filterRecipes(notTheseIngredients, notTheseRecipes);
         menuList = new ArrayList<>();
+        filterRecipes(notTheseIngredients, notTheseRecipes);
     }
 
 
@@ -343,7 +347,7 @@ public class MenuAlgorithms {
                 }
             }
             for (Recipe r : recipeList) {
-                if (recipe.equals(r)) {
+                if (recipe.getTitle().equals(r.getTitle())) {
                     badRecipe = true;
                 }
             }

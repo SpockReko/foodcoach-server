@@ -26,6 +26,7 @@ POST            /menu/nutrient                            controllers.MenuAlgori
 GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu
 GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2
 GET             /menu/CO2                                 controllers.MenuAlgorithmsController.menu3
+GET             /stefan/menu/nutrient                     controllers.MenuAlgorithmsController.menuStefan
 GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
 GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
 GET             /menu/nutrient/user/:name                 controllers.MenuAlgorithmsController.menuByName(name: String)
