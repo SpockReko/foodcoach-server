@@ -15,9 +15,12 @@ GET             /food/sort/:id                            controllers.FoodContro
 GET             /recipes                                  controllers.RecipeController.getAll
 
 # User info
-GET             /user/:alder                              controllers.UserController.getRDI(alder: Int)
-GET             /user/name/:name                          controllers.UserController.getUserByName(name: String)
+# GET             /user/:alder                             controllers.UserController.getRDI(alder: Int)
+GET             /user/name/:userName                      controllers.UserController.getUserByName(userName: String)
 GET             /user/id/:id                              controllers.UserController.getUserById(id: Int)
+# POST            /user/name/:userName                      controllers.UserController.getUserByName(userName: String)
+POST            /user/add                                 controllers.UserController.addUser()
+GET             /user/add                                 controllers.UserController.addUser()
 
 # Menu options from client
 POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
