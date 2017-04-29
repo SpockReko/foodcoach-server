@@ -44,6 +44,18 @@ public class UserController extends Controller {
         }
     }
 
+    // POST
+    public Result addUser() {
+        User user = User.find.where().eq("id", 1).findUnique();
+        if (user != null) {
+            return ok(JsonHelper.toJson(user));
+        } else {
+            return badRequest("User does not exist");
+        }
+    }
+
+
+
     public Result getRDI(int age) {
         User.Goal mal2 = User.Goal.INCREASE;
         double mal = 500;
