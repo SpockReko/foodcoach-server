@@ -165,6 +165,8 @@ public class User extends Model {
         this.dateEntered = dateEntered;
     }
 
+
+    //kontruktor för allt.
     public User(long id, String firstName, String lastName, String email, Date birthDate, Sex sex,
                 Double weight, Double height, Integer age, Double activityLevel, ArrayList<String> allergier,
                 Goal goal, Timestamp dateEntered) {
@@ -185,7 +187,8 @@ public class User extends Model {
     }
 
     // TEST FÖR FORM
-    public User(String firstName, Sex sex, double activityLevel, double weight, double height, int age, Goal goal){
+    public User(int id, String firstName, Sex sex, double activityLevel, double weight, double height, int age, Goal goal){
+        this.id = id;
         this.firstName = firstName;
         this.sex = sex;
         this.activityLevel = activityLevel;

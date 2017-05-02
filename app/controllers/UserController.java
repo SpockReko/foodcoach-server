@@ -1,15 +1,13 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
 import helpers.JsonHelper;
 import models.food.Nutrient;
 import models.user.User;
-import play.api.data.Form;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import java.util.ArrayList;
-import play.data.FormFactory;
-
-import static play.data.Form.form;
 
 
 /**
@@ -30,14 +28,13 @@ public class UserController extends Controller {
     //Form<User> userForm = formFactory.form(User.class);
 
     // POST /user/add:form
-    public  Result addUser(){
-        User user = form(User.class).bindFromRequest().get();
-        if(user != null){
-            return ok(JsonHelper.toJson(user));
-        } else{
+    public Result addUser(){
+        User user = Form.form(User.class).bindFromRequest().get();
+        Ebean.save(user);
+         if(user != null) return ok(JsonHelper.toJson(user));  //Ebean.save(user);
+        else{
             return badRequest("YOU FUCKED UP");
         }
-
     }
 
     // GET /user/name/:name
