@@ -42,8 +42,8 @@ public class DatabaseSeeder {
     private static final String FINELI_DATA_TSV = "resources/food/Fineli_FoodData.tsv";
     private static final String SLV_GROUP_TSV = "resources/food/SLV_FoodGroups.tsv";
     private static final String SLV_DATA_TSV = "resources/food/SLV_FoodData.tsv";
-    private static final String NSDA_GROUP_TSV = "resources/food/NSDA_FoodGroups.tsv";
-    private static final String NSDA_DATA_TSV = "resources/food/NSDA_FoodData.tsv";
+    private static final String USDA_GROUP_TSV = "resources/food/USDA_FoodGroups.tsv";
+    private static final String USDA_DATA_TSV = "resources/food/USDA_FoodData.tsv";
     private static final String RECIPES_PATH = "resources/recipes/recipes_fineli.csv";
 
     private enum Fineli {
@@ -84,7 +84,7 @@ public class DatabaseSeeder {
         }
     }
 
-    private enum NSDA {
+    private enum USDA {
         GROUP_ID(0), GROUP_NAME(1), GROUP_DEFAULT(2), GROUP_SPECIFIC_TAGS(3), GROUP_DISPLAY_NAME(4),
         GROUP_EXTRA_TAGS(5), GROUP_PIECE_WEIGHT(6), GROUP_DENSITY_CONSTANT(7),
         GROUP_EXAMPLE_BRANDS(8), GROUP_SCIENTIFIC_NAME(9), GROUP_CLASSIFICATION(10), DATA_ID(0),
@@ -97,7 +97,7 @@ public class DatabaseSeeder {
 
         private final int id;
 
-        NSDA(final int id) {
+        USDA(final int id) {
             this.id = id;
         }
     }
@@ -108,7 +108,7 @@ public class DatabaseSeeder {
     private static List<Diet> diets = new ArrayList<>();
     private static Map<Integer, Integer> fineliRowIds = new HashMap<>();
     private static Map<Integer, Integer> lmvRowIds = new HashMap<>();
-    private static Map<Integer, Integer> nsdaRowIds = new HashMap<>();
+    private static Map<Integer, Integer> usdaRowIds = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -122,8 +122,8 @@ public class DatabaseSeeder {
         List<String[]> fineliDataRows = parser.parseAll(getReader(FINELI_DATA_TSV));
         List<String[]> lmvGroupRows = parser.parseAll(getReader(SLV_GROUP_TSV));
         List<String[]> lmvDataRows = parser.parseAll(getReader(SLV_DATA_TSV));
-        List<String[]> nsdaGroupRows = parser.parseAll(getReader(NSDA_GROUP_TSV));
-        List<String[]> nsdaDataRows = parser.parseAll(getReader(NSDA_DATA_TSV));
+        List<String[]> nsdaGroupRows = parser.parseAll(getReader(USDA_GROUP_TSV));
+        List<String[]> nsdaDataRows = parser.parseAll(getReader(USDA_DATA_TSV));
 
         System.out.println(
             "\n" + PURPLE + "--- (Seeding database) ---\n" + RESET);
@@ -144,7 +144,7 @@ public class DatabaseSeeder {
             lmvRowIds.put(Integer.parseInt(lmvDataRows.get(i)[SLV.DATA_ID.id]), i);
         }
         for (int i = 0; i < nsdaDataRows.size(); i++) {
-            nsdaRowIds.put(Integer.parseInt(nsdaDataRows.get(i)[NSDA.DATA_ID.id]), i);
+            usdaRowIds.put(Integer.parseInt(nsdaDataRows.get(i)[USDA.DATA_ID.id]), i);
         }
 
         System.out.print(CYAN + "Parsing foods from Fineli... " + RESET);
@@ -159,9 +159,9 @@ public class DatabaseSeeder {
         }
         printDone();
 
-        System.out.print(CYAN + "Parsing extra foods from NSDA... " + RESET);
+        System.out.print(CYAN + "Parsing extra foods from USDA... " + RESET);
         for (String[] cols : nsdaGroupRows) {
-            readNsdaGroupRow(cols, nsdaDataRows);
+            readUsdaGroupRow(cols, nsdaDataRows);
         }
         printDone();
 
@@ -354,74 +354,74 @@ public class DatabaseSeeder {
         foods.add(specificFood);
     }
 
-    private static void readNsdaGroupRow(String[] cols, List<String[]> dataRows) {
+    private static void readUsdaGroupRow(String[] cols, List<String[]> dataRows) {
         FoodGroup foodGroup;
-        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[NSDA.GROUP_NAME.id]))) {
+        if (foodGroups.stream().anyMatch(g -> g.name.equals(cols[USDA.GROUP_NAME.id]))) {
             foodGroup = foodGroups.stream()
-                .filter(g -> g.name.equals(cols[NSDA.GROUP_NAME.id])).findFirst().get();
+                .filter(g -> g.name.equals(cols[USDA.GROUP_NAME.id])).findFirst().get();
         } else {
-            foodGroup = new FoodGroup(cols[NSDA.GROUP_NAME.id]);
+            foodGroup = new FoodGroup(cols[USDA.GROUP_NAME.id]);
         }
 
-        String name = cols[NSDA.GROUP_DISPLAY_NAME.id];
-        int nsdaId = Integer.parseInt(cols[NSDA.GROUP_ID.id]);
-        String[] rows = dataRows.get(nsdaRowIds.get(nsdaId));
+        String name = cols[USDA.GROUP_DISPLAY_NAME.id];
+        int nsdaId = Integer.parseInt(cols[USDA.GROUP_ID.id]);
+        String[] rows = dataRows.get(usdaRowIds.get(nsdaId));
         Food specificFood = new Food(
-            name, nsdaId, DataSource.NSDA,
-            toDouble(rows[NSDA.DATA_ENERGY_KCAL.id]) * Constants.KCAL_FACTOR,
-            toDouble(rows[NSDA.DATA_CARB.id]),
-            toDouble(rows[NSDA.DATA_PROTEIN.id]),
-            toDouble(rows[NSDA.DATA_FAT.id]),
-            toDouble(rows[NSDA.DATA_FIBRE.id]),
+            name, nsdaId, DataSource.USDA,
+            toDouble(rows[USDA.DATA_ENERGY_KCAL.id]) * Constants.KCAL_FACTOR,
+            toDouble(rows[USDA.DATA_CARB.id]),
+            toDouble(rows[USDA.DATA_PROTEIN.id]),
+            toDouble(rows[USDA.DATA_FAT.id]),
+            toDouble(rows[USDA.DATA_FIBRE.id]),
             null,
             null,
-            toDouble(rows[NSDA.DATA_VITAMIN_A.id]),
-            toDouble(rows[NSDA.DATA_VITAMIN_B6.id]),
-            toDouble(rows[NSDA.DATA_VITAMIN_B12.id]),
-            toDouble(rows[NSDA.DATA_VITAMIN_C.id]),
-            toDouble(rows[NSDA.DATA_VITAMIN_D.id]),
-            toDouble(rows[NSDA.DATA_VITAMIN_E.id]),
-            toDouble(rows[NSDA.DATA_VITAMIN_K.id]),
-            toDouble(rows[NSDA.DATA_THIAMINE.id]),
-            toDouble(rows[NSDA.DATA_RIBOFLAVIN.id]),
-            toDouble(rows[NSDA.DATA_NIACIN.id]),
+            toDouble(rows[USDA.DATA_VITAMIN_A.id]),
+            toDouble(rows[USDA.DATA_VITAMIN_B6.id]),
+            toDouble(rows[USDA.DATA_VITAMIN_B12.id]),
+            toDouble(rows[USDA.DATA_VITAMIN_C.id]),
+            toDouble(rows[USDA.DATA_VITAMIN_D.id]),
+            toDouble(rows[USDA.DATA_VITAMIN_E.id]),
+            toDouble(rows[USDA.DATA_VITAMIN_K.id]),
+            toDouble(rows[USDA.DATA_THIAMINE.id]),
+            toDouble(rows[USDA.DATA_RIBOFLAVIN.id]),
+            toDouble(rows[USDA.DATA_NIACIN.id]),
             null,
-            toDouble(rows[NSDA.DATA_FOLATE.id]),
-            toDouble(rows[NSDA.DATA_PHOSPHORUS.id]),
+            toDouble(rows[USDA.DATA_FOLATE.id]),
+            toDouble(rows[USDA.DATA_PHOSPHORUS.id]),
             null,
-            toDouble(rows[NSDA.DATA_IRON.id]),
-            toDouble(rows[NSDA.DATA_CALCIUM.id]),
-            toDouble(rows[NSDA.DATA_POTASSIUM.id]),
-            toDouble(rows[NSDA.DATA_MAGNESIUM.id]),
-            toDouble(rows[NSDA.DATA_SODIUM.id]),
-            toDouble(rows[NSDA.DATA_SELENIUM.id]),
-            toDouble(rows[NSDA.DATA_ZINK.id])
+            toDouble(rows[USDA.DATA_IRON.id]),
+            toDouble(rows[USDA.DATA_CALCIUM.id]),
+            toDouble(rows[USDA.DATA_POTASSIUM.id]),
+            toDouble(rows[USDA.DATA_MAGNESIUM.id]),
+            toDouble(rows[USDA.DATA_SODIUM.id]),
+            toDouble(rows[USDA.DATA_SELENIUM.id]),
+            toDouble(rows[USDA.DATA_ZINK.id])
         );
 
-        if (cols[NSDA.GROUP_SPECIFIC_TAGS.id] != null) {
-            String[] tags = cols[NSDA.GROUP_SPECIFIC_TAGS.id].split(",");
+        if (cols[USDA.GROUP_SPECIFIC_TAGS.id] != null) {
+            String[] tags = cols[USDA.GROUP_SPECIFIC_TAGS.id].split(",");
             Arrays.setAll(tags, i -> tags[i].trim());
             Collections.addAll(specificFood.tags, tags);
         }
-        if (cols[NSDA.GROUP_PIECE_WEIGHT.id] != null) {
-            specificFood.pieceWeightGrams = Integer.parseInt(cols[NSDA.GROUP_PIECE_WEIGHT.id]);
+        if (cols[USDA.GROUP_PIECE_WEIGHT.id] != null) {
+            specificFood.pieceWeightGrams = Integer.parseInt(cols[USDA.GROUP_PIECE_WEIGHT.id]);
         }
-        if (cols[NSDA.GROUP_DENSITY_CONSTANT.id] != null) {
-            specificFood.densityConstant = Double.parseDouble(cols[NSDA.GROUP_DENSITY_CONSTANT.id]);
+        if (cols[USDA.GROUP_DENSITY_CONSTANT.id] != null) {
+            specificFood.densityConstant = Double.parseDouble(cols[USDA.GROUP_DENSITY_CONSTANT.id]);
         }
-        if (cols[NSDA.GROUP_EXAMPLE_BRANDS.id] != null) {
-            specificFood.exampleBrands = cols[NSDA.GROUP_EXAMPLE_BRANDS.id].trim();
+        if (cols[USDA.GROUP_EXAMPLE_BRANDS.id] != null) {
+            specificFood.exampleBrands = cols[USDA.GROUP_EXAMPLE_BRANDS.id].trim();
         }
-        if (cols[NSDA.GROUP_SCIENTIFIC_NAME.id] != null) {
-            specificFood.scientificName = cols[NSDA.GROUP_SCIENTIFIC_NAME.id].trim();
+        if (cols[USDA.GROUP_SCIENTIFIC_NAME.id] != null) {
+            specificFood.scientificName = cols[USDA.GROUP_SCIENTIFIC_NAME.id].trim();
         }
-        if (cols[NSDA.GROUP_CLASSIFICATION.id] != null) {
-            specificFood.category = getCategory(cols[NSDA.GROUP_CLASSIFICATION.id].trim());
+        if (cols[USDA.GROUP_CLASSIFICATION.id] != null) {
+            specificFood.category = getCategory(cols[USDA.GROUP_CLASSIFICATION.id].trim());
         }
 
-        if (cols[NSDA.GROUP_DEFAULT.id] != null) {
-            if (cols[NSDA.GROUP_EXTRA_TAGS.id] != null) {
-                String[] tags = cols[NSDA.GROUP_EXTRA_TAGS.id].split(",");
+        if (cols[USDA.GROUP_DEFAULT.id] != null) {
+            if (cols[USDA.GROUP_EXTRA_TAGS.id] != null) {
+                String[] tags = cols[USDA.GROUP_EXTRA_TAGS.id].split(",");
                 for (String tag : tags) {
                     foodGroup.searchTags.add(tag.trim());
                 }

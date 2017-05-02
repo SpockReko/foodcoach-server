@@ -120,7 +120,7 @@ class IngredientFinder {
         Double numeric = null;
         Amount.Unit unit = null;
 
-        // TODO be smarter and dont loop string twice
+        // TODO be smarter and don't loop string twice
         // Find unit
         for (int i = 0; i < taggedWords.size(); i++) {
             TaggedWord taggedWord = taggedWords.get(i);
