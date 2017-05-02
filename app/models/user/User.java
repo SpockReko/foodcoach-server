@@ -61,12 +61,119 @@ public class User extends Model {
         }
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Double getActivityLevel() {
+        return activityLevel;
+    }
+
+    public void setActivityLevel(Double activityLevel) {
+        this.activityLevel = activityLevel;
+    }
+
+    public ArrayList<String> getAllergier() {
+        return allergier;
+    }
+
+    public void setAllergier(ArrayList<String> allergier) {
+        this.allergier = allergier;
+    }
+
+    public Goal getGoal() {
+        return goal;
+    }
+
+    public void setGoal(Goal goal) {
+        this.goal = goal;
+    }
+
+    public Timestamp getDateEntered() {
+        return dateEntered;
+    }
+
+    public void setDateEntered(Timestamp dateEntered) {
+        this.dateEntered = dateEntered;
+    }
+
+
+    //kontruktor för allt.
     public User(long id, String firstName, String lastName, String email, Date birthDate, Sex sex,
                 Double weight, Double height, Integer age, Double activityLevel, ArrayList<String> allergier,
                 Goal goal, Timestamp dateEntered) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+
         this.email = email;
         this.birthDate = birthDate;
         this.sex = sex;
@@ -77,6 +184,18 @@ public class User extends Model {
         this.allergier = allergier;
         this.goal = goal;
         this.dateEntered = dateEntered;
+    }
+
+    // TEST FÖR FORM
+    public User(int id, String firstName, Sex sex, double activityLevel, double weight, double height, int age, Goal goal){
+        this.id = id;
+        this.firstName = firstName;
+        this.sex = sex;
+        this.activityLevel = activityLevel;
+        this.weight = weight;
+        this.height = height;
+        this.age = age;
+        this.goal = goal;
     }
 
     public static Finder<Long, User> find = new Finder<>(User.class);
@@ -114,6 +233,15 @@ public class User extends Model {
         hmap.put(Nutrient.SELENIUM, 55D);
 
         calculateOverdoseValues(30);
+    }
+
+    public static User getUserByName2(String name) {
+        User user = User.find.where().eq("firstName", name).findUnique();
+        if (user != null) {
+            return user;
+        } else {
+            return User.find.where().eq("firstName", "Bob").findUnique();
+        }
     }
 
     public User(String name){
