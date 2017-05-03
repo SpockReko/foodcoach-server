@@ -90,6 +90,12 @@ public class MenuAlgorithmsController extends Controller {
         }
     }
 
+    /**
+     * Dessa tre användare vill Olof ta bort. men får använda users ifrån databaen
+     */
+
+    /*
+
     public Result menuStefan() {
         User user;
         int nrOfRecipes;
@@ -154,17 +160,13 @@ public class MenuAlgorithmsController extends Controller {
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
-    }
+    } */
 
-    // GET /menu/nutrient/name/:name
-    public Result menuByName(String userName) {
+    // GET /menu/nutrient/name/:name/:nrOfRecipes
+    public Result menuByName(String userName, int nrOfRecipes) {
 
-        User user;
-        int nrOfRecipes;
+        User user = new User(userName);
         List<Recipe> removeRecipeList = new ArrayList<>();
-
-        user = User.getUserByName2(userName);
-        nrOfRecipes = 3;
 
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
@@ -172,16 +174,15 @@ public class MenuAlgorithmsController extends Controller {
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
     }
 
 
-    // GET     /menu/economi
-    public Result menu2() {
+    // GET     /menu/economi/;nrOfRecipes
+    public Result menuEconomi(int nrOfRecipes) {
 
         List<Recipe> removeRecipeList = new ArrayList<>();
-        int nrOfRecipes = 3;
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredients = new ArrayList<>();
 
@@ -203,11 +204,11 @@ public class MenuAlgorithmsController extends Controller {
             return ok(ingredientString+"\n" + resultingMenu.recipeListToString(shoppingList));
         return ok("nothing found!");
     }
-    // GET     /menu/CO2
-    public Result menu3() {
+
+    // GET     /menu/CO2/;nrOfRecipes
+    public Result menuCO2(int nrOfRecipes) {
 
         List<Recipe> removeRecipeList = new ArrayList<>();
-        int nrOfRecipes = 3;
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredients = new ArrayList<>();
 

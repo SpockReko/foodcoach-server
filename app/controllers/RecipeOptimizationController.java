@@ -40,7 +40,7 @@ public class RecipeOptimizationController extends Controller {
         return ok(recipeOptimizerInstant.toString());
     }
 
-    public Result optimizeByNumberBob(long recipeNumber) {
+    /* public Result optimizeByNumberBob(long recipeNumber) {
         Recipe recipe = Recipe.find.byId(recipeNumber);
         User user = new User("Bob");
         RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
@@ -58,12 +58,14 @@ public class RecipeOptimizationController extends Controller {
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
 
         return ok(recipeOptimizerInstant.toString());
-    }
+    } */
 
     // GET   /recipe/optimize/user/:number/:name
     public Result optimizeByNumberUserName(long recipeNumber, String userName) {
         Recipe recipe = Recipe.find.byId(recipeNumber);
-        User user = User.getUserByName2(userName);
+        User user = new User(userName);
+        //User user = User.find.where().eq("firstName", userName).findUnique();
+        //User user = User.getUserByName2(userName);
         RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
         recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();

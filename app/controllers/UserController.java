@@ -1,15 +1,13 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
 import helpers.JsonHelper;
 import models.food.Nutrient;
 import models.user.User;
-import play.api.data.Form;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import java.util.ArrayList;
-import play.data.FormFactory;
-
-import static play.data.Form.form;
 
 
 /**
@@ -30,14 +28,13 @@ public class UserController extends Controller {
     //Form<User> userForm = formFactory.form(User.class);
 
     // POST /user/add:form
-    public  Result addUser(){
-        User user = form(User.class).bindFromRequest().get();
-        if(user != null){
-            return ok(JsonHelper.toJson(user));
-        } else{
+    public Result addUser(){
+        User user = Form.form(User.class).bindFromRequest().get();
+        Ebean.save(user);
+         if(user != null) return ok(JsonHelper.toJson(user));
+        else{
             return badRequest("YOU FUCKED UP");
         }
-
     }
 
     // GET /user/name/:name
@@ -73,7 +70,7 @@ public class UserController extends Controller {
 
 
 
-    public Result getRDI(int age) {
+    /* public Result getRDI(int age) {
         User.Goal mal2 = User.Goal.INCREASE;
         double mal = 500;
         double vikt = 86;
@@ -90,6 +87,6 @@ public class UserController extends Controller {
 
 
         return ok("Du bränner " + String.valueOf(newuser.hmap.get(Nutrient.ENERGY_KCAL)) + " kalorier. Akta dig för " + newuser.allergier.get(1));
-    }
+    } */
 
 }

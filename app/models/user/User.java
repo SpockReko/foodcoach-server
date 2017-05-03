@@ -22,6 +22,12 @@ import models.food.Nutrient;
 @Table(name = "Users")
 public class User extends Model {
 
+    /**
+     * Ska möjligen ta bort lastname, email och andra onödiga saker vi inte kommer använda
+     * för redovisinen / denna iteration.
+     *
+     */
+
     @Id public long id;
 
     public String firstName;
@@ -61,6 +67,12 @@ public class User extends Model {
         }
     }
 
+    /**
+     * Osäker om dessa setters och getters behövs.
+     *
+     *
+     */
+
     public long getId() {
         return id;
     }
@@ -69,7 +81,12 @@ public class User extends Model {
         this.id = id;
     }
 
-    public String getFirstName() {
+    /**
+     * Dessa behövs inte
+     *
+     *
+     */
+  /*  public String getFirstName() {
         return firstName;
     }
 
@@ -165,13 +182,14 @@ public class User extends Model {
         this.dateEntered = dateEntered;
     }
 
+
+    //kontruktor för allt.
     public User(long id, String firstName, String lastName, String email, Date birthDate, Sex sex,
                 Double weight, Double height, Integer age, Double activityLevel, ArrayList<String> allergier,
                 Goal goal, Timestamp dateEntered) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-
         this.email = email;
         this.birthDate = birthDate;
         this.sex = sex;
@@ -182,10 +200,16 @@ public class User extends Model {
         this.allergier = allergier;
         this.goal = goal;
         this.dateEntered = dateEntered;
-    }
+    } */
 
-    // TEST FÖR FORM
-    public User(String firstName, Sex sex, double activityLevel, double weight, double height, int age, Goal goal){
+    /**
+     * I behov för FORM och frontend?
+     *  NEJ
+     *
+     */ /*
+
+    public User(int id, String firstName, Sex sex, double activityLevel, double weight, double height, int age, Goal goal){
+        this.id = id;
         this.firstName = firstName;
         this.sex = sex;
         this.activityLevel = activityLevel;
@@ -193,7 +217,7 @@ public class User extends Model {
         this.height = height;
         this.age = age;
         this.goal = goal;
-    }
+    } */
 
     public static Finder<Long, User> find = new Finder<>(User.class);
 
@@ -201,7 +225,6 @@ public class User extends Model {
     public HashMap<Nutrient, Double> overdoseValues = new HashMap<>();
 
     public User() {
-
         firstName = "user";
         hmap.put(Nutrient.ENERGY_KCAL, 2000D);
         hmap.put(Nutrient.ENERGY_KJ, 2000D* Constants.KCAL_FACTOR);
@@ -232,18 +255,53 @@ public class User extends Model {
         calculateOverdoseValues(30);
     }
 
-    public static User getUserByName2(String name) {
+
+    /**
+     * Helt onödig denna med, bara för test
+     *
+     *
+     */
+
+    /* public static User getUserByName2(String name) {
         User user = User.find.where().eq("firstName", name).findUnique();
         if (user != null) {
             return user;
         } else {
             return User.find.where().eq("firstName", "Bob").findUnique();
         }
-    }
+    } */
 
-    public User(String name){
+    /**
+     * "skapande av en user" lägga in alla behov osv i en hmap.
+     *
+     *
+     */
 
-        if(name.equals("Stefan")) {
+        public User(String name){
+        User user = User.find.where().eq("firstName", name).findUnique();
+        if(user != null) {
+            this.firstName = user.firstName;
+            this.sex = user.sex;
+            this.activityLevel = user.activityLevel;
+            this.weight = user.weight;
+            this.height = user.height;
+            this.age = user.age;
+            this.goal = user.goal;
+            dailyCalories();
+            calculateOverdoseValues(age);
+        }
+         else {
+             new User();
+         }
+        }
+
+    /**
+     * Här kan man ta bort Stefan, BOB och alice IMO
+     * Ta bort hela funktionen helt
+     *
+     */
+
+       /* if(name.equals("Stefan")) {
             this.sex = Sex.MALE;
             this.activityLevel = 1.2;
             this.weight = 102.0;
@@ -274,8 +332,13 @@ public class User extends Model {
             new User();
         }
 
-    }
+    } */
 
+    /**
+     * Också onödig, (något i receptoptimeringen som försöker skapa en standard user?
+     * Funkar getRDI och annat?
+     *
+     */
     public User(Sex sex, double activityLevel, double weight, double height, int age, Goal goal, ArrayList<String> allergier){
         this.sex = sex;
         this.activityLevel = activityLevel;
@@ -289,6 +352,12 @@ public class User extends Model {
         calculateOverdoseValues(age);
     }
 
+    /**
+     * Här kan man ta bort Stefan, BOB och alice IMO
+     * Ta bort hela funktionen helt
+     *
+     */
+
     private void addAllergier(ArrayList<String> allergier) {
         if(allergier==null){
             this.allergier = new ArrayList<>();
@@ -297,6 +366,11 @@ public class User extends Model {
         }
     }
 
+    /**
+     *
+     * sätter in alla värden i hmap
+     *
+     */
 
     private void dailyCalories() {
         double dc;
