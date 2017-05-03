@@ -77,12 +77,12 @@ public class MenuAlgorithms {
         }
     }
 
-    public void returnMenuGreedy(Function<Menu,Double> optimize){
+    public void returnMenuGreedy(Function<Menu, Double> optimize) {
 
         List<Recipe> copyRecipes = new ArrayList<>(allRecipes);
         List<Recipe> optimalList = new ArrayList<>();
         List<Recipe> resultList = new ArrayList<>();
-        while(optimalList.size() < nrOfRecipes) {
+        while (optimalList.size() < nrOfRecipes) {
             for (Recipe recipe : copyRecipes) {
                 algoCount += 1;
                 List<Recipe> testRecipe = new ArrayList<>(optimalList);
@@ -90,7 +90,7 @@ public class MenuAlgorithms {
                 Menu menu = new Menu(testRecipe);
                 double value = optimize.apply(menu);
                 System.out.println("[value,menu.size]: [" + value + "," + menu.getRecipeList().size());
-                if(value < optimalMenuNutrition){
+                if (value < optimalMenuNutrition) {
                     optimalMenuNutrition = value;
                     resultList = menu.getRecipeList();
                 }
@@ -105,19 +105,19 @@ public class MenuAlgorithms {
     }
 
     /**
-     *
      * @param user
      * @return
      */
+
     public Menu calculateMenuNutrition(User user) {
         this.user = user;
         reset();
-        if(false) {
+
+        if (false) {
             //returnAllMenus(40, new ArrayList<>(), this::nutritionValueCalculation);
-        }else{
+        } else {
             returnMenuGreedy(this::nutritionValueCalculation);
         }
-        System.out.println("algo runs: " + algoCount + ". Where receptnumber is: " + allRecipes.size());
         return optimalMenu;
     }
 
@@ -128,49 +128,46 @@ public class MenuAlgorithms {
      * @param
      * @return the menu that generates the shortest shopping list.
      */
-    public Menu calculateWeekMenu(List<Ingredient> ingredientList)  {
+    public Menu calculateWeekMenu(List<Ingredient> ingredientList) {
         reset();
-        this.ingredientsToUse=ingredientList;
-        if(allRecipes.size() < 10) {
-            returnAllMenus(allRecipes.size()-1,new ArrayList<>(),this::getLeftoversSize);
-        }else{
+        this.ingredientsToUse = ingredientList;
+        if (allRecipes.size() < 10) {
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getLeftoversSize);
+        } else {
             returnMenuGreedy(this::getLeftoversSize);
         }
         return optimalMenu;
     }
 
     /**
-     *
      * @param ingredientList
      * @return
      */
     public Menu calculateWeekMenuMinimalCO2(List<Ingredient> ingredientList) {
         reset();
-        this.ingredientsToUse=ingredientList;
-        if(allRecipes.size() < 30) {
+        this.ingredientsToUse = ingredientList;
+        if (allRecipes.size() < 30) {
             returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getCO2);
-        }else{
+        } else {
             returnMenuGreedy(this::getCO2);
         }
         return optimalMenu;
     }
 
     /**
-     *
      * @param ingredientList
      * @return
      */
     public Menu calculateWeekMenuMinimalShoppingList(List<Ingredient> ingredientList) {
         reset();
-        this.ingredientsToUse=ingredientList;
-        if(allRecipes.size() < 30) {
+        this.ingredientsToUse = ingredientList;
+        if (allRecipes.size() < 30) {
             returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::getShoppinglistSize);
-        }else{
+        } else {
             returnMenuGreedy(this::getShoppinglistSize);
         }
         return optimalMenu;
     }
-
 
 
     /**
@@ -186,7 +183,7 @@ public class MenuAlgorithms {
             double value = NutritionAlgorithms.L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
             chosenMenu.setValue(value);
             return value;
-        }else{
+        } else {
             return chosenMenu.getValue();
         }
     }
@@ -243,7 +240,7 @@ public class MenuAlgorithms {
             text = text + r.getTitle() + "\n";
         }
         text = text + "\n\n";
-        if(menu.getCommentList().isEmpty()){
+        if (menu.getCommentList().isEmpty()) {
             nutritionValueCalculation(menu);
         }
         for (String comment : menu.getCommentList()) {
@@ -291,7 +288,7 @@ public class MenuAlgorithms {
         return menus.clone();
     }
 
-    public int getAllRecepie(){
+    public int getAllRecepie() {
         return allRecipes.size();
     }
 //############### Help-classes ################
@@ -309,7 +306,7 @@ public class MenuAlgorithms {
     }
 
 
-    private void convertAllToOnePortion(){
+    private void convertAllToOnePortion() {
         convertAllRecipesToOneProtion();
         convertNotTheseRecipesToOneProtion();
     }
@@ -322,14 +319,13 @@ public class MenuAlgorithms {
         allRecipes = oneRecepiesList;
     }
 
-    private void convertNotTheseRecipesToOneProtion(){
+    private void convertNotTheseRecipesToOneProtion() {
         List<Recipe> oneRecepiesList = new ArrayList<>();
-        for (Recipe r: notTheseRecipes){
+        for (Recipe r : notTheseRecipes) {
             oneRecepiesList.add(r.getOnePortionRecipe());
         }
         notTheseRecipes = oneRecepiesList;
     }
-
 
 
     /**
@@ -350,6 +346,12 @@ public class MenuAlgorithms {
                 if (recipe.getTitle().equals(r.getTitle())) {
                     badRecipe = true;
                 }
+            }
+            List<Recipe> testList = new ArrayList<>();
+            testList.add(recipe);
+            Menu menu = new Menu(testList);
+            if(this.nutritionValueCalculation(menu) < 0.8 && recipe.ingredients.size() > 5){
+                badRecipe = true;
             }
             if (!badRecipe)
                 filteredRecipes.add(recipe);

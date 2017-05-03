@@ -100,25 +100,57 @@ public class MenuAlgorithmsController extends Controller {
         User user;
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
-        Recipe r = Recipe.find.where().eq("title", "Cheesecake på olika vis").findUnique();
-        removeRecipeList.add(r);
-        removeRecipeList.add(Recipe.find.where().eq("title", "Rabarbersaft").findUnique());
         user = new User("Stefan");
         nrOfRecipes = 3;
 
-        List<Recipe> allRecipes = Recipe.find.all();
-        int all = allRecipes.size();
+        List<Recipe> allRecipes = Recipe.find.all().subList(0,900);
+        int[] intArr = {10,20,30,40,50,60,100,300,450,900};
+        String allText = "";
+        String allText2 = "";
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+        int all = menuAlgorithmsInstant.getAllRecepie();
+        /*for (int a = 0; a < intArr.length; a++) {
 
+            int nr = intArr[a];
+            int turns = all / nr;
+            long biggestDiff = 0;
+            for (int i = 0; i < turns; i++) {
+                long before = System.currentTimeMillis();
+                List<Recipe> allRecipesSub = allRecipes.subList(i * nr, i * nr + nr);
+                menuAlgorithmsInstant = new MenuAlgorithms(allRecipesSub, removeRecipeList, 10);
+                resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+                long diffAfter = System.currentTimeMillis() - before;
+                if (diffAfter > biggestDiff) {
+                    biggestDiff = diffAfter;
+                }
+            }
+            String text = "("+ intArr[a] + "," + biggestDiff + "),";
+            allText = allText + text;
+
+            String text2 = "{"+ intArr[a] + "," + biggestDiff + "},";
+            allText2 = allText2 + text2;
+
+        }
+*/
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            return ok(all + " nr of recepies\n" + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            //return ok(print(differens));
+            //return ok(allText + "\n" + allText2);
         return ok("nothing found!");
-
-
     }
 
+
+    public String print(long[] arr){
+        String result = "";
+        int i = 0;
+        for (long l : arr){
+            i++;
+            result = result + "(" + i + "," + l + "),";
+        }
+        return result;
+    }
 
     // GET  /bob/menu/nutrient
     public Result menuBob() {

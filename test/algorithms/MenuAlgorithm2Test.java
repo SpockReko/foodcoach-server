@@ -1,5 +1,6 @@
 package algorithms;
 
+import com.sleepycat.je.sync.SyncDataSet;
 import models.food.DataSource;
 import models.food.Food;
 import models.recipe.*;
@@ -17,6 +18,7 @@ public class MenuAlgorithm2Test {
     private static List<Ingredient> ingredients;
 
     public static void main(String[] args) {
+        System.out.print("MenuAlgorithm2Test");
         build();
         test1();
     }
