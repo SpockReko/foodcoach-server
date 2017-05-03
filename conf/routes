@@ -25,18 +25,18 @@ POST            /user/add                                 controllers.UserContro
 # Menu options from client
 POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
 GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu
-GET             /menu/economi                             controllers.MenuAlgorithmsController.menu2
-GET             /menu/CO2                                 controllers.MenuAlgorithmsController.menu3
-GET             /stefan/menu/nutrient                     controllers.MenuAlgorithmsController.menuStefan
-GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
-GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
-GET             /menu/nutrient/user/:name                 controllers.MenuAlgorithmsController.menuByName(name: String)
+GET             /menu/economi/:nrOfRecipes                controllers.MenuAlgorithmsController.menuEconomi(nrOfRecipes: Int)
+GET             /menu/CO2/:nrOfRecipes                    controllers.MenuAlgorithmsController.menuCO2(nrOfRecipes: Int)
+#GET             /stefan/menu/nutrient                     controllers.MenuAlgorithmsController.menuStefan
+#GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
+#GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
+GET             /menu/nutrient/user/:name/:nrOfRecipes   controllers.MenuAlgorithmsController.menuByName(name: String, nrOfRecipes: Int)
 
 # Optimize recipe
 GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
 GET             /recipe/optimize/title/:title             controllers.RecipeOptimizationController.optimizeByTitle(title: String)
-GET             /bob/recipe/optimize/:number              controllers.RecipeOptimizationController.optimizeByNumberBob(number: Long)
-GET             /alice/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberAlice(number: Long)
+# GET             /bob/recipe/optimize/:number              controllers.RecipeOptimizationController.optimizeByNumberBob(number: Long)
+# GET             /alice/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberAlice(number: Long)
 GET             /recipe/optimize/user/:number/:userName   controllers.RecipeOptimizationController.optimizeByNumberUserName(number: Long, userName: String)
 
 # Parse ingredient string to food item

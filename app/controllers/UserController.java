@@ -31,7 +31,7 @@ public class UserController extends Controller {
     public Result addUser(){
         User user = Form.form(User.class).bindFromRequest().get();
         Ebean.save(user);
-         if(user != null) return ok(JsonHelper.toJson(user));  //Ebean.save(user);
+         if(user != null) return ok(JsonHelper.toJson(user));
         else{
             return badRequest("YOU FUCKED UP");
         }
@@ -70,7 +70,7 @@ public class UserController extends Controller {
 
 
 
-    public Result getRDI(int age) {
+    /* public Result getRDI(int age) {
         User.Goal mal2 = User.Goal.INCREASE;
         double mal = 500;
         double vikt = 86;
@@ -87,6 +87,6 @@ public class UserController extends Controller {
 
 
         return ok("Du bränner " + String.valueOf(newuser.hmap.get(Nutrient.ENERGY_KCAL)) + " kalorier. Akta dig för " + newuser.allergier.get(1));
-    }
+    } */
 
 }
