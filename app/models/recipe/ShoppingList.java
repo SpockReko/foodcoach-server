@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static org.apache.commons.math3.util.Precision.round;
+
 
 /**
  * Created by stefa on 2017-03-31.
@@ -14,6 +16,7 @@ public class ShoppingList {
     private Double CO2 = 0.0; // carbon dioxide emission for shopping list
     private static List<Ingredient> ingredients;
     private List<Ingredient> leftovers = new ArrayList<>();
+    private List<Ingredient> ingredientsAtHome = new ArrayList<>();
     private double leftoverSize=0.0;
 
     public ShoppingList() {
@@ -36,6 +39,7 @@ public class ShoppingList {
     public ShoppingList(Menu menu, List<Ingredient> ingredientsAtHome){
         List<Recipe> recipes = menu.getRecipeList();
         List<Ingredient> ingredients = new ArrayList<>();
+        this.ingredientsAtHome = ingredientsAtHome;
 
         for (Recipe recipe : recipes) {
             ingredients.addAll(recipe.getIngredients());
@@ -190,15 +194,23 @@ public class ShoppingList {
     @Override
     public String toString() {
         String text = "";
+        if(ingredientsAtHome.size() != 0) {
+            text+="\n\n\nIngredienser hemma: \n\n";
+            for (int i=0; i<ingredientsAtHome.size(); i++) {
+                text += ingredientsAtHome.get(i).getFood().name + " " + ingredientsAtHome.get(i).getAmount().getQuantity()
+                        + " " + ingredientsAtHome.get(i).getAmount().getUnit().toString() + "\n";
+            }
+        }
+
         if (shoppingList.size() == 0) {
             return "Inköpslistan är tom just nu!\n";
         } else {
             Iterator iterator = shoppingList.entrySet().iterator();
-            text = "\n\n\nInköpslista:\n\n";
+            text += "\n\nInköpslista:\n\n";
             while (iterator.hasNext()) {
                 Map.Entry<Ingredient, Boolean> entry = (Map.Entry) iterator.next();
                 boolean marked = entry.getValue();
-                String amount = entry.getKey().getAmount().getQuantity() + "";
+                String amount = round(entry.getKey().getAmount().getQuantity(),2) + "";
                 String unit = entry.getKey().getAmount().getUnit().toString();
                 String foodItem = entry.getKey().getFood().name;
                 if (marked) {
@@ -210,12 +222,13 @@ public class ShoppingList {
             }
         }
 
-        text=text+"\nRester:\n \n";
+        text+="\nRester:\n \n";
         if(leftovers.size() > 0 ){
             for (Ingredient i: leftovers) {
-                text += i.getFood().name + " " + i.getAmount().getQuantity() + " " + i.getAmount().getUnit() + "\n";
+                text += i.getFood().name + " " + round(i.getAmount().getQuantity(),2) + " " + i.getAmount().getUnit() + "\n";
             }
         }
+
         return text;
     }
 

@@ -175,7 +175,7 @@ public class MenuAlgorithmsController extends Controller {
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
-        return ok("nothing found!");
+        return ok("Hittade ingen meny!");
     }
 
 
@@ -184,25 +184,19 @@ public class MenuAlgorithmsController extends Controller {
 
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Recipe> allRecipes = Recipe.find.all();
-        List<Ingredient> ingredients = new ArrayList<>();
+        List<Ingredient> ingredientsAtHome = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredients);
-        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
-
-        String ingredientString="";
-        for (int i=0; i<ingredients.size(); i++){
-            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
-                    +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
-        }
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredientsAtHome);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredientsAtHome);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(ingredientString+"\n" + resultingMenu.recipeListToString(shoppingList));
-        return ok("nothing found!");
+            return ok(resultingMenu.recipeListToString(shoppingList));
+        return ok("Hittade ingen meny!");
     }
 
     // GET     /menu/CO2/;nrOfRecipes
@@ -210,26 +204,19 @@ public class MenuAlgorithmsController extends Controller {
 
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Recipe> allRecipes = Recipe.find.all();
-        List<Ingredient> ingredients = new ArrayList<>();
+        List<Ingredient> ingredientsAtHome = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
 
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.CalculateWeekMenuMinimalWaste(ingredients);
-        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
-
-        String ingredientString="";
-        for (int i=0; i<ingredients.size(); i++){
-            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
-                    +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
-        }
-
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenuMinimalCO2(ingredientsAtHome);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredientsAtHome);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(ingredientString+"\n" + resultingMenu.recipeListToString(shoppingList));
-        return ok("nothing found!");
+            return ok(resultingMenu.recipeListToString(shoppingList));
+        return ok("Hittade ingen meny!");
     }
 }

@@ -144,7 +144,7 @@ public class MenuAlgorithms {
      * @param ingredientList
      * @return
      */
-    public Menu CalculateWeekMenuMinimalWaste(List<Ingredient> ingredientList) {
+    public Menu calculateWeekMenuMinimalCO2(List<Ingredient> ingredientList) {
         reset();
         this.ingredientsToUse=ingredientList;
         if(allRecipes.size() < 30) {
@@ -160,7 +160,7 @@ public class MenuAlgorithms {
      * @param ingredientList
      * @return
      */
-    public Menu CalculateWeekMenuMinimalShoppingList(List<Ingredient> ingredientList) {
+    public Menu calculateWeekMenuMinimalShoppingList(List<Ingredient> ingredientList) {
         reset();
         this.ingredientsToUse=ingredientList;
         if(allRecipes.size() < 30) {
