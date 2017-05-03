@@ -101,7 +101,9 @@ public class IngredientStringParser {
             FoodGroup group = null;
             // Find at least one amount and food group to use
             for (Ingredient ing : alternatives) {
-                group = ing.getFood().group;
+                if (group == null) {
+                    group = ing.getFood().group;
+                }
                 if (ing.hasAmount()) {
                     amount = ing.getAmount();
                     break;

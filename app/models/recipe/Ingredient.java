@@ -88,6 +88,14 @@ public class Ingredient extends Model {
         return amount.getUnit().getType() != Amount.Unit.Type.EMPTY;
     }
 
+    /**
+     * Returns whether the ingredient has all valid components or not.
+     * @return True if the ingredient has valid amount and food, false if not.
+     */
+    public boolean isComplete() {
+        return hasAmount() && food != null;
+    }
+
     private double multiplier(double value) {
         double multiplier = amount.getUnit().getFraction() * amount.getQuantity();
         switch (amount.getUnit().getType()) {
