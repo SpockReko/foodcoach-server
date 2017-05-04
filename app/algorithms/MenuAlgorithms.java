@@ -89,7 +89,8 @@ public class MenuAlgorithms {
                 testRecipe.add(recipe);
                 Menu menu = new Menu(testRecipe);
                 double value = optimize.apply(menu);
-                if (value < optimalMenuNutrition) {
+                if (value < optimalMenuNutrition && value > 2) {
+                    System.out.println(value);
                     optimalMenuNutrition = value;
                     resultList = menu.getRecipeList();
                     //if(value == 0.0){ //If the value is 0.0 then is the optimal right?
@@ -103,7 +104,7 @@ public class MenuAlgorithms {
             optimalList = resultList;
         }
         Menu menu = new Menu(optimalList);
-        //optimize.apply(menu);
+        optimize.apply(menu);
         optimalMenu = menu;
     }
 
@@ -121,6 +122,7 @@ public class MenuAlgorithms {
         } else {
             returnMenuGreedy(this::nutritionValueCalculation);
         }
+
         return optimalMenu;
     }
 
@@ -186,7 +188,7 @@ public class MenuAlgorithms {
             double value = NutritionAlgorithms.L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
             chosenMenu.setValue(value);
             //TODO: To test uncomment test clause in menuByName in MenuAlgorithmsController
-            System.out.println("\n chosenMenu: \n "+ chosenMenu.recipeListToString(new ShoppingList(chosenMenu)) +"\n value " + value);
+            //System.out.println("\n chosenMenu: \n "+ chosenMenu.recipeListToString(new ShoppingList(chosenMenu)) +"\n value " + value);
             return value;
         } else {
             return chosenMenu.getValue();
@@ -234,7 +236,7 @@ public class MenuAlgorithms {
         return shoppingList.getCO2();
     }
 
-    /**
+    /**Used in test MenyAlgorithm2Test
      * @param menu
      * @return
      */

@@ -283,4 +283,25 @@ public class MenuAlgorithmsController extends Controller {
             return ok(resultingMenu.recipeListToString(shoppingList));
         return ok("Hittade ingen meny!");
     }
+
+
+
+    public Result menuShopinglist(int nrOfRecipes) {
+        List<Recipe> removeRecipeList = new ArrayList<>();
+        List<Recipe> allRecipes = Recipe.find.all();
+        List<Ingredient> ingredientsAtHome = new ArrayList<>();
+
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(528L), new Amount(200, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(436L), new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(822L), new Amount(100, GRAM)));
+
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenuMinimalShoppingList(ingredientsAtHome);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredientsAtHome);
+
+        if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingMenu.recipeListToString(shoppingList));
+        //return menuByName("Test", nrOfRecipes);
+        return ok("Hittade ingen meny!");
+    }
 }
