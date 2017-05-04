@@ -104,14 +104,14 @@ public class MenuAlgorithmsController extends Controller {
         nrOfRecipes = 3;
 
         List<Recipe> allRecipes = Recipe.find.all().subList(0,900);
-        int[] intArr = {10,20,30,40,50,60,100,300,450,900};
-        String allText = "";
-        String allText2 = "";
+        //int[] intArr = {10,20,30,40,50,60,100,300,450,900};
+        //String allText = "";
+        //String allText2 = "";
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
         int all = menuAlgorithmsInstant.getAllRecepie();
-        /*for (int a = 0; a < intArr.length; a++) {
+        for (int a = 0; a < intArr.length; a++) {
 
             int nr = intArr[a];
             int turns = all / nr;
@@ -133,7 +133,7 @@ public class MenuAlgorithmsController extends Controller {
             allText2 = allText2 + text2;
 
         }
-*/
+
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(all + " nr of recepies\n" + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
             //return ok(print(differens));
@@ -151,7 +151,7 @@ public class MenuAlgorithmsController extends Controller {
         }
         return result;
     }
-
+/*
     // GET  /bob/menu/nutrient
     public Result menuBob() {
         User user;
@@ -202,8 +202,40 @@ public class MenuAlgorithmsController extends Controller {
 
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+
+        /* TODO: Används till komplexitets analys av algorithmen! //Stefan
+        */
+        /*if(userName.equals("Test")) {
+            int[] intArr = {10};//, 20, 30, 40, 50, 60, 100, 300, 450};
+            String allText = "";
+            String allText2 = "";
+            int all = menuAlgorithmsInstant.getAllRecepie();
+            for (int a = 0; a < intArr.length; a++) {
+
+                int nr = intArr[a];
+                int turns = all / nr;
+                long biggestDiff = 0;
+                for (int i = 0; i < turns; i++) {
+                    long before = System.currentTimeMillis();
+                    List<Recipe> allRecipesSub = allRecipes.subList(i * nr, i * nr + nr);
+                    menuAlgorithmsInstant = new MenuAlgorithms(allRecipesSub, removeRecipeList, 1);
+                    resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+                    long diffAfter = System.currentTimeMillis() - before;
+                    if (diffAfter > biggestDiff) {
+                        biggestDiff = diffAfter;
+                    }
+                }
+                String text = "(" + intArr[a] + "," + biggestDiff + "),";
+                allText = allText + text;
+
+                String text2 = "{" + intArr[a] + "," + biggestDiff + "},";
+                allText2 = allText2 + text2;
+
+            }
+            return ok(menuAlgorithmsInstant.getAllRecepie() + allText + "\n" + allText2);
+        }
+*/
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
@@ -213,7 +245,6 @@ public class MenuAlgorithmsController extends Controller {
 
     // GET     /menu/economi/;nrOfRecipes
     public Result menuEconomi(int nrOfRecipes) {
-
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredientsAtHome = new ArrayList<>();
@@ -228,6 +259,7 @@ public class MenuAlgorithmsController extends Controller {
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingMenu.recipeListToString(shoppingList));
+            //return menuByName("Test", nrOfRecipes);
         return ok("Hittade ingen meny!");
     }
 

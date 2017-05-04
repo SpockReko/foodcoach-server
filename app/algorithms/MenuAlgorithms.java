@@ -89,10 +89,13 @@ public class MenuAlgorithms {
                 testRecipe.add(recipe);
                 Menu menu = new Menu(testRecipe);
                 double value = optimize.apply(menu);
-                System.out.println("[value,menu.size]: [" + value + "," + menu.getRecipeList().size());
                 if (value < optimalMenuNutrition) {
                     optimalMenuNutrition = value;
                     resultList = menu.getRecipeList();
+                    //if(value == 0.0){ //If the value is 0.0 then is the optimal right?
+                    //    optimalMenu = menu;
+                    //    return;
+                    //}
                 }
             }
             optimalMenuNutrition = LARGE_DISTANCE;
@@ -100,7 +103,7 @@ public class MenuAlgorithms {
             optimalList = resultList;
         }
         Menu menu = new Menu(optimalList);
-        optimize.apply(menu);
+        //optimize.apply(menu);
         optimalMenu = menu;
     }
 
@@ -113,8 +116,8 @@ public class MenuAlgorithms {
         this.user = user;
         reset();
 
-        if (false) {
-            //returnAllMenus(40, new ArrayList<>(), this::nutritionValueCalculation);
+        if (allRecipes.size() < 10) {
+            returnAllMenus(40, new ArrayList<>(), this::nutritionValueCalculation);
         } else {
             returnMenuGreedy(this::nutritionValueCalculation);
         }
@@ -182,6 +185,8 @@ public class MenuAlgorithms {
                     NutritionAlgorithms.nutrientsContent(chosenMenu);
             double value = NutritionAlgorithms.L2Norm(nutrientsNeed, nutrientsContent, nutrientsOverdose, chosenMenu);
             chosenMenu.setValue(value);
+            //TODO: To test uncomment test clause in menuByName in MenuAlgorithmsController
+            System.out.println("\n chosenMenu: \n "+ chosenMenu.recipeListToString(new ShoppingList(chosenMenu)) +"\n value " + value);
             return value;
         } else {
             return chosenMenu.getValue();
@@ -350,9 +355,9 @@ public class MenuAlgorithms {
             List<Recipe> testList = new ArrayList<>();
             testList.add(recipe);
             Menu menu = new Menu(testList);
-            if(this.nutritionValueCalculation(menu) < 0.8 && recipe.ingredients.size() > 5){
-                badRecipe = true;
-            }
+            //if(this.nutritionValueCalculation(menu) < 0.8 && recipe.ingredients.size() != 5){
+            //    badRecipe = true;
+            //}
             if (!badRecipe)
                 filteredRecipes.add(recipe);
         }

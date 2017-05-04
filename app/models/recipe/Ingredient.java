@@ -83,14 +83,14 @@ public class Ingredient extends Model {
                 if (food.densityConstant != null) {
                     multiplier *= food.densityConstant;
                 } else {
-                    Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
+                   // Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
                 }
                 break;
             case SINGLE:
                 if (food.pieceWeightGrams != null) {
                     multiplier = amount.getQuantity() * (food.pieceWeightGrams * 0.01);
                 } else {
-                    Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
+                   // Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
                     multiplier = amount.getQuantity();
                 }
         }

@@ -70,7 +70,7 @@ public class MenuAlgorithm2Test {
         System.out.println(shoppingList.toString());
         System.out.println(shoppingList.leftoversToString());
 
-        menu = algorithm.CalculateWeekMenuMinimalShoppingList(ingredients);
+        //menu = algorithm.CalculateWeekMenuMinimalShoppingList(ingredients);
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
         shoppingList=new ShoppingList(menu, ingredients);
         System.out.println(shoppingList.toString());
