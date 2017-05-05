@@ -94,7 +94,7 @@ public class MenuAlgorithmsController extends Controller {
      * Dessa tre användare vill Olof ta bort. men får använda users ifrån databaen
      */
 
-    /*
+
 
     public Result menuStefan() {
         User user;
@@ -104,9 +104,9 @@ public class MenuAlgorithmsController extends Controller {
         nrOfRecipes = 3;
 
         List<Recipe> allRecipes = Recipe.find.all().subList(0,900);
-        //int[] intArr = {10,20,30,40,50,60,100,300,450,900};
-        //String allText = "";
-        //String allText2 = "";
+        int[] intArr = {10,20,30,40,50,60,100,300,450,900};
+        String allText = "";
+        String allText2 = "";
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
@@ -131,8 +131,8 @@ public class MenuAlgorithmsController extends Controller {
 
             String text2 = "{"+ intArr[a] + "," + biggestDiff + "},";
             allText2 = allText2 + text2;
-
         }
+
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(all + " nr of recepies\n" + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
@@ -141,6 +141,7 @@ public class MenuAlgorithmsController extends Controller {
         return ok("nothing found!");
     }
 
+/*
 
     public String print(long[] arr){
         String result = "";
