@@ -27,7 +27,7 @@ POST            /menu/nutrient                            controllers.MenuAlgori
 GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu
 GET             /menu/economi/:nrOfRecipes                controllers.MenuAlgorithmsController.menuEconomi(nrOfRecipes: Int)
 GET             /menu/CO2/:nrOfRecipes                    controllers.MenuAlgorithmsController.menuCO2(nrOfRecipes: Int)
-GET             /menu/shoppinglist/:nrOfRecipes           controllers.MenuAlgorithmsController.menuShopinglist(nrOfRecipes: Int)
+GET             /menu/shoppinglist/:nrOfRecipes           menuShoppinglist(nrOfRecipes: Int)
 #GET             /stefan/menu/nutrient                    controllers.MenuAlgorithmsController.menuStefan
 #GET             /bob/menu/nutrient                       controllers.MenuAlgorithmsController.menuBob
 #GET             /alice/menu/nutrient                     controllers.MenuAlgorithmsController.menuAlice
