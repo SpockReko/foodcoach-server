@@ -147,8 +147,8 @@ public class IngredientStringParser {
     }
 
     private String handleColon(String line) {
-        if (line.contains(":")) {
-            String[] split = line.toLowerCase().split(":");
+        String[] split = line.toLowerCase().split(":");
+        if (split.length > 1) {
             String output = split[1];
             header = split[0];
             Logger.trace("Contains colon, added \"" + header + "\" as header");
