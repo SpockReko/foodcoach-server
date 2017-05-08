@@ -141,7 +141,8 @@ class IngredientFinder {
         // TODO make words not fail here like "två"
         for (int i = 0; i < taggedWords.size(); i++) {
             TaggedWord taggedWord = taggedWords.get(i);
-            if (taggedWord.getUdPosTag().equals("NUM")) {
+            if (taggedWord.getUdPosTag().equals("NUM")
+                && !taggedWord.getWord().chars().anyMatch(Character::isLetter)) {
                 if (numeric == null || BooleanHelper.isQuantityBetter(unitIndex, quantityIndex, i)) {
                     String word = taggedWord.getWord().replace(',', '.');
                     if (word.contains("/")) {
