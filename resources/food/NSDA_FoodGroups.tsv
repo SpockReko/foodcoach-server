@@ -1,4 +1,4 @@
-nsda_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name	classification
+usda_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	density_constant	example_brands	scientific_name	classification
 02036	Rosmarin	TRUE	torkad	Rosmarin (torkad)			0.24		Rosmarinus officinalis	Torkade örter
 02063	Rosmarin		färsk	Rosmarin (färsk)			0.14		Rosmarinus officinalis	Bladgrönsaker
 02014	Spiskummin	TRUE		Spiskummin			0.42		Cuminum cyminum	Torkade kryddor
@@ -15,4 +15,9 @@ nsda_id	group_name	default	specific_tags	display_name	extra_tags	piece_weight	de
 02009	Chilipulver	TRUE	pulver	Chilipulver			0.53			Torkade kryddor
 06176	Ostronsås	TRUE		Ostronsås			1.2			Kryddsåser
 02010	Kanel	TRUE		Kanel			0.52		Cinnamomum	Torkade kryddor
+02037	Saffran	TRUE		Saffran			0.14			Torkade kryddor
+02054	Kapris	TRUE	konserv	Kapris		100	0.57		Capparis spinosa	Grönsakskonserver
+11972	Citrongräs	TRUE	rå	Citrongräs		12	0.32		Cymbopogon citratus	
+16398	Jordnötssmör	TRUE	osaltat	Jordnötssmör		340	1.7		Arachis hypogaea	Baljväxter
+06175	Hoisinsås	TRUE		Hoisinsås	hoisin sauce		1			Kryddsåser
 11677	Schalottenlök	TRUE	rå	Schalottenlök	schalottenlökar	30	0.68		Allium cepa ascalonicum	Lökgrönsaker
