@@ -3,7 +3,6 @@ package models.recipe;
 
 import algorithms.MenuAlgorithms;
 import org.apache.commons.math3.util.Precision;
-
 import java.util.ArrayList;
 import java.util.List;
 

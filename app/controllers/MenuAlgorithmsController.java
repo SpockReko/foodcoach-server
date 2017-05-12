@@ -2,6 +2,7 @@ package controllers;
 
 import algorithms.MenuAlgorithms;
 import com.fasterxml.jackson.databind.JsonNode;
+import helpers.JsonHelper;
 import models.food.Food;
 import models.recipe.*;
 import models.user.User;
@@ -167,15 +168,28 @@ public class MenuAlgorithmsController extends Controller {
 
         User user = new User(userName);
         List<Recipe> removeRecipeList = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
+
+        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
 
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
+
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
-        return ok("nothing found!");
+            //return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            return ok(JsonHelper.toJson(resultingMenu, shoppingList));
+
+        //return ok("nothing found!");
+        else
+            return null;
+
+
     }
 
 

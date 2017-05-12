@@ -2,11 +2,13 @@ package controllers;
 
 import algorithms.NutritionAlgorithms;
 import algorithms.RecipeOptimizer;
+import helpers.JsonHelper;
 import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.recipe.ShoppingList;
 import models.user.User;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
+import play.api.libs.json.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -61,8 +63,9 @@ public class RecipeOptimizationController extends Controller {
     } */
 
     // GET   /recipe/optimize/user/:number/:name
-    public Result optimizeByNumberUserName(long recipeNumber, String userName) {
-        Recipe recipe = Recipe.find.byId(recipeNumber);
+    public Result optimizeByNumberUserName(String title, String userName) {
+        Recipe recipe = Recipe.find.where().eq("title", title).findUnique();
+        // Recipe recipe = Recipe.find.byId(recipeNumber);
         User user = new User(userName);
         //User user = User.find.where().eq("firstName", userName).findUnique();
         //User user = User.getUserByName2(userName);
@@ -70,6 +73,7 @@ public class RecipeOptimizationController extends Controller {
         recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
 
-        return ok(recipeOptimizerInstant.toString());
+        //return ok(recipeOptimizerInstant.toString());
+        return ok(JsonHelper.toJson(optimizedRecipe));
     }
 }

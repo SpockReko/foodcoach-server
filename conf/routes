@@ -30,14 +30,14 @@ GET             /menu/CO2/:nrOfRecipes                    controllers.MenuAlgori
 #GET             /stefan/menu/nutrient                     controllers.MenuAlgorithmsController.menuStefan
 #GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
 #GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
-GET             /menu/nutrient/user/:name/:nrOfRecipes   controllers.MenuAlgorithmsController.menuByName(name: String, nrOfRecipes: Int)
+GET             /menu/nutrient/user                       controllers.MenuAlgorithmsController.menuByName(name: String, nrOfRecipes: Int)
 
 # Optimize recipe
-GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
+# GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
 GET             /recipe/optimize/title/:title             controllers.RecipeOptimizationController.optimizeByTitle(title: String)
 # GET             /bob/recipe/optimize/:number              controllers.RecipeOptimizationController.optimizeByNumberBob(number: Long)
 # GET             /alice/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberAlice(number: Long)
-GET             /recipe/optimize/user/:number/:userName   controllers.RecipeOptimizationController.optimizeByNumberUserName(number: Long, userName: String)
+GET             /recipe/optimize/user/:recipeTitle       controllers.RecipeOptimizationController.optimizeByNumberUserName(recipeTitle: String, userName: String)
 
 # Parse ingredient string to food item
 GET             /parseLine                                controllers.ParseController.parseLine(line: String)
@@ -46,3 +46,6 @@ GET             /runParse                                 controllers.ParseContr
 
 # Map static resources from the /public folder to the /assets URL path
 GET             /assets/*file                             controllers.Assets.at(path="/public", file)
+
+# Shoppinglist
+#GET             /shoppinglist/remove/:ingredient:shoppinglist controllers.ShoppingListController.removeIngredient(ingredient: String, shoppinglist: String)

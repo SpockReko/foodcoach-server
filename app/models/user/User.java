@@ -298,10 +298,10 @@ public class User extends Model {
     /**
      * Här kan man ta bort Stefan, BOB och alice IMO
      * Ta bort hela funktionen helt
-     *
+     * Men den används för sbt test då inte databaserna fungerar?
      */
-
-       /* if(name.equals("Stefan")) {
+    /* public User(String name){
+        if(name.equals("Stefan")) {
             this.sex = Sex.MALE;
             this.activityLevel = 1.2;
             this.weight = 102.0;

@@ -82,6 +82,9 @@ public class ShoppingList {
         shoppingList.put(ingredient, false);
     }
 
+    public static List<Ingredient> getIngredients() {
+        return ingredients;
+    }
 
     private void putTogetherIngredients(Boolean check, Ingredient ingredient) {
         Ingredient oldIngredient = getKey(ingredient);

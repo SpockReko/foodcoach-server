@@ -1,5 +1,6 @@
 package helpers;
 
+import algorithms.RecipeOptimizer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -7,7 +8,9 @@ import models.food.Food;
 import models.food.FoodGroup;
 import models.food.Nutrient;
 import models.recipe.Ingredient;
+import models.recipe.Menu;
 import models.recipe.Recipe;
+import models.recipe.ShoppingList;
 import models.user.User;
 import play.libs.Json;
 
@@ -52,6 +55,38 @@ public class JsonHelper {
         output.put("age", user.age);
         output.put("activityLevel", user.activityLevel);
         output.put("goal", String.valueOf(user.goal));
+        return output;
+    }
+
+    /**
+     * Converts a {@link User} to Json.
+     * @param menu The menu to convert.
+     * @return The user represented as Json.
+     */
+    public static JsonNode toJson(Menu menu, ShoppingList shoppingList) {
+        ObjectNode output = Json.newObject();
+        ArrayNode array = output.putArray("recipes");
+        for ( Recipe recipe : menu.getRecipeList()) {
+            array.add(JsonHelper.toJson(recipe));
+        }
+        ArrayNode array2 = output.putArray("ingredients");
+        for ( Ingredient ingredient : shoppingList.getIngredients()){
+            array2.add(JsonHelper.toJson(ingredient));
+        }
+        return output;
+    }
+
+    /**
+     * Converts a {@link User} to Json.
+     * @param shoppingList The shoppinglist to convert.
+     * @return The user represented as Json.
+     */
+    public static JsonNode toJson( ShoppingList shoppingList) {
+        ObjectNode output = Json.newObject();
+        ArrayNode array2 = output.putArray("ingredients");
+        for ( Ingredient ingredient : shoppingList.getIngredients()){
+            array2.add(JsonHelper.toJson(ingredient));
+        }
         return output;
     }
 
@@ -109,9 +144,10 @@ public class JsonHelper {
         output.put("portions", recipe.getPortions());
         output.put("energyKcalPerPortion", Math.round(recipe.getNutrientPerPortion(Nutrient.ENERGY_KCAL)));
         output.put("energyKcal", Math.round(recipe.getNutrient(Nutrient.ENERGY_KCAL)));
-        output.put("co2PerPortion", recipe.getCO2PerPortion());
+        output.put("co2PerPortion", Math.round(recipe.getCO2PerPortion() * 100));
         output.put("carbohydrates", Math.round(recipe.getNutrient(Nutrient.CARBOHYDRATES)));
         output.put("protein", Math.round(recipe.getNutrient(Nutrient.PROTEIN)));
+        output.put("fat", Math.round(recipe.getNutrient(Nutrient.FAT)));
         output.put("url", recipe.sourceUrl);
         ArrayNode array = output.putArray("ingredients");
         for (Ingredient ingredient : recipe.ingredients) {
