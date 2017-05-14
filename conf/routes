@@ -31,6 +31,9 @@ GET             /menu/CO2/:nrOfRecipes                    controllers.MenuAlgori
 #GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
 #GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
 GET             /menu/nutrient/user                       controllers.MenuAlgorithmsController.menuByName(name: String, nrOfRecipes: Int)
+GET             /menu/shoppinglist/:nrOfRecipes           controllers.MenuAlgorithmsController.menuShoppinglist(nrOfRecipes: Int)
+
+
 
 # Optimize recipe
 # GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)

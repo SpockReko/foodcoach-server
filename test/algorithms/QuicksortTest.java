@@ -25,6 +25,7 @@ public class QuicksortTest {
     private static int foodSize = 0;
     @BeforeClass
     public static void init(){
+        System.out.print("Quicksort");
         food1 = GlobalDummyModels.getFoodDummyCarrot();
         food2 = GlobalDummyModels.getFoodDummyParsnip();
         food3 = GlobalDummyModels.getFoodDummyChicken();

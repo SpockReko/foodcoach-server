@@ -36,7 +36,7 @@ public class Menu {
         for (Recipe r : this.getRecipeList()) {
             text = text + r.getTitle() + "\n";
         }
-        text = text + "\n\nNäringsvärden i procent av användarens behov: (1 betyder att näringsbehovet är uppfyllt)\n\n";
+        text = text + "\n\nNäringsvärden i procent av användarens behov (100% betyder att näringsbehovet är uppfyllt):\n\n";
         for (String comment : this.getCommentList()) {
             text = text + comment + "\n";
         }
@@ -50,7 +50,7 @@ public class Menu {
     }
 
     public String nutritionToString() {
-        String text = "\n\nNäringsvärden i procent av användarens behov: (1 betyder att näringsbehovet är uppfyllt)\n\n";
+        String text = "\n\nNäringsvärden i procent av användarens behov (100% betyder att näringsbehovet är uppfyllt):\n\n";
         for (String comment : this.getCommentList()) {
             text = text + comment + "\n";
         }

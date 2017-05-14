@@ -49,11 +49,11 @@ public class NutritionAlgorithms {
             percentageNutrient = 1D;
         } else if (nutrientContent > overdose ){
             // TODO lägga till meddelande om att det är för mycket av näringsämnet
-            menu.addComment("Överdosering av " + nutrient + ", innehåller " + percentageNutrient);
-            System.out.print(menu.recipeListToString(new ShoppingList(menu)));
-            System.out.print("\nOBS!!! Överdosering av ");
-            System.out.print(nutrient);
-            System.out.print("\nInnehåll: "+nutrientContent+". Behov: "+nutrientNeed+"\n\n");
+            menu.addComment("OBS! Överdosering av "+nutrient);
+            //System.out.print(menu.recipeListToString(new ShoppingList(menu)));
+            //System.out.print("\nOBS!!! Överdosering av ");
+            //System.out.print(nutrient);
+            //System.out.print("\nInnehåll: "+nutrientContent+". Behov: "+nutrientNeed+"\n\n");
 
         }
         return percentageNutrient;
@@ -122,10 +122,10 @@ public class NutritionAlgorithms {
     private static void addNutrionInfoToMenu(Menu menu, Nutrient nutrient, Double percentageOfRDI) {
         if((nutrient + "").length() < 7) {
             menu.addComment(nutrient + ":\t\t" +
-                    Precision.round(percentageOfRDI, 2));
+                    (int)Precision.round(100*percentageOfRDI, 0)+"%");
         }else{
             menu.addComment(nutrient + ":\t" +
-                    Precision.round(percentageOfRDI, 2));
+                    (int)Precision.round(100*percentageOfRDI, 0)+"%");
         }
     }
 

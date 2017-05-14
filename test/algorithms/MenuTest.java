@@ -30,6 +30,7 @@ public class MenuTest {
 
     @BeforeClass
     public static void init() {
+        System.out.print("Menu");
 
         User user = new User();
         User stefan = new User("Stefan");

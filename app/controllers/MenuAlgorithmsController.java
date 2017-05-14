@@ -95,32 +95,65 @@ public class MenuAlgorithmsController extends Controller {
      * Dessa tre användare vill Olof ta bort. men får använda users ifrån databaen
      */
 
-    /*
+
 
     public Result menuStefan() {
         User user;
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
-        Recipe r = Recipe.find.where().eq("title", "Cheesecake på olika vis").findUnique();
-        removeRecipeList.add(r);
-        removeRecipeList.add(Recipe.find.where().eq("title", "Rabarbersaft").findUnique());
         user = new User("Stefan");
         nrOfRecipes = 3;
 
-        List<Recipe> allRecipes = Recipe.find.all();
-        int all = allRecipes.size();
+        List<Recipe> allRecipes = Recipe.find.all().subList(0,900);
+        int[] intArr = {10,20,30,40,50,60,100,300,450,900};
+        String allText = "";
+        String allText2 = "";
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
         menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+        int all = menuAlgorithmsInstant.getAllRecepie();
+        for (int a = 0; a < intArr.length; a++) {
+
+            int nr = intArr[a];
+            int turns = all / nr;
+            long biggestDiff = 0;
+            for (int i = 0; i < turns; i++) {
+                long before = System.currentTimeMillis();
+                List<Recipe> allRecipesSub = allRecipes.subList(i * nr, i * nr + nr);
+                menuAlgorithmsInstant = new MenuAlgorithms(allRecipesSub, removeRecipeList, 10);
+                resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+                long diffAfter = System.currentTimeMillis() - before;
+                if (diffAfter > biggestDiff) {
+                    biggestDiff = diffAfter;
+                }
+            }
+            String text = "("+ intArr[a] + "," + biggestDiff + "),";
+            allText = allText + text;
+
+            String text2 = "{"+ intArr[a] + "," + biggestDiff + "},";
+            allText2 = allText2 + text2;
+        }
+
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            return ok(all + " nr of recepies\n" + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            //return ok(print(differens));
+            //return ok(allText + "\n" + allText2);
         return ok("nothing found!");
-
-
     }
 
+/*
 
+    public String print(long[] arr){
+        String result = "";
+        int i = 0;
+        for (long l : arr){
+            i++;
+            result = result + "(" + i + "," + l + "),";
+        }
+        return result;
+    }
+/*
     // GET  /bob/menu/nutrient
     public Result menuBob() {
         User user;
@@ -138,10 +171,7 @@ public class MenuAlgorithmsController extends Controller {
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
-
-
     }
-
 
     // GET  /alice/menu/nutrient
     public Result menuAlice() {
@@ -167,6 +197,7 @@ public class MenuAlgorithmsController extends Controller {
     public Result menuByName(String userName, int nrOfRecipes) {
 
         User user = new User(userName);
+        user.save();
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Ingredient> ingredients = new ArrayList<>();
 
@@ -176,10 +207,44 @@ public class MenuAlgorithmsController extends Controller {
 
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
         ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 
+
+        // TODO: Används till komplexitets analys av algorithmen! //Stefan
+
+        /*if(userName.equals("Test")) {
+            int[] intArr = {10};//, 20, 30, 40, 50, 60, 100, 300, 450};
+            String allText = "";
+            String allText2 = "";
+            int all = menuAlgorithmsInstant.getAllRecepie();
+            for (int a = 0; a < intArr.length; a++) {
+
+                int nr = intArr[a];
+                int turns = all / nr;
+                long biggestDiff = 0;
+                for (int i = 0; i < turns; i++) {
+
+                    long before = System.currentTimeMillis();
+                    List<Recipe> allRecipesSub = allRecipes.subList(i * nr, i * nr + nr);
+                    menuAlgorithmsInstant = new MenuAlgorithms(allRecipesSub, removeRecipeList, 1);
+                    resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+                    long diffAfter = System.currentTimeMillis() - before;
+
+                    if (diffAfter > biggestDiff) {
+                        biggestDiff = diffAfter;
+                    }
+                }
+
+                String text = "(" + intArr[a] + "," + biggestDiff + "),";
+                allText = allText + text;
+
+                String text2 = "{" + intArr[a] + "," + biggestDiff + "},";
+                allText2 = allText2 + text2;
+            }
+            return ok(menuAlgorithmsInstant.getAllRecepie() + allText + "\n" + allText2);
+        }
+*/
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             //return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
@@ -195,28 +260,22 @@ public class MenuAlgorithmsController extends Controller {
 
     // GET     /menu/economi/;nrOfRecipes
     public Result menuEconomi(int nrOfRecipes) {
-
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Recipe> allRecipes = Recipe.find.all();
-        List<Ingredient> ingredients = new ArrayList<>();
+        List<Ingredient> ingredientsAtHome = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredients);
-        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
-
-        String ingredientString="";
-        for (int i=0; i<ingredients.size(); i++){
-            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
-                    +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
-        }
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenu(ingredientsAtHome);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredientsAtHome);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(ingredientString+"\n" + resultingMenu.recipeListToString(shoppingList));
-        return ok("nothing found!");
+            return ok(resultingMenu.recipeListToString(shoppingList));
+            //return menuByName("Test", nrOfRecipes);
+        return ok("Hittade ingen meny!");
     }
 
     // GET     /menu/CO2/;nrOfRecipes
@@ -224,26 +283,40 @@ public class MenuAlgorithmsController extends Controller {
 
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Recipe> allRecipes = Recipe.find.all();
-        List<Ingredient> ingredients = new ArrayList<>();
+        List<Ingredient> ingredientsAtHome = new ArrayList<>();
 
-        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
-        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
 
 
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
-        Menu resultingMenu = menuAlgorithmsInstant.CalculateWeekMenuMinimalWaste(ingredients);
-        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
-
-        String ingredientString="";
-        for (int i=0; i<ingredients.size(); i++){
-            ingredientString+=ingredients.get(i).getFood().name +" "+ingredients.get(i).getAmount().getQuantity()
-                    +" "+ingredients.get(i).getAmount().getUnit().toString()+ "\n";
-        }
-
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenuMinimalCO2(ingredientsAtHome);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredientsAtHome);
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(ingredientString+"\n" + resultingMenu.recipeListToString(shoppingList));
-        return ok("nothing found!");
+            return ok(resultingMenu.recipeListToString(shoppingList));
+        return ok("Hittade ingen meny!");
+    }
+
+
+
+    public Result menuShoppinglist(int nrOfRecipes) {
+        List<Recipe> removeRecipeList = new ArrayList<>();
+        List<Recipe> allRecipes = Recipe.find.all();
+        List<Ingredient> ingredientsAtHome = new ArrayList<>();
+
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(528L), new Amount(200, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(436L), new Amount(100, GRAM)));
+        ingredientsAtHome.add(new Ingredient(Food.find.byId(822L), new Amount(100, GRAM)));
+
+        MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        Menu resultingMenu = menuAlgorithmsInstant.calculateWeekMenuMinimalShoppingList(ingredientsAtHome);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredientsAtHome);
+
+        if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
+            return ok(resultingMenu.recipeListToString(shoppingList));
+        //return menuByName("Test", nrOfRecipes);
+        return ok("Hittade ingen meny!");
     }
 }

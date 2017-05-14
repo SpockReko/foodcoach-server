@@ -15,6 +15,7 @@ public class RecipeOptimizerTest {
 
     @BeforeClass
     public static void init(){
+        System.out.print("RecipeOptimizer");
         /**
         User user = new User();
         Recipe recipe = createOptimalRecipeForSpecificUser(user);

@@ -27,6 +27,7 @@ public class MenuAlgorithmsTest {
 
     @BeforeClass
     public static void init() {
+        System.out.print("MenuAlgorithmTest");
 
         User user = new User();
         User stefan = new User("Stefan");

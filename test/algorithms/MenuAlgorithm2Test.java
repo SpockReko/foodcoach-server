@@ -1,5 +1,6 @@
 package algorithms;
 
+import com.sleepycat.je.sync.SyncDataSet;
 import models.food.DataSource;
 import models.food.Food;
 import models.recipe.*;
@@ -17,6 +18,7 @@ public class MenuAlgorithm2Test {
     private static List<Ingredient> ingredients;
 
     public static void main(String[] args) {
+        System.out.print("MenuAlgorithm2Test");
         build();
         test1();
     }
@@ -68,7 +70,7 @@ public class MenuAlgorithm2Test {
         System.out.println(shoppingList.toString());
         System.out.println(shoppingList.leftoversToString());
 
-        menu = algorithm.CalculateWeekMenuMinimalShoppingList(ingredients);
+        //menu = algorithm.CalculateWeekMenuMinimalShoppingList(ingredients);
         System.out.println("Menu: \n"+algorithm.recipeListToString(menu));
         shoppingList=new ShoppingList(menu, ingredients);
         System.out.println(shoppingList.toString());
