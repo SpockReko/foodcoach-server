@@ -23,7 +23,7 @@ POST            /user/add                                 controllers.UserContro
 # GET             /user/add                                 controllers.UserController.addUser()
 
 # Menu options from client
-POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
+#POST            /menu/nutrient                            controllers.MenuAlgorithmsController.menu
 GET             /menu/nutrient                            controllers.MenuAlgorithmsController.menu
 GET             /menu/economi/:nrOfRecipes                controllers.MenuAlgorithmsController.menuEconomi(nrOfRecipes: Int)
 GET             /menu/CO2/:nrOfRecipes                    controllers.MenuAlgorithmsController.menuCO2(nrOfRecipes: Int)
@@ -31,12 +31,12 @@ GET             /menu/CO2/:nrOfRecipes                    controllers.MenuAlgori
 #GET             /bob/menu/nutrient                        controllers.MenuAlgorithmsController.menuBob
 #GET             /alice/menu/nutrient                      controllers.MenuAlgorithmsController.menuAlice
 GET             /menu/nutrient/user                       controllers.MenuAlgorithmsController.menuByName(name: String, nrOfRecipes: Int)
-GET             /menu/shoppinglist/:nrOfRecipes           controllers.MenuAlgorithmsController.menuShoppinglist(nrOfRecipes: Int)
+
 
 
 
 # Optimize recipe
-# GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
+GET             /recipe/optimize/:number                  controllers.RecipeOptimizationController.optimizeByNumber(number: Long)
 GET             /recipe/optimize/title/:title             controllers.RecipeOptimizationController.optimizeByTitle(title: String)
 # GET             /bob/recipe/optimize/:number              controllers.RecipeOptimizationController.optimizeByNumberBob(number: Long)
 # GET             /alice/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberAlice(number: Long)
@@ -52,3 +52,4 @@ GET             /assets/*file                             controllers.Assets.at(
 
 # Shoppinglist
 #GET             /shoppinglist/remove/:ingredient:shoppinglist controllers.ShoppingListController.removeIngredient(ingredient: String, shoppinglist: String)
+GET             /menu/shoppinglist/:nrOfRecipes           controllers.MenuAlgorithmsController.menuShoppinglist(nrOfRecipes: Int)

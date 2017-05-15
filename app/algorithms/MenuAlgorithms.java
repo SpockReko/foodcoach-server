@@ -118,7 +118,7 @@ public class MenuAlgorithms {
         reset();
 
         if (allRecipes.size() < 10) {
-            returnAllMenus(allRecipes.size()-1, new ArrayList<>(), this::nutritionValueCalculation);
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
         } else {
             returnMenuGreedy(this::nutritionValueCalculation);
         }
