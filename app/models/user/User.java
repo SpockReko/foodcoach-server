@@ -353,8 +353,8 @@ public class User extends Model {
     }
 
     /**
-     * Här kan man ta bort Stefan, BOB och alice IMO
-     * Ta bort hela funktionen helt
+     * Allergier, används inte för tillfället.
+     *
      *
      */
 

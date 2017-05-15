@@ -96,8 +96,7 @@ public class MenuAlgorithmsController extends Controller {
      */
 
 
-
-    public Result menuStefan() {
+    /*  public Result menuStefan() {
         User user;
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
@@ -140,7 +139,7 @@ public class MenuAlgorithmsController extends Controller {
             //return ok(print(differens));
             //return ok(allText + "\n" + allText2);
         return ok("nothing found!");
-    }
+    } */
 
 /*
 
@@ -197,7 +196,7 @@ public class MenuAlgorithmsController extends Controller {
     public Result menuByName(String userName, int nrOfRecipes) {
 
         User user = new User(userName);
-        user.save();
+   //     user.save();
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Ingredient> ingredients = new ArrayList<>();
 
@@ -207,6 +206,7 @@ public class MenuAlgorithmsController extends Controller {
 
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        // menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
         ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 

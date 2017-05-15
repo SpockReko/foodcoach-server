@@ -50,8 +50,12 @@ public class ParseController extends Controller {
         Recipe recipe = null;
         try {
             recipe = parser.parseUrl(url);
+
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        if (Recipe.find.where().eq("title", recipe.getTitle()).findCount() == 0){
+            recipe.save();
         }
         if (recipe != null) {
             return ok(JsonHelper.toJson(recipe));
