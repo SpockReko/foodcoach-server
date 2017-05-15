@@ -1,5 +1,6 @@
 package models.recipe;
 
+import algorithms.NutritionAlgorithms;
 import com.avaje.ebean.Model;
 import models.food.Food;
 import models.food.Nutrient;
@@ -9,6 +10,7 @@ import org.apache.commons.math3.util.Precision;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -60,6 +62,13 @@ public class Recipe extends Model {
 
     public double getNutrientPerPortion(Nutrient nutrient) {
         return ingredients.stream().mapToDouble(i -> i.getNutrient(nutrient)).sum() / portions;
+    }
+
+    public HashMap<Nutrient,Double> getNutrientsContent(){
+        List<Recipe> r = new ArrayList<>();
+        r.add(this);
+        Menu m = new Menu(r);
+        return NutritionAlgorithms.nutrientsContent(m);
     }
 
     /*
