@@ -75,7 +75,7 @@ public class MenuAlgorithmsController extends Controller {
 
         } else { // If we run it from the "Server"
 
-            user = new User();
+            user = new User("Olof");
             nrOfRecipes = 3;
 
             List<Recipe> allRecipes = Recipe.find.all();

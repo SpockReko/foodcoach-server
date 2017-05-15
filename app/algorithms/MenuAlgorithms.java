@@ -27,7 +27,7 @@ public class MenuAlgorithms {
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
     private List<Menu> menuList = new ArrayList<>();
-    private User user = new User();
+    private User user = new User("Olof");
     private List<Ingredient> ingredientsToUse;
     private List<Ingredient> notTheseIngredients = new ArrayList<>();
     private List<Recipe> notTheseRecipes;

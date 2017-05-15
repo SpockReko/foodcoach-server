@@ -36,6 +36,7 @@ public class Recipe extends Model {
         this.title = title;
         this.portions = portions;
         this.ingredients = ingredients;
+
     }
 
     public static Finder<Long, Recipe> find = new Finder<>(Recipe.class);
@@ -126,4 +127,6 @@ public class Recipe extends Model {
         text = text + "\n\n";
         return text;
     }
+
+
 }

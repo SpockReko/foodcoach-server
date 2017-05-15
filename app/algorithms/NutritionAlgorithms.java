@@ -68,6 +68,7 @@ public class NutritionAlgorithms {
 
         for (Recipe recipe : menu.getRecipeList()) {
             addToHashMap(nutrientsContent, Nutrient.ENERGY_KCAL, recipe.getNutrientPerPortion(Nutrient.ENERGY_KCAL));
+            addToHashMap(nutrientsContent, Nutrient.ENERGY_KJ, recipe.getNutrientPerPortion(Nutrient.ENERGY_KJ));
             addToHashMap(nutrientsContent, Nutrient.FAT, recipe.getNutrientPerPortion(Nutrient.FAT));
             addToHashMap(nutrientsContent, Nutrient.PROTEIN, recipe.getNutrientPerPortion(Nutrient.PROTEIN));
             addToHashMap(nutrientsContent, Nutrient.CARBOHYDRATES, recipe.getNutrientPerPortion(Nutrient.CARBOHYDRATES));

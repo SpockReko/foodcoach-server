@@ -14,6 +14,9 @@ import models.recipe.ShoppingList;
 import models.user.User;
 import play.libs.Json;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Converts various models to a Json representation.
  *
@@ -55,6 +58,12 @@ public class JsonHelper {
         output.put("age", user.age);
         output.put("activityLevel", user.activityLevel);
         output.put("goal", String.valueOf(user.goal));
+        ArrayNode array = output.putArray("nutrients");
+        for (Map.Entry<Nutrient, Double> entry : user.hmap.entrySet() ) {
+            Nutrient nutrient = entry.getKey();
+            Double amount = entry.getValue();
+            array.add(JsonHelper.toJson(nutrient, amount));
+        }
         return output;
     }
 
@@ -148,11 +157,33 @@ public class JsonHelper {
         output.put("carbohydrates", Math.round(recipe.getNutrient(Nutrient.CARBOHYDRATES)));
         output.put("protein", Math.round(recipe.getNutrient(Nutrient.PROTEIN)));
         output.put("fat", Math.round(recipe.getNutrient(Nutrient.FAT)));
+        output.put("vitaminA", Math.round(recipe.getNutrient(Nutrient.VITAMIN_A)));
         output.put("url", recipe.sourceUrl);
         ArrayNode array = output.putArray("ingredients");
         for (Ingredient ingredient : recipe.ingredients) {
             array.add(JsonHelper.toJson(ingredient));
         }
+
+        ArrayNode array2 = output.putArray("nutrients");
+        for (Map.Entry<Nutrient, Double> entry : recipe.getNutrientsContent().entrySet() ) {
+            Nutrient nutrient = entry.getKey();
+            Double amount = entry.getValue();
+            array2.add(JsonHelper.toJson(nutrient, amount));
+        }
+        return output;
+    }
+
+    /**
+     * Converts a {@link Nutrient} to Json.
+     * @param nutrient The nutrient to convert.
+     * @return The user represented as Json.
+     */
+    public static JsonNode toJson(Nutrient nutrient, double amount) {
+        ObjectNode output = Json.newObject();
+        output.put("name", nutrient.getName());
+        output.put("type", String.valueOf(nutrient.getType()));
+        output.put("unit", String.valueOf(nutrient.getUnit()));
+        output.put("amount", amount);
         return output;
     }
 }

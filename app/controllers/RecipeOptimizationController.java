@@ -22,7 +22,7 @@ public class RecipeOptimizationController extends Controller {
     // GET /recipe/optimize/:number
     public Result optimizeByNumber(long recipeNumber) {
         Recipe recipe = Recipe.find.byId(recipeNumber);
-        User user = new User();
+        User user = new User("Olof");
         RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
         recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
@@ -34,7 +34,7 @@ public class RecipeOptimizationController extends Controller {
     // GET /recipe/optimize/title/:title
     public Result optimizeByTitle(String title) {
         Recipe recipe = Recipe.find.where().eq("title", title).findUnique();
-        User user = new User();
+        User user = new User("Olof");
         RecipeOptimizer recipeOptimizerInstant = new RecipeOptimizer(recipe, user);
         recipeOptimizerInstant.setLowestPercentageOfIngredient(0.75D);
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
