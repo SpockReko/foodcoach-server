@@ -2,12 +2,10 @@ package controllers;
 
 import com.avaje.ebean.Ebean;
 import helpers.JsonHelper;
-import models.food.Nutrient;
 import models.user.User;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import java.util.ArrayList;
 
 
 /**
@@ -21,12 +19,13 @@ public class UserController extends Controller {
     // POST /user/add:form
     public Result addUser(){
         User user = Form.form(User.class).bindFromRequest().get();
-        if (User.find.where().eq("title", user.firstName).findCount() == 0){
+        if (User.find.where().eq("firstName", user.firstName).findCount() == 0){
             Ebean.save(user);
-            return ok(JsonHelper.toJson(user));
         }
-        else{
-            return badRequest("Form input incorrect or"+ user.firstName + "aldready exist" );
+        if (user != null){
+                return ok(JsonHelper.toJson(user));
+        } else{
+             return badRequest("Form input incorrect or"+ user.firstName + "aldready exist" );
         }
     }
 
