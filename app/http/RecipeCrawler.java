@@ -29,7 +29,7 @@ public class RecipeCrawler extends WebCrawler {
             String html = htmlParseData.getHtml();
             RecipeParser parser;
 
-            if (url.startsWith("http://receptfavoriter")) {
+            if (url.startsWith("https://receptfavoriter")) {
                 WSClient wsClient = (WSClient) getMyController().getCustomData();
                 parser = new ReceptFavoriterParser(wsClient);
             } else {

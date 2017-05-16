@@ -21,10 +21,12 @@ public class UserController extends Controller {
     // POST /user/add:form
     public Result addUser(){
         User user = Form.form(User.class).bindFromRequest().get();
-        Ebean.save(user);
-         if(user != null) return ok(JsonHelper.toJson(user));
+        if (User.find.where().eq("title", user.firstName).findCount() == 0){
+            Ebean.save(user);
+            return ok(JsonHelper.toJson(user));
+        }
         else{
-            return badRequest("YOU FUCKED UP");
+            return badRequest("Form input incorrect or"+ user.firstName + "aldready exist" );
         }
     }
 

@@ -28,7 +28,7 @@ public class ParseController extends Controller {
 
     @Inject WSClient wsClient;
     private static final String RECIPES_URLS_PATH = "resources/recipe_urls/receptfavoriter_se.txt";
-    private static final int RECIPES_TO_PARSE = 1000;
+    private static final int RECIPES_TO_PARSE = 30;
 
     public Result parseLine(String line) {
         IngredientStringParser parser = new IngredientStringParser(wsClient);
