@@ -2,6 +2,7 @@ package controllers;
 
 import algorithms.MenuAlgorithms;
 import com.fasterxml.jackson.databind.JsonNode;
+import helpers.JsonHelper;
 import models.food.Food;
 import models.recipe.*;
 import models.user.User;
@@ -74,7 +75,7 @@ public class MenuAlgorithmsController extends Controller {
 
         } else { // If we run it from the "Server"
 
-            user = new User();
+            user = new User("Olof");
             nrOfRecipes = 3;
 
             List<Recipe> allRecipes = Recipe.find.all();
@@ -95,8 +96,7 @@ public class MenuAlgorithmsController extends Controller {
      */
 
 
-
-    public Result menuStefan() {
+    /*  public Result menuStefan() {
         User user;
         int nrOfRecipes;
         List<Recipe> removeRecipeList = new ArrayList<>();
@@ -139,7 +139,7 @@ public class MenuAlgorithmsController extends Controller {
             //return ok(print(differens));
             //return ok(allText + "\n" + allText2);
         return ok("nothing found!");
-    }
+    } */
 
 /*
 
@@ -170,10 +170,7 @@ public class MenuAlgorithmsController extends Controller {
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
             return ok(resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
         return ok("nothing found!");
-
-
     }
-
 
     // GET  /alice/menu/nutrient
     public Result menuAlice() {
@@ -199,14 +196,23 @@ public class MenuAlgorithmsController extends Controller {
     public Result menuByName(String userName, int nrOfRecipes) {
 
         User user = new User(userName);
+   //     user.save();
         List<Recipe> removeRecipeList = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
+
+        ingredients.add(new Ingredient(Food.find.byId(528L),new Amount(200, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(436L),new Amount(100, GRAM)));
+        ingredients.add(new Ingredient(Food.find.byId(822L),new Amount(100, GRAM)));
 
         List<Recipe> allRecipes = Recipe.find.all();
         MenuAlgorithms menuAlgorithmsInstant = new MenuAlgorithms(allRecipes, removeRecipeList, nrOfRecipes);
+        // menuAlgorithmsInstant.setNrOfRecipes(nrOfRecipes);
         Menu resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
+        ShoppingList shoppingList = new ShoppingList(resultingMenu, ingredients);
 
-        /* TODO: Används till komplexitets analys av algorithmen! //Stefan
-        */
+
+        // TODO: Används till komplexitets analys av algorithmen! //Stefan
+
         /*if(userName.equals("Test")) {
             int[] intArr = {10};//, 20, 30, 40, 50, 60, 100, 300, 450};
             String allText = "";
@@ -218,29 +224,37 @@ public class MenuAlgorithmsController extends Controller {
                 int turns = all / nr;
                 long biggestDiff = 0;
                 for (int i = 0; i < turns; i++) {
+
                     long before = System.currentTimeMillis();
                     List<Recipe> allRecipesSub = allRecipes.subList(i * nr, i * nr + nr);
                     menuAlgorithmsInstant = new MenuAlgorithms(allRecipesSub, removeRecipeList, 1);
                     resultingMenu = menuAlgorithmsInstant.calculateMenuNutrition(user);
                     long diffAfter = System.currentTimeMillis() - before;
+
                     if (diffAfter > biggestDiff) {
                         biggestDiff = diffAfter;
                     }
                 }
+
                 String text = "(" + intArr[a] + "," + biggestDiff + "),";
                 allText = allText + text;
 
                 String text2 = "{" + intArr[a] + "," + biggestDiff + "},";
                 allText2 = allText2 + text2;
-
             }
             return ok(menuAlgorithmsInstant.getAllRecepie() + allText + "\n" + allText2);
         }
 */
 
         if (resultingMenu.getRecipeList().size() == menuAlgorithmsInstant.getNrOfRecipes())
-            return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
-        return ok("Hittade ingen meny!");
+            //return ok(user.firstName + " " + resultingMenu.recipeListToString(new ShoppingList(resultingMenu)));
+            return ok(JsonHelper.toJson(resultingMenu, shoppingList));
+
+        //return ok("nothing found!");
+        else
+            return null;
+
+
     }
 
 
@@ -287,7 +301,7 @@ public class MenuAlgorithmsController extends Controller {
 
 
 
-    public Result menuShopinglist(int nrOfRecipes) {
+    public Result menuShoppinglist(int nrOfRecipes) {
         List<Recipe> removeRecipeList = new ArrayList<>();
         List<Recipe> allRecipes = Recipe.find.all();
         List<Ingredient> ingredientsAtHome = new ArrayList<>();

@@ -43,6 +43,18 @@ public enum Nutrient {
     private final Type type;
     private final Unit unit;
 
+    public String getName() {
+        return name;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
     Nutrient(String name, Type type, Unit unit) {
         this.name = name;
         this.type = type;

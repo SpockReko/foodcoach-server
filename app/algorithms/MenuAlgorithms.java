@@ -27,7 +27,7 @@ public class MenuAlgorithms {
     private int nrOfRecipes;
     private List<Recipe> allRecipes = new ArrayList<>();
     private List<Menu> menuList = new ArrayList<>();
-    private User user = new User();
+    private User user = new User("Olof");
     private List<Ingredient> ingredientsToUse;
     private List<Ingredient> notTheseIngredients = new ArrayList<>();
     private List<Recipe> notTheseRecipes;
@@ -118,7 +118,7 @@ public class MenuAlgorithms {
         reset();
 
         if (allRecipes.size() < 10) {
-            returnAllMenus(40, new ArrayList<>(), this::nutritionValueCalculation);
+            returnAllMenus(allRecipes.size() - 1, new ArrayList<>(), this::nutritionValueCalculation);
         } else {
             returnMenuGreedy(this::nutritionValueCalculation);
         }
