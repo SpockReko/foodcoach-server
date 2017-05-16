@@ -1,6 +1,7 @@
 package controllers;
 
 import com.avaje.ebean.Ebean;
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.JsonHelper;
 import models.user.User;
 import play.data.Form;
@@ -21,12 +22,16 @@ public class UserController extends Controller {
         User user = Form.form(User.class).bindFromRequest().get();
         if (User.find.where().eq("firstName", user.firstName).findCount() == 0){
             Ebean.save(user);
+            return ok(user.firstName);
+        } else {
+            return badRequest(user.firstName);
+
         }
-        if (user != null){
-                return ok(JsonHelper.toJson(user));
-        } else{
-             return badRequest("Form input incorrect or"+ user.firstName + "aldready exist" );
-        }
+        //if (user != null){ JsonHelper.toJson(user)
+
+        //} else{
+         //    return badRequest("Form input incorrect or"+ user.firstName + "aldready exist" );
+       // }
     }
 
     // GET /user/name/:name
