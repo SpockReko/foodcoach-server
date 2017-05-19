@@ -127,6 +127,7 @@ public class RecipeSimplex {
             //exceedsCalorie = true;
             limit+=0.5;
             maxCalorie+=0.1;
+            System.out.println("limit: " + limit + "\nMaxCalaori: " + maxCalorie);
             constraintsCollection = new ArrayList();
             setConstraintsIngredients(leastAmountOfIngredient, limit);
             setConstraintsNutrition(ingredients, nutritionNeed, maxCalorie);

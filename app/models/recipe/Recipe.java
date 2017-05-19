@@ -90,6 +90,17 @@ public class Recipe extends Model {
         return new Recipe(this.getTitle(), 1, newIngredients);
     }
 
+    public Recipe getRecipeInGram() {
+        List<Ingredient> ingredients = getIngredients();
+        List<Ingredient> newIngredients = new ArrayList<>();
+        for (Ingredient i : ingredients) {
+            Ingredient newIngredient = i.getIngredientInGrams();
+            newIngredient = newIngredient.getIngredientInOnePort(portions);
+            newIngredients.add(newIngredient);
+        }
+        return new Recipe(this.title,this.portions,newIngredients);
+    }
+
     public Recipe getUserRecipe(User user) {
         List<Ingredient> ingredients = getIngredients();
         List<Ingredient> newIngredients = new ArrayList<>();
@@ -122,7 +133,7 @@ public class Recipe extends Model {
                 text += "\t";
             }
             text += Precision.round(i.getAmount().getQuantity(), 1) + " " + i.getAmount().getUnit()
-                + "\n";
+                + "\t\t => "+ Precision.round(i.getInGrams(), 1) + " grams" + "\n";
         }
         text = text + "\n\n";
         return text;

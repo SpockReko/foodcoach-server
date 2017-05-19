@@ -96,4 +96,17 @@ public class Ingredient extends Model {
         }
         return value * multiplier;
     }
+
+    public double getInGrams(){
+        return multiplier(100.0D);
+    }
+
+    public Ingredient getIngredientInGrams(){
+        return new Ingredient(this.food,new Amount(multiplier(100.0D), Amount.Unit.GRAM));
+    }
+
+    public Ingredient getIngredientInOnePort(int port){
+        return new Ingredient(this.food,new Amount(amount.getQuantity()/(double)port, Amount.Unit.GRAM));
+    }
+
 }
