@@ -97,6 +97,7 @@ public class Ingredient extends Model {
         return value * multiplier;
     }
 
+
     public double getInGrams(){
         return multiplier(100.0D);
     }

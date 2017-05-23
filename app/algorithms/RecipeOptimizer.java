@@ -29,7 +29,7 @@ public class RecipeOptimizer {
         originalRecipe = recipe;
         //this.recipe = recipe.getOnePortionRecipe();
         //this.recipe = recipe.getRecipeInGram();
-        this.recipe = recipe.getUserRecipe(user);
+        this.recipe = recipe.getRecipeInGram().getUserRecipe(user);
         this.ingredients = this.recipe.ingredients;
         this.user = user;
     }

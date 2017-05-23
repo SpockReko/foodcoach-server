@@ -116,6 +116,18 @@ public class Recipe extends Model {
         return new Recipe(this.getTitle(), 1, newIngredients);
     }
 
+    public Recipe getInSameUnit(Recipe originalRecipe){
+        List<Ingredient> ingredients = getIngredients();
+        List<Ingredient> newIngredients = new ArrayList<>();
+        for (Ingredient i : ingredients) {
+            Ingredient newIngredient = i.getIngredientInGrams();
+            newIngredient = newIngredient.getIngredientInOnePort(portions);
+            newIngredients.add(newIngredient);
+        }
+        return new Recipe(this.title,this.portions,newIngredients);
+    }
+
+
     public String recipeToString(Recipe recipe) {
         String text = recipe.getTitle() + "\n\n";
         for (Ingredient i : recipe.ingredients) {
