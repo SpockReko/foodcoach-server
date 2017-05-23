@@ -97,6 +97,32 @@ public class Ingredient extends Model {
         return value * multiplier;
     }
 
+    public Ingredient getInUnit(Amount.Unit unit) {
+        double quantity=0;
+        switch (unit.getType()) {
+            case VOLUME:
+                if (food.densityConstant != null) {
+                    quantity = amount.getQuantity() / (food.densityConstant*unit.getFraction()*100);
+                } else {
+                    quantity = amount.getQuantity()/ (unit.getFraction()*100);
+                    // Logger.warn("No density constant for \"" + food.name + "\" defaulting to 1.0");
+                }
+                break;
+            case SINGLE:
+                if (food.pieceWeightGrams != null) {
+                    quantity = amount.getQuantity() / (food.pieceWeightGrams );
+                } else {
+                    // Logger.warn("No piece weight for \"" + food.name + "\" defaulting to 100g");
+                    quantity = amount.getQuantity()/100;
+                }
+                break;
+            case MASS:
+                quantity = amount.getQuantity() / (100*unit.getFraction());
+                break;
+        }
+        return new Ingredient(food, new Amount(quantity, unit));
+    }
+
 
     public double getInGrams(){
         return multiplier(100.0D);

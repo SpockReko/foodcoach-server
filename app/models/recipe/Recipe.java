@@ -117,11 +117,11 @@ public class Recipe extends Model {
     }
 
     public Recipe getInSameUnit(Recipe originalRecipe){
-        List<Ingredient> ingredients = getIngredients();
+        List<Ingredient> ingredients1 = getIngredients();
+        List<Ingredient> ingredients2 = originalRecipe.getIngredients();
         List<Ingredient> newIngredients = new ArrayList<>();
-        for (Ingredient i : ingredients) {
-            Ingredient newIngredient = i.getIngredientInGrams();
-            newIngredient = newIngredient.getIngredientInOnePort(portions);
+        for (int i=0; i<ingredients1.size(); i++) {
+            Ingredient newIngredient = ingredients1.get(i).getInUnit(ingredients2.get(i).getAmount().getUnit());
             newIngredients.add(newIngredient);
         }
         return new Recipe(this.title,this.portions,newIngredients);

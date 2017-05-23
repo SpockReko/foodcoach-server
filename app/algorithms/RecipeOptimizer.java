@@ -96,6 +96,7 @@ public class RecipeOptimizer {
             string=string+"\nMer än 120% av kaloribehov\n";
         }
         string=string+menu.nutritionToString();
+        string=string+"\n"+optimizedRecipe.recipeToString(optimizedRecipe.getInSameUnit(originalRecipe));
 
         return string;
     }
