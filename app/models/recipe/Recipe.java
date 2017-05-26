@@ -95,7 +95,6 @@ public class Recipe extends Model {
         List<Ingredient> newIngredients = new ArrayList<>();
         for (Ingredient i : ingredients) {
             Ingredient newIngredient = i.getIngredientInGrams();
-            newIngredient = newIngredient.getIngredientInOnePort(portions);
             newIngredients.add(newIngredient);
         }
         return new Recipe(this.title,this.portions,newIngredients);

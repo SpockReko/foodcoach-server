@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static java.lang.Math.round;
+import static java.lang.Math.*;
 
 /**
  * Created by stefa on 2017-03-20.
@@ -26,7 +26,7 @@ public class RecipeOptimizer {
     User user;
 
     public RecipeOptimizer(Recipe recipe, User user) {
-        originalRecipe = recipe;
+        originalRecipe = recipe.getRecipeInGram().getOnePortionRecipe();
         //this.recipe = recipe.getOnePortionRecipe();
         //this.recipe = recipe.getRecipeInGram();
         this.recipe = recipe.getRecipeInGram().getUserRecipe(user);
@@ -35,6 +35,7 @@ public class RecipeOptimizer {
     }
 
     public Recipe optimizeRecipe(){
+        System.out.println(recipe.getTitle());
         List<Double> leastAmountOfIngredients = leastAmountOfIngredients(ingredients);
 
         recipeSimplex = new RecipeSimplex();
@@ -80,6 +81,36 @@ public class RecipeOptimizer {
         return lowestPercentageOfIngredient;
     }
 
+    public double getDifferenceCO2(){
+        return originalRecipe.getCO2()-optimizedRecipe.getCO2();
+    }
+
+    public double getOriginalNutrient(){
+        double nut = sqrt(pow(originalRecipe.getNutrient(Nutrient.CARBOHYDRATES)/user.hmap.get(Nutrient.CARBOHYDRATES)-1,2)
+                +pow(originalRecipe.getNutrient(Nutrient.PROTEIN)/user.hmap.get(Nutrient.PROTEIN)-1, 2)
+                +pow(originalRecipe.getNutrient(Nutrient.FAT)/user.hmap.get(Nutrient.FAT)-1,2));
+        return nut;
+    }
+
+    public double getOptiNutrient(){
+        double nut = sqrt(pow(optimizedRecipe.getNutrient(Nutrient.CARBOHYDRATES)/user.hmap.get(Nutrient.CARBOHYDRATES)-1,2)
+                +pow(optimizedRecipe.getNutrient(Nutrient.PROTEIN)/user.hmap.get(Nutrient.PROTEIN)-1,2)
+                +pow(optimizedRecipe.getNutrient(Nutrient.FAT)/user.hmap.get(Nutrient.FAT)-1,2));
+        return nut;
+    }
+
+
+/*
+    public double getDifferenceNutrient(){
+        List recipeOriginal= new ArrayList<Recipe>();
+        recipeOriginal.add(originalRecipe);
+        Menu menuOriginal=new Menu(recipeOriginal);
+        List recipeOpti= new ArrayList<Recipe>();
+        recipeOpti.add(optimizedRecipe);
+        Menu menuOpti=new Menu(recipeOpti);
+        return menuOriginal.getValue()-menuOpti.getValue();
+    }
+*/
     public Menu getMenu(){
         ArrayList<Recipe> recipeList =new ArrayList<Recipe>();
         recipeList.add(optimizedRecipe);
@@ -89,9 +120,10 @@ public class RecipeOptimizer {
     }
     public String toString(){
         Menu menu=getMenu();
-        String string="Optimalt recept, "+optimizedRecipe.recipeToString(optimizedRecipe)+"Originalrecept, "
+        String string="Optimalt recept, "+optimizedRecipe.recipeToString(optimizedRecipe) +"\nKoldioxidutsläpp: "
+                + Precision.round(optimizedRecipe.getCO2(), 3) + " kg\n\n"+"Originalrecept, "
                 +originalRecipe.recipeToString(originalRecipe.getOnePortionRecipe()) +"\nKoldioxidutsläpp: "
-                + Precision.round(optimizedRecipe.getCO2(), 3) + " kg"+"\nEnergi: "+round(optimizedRecipe.getNutrient(Nutrient.ENERGY_KCAL))+" kcal\n";
+                + Precision.round(originalRecipe.getCO2(), 3) + " kg"+"\nEnergi: "+round(optimizedRecipe.getNutrient(Nutrient.ENERGY_KCAL))+" kcal\n";
         if(recipeSimplex.exceedsCalorie()){
             string=string+"\nMer än 120% av kaloribehov\n";
         }

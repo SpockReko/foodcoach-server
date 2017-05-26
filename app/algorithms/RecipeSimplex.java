@@ -83,9 +83,9 @@ public class RecipeSimplex {
         }
         for(int i =0;i<arr.length;i++)
         {
-            System.out.println(arr[i]);
+            //System.out.println(arr[i]);
         }
-        System.out.println();
+        //System.out.println();
 
         if( !isZero(arr) ) {
             constraintsCollection.add(new LinearConstraint(arr, Relationship.LEQ, nutritionNeed*1.2));
@@ -127,7 +127,7 @@ public class RecipeSimplex {
             //exceedsCalorie = true;
             limit+=0.5;
             maxCalorie+=0.1;
-            System.out.println("limit: " + limit + "\nMaxCalaori: " + maxCalorie);
+            //System.out.println("limit: " + limit + "\nMaxCalaori: " + maxCalorie);
             constraintsCollection = new ArrayList();
             setConstraintsIngredients(leastAmountOfIngredient, limit);
             setConstraintsNutrition(ingredients, nutritionNeed, maxCalorie);

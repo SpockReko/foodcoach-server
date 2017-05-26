@@ -99,7 +99,7 @@ public class User extends Model {
      *
      */
 
-    /* public User() {
+     public User() {
         firstName = "user";
         hmap.put(Nutrient.ENERGY_KCAL, 2000D);
         hmap.put(Nutrient.ENERGY_KJ, 2000D* Constants.KCAL_FACTOR);
@@ -128,7 +128,7 @@ public class User extends Model {
         hmap.put(Nutrient.SELENIUM, 55D);
 
         calculateOverdoseValues(30);
-    } */
+    }
 
 
 

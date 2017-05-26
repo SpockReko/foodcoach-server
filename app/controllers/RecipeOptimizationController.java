@@ -3,6 +3,7 @@ package controllers;
 import algorithms.NutritionAlgorithms;
 import algorithms.RecipeOptimizer;
 import helpers.JsonHelper;
+import models.food.Nutrient;
 import models.recipe.Menu;
 import models.recipe.Recipe;
 import models.recipe.ShoppingList;
@@ -28,7 +29,7 @@ public class RecipeOptimizationController extends Controller {
         Recipe optimizedRecipe = recipeOptimizerInstant.optimizeRecipe();
         Menu menu = recipeOptimizerInstant.getMenu();
 
-        return ok(recipeOptimizerInstant.toString());
+        return ok(recipeOptimizerInstant.toString()+"\n"+user.hmap.get(Nutrient.ENERGY_KCAL));
     }
 
     // GET /recipe/optimize/title/:title

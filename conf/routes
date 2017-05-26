@@ -41,6 +41,7 @@ GET             /recipe/optimize/title/:title             controllers.RecipeOpti
 # GET             /bob/recipe/optimize/:number              controllers.RecipeOptimizationController.optimizeByNumberBob(number: Long)
 # GET             /alice/recipe/optimize/:number            controllers.RecipeOptimizationController.optimizeByNumberAlice(number: Long)
 GET             /recipe/optimize/user/:recipeTitle       controllers.RecipeOptimizationController.optimizeByNumberUserName(recipeTitle: String, userName: String)
+GET             /test                                       controllers.RecipeOptimizerTestController.test()
 
 # Parse ingredient string to food item
 GET             /parseLine                                controllers.ParseController.parseLine(line: String)
