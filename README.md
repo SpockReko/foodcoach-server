@@ -3,6 +3,7 @@
 > Backend server for FoodCoach platform.
 
 This is the backend part of the FoodCoach platform (the amazing server).
+It is was developed as project for the Bachelor's thesis in computer science bachelor program in University of Gothenburg and Chalmers engineer program in Computer science, IT and math.
 
 This is an application that responds to HTTP requests that is sent to it. These requests can come
 from a number of different sources, a web browser or a mobile app for example.
